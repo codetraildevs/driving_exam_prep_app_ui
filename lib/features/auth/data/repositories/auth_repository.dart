@@ -92,8 +92,12 @@ class AuthRepository {
       id: user.id,
       name: user.userMetadata?['name'] ?? '',
       email: user.email ?? '',
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      createdAt: user.createdAt is String
+          ? DateTime.parse(user.createdAt as String)
+          : (user.createdAt as DateTime? ?? DateTime.now()),
+      updatedAt: user.updatedAt is String
+          ? DateTime.parse(user.updatedAt as String)
+          : (user.updatedAt as DateTime? ?? DateTime.now()),
     )
         : null;
   }

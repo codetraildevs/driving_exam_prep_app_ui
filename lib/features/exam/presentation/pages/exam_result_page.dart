@@ -107,7 +107,7 @@ class ExamResultPage extends StatelessWidget {
                     child: _buildStatCard(
                       label: 'Accuracy',
                       value: '$accuracy%',
-                      icon: Icons.target,
+                      icon: Icons.bar_chart,
                       color: AppColors.primary,
                     ),
                   ),

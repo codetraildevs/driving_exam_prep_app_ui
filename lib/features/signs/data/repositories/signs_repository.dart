@@ -100,8 +100,7 @@ class SignsRepository {
     try {
       final response = await supabase
           .from('traffic_signs')
-          .select('category')
-          .distinct();
+          .select('category');
 
       return (response as List)
           .map((item) => item['category'] as String)

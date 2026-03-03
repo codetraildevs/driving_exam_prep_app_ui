@@ -46,14 +46,13 @@ class _ExamPageState extends State<ExamPage> {
   void _startTimer() {
     Future.doWhile(() async {
       await Future.delayed(const Duration(seconds: 1));
-      if (mounted) {
-        setState(() {
-          _remainingSeconds--;
-          if (_remainingSeconds <= 0) {
-            _submitExam();
-            return false;
-          }
-        });
+      if (!mounted) return false;
+      setState(() {
+        _remainingSeconds--;
+      });
+      if (_remainingSeconds <= 0) {
+        _submitExam();
+        return false;
       }
       return true;
     });

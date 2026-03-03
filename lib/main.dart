@@ -24,7 +24,7 @@ class TrafficRulesApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AuthBloc()..add(CheckAuthStatusEvent()),
+          create: (context) => AuthBloc()..add(const CheckAuthStatusEvent()),
         ),
       ],
       child: MaterialApp.router(

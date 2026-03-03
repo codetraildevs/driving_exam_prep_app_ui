@@ -49,7 +49,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_linter: ^3.0.0
+  flutter_lints: ^2.0.0
 
 flutter:
   uses-material-design: true
@@ -57,12 +57,4 @@ flutter:
   assets:
     - assets/images/
     - assets/animations/
-
-  fonts:
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
-        - asset: assets/fonts/Poppins-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Poppins-SemiBold.ttf
-          weight: 600
+  # Local fonts removed; using `google_fonts` package instead.
