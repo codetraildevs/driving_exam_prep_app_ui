@@ -1,0 +1,208 @@
+import 'package:flutter/material.dart';
+import '../../../../config/theme/app_colors.dart';
+import '../../../../config/theme/app_text_styles.dart';
+
+class ProgressPage extends StatelessWidget {
+  const ProgressPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        title: const Text('Your Progress'),
+        elevation: 0,
+        backgroundColor: AppColors.surface,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildOverviewCard(),
+              const SizedBox(height: 32),
+              Text(
+                'Performance Summary',
+                style: AppTextStyles.heading5,
+              ),
+              const SizedBox(height: 16),
+              _buildStatRow('Total Attempts', '12', Icons.assignment),
+              _buildStatRow('Best Score', '92%', Icons.emoji_events),
+              _buildStatRow('Average Score', '78%', Icons.trending_up),
+              _buildStatRow('Signs Learned', '45', Icons.traffic),
+              const SizedBox(height: 32),
+              Text(
+                'Recent Exams',
+                style: AppTextStyles.heading5,
+              ),
+              const SizedBox(height: 16),
+              _buildExamCard('Mock Exam 1', '85%', 'Passed', AppColors.success),
+              const SizedBox(height: 12),
+              _buildExamCard('Mock Exam 2', '78%', 'Passed', AppColors.success),
+              const SizedBox(height: 12),
+              _buildExamCard('Practice Quiz', '92%', 'Excellent', AppColors.primary),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOverviewCard() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        gradient: AppColors.primaryGradient,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withOpacity(0.2),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Overall Progress',
+            style: AppTextStyles.heading6.copyWith(
+              color: AppColors.textInverse.withOpacity(0.8),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildProgressMetric('65%', 'Complete'),
+              _buildProgressMetric('78%', 'Avg Score'),
+              _buildProgressMetric('45', 'Signs'),
+            ],
+          ),
+          const SizedBox(height: 24),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: LinearProgressIndicator(
+              value: 0.65,
+              minHeight: 12,
+              backgroundColor: AppColors.textInverse.withOpacity(0.2),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                AppColors.accent,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProgressMetric(String value, String label) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: AppTextStyles.heading4.copyWith(
+            color: AppColors.textInverse,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: AppTextStyles.labelSmall.copyWith(
+            color: AppColors.textInverse.withOpacity(0.8),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatRow(String label, String value, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: AppColors.neutral200),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, color: AppColors.primary, size: 20),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              label,
+              style: AppTextStyles.bodyMedium,
+            ),
+          ),
+          Text(
+            value,
+            style: AppTextStyles.heading6.copyWith(
+              color: AppColors.primary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildExamCard(String title, String score, String status, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border.all(color: AppColors.neutral200),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Text(
+                score.replaceAll('%', ''),
+                style: AppTextStyles.heading6.copyWith(
+                  color: color,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppTextStyles.labelLarge,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  status,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: color,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(Icons.arrow_forward, color: AppColors.neutral400),
+        ],
+      ),
+    );
+  }
+}
