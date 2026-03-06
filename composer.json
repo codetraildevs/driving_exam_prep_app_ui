@@ -1,0 +1,13 @@
+{
+    "name": "driving-exam-prep/backend",
+    "description": "PHP + MySQL backend for the Driving Exam Prep App",
+    "type": "project",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}
