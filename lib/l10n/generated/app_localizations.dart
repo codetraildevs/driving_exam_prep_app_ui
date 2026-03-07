@@ -1417,6 +1417,21 @@ abstract class AppLocalizations {
   /// Payment help text
   String get paymentHelpText;
 
+  /// Payment error message
+  String get paymentError;
+
+  /// Copy number button
+  String get paymentCopyNumber;
+
+  /// Call number button
+  String get paymentCallNumber;
+
+  /// WhatsApp button
+  String get paymentWhatsApp;
+
+  /// Duplicate payment request error
+  String get paymentRequestExists;
+
   /// Generic error message
   String get commonError;
 

@@ -884,6 +884,21 @@
   "paymentHelpText": "Need help? Call or WhatsApp: 0788657595",
   "@paymentHelpText": { "description": "Payment help text" },
 
+  "paymentError": "Payment request failed. Please pay manually using the instructions below.",
+  "@paymentError": { "description": "Payment error message" },
+
+  "paymentCopyNumber": "Copy Number",
+  "@paymentCopyNumber": { "description": "Copy phone number button" },
+
+  "paymentCallNumber": "Call 0788657595",
+  "@paymentCallNumber": { "description": "Call phone number button" },
+
+  "paymentWhatsApp": "WhatsApp: Send Message",
+  "@paymentWhatsApp": { "description": "WhatsApp button label" },
+
+  "paymentRequestExists": "A payment request for this plan is already pending. Please wait for activation or contact support.",
+  "@paymentRequestExists": { "description": "Duplicate payment request error" },
+
   "commonError": "Something went wrong. Please try again.",
   "@commonError": { "description": "Generic error message" },
 

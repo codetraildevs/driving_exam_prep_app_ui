@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -13,6 +15,9 @@ import '../../../../shared/locale/locale_provider.dart';
 import '../../../../shared/network/api_config.dart';
 import '../../../../shared/session/auth_session.dart';
 import '../../../../shared/subscription/subscription_provider.dart';
+
+const _kHelpNumber = '0788657595';
+const _kMomoNumber = '323294';
 
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({Key? key}) : super(key: key);
@@ -25,6 +30,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   bool _isRequesting = false;
   String? _successMessage;
   String? _errorMessage;
+  bool _isDuplicateRequest = false;
+  bool _isPaymentError = false;
 
   List<Map<String, dynamic>> _getPlans(String langCode, AppLocalizations l10n) {
     if (langCode == 'rw') {
@@ -52,6 +59,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       _isRequesting = true;
       _successMessage = null;
       _errorMessage = null;
+      _isDuplicateRequest = false;
+      _isPaymentError = false;
     });
 
     final l10n = AppLocalizations.of(context);
@@ -92,20 +101,55 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
         setState(() {
           _successMessage = l10n.subscriptionRequestSent;
         });
+      } else if (response.statusCode == 409) {
+        // Duplicate request
+        setState(() {
+          _isDuplicateRequest = true;
+          _errorMessage = l10n.paymentRequestExists;
+        });
       } else {
         final data = json.decode(response.body);
+        final msg = (data['message'] as String?)?.isNotEmpty == true
+            ? data['message'] as String
+            : l10n.paymentError;
         setState(() {
-          _errorMessage = (data['message'] as String?)?.isNotEmpty == true
-              ? data['message'] as String
-              : l10n.commonError;
+          _isPaymentError = true;
+          _errorMessage = msg;
         });
       }
     } catch (e) {
       setState(() {
-        _errorMessage = l10n.commonError;
+        _isPaymentError = true;
+        _errorMessage = l10n.paymentError;
       });
     } finally {
       setState(() => _isRequesting = false);
+    }
+  }
+
+  Future<void> _copyNumber(BuildContext context) async {
+    await Clipboard.setData(const ClipboardData(text: _kHelpNumber));
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(AppLocalizations.of(context).paymentCopyNumber),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  Future<void> _callNumber() async {
+    final uri = Uri.parse('tel:$_kHelpNumber');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
+  }
+
+  Future<void> _openWhatsApp() async {
+    const msg = "Request access for driving exam app";
+    final uri = Uri.parse('https://wa.me/$_kHelpNumber?text=${Uri.encodeComponent(msg)}');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 
@@ -115,6 +159,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     final langCode = context.watch<LocaleProvider>().effectiveLocale.languageCode;
     final subscription = context.watch<SubscriptionProvider>();
     final plans = _getPlans(langCode, l10n);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isLarge = screenWidth >= 600;
 
     return Scaffold(
       appBar: AppBar(
@@ -127,7 +173,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(isLarge ? 32 : 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -138,7 +184,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   decoration: BoxDecoration(
                     color: AppColors.success.withOpacity(0.1),
                     border: Border.all(color: AppColors.success.withOpacity(0.4)),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
                     children: [
@@ -178,7 +224,14 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   gradient: AppColors.primaryGradient,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.25),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
                 child: Column(
                   children: [
@@ -224,69 +277,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
               const SizedBox(height: 24),
 
-              // Payment Instructions Card
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  border: Border.all(color: AppColors.primary.withOpacity(0.3)),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).shadowColor.withOpacity(0.05),
-                      blurRadius: 8,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: AppColors.primary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(Icons.payment, color: AppColors.primary, size: 20),
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          l10n.paymentInstructionsTitle,
-                          style: AppTextStyles.heading6.copyWith(color: AppColors.primary),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    _PaymentRow(icon: Icons.phone_android, text: l10n.paymentMomoPayNumber),
-                    const SizedBox(height: 8),
-                    _PaymentRow(icon: Icons.mobile_friendly, text: l10n.paymentMobileMoneyNumber),
-                    const Divider(height: 24),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: AppColors.warning.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(Icons.help_outline, color: AppColors.warning, size: 20),
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          l10n.subscriptionNeedHelp,
-                          style: AppTextStyles.heading6.copyWith(color: AppColors.warning),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    _PaymentRow(icon: Icons.phone, text: l10n.subscriptionHelpCall),
-                    const SizedBox(height: 8),
-                    _PaymentRow(icon: Icons.chat, text: l10n.subscriptionHelpWhatsapp),
-                  ],
-                ),
-              ),
+              // Payment Instructions Card — always visible
+              _PaymentInstructionsCard(l10n: l10n),
 
               // Success/Error messages
               if (_successMessage != null) ...[
@@ -296,7 +288,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   decoration: BoxDecoration(
                     color: AppColors.success.withOpacity(0.1),
                     border: Border.all(color: AppColors.success.withOpacity(0.4)),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
                     children: [
@@ -314,25 +306,14 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               ],
               if (_errorMessage != null) ...[
                 const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppColors.error.withOpacity(0.1),
-                    border: Border.all(color: AppColors.error.withOpacity(0.4)),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.error, color: AppColors.error),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          _errorMessage!,
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.error),
-                        ),
-                      ),
-                    ],
-                  ),
+                _ErrorCard(
+                  message: _errorMessage!,
+                  isPaymentError: _isPaymentError,
+                  isDuplicate: _isDuplicateRequest,
+                  l10n: l10n,
+                  onCopy: () => _copyNumber(context),
+                  onCall: _callNumber,
+                  onWhatsApp: _openWhatsApp,
                 ),
               ],
               const SizedBox(height: 16),

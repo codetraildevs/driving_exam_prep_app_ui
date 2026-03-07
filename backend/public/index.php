@@ -1411,6 +1411,24 @@ function requestPayment($conn, $params) {
             ErrorHandler::badRequest('Invalid exam ID');
         }
     }
+
+    // Prevent duplicate pending requests for the same user
+    $existing = Database::fetchOne(
+        $conn,
+        'SELECT id FROM payment_requests WHERE userId = ? AND status = ? LIMIT 1',
+        'ss',
+        [&$userId, 'PENDING']
+    );
+    if ($existing) {
+        Logger::info('Duplicate payment request blocked', ['userId' => $userId]);
+        http_response_code(409);
+        echo json_encode([
+            'success' => false,
+            'message' => 'A payment request is already pending for your account. Please wait for activation or pay manually: MoMo Pay 323294 / Mobile Money 0788657595 / Help: 0788657595',
+            'code'    => 'DUPLICATE_REQUEST',
+        ]);
+        exit;
+    }
     
     $id = 'pay_' . generateUUID();
     $now = date('Y-m-d H:i:s');

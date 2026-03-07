@@ -864,6 +864,21 @@ class AppLocalizationsRw extends AppLocalizations {
   String get paymentHelpText => 'Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595';
 
   @override
+  String get paymentError => 'Ubusabe bwo kwishyura bwananiranye. Nyamuneka wishyure ukoresha amabwiriza hano epfo.';
+
+  @override
+  String get paymentCopyNumber => 'Kopi nimero';
+
+  @override
+  String get paymentCallNumber => 'Hamagara 0788657595';
+
+  @override
+  String get paymentWhatsApp => 'WhatsApp: Ohereza ubutumwa';
+
+  @override
+  String get paymentRequestExists => 'Ubusabe bwo kwishyura kuri iyi gahato buriho. Tegereza ko ubuzima bwawe buremwa cyangwa vugana na serivisi.';
+
+  @override
   String get commonError => 'Hari ikibazo cyabaye. Ongera ugerageze.';
 
   @override

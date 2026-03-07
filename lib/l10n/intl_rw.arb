@@ -287,6 +287,12 @@
   "paymentMobileMoneyNumber": "Mobile Money: 0788657595",
   "paymentHelpText": "Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595",
 
+  "paymentError": "Ubusabe bwo kwishyura bwananiranye. Nyamuneka wishyure ukoresha amabwiriza hano epfo.",
+  "paymentCopyNumber": "Kopi nimero",
+  "paymentCallNumber": "Hamagara 0788657595",
+  "paymentWhatsApp": "WhatsApp: Ohereza ubutumwa",
+  "paymentRequestExists": "Ubusabe bwo kwishyura kuri iyi gahato buriho. Tegereza ko ubuzima bwawe buremwa cyangwa vugana na serivisi.",
+
   "commonError": "Hari ikibazo cyabaye. Ongera ugerageze.",
 
   "adminTierLabel": "Urwego",

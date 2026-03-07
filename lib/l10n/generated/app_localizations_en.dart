@@ -854,6 +854,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentHelpText => 'Need help? Call or WhatsApp: 0788657595';
 
   @override
+  String get paymentError => 'Payment request failed. Please pay manually using the instructions below.';
+
+  @override
+  String get paymentCopyNumber => 'Copy Number';
+
+  @override
+  String get paymentCallNumber => 'Call 0788657595';
+
+  @override
+  String get paymentWhatsApp => 'WhatsApp: Send Message';
+
+  @override
+  String get paymentRequestExists => 'A payment request for this plan is already pending. Please wait for activation or contact support.';
+
+  @override
   String get commonError => 'Something went wrong. Please try again.';
 
   @override

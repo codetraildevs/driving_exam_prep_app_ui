@@ -867,6 +867,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get paymentHelpText => 'Besoin d\'aide ? Appelez ou WhatsApp: 0788657595';
 
   @override
+  String get paymentError => 'La demande de paiement a échoué. Veuillez payer manuellement en utilisant les instructions ci-dessous.';
+
+  @override
+  String get paymentCopyNumber => 'Copier le numéro';
+
+  @override
+  String get paymentCallNumber => 'Appeler le 0788657595';
+
+  @override
+  String get paymentWhatsApp => 'WhatsApp: Envoyer un message';
+
+  @override
+  String get paymentRequestExists => 'Une demande de paiement pour ce forfait est déjà en attente. Veuillez attendre l\'activation ou contacter le support.';
+
+  @override
   String get commonError => 'Quelque chose s\'est mal passé. Veuillez réessayer.';
 
   @override
