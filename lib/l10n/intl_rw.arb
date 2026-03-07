@@ -313,5 +313,15 @@
 
   "adminManagePlatformDesc": "Gucunga urubuga rw'amategeko y'umuhanda",
 
-  "adminNotifications": "Imenyesha"
+  "adminNotifications": "Imenyesha",
+
+  "settingsAppearance": "Iyongerera",
+
+  "settingsAppearanceDesc": "Hitamo uko porogaramu igaragara",
+
+  "settingsThemeSystem": "Sisitemu",
+
+  "settingsThemeLight": "Urumuri",
+
+  "settingsThemeDark": "Umukara"
 }

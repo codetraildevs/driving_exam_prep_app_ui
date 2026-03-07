@@ -1458,6 +1458,21 @@ abstract class AppLocalizations {
 
   /// Notifications label
   String get adminNotifications;
+
+  /// Appearance section title in Settings
+  String get settingsAppearance;
+
+  /// Appearance section subtitle
+  String get settingsAppearanceDesc;
+
+  /// System default theme chip label
+  String get settingsThemeSystem;
+
+  /// Light theme chip label
+  String get settingsThemeLight;
+
+  /// Dark theme chip label
+  String get settingsThemeDark;
 }
 
 class _AppLocalizationsDelegate

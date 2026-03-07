@@ -270,6 +270,7 @@ class _ThemeSelectorTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -287,14 +288,14 @@ class _ThemeSelectorTile extends StatelessWidget {
               Icon(Icons.palette_outlined, color: cs.primary, size: 20),
               const SizedBox(width: 8),
               Text(
-                'Appearance',
+                l10n.settingsAppearance,
                 style: Theme.of(context).textTheme.labelLarge,
               ),
             ],
           ),
           const SizedBox(height: 4),
           Text(
-            'Choose how the app looks',
+            l10n.settingsAppearanceDesc,
             style: Theme.of(context).textTheme.bodySmall,
           ),
           const SizedBox(height: 14),
@@ -302,21 +303,21 @@ class _ThemeSelectorTile extends StatelessWidget {
             children: [
               _ThemeChip(
                 icon: Icons.brightness_auto,
-                label: 'System',
+                label: l10n.settingsThemeSystem,
                 selected: themeProvider.isSystem,
                 onTap: () => themeProvider.setThemeMode(ThemeMode.system),
               ),
               const SizedBox(width: 8),
               _ThemeChip(
                 icon: Icons.light_mode,
-                label: 'Light',
+                label: l10n.settingsThemeLight,
                 selected: themeProvider.isLight,
                 onTap: () => themeProvider.setThemeMode(ThemeMode.light),
               ),
               const SizedBox(width: 8),
               _ThemeChip(
                 icon: Icons.dark_mode,
-                label: 'Dark',
+                label: l10n.settingsThemeDark,
                 selected: themeProvider.isDark,
                 onTap: () => themeProvider.setThemeMode(ThemeMode.dark),
               ),

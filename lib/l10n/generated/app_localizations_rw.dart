@@ -904,4 +904,19 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get adminNotifications => 'Imenyesha';
+
+  @override
+  String get settingsAppearance => 'Iyongerera';
+
+  @override
+  String get settingsAppearanceDesc => 'Hitamo uko porogaramu igaragara';
+
+  @override
+  String get settingsThemeSystem => 'Sisitemu';
+
+  @override
+  String get settingsThemeLight => 'Urumuri';
+
+  @override
+  String get settingsThemeDark => 'Umukara';
 }

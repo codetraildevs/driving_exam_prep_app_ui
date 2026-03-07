@@ -907,4 +907,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get adminNotifications => 'Notifications';
+
+  @override
+  String get settingsAppearance => 'Apparence';
+
+  @override
+  String get settingsAppearanceDesc => 'Choisissez l\'apparence de l\'application';
+
+  @override
+  String get settingsThemeSystem => 'Système';
+
+  @override
+  String get settingsThemeLight => 'Clair';
+
+  @override
+  String get settingsThemeDark => 'Sombre';
 }

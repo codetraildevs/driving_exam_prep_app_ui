@@ -313,5 +313,15 @@
 
   "adminManagePlatformDesc": "Gérez votre plateforme d'apprentissage du code de la route",
 
-  "adminNotifications": "Notifications"
+  "adminNotifications": "Notifications",
+
+  "settingsAppearance": "Apparence",
+
+  "settingsAppearanceDesc": "Choisissez l'apparence de l'application",
+
+  "settingsThemeSystem": "Système",
+
+  "settingsThemeLight": "Clair",
+
+  "settingsThemeDark": "Sombre"
 }

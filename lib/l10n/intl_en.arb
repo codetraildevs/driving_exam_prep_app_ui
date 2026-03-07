@@ -911,5 +911,15 @@
 
   "adminManagePlatformDesc": "Manage your traffic rules learning platform",
 
-  "adminNotifications": "Notifications"
+  "adminNotifications": "Notifications",
+
+  "settingsAppearance": "Appearance",
+
+  "settingsAppearanceDesc": "Choose how the app looks",
+
+  "settingsThemeSystem": "System",
+
+  "settingsThemeLight": "Light",
+
+  "settingsThemeDark": "Dark"
 }
