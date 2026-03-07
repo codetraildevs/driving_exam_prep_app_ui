@@ -302,6 +302,7 @@
   "paymentCopyNumber": "Copier le numéro",
   "paymentCallNumber": "Appeler le 0788657595",
   "paymentWhatsApp": "WhatsApp: Envoyer un message",
+  "paymentWhatsAppMessage": "Demander l'accès à l'application d'examen de conduite",
   "paymentRequestExists": "Une demande de paiement pour ce forfait est déjà en attente. Veuillez attendre l'activation ou contacter le support.",
 
   "commonError": "Quelque chose s'est mal passé. Veuillez réessayer.",

@@ -1462,6 +1462,9 @@ abstract class AppLocalizations {
   /// WhatsApp button
   String get paymentWhatsApp;
 
+  /// WhatsApp message text for payment request
+  String get paymentWhatsAppMessage;
+
   /// Duplicate payment request error
   String get paymentRequestExists;
 

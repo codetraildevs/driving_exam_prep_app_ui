@@ -62,14 +62,39 @@ class HomePage extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// COMPACT HEADER — shorter, gradient, with greeting and notification bell
-// ──────────────────────────────────────────────────────────────────────���──────
+// COMPACT HEADER — shorter, gradient, with greeting and optional right icon
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// The type of icon shown in the right section of [_CompactHeader].
+enum CompactHeaderIconType {
+  /// Notification bell with optional badge.
+  notification,
+  /// Refresh/reload icon.
+  refresh,
+  /// No icon (empty right section).
+  none,
+}
 
 class _CompactHeader extends StatelessWidget {
   final AppLocalizations l10n;
   final String userName;
 
-  const _CompactHeader({required this.l10n, required this.userName});
+  /// Type of icon to show on the right. Defaults to [CompactHeaderIconType.notification].
+  final CompactHeaderIconType iconType;
+
+  /// Action to perform when the right icon is tapped.
+  final VoidCallback? onIconTap;
+
+  /// Whether to show a badge dot on the notification icon.
+  final bool showBadge;
+
+  const _CompactHeader({
+    required this.l10n,
+    required this.userName,
+    this.iconType = CompactHeaderIconType.notification,
+    this.onIconTap,
+    this.showBadge = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -121,28 +146,35 @@ class _CompactHeader extends StatelessWidget {
             ),
           ),
 
-          // Right: notification + avatar
-          Stack(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.notifications_outlined,
-                    color: AppColors.textInverse, size: 26),
-                onPressed: () {},
-              ),
-              Positioned(
-                right: 10,
-                top: 10,
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: AppColors.error,
-                    shape: BoxShape.circle,
+          // Right: optional icon
+          if (iconType != CompactHeaderIconType.none)
+            Stack(
+              children: [
+                IconButton(
+                  icon: Icon(
+                    iconType == CompactHeaderIconType.refresh
+                        ? Icons.refresh_rounded
+                        : Icons.notifications_outlined,
+                    color: AppColors.textInverse,
+                    size: 26,
                   ),
+                  onPressed: onIconTap,
                 ),
-              ),
-            ],
-          ),
+                if (showBadge && iconType == CompactHeaderIconType.notification)
+                  Positioned(
+                    right: 10,
+                    top: 10,
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: const BoxDecoration(
+                        color: AppColors.error,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
         ],
       ),
     );

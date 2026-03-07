@@ -899,6 +899,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentWhatsApp => 'WhatsApp: Send Message';
 
   @override
+  String get paymentWhatsAppMessage => 'Request access for driving exam app';
+
+  @override
   String get paymentRequestExists => 'A payment request for this plan is already pending. Please wait for activation or contact support.';
 
   @override

@@ -252,7 +252,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Welcome back,',
+                          l10n.homeWelcomeBack,
                           style: TextStyle(color: AppColors.textInverse.withOpacity(0.8), fontSize: 13),
                         ),
                         Text(
@@ -313,7 +313,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
               ElevatedButton.icon(
                 onPressed: _loadData,
                 icon: const Icon(Icons.refresh),
-                label: const Text('Retry'),
+                label: Text(l10n.commonRetry),
               ),
             ],
           ),
@@ -363,18 +363,17 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
   // ──────────────────────────────────────────────────────────────────────────
   Widget _buildPlatformCard(BuildContext context, AppLocalizations l10n) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(18),
+        gradient: AppColors.primaryGradient,
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.08),
+            color: AppColors.primary.withOpacity(0.25),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
         ],
-        border: Border.all(color: AppColors.primary.withOpacity(0.08)),
       ),
       child: Row(
         children: [
@@ -382,11 +381,16 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l10n.adminDashboard, style: AppTextStyles.heading5),
+                Text(
+                  l10n.adminDashboard,
+                  style: AppTextStyles.heading5.copyWith(color: AppColors.textInverse),
+                ),
                 const SizedBox(height: 4),
                 Text(
                   l10n.adminManagePlatformDesc,
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textInverse.withOpacity(0.85),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 SizedBox(
@@ -394,8 +398,8 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                   child: ElevatedButton(
                     onPressed: () => context.push('/admin/users'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: AppColors.textInverse,
+                      backgroundColor: AppColors.textInverse,
+                      foregroundColor: AppColors.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -411,14 +415,13 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
             ),
           ),
           const SizedBox(width: 12),
-          // Decorative icon cluster
           Column(
             children: [
-              _decorIcon(Icons.people, AppColors.primary),
+              _decorIcon(Icons.people, AppColors.textInverse),
               const SizedBox(height: 8),
-              _decorIcon(Icons.quiz, AppColors.accent),
+              _decorIcon(Icons.quiz, AppColors.textInverse),
               const SizedBox(height: 8),
-              _decorIcon(Icons.key, AppColors.success),
+              _decorIcon(Icons.key, AppColors.textInverse),
             ],
           ),
         ],
@@ -431,9 +434,9 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
       width: 38,
       height: 38,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Icon(icon, color: color, size: 18),
     );

@@ -302,6 +302,7 @@
   "paymentCopyNumber": "Kopi nimero",
   "paymentCallNumber": "Hamagara 0788657595",
   "paymentWhatsApp": "WhatsApp: Ohereza ubutumwa",
+  "paymentWhatsAppMessage": "Saba uburenganzira bwo gukoresha porogaramu y'ikizamini cyo gutwara",
   "paymentRequestExists": "Ubusabe bwo kwishyura kuri iyi gahato buriho. Tegereza ko ubuzima bwawe buremwa cyangwa vugana na serivisi.",
 
   "commonError": "Hari ikibazo cyabaye. Ongera ugerageze.",

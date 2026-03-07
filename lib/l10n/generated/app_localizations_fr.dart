@@ -912,6 +912,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get paymentWhatsApp => 'WhatsApp: Envoyer un message';
 
   @override
+  String get paymentWhatsAppMessage => 'Demander l\'accès à l\'application d\'examen de conduite';
+
+  @override
   String get paymentRequestExists => 'Une demande de paiement pour ce forfait est déjà en attente. Veuillez attendre l\'activation ou contacter le support.';
 
   @override

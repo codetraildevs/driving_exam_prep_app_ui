@@ -7,6 +7,20 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/network/api_config.dart';
 import '../../../../shared/session/auth_session.dart';
 
+/// Tier → duration in days mapping (must stay in sync with backend tierMap).
+const Map<String, int> _kTierDays = {
+  '1_MONTH': 30,
+  '3_MONTHS': 90,
+  '6_MONTHS': 180,
+};
+
+/// Default prices per tier (RWF). Language-specific prices are set in _getTiers.
+const Map<String, int> _kTierPrices = {
+  '1_MONTH': 3000,
+  '3_MONTHS': 5000,
+  '6_MONTHS': 10000,
+};
+
 /// Access Management page — shows ALL users so admin can grant, renew, or
 /// revoke access with a tier selection or custom duration.
 class AdminAccessPage extends StatefulWidget {
@@ -173,9 +187,9 @@ class _AdminAccessPageState extends State<AdminAccessPage> {
   }
 
   List<Map<String, dynamic>> _getTiers(AppLocalizations l10n) => [
-        {'tier': '1_MONTH', 'durationDays': 30, 'price': 3000, 'label': l10n.subscriptionMonth1},
-        {'tier': '3_MONTHS', 'durationDays': 90, 'price': 5000, 'label': l10n.subscriptionMonth3},
-        {'tier': '6_MONTHS', 'durationDays': 180, 'price': 10000, 'label': l10n.subscriptionMonth6},
+        {'tier': '1_MONTH', 'durationDays': _kTierDays['1_MONTH'], 'price': _kTierPrices['1_MONTH'], 'label': l10n.subscriptionMonth1},
+        {'tier': '3_MONTHS', 'durationDays': _kTierDays['3_MONTHS'], 'price': _kTierPrices['3_MONTHS'], 'label': l10n.subscriptionMonth3},
+        {'tier': '6_MONTHS', 'durationDays': _kTierDays['6_MONTHS'], 'price': _kTierPrices['6_MONTHS'], 'label': l10n.subscriptionMonth6},
       ];
 
   void _showGrantSheet(Map<String, dynamic> user, AppLocalizations l10n) {

@@ -518,7 +518,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                             const SizedBox(height: 16),
                             Text(_error!, style: AppTextStyles.bodyMedium),
                             const SizedBox(height: 16),
-                            ElevatedButton(onPressed: _loadUsers, child: const Text('Retry')),
+                            ElevatedButton(onPressed: _loadUsers, child: Text(l10n.commonRetry)),
                           ],
                         ),
                       )

@@ -929,6 +929,9 @@
   "paymentWhatsApp": "WhatsApp: Send Message",
   "@paymentWhatsApp": { "description": "WhatsApp button label" },
 
+  "paymentWhatsAppMessage": "Request access for driving exam app",
+  "@paymentWhatsAppMessage": { "description": "WhatsApp message text for payment request" },
+
   "paymentRequestExists": "A payment request for this plan is already pending. Please wait for activation or contact support.",
   "@paymentRequestExists": { "description": "Duplicate payment request error" },
 

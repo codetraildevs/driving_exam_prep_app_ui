@@ -909,6 +909,9 @@ class AppLocalizationsRw extends AppLocalizations {
   String get paymentWhatsApp => 'WhatsApp: Ohereza ubutumwa';
 
   @override
+  String get paymentWhatsAppMessage => 'Saba uburenganzira bwo gukoresha porogaramu y\'ikizamini cyo gutwara';
+
+  @override
   String get paymentRequestExists => 'Ubusabe bwo kwishyura kuri iyi gahato buriho. Tegereza ko ubuzima bwawe buremwa cyangwa vugana na serivisi.';
 
   @override

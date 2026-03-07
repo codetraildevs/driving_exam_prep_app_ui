@@ -144,9 +144,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     }
   }
 
-  Future<void> _openWhatsApp() async {
-    const msg = "Request access for driving exam app";
-    final uri = Uri.parse('https://wa.me/$_kHelpNumber?text=${Uri.encodeComponent(msg)}');
+  Future<void> _openWhatsApp(String message) async {
+    final uri = Uri.parse('https://wa.me/$_kHelpNumber?text=${Uri.encodeComponent(message)}');
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
@@ -312,7 +311,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   l10n: l10n,
                   onCopy: () => _copyNumber(context),
                   onCall: _callNumber,
-                  onWhatsApp: _openWhatsApp,
+                  onWhatsApp: () => _openWhatsApp(l10n.paymentWhatsAppMessage),
                 ),
               ],
               const SizedBox(height: 16),
