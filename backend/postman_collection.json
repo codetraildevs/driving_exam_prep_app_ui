@@ -1,0 +1,229 @@
+{
+  "info": {
+    "name": "Traffic Rules API - Local Tests",
+    "_postman_id": "9f5a6c2a-0000-4000-8000-000000000001",
+    "description": "Collection to test local PHP/MySQL backend (import into Postman). Set environment variable `base_url` to `http://localhost:8000`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+              "var j = pm.response.json();",
+              "pm.test('success true', function () { pm.expect(j.success).to.eql(true); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Register (phone+device)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"phoneNumber\": \"+250780000000\",\n  \"fullName\": \"Postman Test\",\n  \"deviceId\": \"postman-device-1\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{base_url}}/api/auth/register", "host": ["{{base_url}}"], "path": ["api","auth","register"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201 or 409', function () { pm.expect([201,409]).to.include(pm.response.code); });",
+              "var json = pm.response.json();",
+              "if (json && json.data && json.data.id) { pm.environment.set('userId', json.data.id); pm.environment.set('regPhone', json.data.phoneNumber || '+250780000000'); }",
+              "// store device id used in example",
+              "pm.environment.set('deviceId','postman-device-1');"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Login (phone+device)",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": { "mode": "raw", "raw": "{\n  \"phoneNumber\": " + "\"{{regPhone}}\"" + ",\n  \"deviceId\": \"postman-device-1\"\n}", "options": { "raw": { "language": "json" } } },
+        "url": { "raw": "{{base_url}}/api/auth/login", "host": ["{{base_url}}"], "path": ["api","auth","login"] }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": { "exec": ["if(!pm.environment.get('regPhone')){ pm.environment.set('regPhone','+250780000000'); }"], "type": "text/javascript" }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Login success (200)', function () { pm.response.to.have.status(200); });",
+              "var j = pm.response.json();",
+              "if (j && j.token) { pm.environment.set('token', j.token); }",
+              "if (j && j.id) { pm.environment.set('userId', j.id); }"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Exams (and set examId)",
+      "request": {
+        "method": "GET",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{base_url}}/api/exams", "host": ["{{base_url}}"], "path": ["api","exams"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "var j = pm.response.json();",
+              "if (j && j.data && j.data.length > 0) { pm.environment.set('examId', j.data[0].id); }"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Exam Questions",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base_url}}/api/exams/{{examId}}/questions", "host": ["{{base_url}}"], "path": ["api","exams","{{examId}}","questions"] }
+      },
+      "event": [ { "listen": "test", "script": { "exec": ["pm.test('Status 200', function () { pm.response.to.have.status(200); });"], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Take Exam (formatted)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base_url}}/api/exams/{{examId}}/take-exam?userId={{userId}}", "host": ["{{base_url}}"], "path": ["api","exams","{{examId}}","take-exam"], "query": [{"key":"userId","value":"{{userId}}"}] }
+      },
+      "event": [ { "listen": "test", "script": { "exec": ["pm.test('Status 200 or 403 if no access', function () { pm.expect([200,403]).to.include(pm.response.code); });"], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Activate Exam",
+      "request": { "method": "PATCH", "header": [], "url": { "raw": "{{base_url}}/api/exams/{{examId}}/activate", "host": ["{{base_url}}"], "path": ["api","exams","{{examId}}","activate"] } },
+      "event": [ { "listen": "test", "script": { "exec": ["pm.test('Status 200 or 404', function () { pm.expect([200,404]).to.include(pm.response.code); });"], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Deactivate Exam",
+      "request": { "method": "PATCH", "header": [], "url": { "raw": "{{base_url}}/api/exams/{{examId}}/deactivate", "host": ["{{base_url}}"], "path": ["api","exams","{{examId}}","deactivate"] } },
+      "event": [ { "listen": "test", "script": { "exec": ["pm.test('Status 200 or 404', function () { pm.expect([200,404]).to.include(pm.response.code); });"], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Toggle Exam Status",
+      "request": { "method": "PUT", "header": [], "url": { "raw": "{{base_url}}/api/exams/{{examId}}/toggle-status", "host": ["{{base_url}}"], "path": ["api","exams","{{examId}}","toggle-status"] } },
+      "event": [ { "listen": "test", "script": { "exec": ["pm.test('Status 200 or 404', function () { pm.expect([200,404]).to.include(pm.response.code); });"], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Exam Analytics",
+      "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/exams/{{examId}}/analytics", "host": ["{{base_url}}"], "path": ["api","exams","{{examId}}","analytics"] } },
+      "event": [ { "listen": "test", "script": { "exec": ["pm.test('Status 200 or 404', function () { pm.expect([200,404]).to.include(pm.response.code); });"], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Exam Stats (all)",
+      "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/exams/stats", "host": ["{{base_url}}"], "path": ["api","exams","stats"] } },
+      "event": [ { "listen": "test", "script": { "exec": ["pm.test('Status 200', function () { pm.response.to.have.status(200); });"], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Generate Access Code",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": { "mode": "raw", "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"durationDays\": 30\n}", "options": { "raw": { "language": "json" } } },
+        "url": { "raw": "{{base_url}}/api/access-codes", "host": ["{{base_url}}"], "path": ["api","access-codes"] }
+      },
+      "event": [ {
+        "listen": "test",
+        "script": {
+          "exec": [
+            "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+            "var j = pm.response.json();",
+            "if (j && j.data && j.data.code) { pm.environment.set('accessCode', j.data.code); }"
+          ],
+          "type": "text/javascript"
+        }
+      } ]
+    },
+    {
+      "name": "Verify Access Code",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": { "mode": "raw", "raw": "{\n  \"code\": \"{{accessCode}}\",\n  \"userId\": \"{{userId}}\"\n}", "options": { "raw": { "language": "json" } } },
+        "url": { "raw": "{{base_url}}/api/access-codes/verify", "host": ["{{base_url}}"], "path": ["api","access-codes","verify"] }
+      },
+      "event": [ { "listen": "test", "script": { "exec": ["pm.test('Status 200', function () { pm.response.to.have.status(200); });"], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Submit Exam Result",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": { "mode": "raw", "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"examId\": \"{{examId}}\",\n  \"score\": 85\n}", "options": { "raw": { "language": "json" } } },
+        "url": { "raw": "{{base_url}}/api/exam-results", "host": ["{{base_url}}"], "path": ["api","exam-results"] }
+      },
+      "event": [ { "listen": "test", "script": { "exec": ["pm.test('Status 201', function () { pm.response.to.have.status(201); });"], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "List Users",
+      "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/users", "host": ["{{base_url}}"], "path": ["api","users"] } },
+      "event": [ { "listen": "test", "script": { "exec": ["pm.test('Status 200', function () { pm.response.to.have.status(200); });"], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Request Payment",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "body": { "mode": "raw", "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"amount\": 9.99\n}", "options": { "raw": { "language": "json" } } },
+        "url": { "raw": "{{base_url}}/api/payments/request", "host": ["{{base_url}}"], "path": ["api","payments","request"] }
+      },
+      "event": [ { "listen": "test", "script": { "exec": ["pm.test('Status 201', function () { pm.response.to.have.status(201); });"], "type": "text/javascript" } } ]
+    },
+    {
+      "name": "Analytics Stats",
+      "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/analytics/stats", "host": ["{{base_url}}"], "path": ["api","analytics","stats"] } },
+      "event": [ { "listen": "test", "script": { "exec": ["pm.test('Status 200', function () { pm.response.to.have.status(200); });"], "type": "text/javascript" } } ]
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "token", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "examId", "value": "" },
+    { "key": "accessCode", "value": "" },
+    { "key": "regPhone", "value": "+250780000000" },
+    { "key": "deviceId", "value": "postman-device-1" }
+  ]
+}

@@ -16,7 +16,7 @@ pubspec.yaml                                 # Flutter dependencies and project 
 MAIN APPLICATION
 =============================================================================
 
-lib/main.dart                                # Application entry point, Supabase initialization
+lib/main.dart                                # Application entry point
 
 =============================================================================
 DESIGN SYSTEM
@@ -152,9 +152,7 @@ Code Organization:
 - Source Files:                             34
 
 Database:
-- Tables Created:                           10
-- RLS Policies:                             10+
-- Migrations:                               1
+- Tables:                                    (managed by your backend)
 
 Screen Implementation:
 - Main Screens:                             9
@@ -195,9 +193,8 @@ Frontend:
 - FL Chart 0.68
 
 Backend:
-- Supabase 2.0
-- PostgreSQL
-- Supabase Auth
+- PHP REST API
+- MySQL
 
 Additional:
 - Shared Preferences 2.2
@@ -240,7 +237,7 @@ DATABASE TABLES
 9. badges              - Achievement definitions
 10. user_badges        - User achievement records
 
-All tables have Row Level Security (RLS) enabled with authentication policies.
+Database security and access control are enforced server-side in the API.
 
 =============================================================================
 GETTING STARTED
@@ -271,7 +268,7 @@ Status:                 ✅ COMPLETE AND READY FOR PRODUCTION
 Code Quality:           ✅ Professional grade
 Architecture:           ✅ Clean and scalable
 Documentation:          ✅ Comprehensive
-Security:              ✅ RLS and authentication implemented
+Security:              ✅ API authentication/authorization supported
 Performance:           ✅ Optimized queries and lazy loading
 Responsiveness:        ✅ Mobile and web ready
 Features:              ✅ 100% complete (89/89)
@@ -320,7 +317,6 @@ Documentation:
 
 Official Documentation:
 - Flutter: https://flutter.dev
-- Supabase: https://supabase.com/docs
 - BLoC: https://bloclibrary.dev
 - GoRouter: https://pub.dev/packages/go_router
 

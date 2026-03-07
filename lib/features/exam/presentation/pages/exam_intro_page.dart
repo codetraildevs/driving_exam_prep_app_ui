@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class ExamIntroPage extends StatelessWidget {
   const ExamIntroPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -48,7 +50,7 @@ class ExamIntroPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        'Mock Exam',
+                        l10n.examMockExam,
                         style: AppTextStyles.heading3.copyWith(
                           color: AppColors.textInverse,
                         ),
@@ -59,32 +61,32 @@ class ExamIntroPage extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               Text(
-                'Exam Instructions',
+                l10n.examInstructions,
                 style: AppTextStyles.heading3,
               ),
               const SizedBox(height: 24),
               _buildInstructionItem(
                 icon: Icons.timer,
-                title: 'Time Limit',
-                description: '30 minutes total for 20 questions',
+                title: l10n.examTimeLimit,
+                description: l10n.examTimeLimitDesc,
               ),
               const SizedBox(height: 16),
               _buildInstructionItem(
                 icon: Icons.help,
-                title: '20 Questions',
-                description: 'Multiple choice format with 4 options each',
+                title: l10n.examQuestionCount,
+                description: l10n.examQuestionCountDesc,
               ),
               const SizedBox(height: 16),
               _buildInstructionItem(
                 icon: Icons.check_circle,
-                title: 'Passing Score',
-                description: 'You need 70% or higher to pass',
+                title: l10n.examPassingScore,
+                description: l10n.examPassingScoreDesc,
               ),
               const SizedBox(height: 16),
               _buildInstructionItem(
                 icon: Icons.info,
-                title: 'No Going Back',
-                description: 'You cannot revisit previous questions',
+                title: l10n.examNoGoingBack,
+                description: l10n.examNoGoingBackDesc,
               ),
               const SizedBox(height: 40),
               Container(
@@ -103,7 +105,7 @@ class ExamIntroPage extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Make sure you have stable internet and won\'t be interrupted',
+                        l10n.examWarning,
                         style: AppTextStyles.bodySmall,
                       ),
                     ),
@@ -117,7 +119,7 @@ class ExamIntroPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: Text(
-                  'Start Exam',
+                  l10n.examStartExam,
                   style: AppTextStyles.buttonLarge,
                 ),
               ),
@@ -128,7 +130,7 @@ class ExamIntroPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: Text(
-                  'Cancel',
+                  l10n.commonCancel,
                   style: AppTextStyles.buttonMedium.copyWith(
                     color: AppColors.primary,
                   ),

@@ -14,11 +14,9 @@ A professional, production-ready Flutter application for learning traffic rules 
 - **100% feature completeness** as specified
 - **Professional design system** implementing Material 3
 
-### 2. Supabase Backend
-- **10 PostgreSQL tables** with proper relationships
-- **Row Level Security (RLS)** policies on all tables
-- **Optimized indexes** for performance
-- **Automatic migrations** ready to deploy
+### 2. Backend API (PHP/MySQL)
+- REST API integration via `http`
+- Local session persistence via `shared_preferences`
 
 ### 3. Comprehensive Documentation
 - **README.md** - Project overview and setup guide
@@ -81,9 +79,8 @@ feature/
 - **FL Chart** - Data visualization
 
 ### Backend
-- **Supabase 2.0** - Backend-as-a-Service
-- **PostgreSQL** - Database
-- **Supabase Auth** - Authentication
+- **PHP** - API server
+- **MySQL** - Database
 
 ### Additional Libraries
 - **Shared Preferences** - Local storage
@@ -203,10 +200,8 @@ Background:     #F3F4F6 (Light Gray)
 10. **user_badges** - User achievements
 
 ### Security
-- ✅ RLS enabled on all tables
-- ✅ Authentication-based access control
-- ✅ User data isolation
-- ✅ Ownership verification
+- ✅ API authentication/authorization (server-side)
+- ✅ No client-side database credentials
 
 ---
 
@@ -263,14 +258,14 @@ flutter run -d ios       # iOS
 ## 🔐 Security Features
 
 ### Authentication
-- ✅ Supabase Auth integration
+- ✅ API-based authentication (token/session)
 - ✅ Secure password handling
 - ✅ Session management
 - ✅ Protected routes
 
 ### Database
-- ✅ Row Level Security (RLS)
-- ✅ User data isolation
+- ✅ Server-side access control (API)
+- ✅ User data isolation (server enforced)
 - ✅ Secure queries
 - ✅ No exposed credentials
 
@@ -391,11 +386,10 @@ flutter run -d ios       # iOS
 2. Add data layer (models, repositories)
 3. Add presentation layer (BLoC, pages)
 4. Update router if needed
-5. Connect to Supabase
+5. Connect to your backend API
 
 ### Debugging
 - Use Flutter DevTools
-- Monitor Supabase logs
 - Check console for errors
 - Use breakpoints in IDE
 
@@ -428,7 +422,6 @@ flutter run -d ios       # iOS
 ### Official Documentation
 - [Flutter Docs](https://flutter.dev)
 - [Dart Docs](https://dart.dev)
-- [Supabase Docs](https://supabase.com/docs)
 - [BLoC Library](https://bloclibrary.dev)
 
 ### Tutorial Files
@@ -458,7 +451,6 @@ flutter run -d ios       # iOS
 ### Security
 ✅ Input validation
 ✅ Secure storage
-✅ RLS policies
 ✅ No exposed credentials
 ✅ Error handling
 
@@ -509,7 +501,7 @@ This project demonstrates:
 
 ✅ **Complete Application** - All features implemented
 ✅ **Professional Design** - Material 3 compliant
-✅ **Secure** - RLS policies on all tables
+✅ **Secure** - server-side API auth/authorization
 ✅ **Scalable** - Clean architecture
 ✅ **Well-Documented** - 4 guide documents
 ✅ **Production-Ready** - Ready to deploy
@@ -525,7 +517,7 @@ This application is **complete, tested, and ready for production deployment**.
 ### To Deploy:
 1. Customize your branding
 2. Add your content (traffic signs, questions)
-3. Configure Supabase fully
+3. Configure your backend API and database
 4. Test thoroughly
 5. Deploy to app stores
 
@@ -544,13 +536,13 @@ For questions or issues:
 1. Check the relevant documentation file
 2. Review the IMPLEMENTATION_NOTES.md
 3. Consult official package documentation
-4. Check Supabase dashboard
+4. Check your API/server logs
 
 ---
 
 **Project Status**: ✅ **COMPLETE AND READY FOR USE**
 
-**Built with**: Flutter, Dart, Supabase, BLoC, GoRouter
+**Built with**: Flutter, Dart, PHP/MySQL, BLoC, GoRouter
 
 **Last Updated**: 2026-03-03
 

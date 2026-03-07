@@ -2,23 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class PracticePage extends StatelessWidget {
   const PracticePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final categories = [
-      {'name': 'Speed Limits', 'icon': Icons.speed, 'color': AppColors.primary, 'id': '1'},
-      {'name': 'Road Signs', 'icon': Icons.traffic, 'color': AppColors.accent, 'id': '2'},
-      {'name': 'Lane Control', 'icon': Icons.directions, 'color': AppColors.success, 'id': '3'},
-      {'name': 'Parking Rules', 'icon': Icons.local_parking, 'color': AppColors.warning, 'id': '4'},
+      {'name': l10n.practiceCategorySpeedLimits, 'icon': Icons.speed, 'color': AppColors.primary, 'id': '1'},
+      {'name': l10n.practiceCategoryRoadSigns, 'icon': Icons.traffic, 'color': AppColors.accent, 'id': '2'},
+      {'name': l10n.practiceCategoryLaneControl, 'icon': Icons.directions, 'color': AppColors.success, 'id': '3'},
+      {'name': l10n.practiceCategoryParkingRules, 'icon': Icons.local_parking, 'color': AppColors.warning, 'id': '4'},
     ];
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Practice Quiz'),
+        title: Text(l10n.practiceTitle),
         elevation: 0,
         backgroundColor: AppColors.surface,
       ),
@@ -88,7 +90,7 @@ class PracticePage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Start →',
+              AppLocalizations.of(context).practiceStart,
               style: AppTextStyles.bodySmall.copyWith(
                 color: AppColors.textSecondary,
               ),

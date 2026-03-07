@@ -1,34 +1,48 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../shared/network/api_client.dart';
+import '../../../../shared/network/api_endpoints.dart';
+import '../../../../shared/session/auth_session.dart';
 
 class HomeRepository {
-  final supabase = Supabase.instance.client;
+  final ApiClient _api = ApiClient();
+  final AuthSession _session = AuthSession();
 
   Future<Map<String, dynamic>?> getUserStats(String userId) async {
     try {
-      final attemptResponse = await supabase
-          .from('exam_attempts')
-          .select()
-          .eq('user_id', userId)
-          .order('completed_at', ascending: false);
+      // Backend available endpoint: GET /api/exam-results/:userId
+      final token = await _session.getToken();
+      final data = await _api.get(
+        ApiEndpoints.examResultsForUser(userId),
+        headers: token == null ? null : {'Authorization': 'Bearer $token'},
+      );
 
-      final signsResponse = await supabase
-          .from('user_progress')
-          .select()
-          .eq('user_id', userId)
-          .eq('is_learned', true);
+      if (data is! List) {
+        return {
+          'last_score': 0,
+          'best_score': 0,
+          'total_attempts': 0,
+          'signs_learned': 0,
+        };
+      }
 
-      final lastScore = attemptResponse.isNotEmpty ? attemptResponse.first['score'] : null;
-      final bestScore = attemptResponse.isNotEmpty
-          ? (attemptResponse as List).map((e) => e['score'] as int).reduce((a, b) => a > b ? a : b)
-          : null;
-      final totalAttempts = attemptResponse.length;
-      final signsLearned = signsResponse.length;
+      final scores = <int>[];
+      int? lastScore;
+      for (final item in data) {
+        if (item is Map) {
+          final s = item['score'];
+          final parsed = s is int ? s : int.tryParse(s?.toString() ?? '');
+          if (parsed != null) scores.add(parsed);
+        }
+      }
+      if (scores.isNotEmpty) lastScore = scores.first;
+
+      final bestScore = scores.isEmpty ? 0 : scores.reduce((a, b) => a > b ? a : b);
+      final totalAttempts = scores.length;
 
       return {
-        'last_score': lastScore,
+        'last_score': lastScore ?? 0,
         'best_score': bestScore,
         'total_attempts': totalAttempts,
-        'signs_learned': signsLearned,
+        'signs_learned': 0,
       };
     } catch (e) {
       rethrow;
@@ -37,13 +51,33 @@ class HomeRepository {
 
   Future<int> getDailyStreak(String userId) async {
     try {
-      final response = await supabase
-          .from('users')
-          .select('daily_streak')
-          .eq('id', userId)
-          .maybeSingle();
+      // Compute streak from exam results (consecutive days with >=1 attempt).
+      final token = await _session.getToken();
+      final data = await _api.get(
+        ApiEndpoints.examResultsForUser(userId),
+        headers: token == null ? null : {'Authorization': 'Bearer $token'},
+      );
+      if (data is! List) return 0;
 
-      return response?['daily_streak'] ?? 0;
+      final daysWithActivity = <DateTime>{};
+      for (final item in data) {
+        if (item is Map) {
+          final raw = item['createdAt'] ?? item['created_at'] ?? item['completedAt'] ?? item['completed_at'];
+          final dt = DateTime.tryParse(raw?.toString() ?? '');
+          if (dt == null) continue;
+          daysWithActivity.add(DateTime(dt.year, dt.month, dt.day));
+        }
+      }
+      if (daysWithActivity.isEmpty) return 0;
+
+      var streak = 0;
+      var day = DateTime.now();
+      day = DateTime(day.year, day.month, day.day);
+      while (daysWithActivity.contains(day)) {
+        streak += 1;
+        day = day.subtract(const Duration(days: 1));
+      }
+      return streak;
     } catch (e) {
       rethrow;
     }
@@ -51,10 +85,7 @@ class HomeRepository {
 
   Future<void> updateLastLogin(String userId) async {
     try {
-      await supabase
-          .from('users')
-          .update({'last_login': DateTime.now().toIso8601String()})
-          .eq('id', userId);
+      // Not implemented in current backend. Keep as a no-op.
     } catch (e) {
       rethrow;
     }

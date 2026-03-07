@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary
-  static const Color primary = Color(0xFF1E3A8A);
+  static const Color primary = Color(0xFF00039E); // Match HTML
   static const Color primaryLight = Color(0xFF3B82F6);
-  static const Color primaryDark = Color(0xFF1E40AF);
+  static const Color primaryDark = Color(0xFF00027A);
 
   // Accent
   static const Color accent = Color(0xFFF97316);
@@ -27,10 +27,10 @@ class AppColors {
   static const Color warningDark = Color(0xFFD97706);
 
   // Background
-  static const Color background = Color(0xFFF3F4F6);
-  static const Color backgroundDark = Color(0xFF1F2937);
+  static const Color background = Color(0xFFF5F5F8); // Match HTML light
+  static const Color backgroundDark = Color(0xFF0F0F23); // Match HTML dark
   static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceDark = Color(0xFF111827);
+  static const Color surfaceDark = Color(0xFF1E293B); // Adjusted for better contrast with 0F0F23
 
   // Neutral
   static const Color neutral900 = Color(0xFF111827);
@@ -57,7 +57,7 @@ class AppColors {
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF1E3A8A), Color(0xFF3B82F6)],
+    colors: [Color(0xFF00039E), Color(0xFF3B82F6)],
   );
 
   static const LinearGradient accentGradient = LinearGradient(

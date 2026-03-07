@@ -14,7 +14,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignUpEvent>(_onSignUp);
     on<SignInEvent>(_onSignIn);
     on<SignOutEvent>(_onSignOut);
-    on<ResetPasswordEvent>(_onResetPassword);
   }
 
   Future<void> _onCheckAuthStatus(
@@ -22,8 +21,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     try {
-      if (_authRepository.isAuthenticated()) {
-        final userId = _authRepository.getCurrentUserId();
+      if (await _authRepository.isAuthenticated()) {
+        final userId = await _authRepository.getCurrentUserId();
         if (userId != null) {
           final user = await _authRepository.fetchUserProfile(userId);
           if (user != null) {
@@ -49,9 +48,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthLoading());
     try {
       final user = await _authRepository.signUp(
-        name: event.name,
-        email: event.email,
-        password: event.password,
+        fullName: event.fullName,
+        phoneNumber: event.phoneNumber,
       );
 
       if (user != null) {
@@ -71,8 +69,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const AuthLoading());
     try {
       final user = await _authRepository.signIn(
-        email: event.email,
-        password: event.password,
+        phoneNumber: event.phoneNumber,
       );
 
       if (user != null) {
@@ -92,19 +89,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await _authRepository.signOut();
       emit(const AuthUnauthenticated());
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
-  Future<void> _onResetPassword(
-    ResetPasswordEvent event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(const AuthLoading());
-    try {
-      await _authRepository.resetPassword(email: event.email);
-      emit(const PasswordResetSent());
     } catch (e) {
       emit(AuthError(e.toString()));
     }

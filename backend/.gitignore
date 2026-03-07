@@ -1,0 +1,36 @@
+/vendor/
+/.env
+/.env.production
+
+# local configuration and generated files
+/.idea/
+/.vscode/settings.json
+*.log
+.env.local
+!README.md
+*.md
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and temporary files
+logs/
+*.tmp
+*.temp
+
+# Database dumps (keep local only)
+/db_dump.sql
+/production_backup.sql
+
+# Test files
+/test_endpoints.ps1
+
+# Workspace files
+/*.code-workspace
+

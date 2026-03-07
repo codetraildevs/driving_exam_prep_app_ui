@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../l10n/generated/app_localizations.dart';
+import '../../../../shared/locale/locale_provider.dart';
+import '../../../../shared/locale/language_selector_page.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -13,14 +17,14 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool _darkMode = false;
   bool _notifications = true;
-  String _language = 'English';
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(l10n.settingsTitle),
         elevation: 0,
         backgroundColor: AppColors.surface,
         leading: IconButton(
@@ -32,10 +36,10 @@ class _SettingsPageState extends State<SettingsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _buildSectionHeader('Preferences'),
+              _buildSectionHeader(l10n.settingsPreferences),
               _buildToggleSetting(
-                title: 'Dark Mode',
-                subtitle: 'Use dark theme',
+                title: l10n.settingsDarkMode,
+                subtitle: l10n.settingsDarkModeSubtitle,
                 value: _darkMode,
                 onChanged: (value) {
                   setState(() {
@@ -44,8 +48,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
               _buildToggleSetting(
-                title: 'Notifications',
-                subtitle: 'Receive daily reminders',
+                title: l10n.settingsNotifications,
+                subtitle: l10n.settingsNotificationsSubtitle,
                 value: _notifications,
                 onChanged: (value) {
                   setState(() {
@@ -53,31 +57,31 @@ class _SettingsPageState extends State<SettingsPage> {
                   });
                 },
               ),
-              _buildLanguageSetting(),
+              _buildLanguageSetting(l10n),
               const Divider(),
-              _buildSectionHeader('About'),
+              _buildSectionHeader(l10n.settingsAbout),
               _buildTextSetting(
                 icon: Icons.info_outline,
-                title: 'About Traffic Rules App',
-                subtitle: 'Version 1.0.0',
+                title: l10n.settingsAboutApp,
+                subtitle: l10n.settingsVersion('1.0.0'),
               ),
               _buildTextSetting(
                 icon: Icons.description_outlined,
-                title: 'Privacy Policy',
-                subtitle: 'Read our privacy policy',
+                title: l10n.settingsPrivacyPolicy,
+                subtitle: l10n.settingsPrivacyPolicySubtitle,
                 onTap: () {},
               ),
               _buildTextSetting(
                 icon: Icons.description_outlined,
-                title: 'Terms of Service',
-                subtitle: 'Read our terms',
+                title: l10n.settingsTermsOfService,
+                subtitle: l10n.settingsTermsOfServiceSubtitle,
                 onTap: () {},
               ),
-              _buildSectionHeader('Data'),
+              _buildSectionHeader(l10n.settingsData),
               _buildTextSetting(
                 icon: Icons.delete_outline,
-                title: 'Reset Progress',
-                subtitle: 'Clear all your data',
+                title: l10n.settingsResetProgress,
+                subtitle: l10n.settingsResetProgressSubtitle,
                 textColor: AppColors.error,
                 onTap: () => _showResetConfirmation(),
               ),
@@ -150,7 +154,11 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _buildLanguageSetting() {
+  Widget _buildLanguageSetting(AppLocalizations l10n) {
+    final provider = context.watch<LocaleProvider>();
+    final currentName =
+        LocaleProvider.localeNames[provider.effectiveLocale.languageCode] ??
+            'English';
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
@@ -160,11 +168,11 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       child: ListTile(
         title: Text(
-          'Language',
+          l10n.settingsLanguage,
           style: AppTextStyles.labelLarge,
         ),
         subtitle: Text(
-          _language,
+          currentName,
           style: AppTextStyles.bodySmall.copyWith(
             color: AppColors.textSecondary,
           ),
@@ -209,70 +217,40 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void _showLanguageDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Select Language'),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildLanguageOption('English'),
-            _buildLanguageOption('Spanish'),
-            _buildLanguageOption('French'),
-            _buildLanguageOption('German'),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLanguageOption(String language) {
-    final isSelected = _language == language;
-    return RadioListTile<String>(
-      title: Text(language),
-      value: language,
-      groupValue: _language,
-      onChanged: (value) {
-        setState(() {
-          _language = value ?? _language;
-        });
-        Navigator.pop(context);
-      },
-    );
+  void _showLanguageDialog() async {
+    final locale = await showLanguageSelectorDialog(context);
+    if (locale != null && mounted) {
+      context.read<LocaleProvider>().setLocale(locale);
+    }
   }
 
   void _showResetConfirmation() {
+    final l10n = AppLocalizations.of(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Reset Progress'),
-        content: const Text(
-          'Are you sure you want to reset all your progress? This action cannot be undone.',
-        ),
+        title: Text(l10n.settingsResetConfirmTitle),
+        content: Text(l10n.settingsResetConfirmMessage),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(l10n.commonCancel),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Progress reset successfully'),
+                SnackBar(
+                  content: Text(l10n.settingsResetSuccess),
                   backgroundColor: AppColors.success,
                 ),
               );
             },
             child: Text(
-              'Reset',
+              l10n.commonReset,
               style: TextStyle(color: AppColors.error),
             ),
           ),

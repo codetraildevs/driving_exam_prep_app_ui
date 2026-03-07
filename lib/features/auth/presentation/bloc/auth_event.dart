@@ -7,33 +7,23 @@ class CheckAuthStatusEvent extends AuthEvent {
 }
 
 class SignUpEvent extends AuthEvent {
-  final String name;
-  final String email;
-  final String password;
+  final String fullName;
+  final String phoneNumber;
 
   const SignUpEvent({
-    required this.name,
-    required this.email,
-    required this.password,
+    required this.fullName,
+    required this.phoneNumber,
   });
 }
 
 class SignInEvent extends AuthEvent {
-  final String email;
-  final String password;
+  final String phoneNumber;
 
   const SignInEvent({
-    required this.email,
-    required this.password,
+    required this.phoneNumber,
   });
 }
 
 class SignOutEvent extends AuthEvent {
   const SignOutEvent();
-}
-
-class ResetPasswordEvent extends AuthEvent {
-  final String email;
-
-  const ResetPasswordEvent({required this.email});
 }

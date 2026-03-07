@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/bloc/auth_state.dart';
 import '../../data/models/sign_model.dart';
@@ -48,8 +49,8 @@ class _SignDetailPageState extends State<SignDetailPage> {
           _isLearned = true;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Traffic sign marked as learned!'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).signDetailMarkedSuccess),
             backgroundColor: AppColors.success,
           ),
         );
@@ -75,7 +76,7 @@ class _SignDetailPageState extends State<SignDetailPage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Traffic Sign'),
+        title: Text(AppLocalizations.of(context).signDetailTitle),
       ),
       body: FutureBuilder<TrafficSignModel?>(
         future: _signFuture,
@@ -85,8 +86,8 @@ class _SignDetailPageState extends State<SignDetailPage> {
           }
 
           if (!snapshot.hasData || snapshot.data == null) {
-            return const Center(
-              child: Text('Sign not found'),
+            return Center(
+              child: Text(AppLocalizations.of(context).signDetailNotFound),
             );
           }
 
@@ -105,7 +106,7 @@ class _SignDetailPageState extends State<SignDetailPage> {
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: AppColors.neutral200),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         '🛑',
                         style: TextStyle(fontSize: 80),
@@ -136,7 +137,7 @@ class _SignDetailPageState extends State<SignDetailPage> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Description',
+                    AppLocalizations.of(context).signDetailDescription,
                     style: AppTextStyles.heading6,
                   ),
                   const SizedBox(height: 8),
@@ -149,7 +150,7 @@ class _SignDetailPageState extends State<SignDetailPage> {
                   const SizedBox(height: 32),
                   if (sign.scenario != null) ...[
                     Text(
-                      'Real-Life Scenario',
+                      AppLocalizations.of(context).signDetailScenario,
                       style: AppTextStyles.heading6,
                     ),
                     const SizedBox(height: 8),
@@ -185,7 +186,7 @@ class _SignDetailPageState extends State<SignDetailPage> {
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            'You\'ve learned this sign!',
+                            AppLocalizations.of(context).signDetailLearned,
                             style: AppTextStyles.bodyMedium.copyWith(
                               color: AppColors.success,
                             ),
@@ -197,7 +198,7 @@ class _SignDetailPageState extends State<SignDetailPage> {
                     ElevatedButton.icon(
                       onPressed: _handleMarkAsLearned,
                       icon: const Icon(Icons.check),
-                      label: const Text('Mark as Learned'),
+                      label: Text(AppLocalizations.of(context).signDetailMarkAsLearned),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                       ),

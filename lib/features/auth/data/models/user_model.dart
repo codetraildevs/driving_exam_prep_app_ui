@@ -1,7 +1,8 @@
 class UserModel {
   final String id;
   final String name;
-  final String email;
+  final String phoneNumber;
+  final String role;
   final String? avatarUrl;
   final int dailyStreak;
   final DateTime? lastLogin;
@@ -11,7 +12,8 @@ class UserModel {
   const UserModel({
     required this.id,
     required this.name,
-    required this.email,
+    required this.phoneNumber,
+    required this.role,
     this.avatarUrl,
     this.dailyStreak = 0,
     this.lastLogin,
@@ -20,24 +22,30 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    final createdRaw = json['created_at'] ?? json['createdAt'];
+    final updatedRaw = json['updated_at'] ?? json['updatedAt'];
+    final lastLoginRaw = json['last_login'] ?? json['lastLogin'];
+
     return UserModel(
       id: json['id'] as String,
-      name: json['name'] as String,
-      email: json['email'] as String,
+      name: (json['name'] ?? json['fullName'] ?? '') as String,
+      phoneNumber: (json['phoneNumber'] ?? json['phone_number'] ?? '') as String,
+      role: (json['role'] ?? 'USER') as String,
       avatarUrl: json['avatar_url'] as String?,
       dailyStreak: json['daily_streak'] as int? ?? 0,
-      lastLogin: json['last_login'] != null
-          ? DateTime.parse(json['last_login'] as String)
+      lastLogin: lastLoginRaw != null
+          ? DateTime.tryParse(lastLoginRaw.toString())
           : null,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: DateTime.parse(json['updated_at'] as String),
+      createdAt: DateTime.tryParse(createdRaw?.toString() ?? '') ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(updatedRaw?.toString() ?? '') ?? DateTime.now(),
     );
   }
 
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
-    'email': email,
+    'phoneNumber': phoneNumber,
+    'role': role,
     'avatar_url': avatarUrl,
     'daily_streak': dailyStreak,
     'last_login': lastLogin?.toIso8601String(),
@@ -48,7 +56,8 @@ class UserModel {
   UserModel copyWith({
     String? id,
     String? name,
-    String? email,
+    String? phoneNumber,
+    String? role,
     String? avatarUrl,
     int? dailyStreak,
     DateTime? lastLogin,
@@ -58,7 +67,8 @@ class UserModel {
     return UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
-      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      role: role ?? this.role,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       dailyStreak: dailyStreak ?? this.dailyStreak,
       lastLogin: lastLogin ?? this.lastLogin,

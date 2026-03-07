@@ -232,7 +232,7 @@ lib/
 - Flutter 3.0 or higher
 - Dart 3.0 or higher
 - Android SDK / iOS SDK (for mobile development)
-- Supabase account with database configured
+- A running backend API (PHP/MySQL) reachable from your device
 
 ### Installation
 
@@ -242,9 +242,7 @@ lib/
    flutter pub get
    ```
 
-3. Configure Supabase credentials in `lib/main.dart`
-
-4. Run the app:
+3. Run the app:
    ```bash
    flutter run
    ```
@@ -270,12 +268,70 @@ flutter build ios --release
 
 - **flutter_bloc** (9.0.0): State management
 - **go_router** (13.2.0): Navigation
-- **supabase_flutter** (2.0.0): Backend integration
+- **http** (1.1.0): Backend API integration
 - **google_fonts** (6.1.0): Typography
 - **fl_chart** (0.68.0): Data visualization
 - **cached_network_image** (3.3.0): Image caching
 - **shared_preferences** (2.2.0): Local storage
 - **intl** (0.19.0): Internationalization
+- **provider** (6.1.0): Locale state management
+- **flutter_localizations**: Material/Cupertino locale delegates
+
+## Multilanguage / Localization (i18n)
+
+The app supports **English (en)**, **French (fr)**, and **Kinyarwanda (rw)** with full runtime switching.
+
+### Setup
+
+After cloning or pulling, run:
+
+```bash
+flutter pub get
+flutter gen-l10n
+```
+
+This generates the localization classes in `lib/l10n/generated/`.
+
+### How It Works
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| ARB files | `lib/l10n/intl_en.arb`, `intl_fr.arb`, `intl_rw.arb` | Translation strings (ICU message format) |
+| gen-l10n config | `l10n.yaml` | Tells Flutter where ARB files live and where to output generated code |
+| Locale provider | `lib/shared/locale/locale_provider.dart` | `ChangeNotifier` that loads/saves locale via `SharedPreferences` |
+| Language selector | `lib/shared/locale/language_selector_page.dart` | Full-screen first-run selector + reusable dialog for Settings |
+| Generated code | `lib/l10n/generated/app_localizations.dart` | Auto-generated `AppLocalizations` class (after running `flutter gen-l10n`) |
+
+### Using Translated Strings
+
+```dart
+import 'package:traffic_rules_app/l10n/generated/app_localizations.dart';
+
+// In a widget's build method:
+final l10n = AppLocalizations.of(context)!;
+Text(l10n.homeWelcomeBack);           // Simple string
+Text(l10n.homeGreeting('Jean'));       // Interpolation
+Text(l10n.homePracticeSessions(5));    // Plural (ICU)
+```
+
+### Adding a New Language
+
+1. Create `lib/l10n/intl_XX.arb` (where `XX` is the ISO language code) — copy `intl_en.arb` as a template and translate all values.
+2. Add `Locale('XX')` to `LocaleProvider.supportedLocales` in `lib/shared/locale/locale_provider.dart`.
+3. Add the language name to `LocaleProvider.localeNames` (e.g., `'XX': 'LanguageName'`).
+4. Add a flag emoji case in `_LanguageCard._flagEmoji()` in `lib/shared/locale/language_selector_page.dart`.
+5. Run `flutter gen-l10n` to regenerate.
+
+### Running Locale Tests
+
+```bash
+flutter test test/locale_widget_test.dart
+```
+
+Tests verify:
+- First-run shows the language selector when no locale is persisted.
+- Selecting a language persists the choice in `SharedPreferences`.
+- Changing language at runtime updates the provider's locale immediately.
 
 ## Architecture Highlights
 

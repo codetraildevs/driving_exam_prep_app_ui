@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../features/auth/presentation/bloc/auth_state.dart';
 import '../../data/models/sign_model.dart';
@@ -64,7 +65,7 @@ class _SignsPageState extends State<SignsPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Traffic Signs'),
+        title: Text(AppLocalizations.of(context).signsTitle),
         elevation: 0,
         backgroundColor: AppColors.surface,
       ),
@@ -87,7 +88,7 @@ class _SignsPageState extends State<SignsPage> {
         controller: _searchController,
         onChanged: (_) => _loadSigns(),
         decoration: InputDecoration(
-          hintText: 'Search traffic signs...',
+          hintText: AppLocalizations.of(context).signsSearchHint,
           prefixIcon: const Icon(Icons.search),
           suffixIcon: _searchController.text.isNotEmpty
               ? IconButton(
@@ -153,14 +154,14 @@ class _SignsPageState extends State<SignsPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+                const Icon(
                   Icons.traffic_outlined,
                   size: 64,
                   color: AppColors.neutral300,
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No traffic signs found',
+                  AppLocalizations.of(context).signsNotFound,
                   style: AppTextStyles.bodyMedium.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -224,7 +225,7 @@ class _SignsPageState extends State<SignsPage> {
                             topRight: Radius.circular(16),
                           ),
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             '🛑',
                             style: TextStyle(fontSize: 48),
@@ -264,7 +265,7 @@ class _SignsPageState extends State<SignsPage> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    'Learned',
+                                    AppLocalizations.of(context).signsLearned,
                                     style: AppTextStyles.labelSmall.copyWith(
                                       color: AppColors.success,
                                     ),

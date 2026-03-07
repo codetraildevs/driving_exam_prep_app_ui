@@ -1,36 +1,41 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../shared/network/api_client.dart';
+import '../../../../shared/session/auth_session.dart';
+import '../../../../shared/network/api_endpoints.dart';
 import '../models/sign_model.dart';
 
 class SignsRepository {
-  final supabase = Supabase.instance.client;
+  final ApiClient _api = ApiClient();
+  final AuthSession _session = AuthSession();
 
   Future<List<TrafficSignModel>> getTrafficSigns({
     String? category,
     String? searchQuery,
   }) async {
     try {
-      var query = supabase.from('traffic_signs').select();
+      final token = await _session.getToken();
+      final qp = <String, String>{
+        if (category != null && category.isNotEmpty) 'category': category,
+        if (searchQuery != null && searchQuery.isNotEmpty) 'q': searchQuery,
+      };
 
-      if (category != null && category.isNotEmpty) {
-        query = query.eq('category', category);
-      }
+      final data = await _api.get(
+        ApiEndpoints.signs,
+        queryParameters: qp.isEmpty ? null : qp,
+        headers: token == null ? null : {'Authorization': 'Bearer $token'},
+      );
 
-      final response = await query;
-
-      List<TrafficSignModel> signs = (response as List)
-          .map((item) => TrafficSignModel.fromJson(item as Map<String, dynamic>))
-          .toList();
-
-      if (searchQuery != null && searchQuery.isNotEmpty) {
-        final query = searchQuery.toLowerCase();
-        signs = signs
-            .where((sign) =>
-                sign.title.toLowerCase().contains(query) ||
-                sign.description.toLowerCase().contains(query))
+      if (data is List) {
+        return data
+            .whereType<Map>()
+            .map((e) => Map<String, dynamic>.from(e))
+            .map(TrafficSignModel.fromJson)
             .toList();
       }
-
-      return signs;
+      return const <TrafficSignModel>[];
+    } on ApiException catch (e) {
+      // Backend may not implement signs yet; keep UI usable.
+      if (e.statusCode == 404) return const <TrafficSignModel>[];
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -38,13 +43,16 @@ class SignsRepository {
 
   Future<TrafficSignModel?> getSignById(String signId) async {
     try {
-      final response = await supabase
-          .from('traffic_signs')
-          .select()
-          .eq('id', signId)
-          .maybeSingle();
-
-      return response != null ? TrafficSignModel.fromJson(response) : null;
+      final token = await _session.getToken();
+      final data = await _api.get(
+        ApiEndpoints.signById(signId),
+        headers: token == null ? null : {'Authorization': 'Bearer $token'},
+      );
+      if (data is Map<String, dynamic>) return TrafficSignModel.fromJson(data);
+      return null;
+    } on ApiException catch (e) {
+      if (e.statusCode == 404) return null;
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -52,14 +60,22 @@ class SignsRepository {
 
   Future<bool> isSignLearned(String userId, String signId) async {
     try {
-      final response = await supabase
-          .from('user_progress')
-          .select()
-          .eq('user_id', userId)
-          .eq('sign_id', signId)
-          .maybeSingle();
-
-      return response != null && response['is_learned'] == true;
+      final token = await _session.getToken();
+      final data = await _api.get(
+        ApiEndpoints.signProgress(userId, signId),
+        headers: token == null ? null : {'Authorization': 'Bearer $token'},
+      );
+      if (data is Map<String, dynamic>) {
+        final v = data['is_learned'] ?? data['learned'];
+        if (v is bool) return v;
+        if (v is int) return v == 1;
+        if (v is String) return v.toLowerCase() == 'true' || v == '1';
+      }
+      if (data is bool) return data;
+      return false;
+    } on ApiException catch (e) {
+      if (e.statusCode == 404) return false;
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -67,30 +83,14 @@ class SignsRepository {
 
   Future<void> markSignAsLearned(String userId, String signId) async {
     try {
-      final existing = await supabase
-          .from('user_progress')
-          .select()
-          .eq('user_id', userId)
-          .eq('sign_id', signId)
-          .maybeSingle();
-
-      if (existing != null) {
-        await supabase
-            .from('user_progress')
-            .update({
-              'is_learned': true,
-              'learned_at': DateTime.now().toIso8601String(),
-            })
-            .eq('user_id', userId)
-            .eq('sign_id', signId);
-      } else {
-        await supabase.from('user_progress').insert({
-          'user_id': userId,
-          'sign_id': signId,
-          'is_learned': true,
-          'learned_at': DateTime.now().toIso8601String(),
-        });
-      }
+      final token = await _session.getToken();
+      await _api.post(
+        ApiEndpoints.markSignLearned(userId, signId),
+        headers: token == null ? null : {'Authorization': 'Bearer $token'},
+      );
+    } on ApiException catch (e) {
+      if (e.statusCode == 404) return;
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -98,14 +98,27 @@ class SignsRepository {
 
   Future<List<String>> getCategories() async {
     try {
-      final response = await supabase
-          .from('traffic_signs')
-          .select('category');
+      final token = await _session.getToken();
+      final data = await _api.get(
+        ApiEndpoints.signCategories,
+        headers: token == null ? null : {'Authorization': 'Bearer $token'},
+      );
 
-      return (response as List)
-          .map((item) => item['category'] as String)
-          .toSet()
-          .toList();
+      if (data is List) {
+        return data.map((e) => e.toString()).where((e) => e.isNotEmpty).toList();
+      }
+
+      if (data is Map<String, dynamic> && data['categories'] is List) {
+        return (data['categories'] as List)
+            .map((e) => e.toString())
+            .where((e) => e.isNotEmpty)
+            .toList();
+      }
+
+      return const <String>[];
+    } on ApiException catch (e) {
+      if (e.statusCode == 404) return const <String>[];
+      rethrow;
     } catch (e) {
       rethrow;
     }

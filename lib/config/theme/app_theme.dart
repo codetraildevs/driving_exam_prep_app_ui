@@ -9,7 +9,7 @@ class AppTheme {
       brightness: Brightness.light,
       scaffoldBackgroundColor: AppColors.background,
       primaryColor: AppColors.primary,
-      colorScheme: ColorScheme.light(
+      colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
         onPrimary: AppColors.textInverse,
         primaryContainer: AppColors.primaryLight,
@@ -167,8 +167,8 @@ class AppTheme {
         elevation: 8,
       ),
       checkboxTheme: CheckboxThemeData(
-        fillColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
             return AppColors.primary;
           }
           return AppColors.surface;
@@ -187,7 +187,7 @@ class AppTheme {
       brightness: Brightness.dark,
       scaffoldBackgroundColor: AppColors.backgroundDark,
       primaryColor: AppColors.primaryLight,
-      colorScheme: ColorScheme.dark(
+      colorScheme: const ColorScheme.dark(
         primary: AppColors.primaryLight,
         onPrimary: AppColors.neutral900,
         primaryContainer: AppColors.primary,
@@ -208,8 +208,6 @@ class AppTheme {
         onSurface: AppColors.neutral100,
         outline: AppColors.neutral700,
         outlineVariant: AppColors.neutral800,
-        background: AppColors.backgroundDark,
-        onBackground: AppColors.neutral100,
       ),
     );
   }

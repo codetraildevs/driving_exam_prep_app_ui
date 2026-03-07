@@ -1,0 +1,580 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Traffic Rules Learning App",
+  "@appTitle": { "description": "The title of the application" },
+
+  "languageSelectTitle": "Choose Your Language",
+  "@languageSelectTitle": { "description": "Title on the first-run language selector screen" },
+
+  "languageSelectSubtitle": "You can change this later in Settings",
+  "@languageSelectSubtitle": { "description": "Subtitle on language selector screen" },
+
+  "languageSelectConfirm": "Continue",
+  "@languageSelectConfirm": { "description": "Confirm button on language selector" },
+
+  "homeWelcomeBack": "Welcome back 👋",
+  "@homeWelcomeBack": { "description": "Greeting label on home page header" },
+
+  "homeGreeting": "{userName}",
+  "@homeGreeting": {
+    "description": "User name displayed in home header",
+    "placeholders": {
+      "userName": { "type": "String", "example": "Jean" }
+    }
+  },
+
+  "homeContinueMessage": "Continue mastering traffic rules today.",
+  "@homeContinueMessage": { "description": "Motivational sub-text on home page" },
+
+  "homeContinueLearning": "Continue Learning",
+  "@homeContinueLearning": { "description": "CTA button text on home page" },
+
+  "homeAccessActive": "Access Active - {daysLeft} days left",
+  "@homeAccessActive": {
+    "description": "Access card status",
+    "placeholders": {
+      "daysLeft": { "type": "int", "example": "175" }
+    }
+  },
+
+  "homePaymentTier": "Payment Tier: {tier}",
+  "@homePaymentTier": {
+    "description": "Payment tier label",
+    "placeholders": {
+      "tier": { "type": "String", "example": "6 MONTHS" }
+    }
+  },
+
+  "homePracticeSessions": "{count, plural, =0{No practice sessions} =1{1 practice session} other{{count} practice sessions}}",
+  "@homePracticeSessions": {
+    "description": "Plural example: number of practice sessions completed",
+    "placeholders": {
+      "count": { "type": "int", "example": "5" }
+    }
+  },
+
+  "homePractices": "Practices",
+  "@homePractices": { "description": "Service card title" },
+
+  "homePracticesSubtitle": "Practice questions",
+  "@homePracticesSubtitle": { "description": "Service card subtitle" },
+
+  "homeCourses": "Courses",
+  "@homeCourses": { "description": "Service card title" },
+
+  "homeCoursesSubtitle": "Learning modules",
+  "@homeCoursesSubtitle": { "description": "Service card subtitle" },
+
+  "homeMockExams": "Mock Exams",
+  "@homeMockExams": { "description": "Service card title" },
+
+  "homeMockExamsSubtitle": "Test knowledge",
+  "@homeMockExamsSubtitle": { "description": "Service card subtitle" },
+
+  "homeProgress": "Progress",
+  "@homeProgress": { "description": "Service card title" },
+
+  "homeProgressSubtitle": "Track performance",
+  "@homeProgressSubtitle": { "description": "Service card subtitle" },
+
+  "homeShareApp": "Share App",
+  "@homeShareApp": { "description": "Service card title" },
+
+  "homeShareAppSubtitle": "Invite friends",
+  "@homeShareAppSubtitle": { "description": "Service card subtitle" },
+
+  "settingsTitle": "Settings",
+  "@settingsTitle": { "description": "Settings page app bar title" },
+
+  "settingsPreferences": "Preferences",
+  "@settingsPreferences": { "description": "Settings section header" },
+
+  "settingsDarkMode": "Dark Mode",
+  "@settingsDarkMode": { "description": "Dark mode toggle title" },
+
+  "settingsDarkModeSubtitle": "Use dark theme",
+  "@settingsDarkModeSubtitle": { "description": "Dark mode toggle subtitle" },
+
+  "settingsNotifications": "Notifications",
+  "@settingsNotifications": { "description": "Notifications toggle title" },
+
+  "settingsNotificationsSubtitle": "Receive daily reminders",
+  "@settingsNotificationsSubtitle": { "description": "Notifications toggle subtitle" },
+
+  "settingsLanguage": "Language",
+  "@settingsLanguage": { "description": "Language setting title" },
+
+  "settingsAbout": "About",
+  "@settingsAbout": { "description": "About section header" },
+
+  "settingsAboutApp": "About Traffic Rules App",
+  "@settingsAboutApp": { "description": "About app title" },
+
+  "settingsVersion": "Version {version}",
+  "@settingsVersion": {
+    "description": "App version with interpolation",
+    "placeholders": {
+      "version": { "type": "String", "example": "1.0.0" }
+    }
+  },
+
+  "settingsPrivacyPolicy": "Privacy Policy",
+  "@settingsPrivacyPolicy": { "description": "Privacy policy link title" },
+
+  "settingsPrivacyPolicySubtitle": "Read our privacy policy",
+  "@settingsPrivacyPolicySubtitle": { "description": "Privacy policy subtitle" },
+
+  "settingsTermsOfService": "Terms of Service",
+  "@settingsTermsOfService": { "description": "Terms of service link title" },
+
+  "settingsTermsOfServiceSubtitle": "Read our terms",
+  "@settingsTermsOfServiceSubtitle": { "description": "Terms subtitle" },
+
+  "settingsData": "Data",
+  "@settingsData": { "description": "Data section header" },
+
+  "settingsResetProgress": "Reset Progress",
+  "@settingsResetProgress": { "description": "Reset progress button title" },
+
+  "settingsResetProgressSubtitle": "Clear all your data",
+  "@settingsResetProgressSubtitle": { "description": "Reset progress subtitle" },
+
+  "settingsResetConfirmTitle": "Reset Progress",
+  "@settingsResetConfirmTitle": { "description": "Reset confirm dialog title" },
+
+  "settingsResetConfirmMessage": "Are you sure you want to reset all your progress? This action cannot be undone.",
+  "@settingsResetConfirmMessage": { "description": "Reset confirm dialog message" },
+
+  "settingsResetSuccess": "Progress reset successfully",
+  "@settingsResetSuccess": { "description": "Reset success snackbar message" },
+
+  "settingsSelectLanguage": "Select Language",
+  "@settingsSelectLanguage": { "description": "Language dialog title" },
+
+  "commonCancel": "Cancel",
+  "@commonCancel": { "description": "Generic cancel button" },
+
+  "commonConfirm": "Confirm",
+  "@commonConfirm": { "description": "Generic confirm button" },
+
+  "commonReset": "Reset",
+  "@commonReset": { "description": "Generic reset button" },
+
+  "landingHeroTitle": "Master Traffic Rules Easily",
+  "@landingHeroTitle": { "description": "Landing page hero title" },
+
+  "landingHeroSubtitle": "Prepare smarter. Practice real exam questions. Track your progress and pass your driving license exam with confidence.",
+  "@landingHeroSubtitle": { "description": "Landing page hero subtitle" },
+
+  "landingGetStarted": "Get Started",
+  "@landingGetStarted": { "description": "Landing page CTA button" },
+
+  "landingAlreadyHaveAccount": "Already have an account? Login",
+  "@landingAlreadyHaveAccount": { "description": "Landing page login link" },
+
+  "landingWhyUseApp": "Why Use Our App?",
+  "@landingWhyUseApp": { "description": "Features section title" },
+
+  "landingLearnRules": "Learn Rules",
+  "@landingLearnRules": { "description": "Feature card title" },
+
+  "landingLearnRulesDesc": "Clear explanations of all traffic laws and road signs.",
+  "@landingLearnRulesDesc": { "description": "Feature card description" },
+
+  "landingPracticeExams": "Practice Exams",
+  "@landingPracticeExams": { "description": "Feature card title" },
+
+  "landingPracticeExamsDesc": "Take mock exams similar to the real driving test.",
+  "@landingPracticeExamsDesc": { "description": "Feature card description" },
+
+  "landingTrackProgress": "Track Progress",
+  "@landingTrackProgress": { "description": "Feature card title" },
+
+  "landingTrackProgressDesc": "Monitor your performance and improve weak areas.",
+  "@landingTrackProgressDesc": { "description": "Feature card description" },
+
+  "landingHowItWorks": "How It Works",
+  "@landingHowItWorks": { "description": "How it works section title" },
+
+  "landingStep1": "Create your free account",
+  "@landingStep1": { "description": "How it works step 1" },
+
+  "landingStep2": "Start learning traffic rules",
+  "@landingStep2": { "description": "How it works step 2" },
+
+  "landingStep3": "Take mock exams",
+  "@landingStep3": { "description": "How it works step 3" },
+
+  "landingStep4": "Pass your real test confidently",
+  "@landingStep4": { "description": "How it works step 4" },
+
+  "landingReadyTitle": "Ready to Pass Your Driving Exam?",
+  "@landingReadyTitle": { "description": "Landing CTA section title" },
+
+  "landingStartLearning": "Start Learning Now",
+  "@landingStartLearning": { "description": "Landing CTA button" },
+
+  "homeServices": "Services",
+  "@homeServices": { "description": "Services section header on home page" },
+
+  "authAppName": "RWANDA TRAFFIC RULES",
+  "@authAppName": { "description": "App brand name on auth pages" },
+
+  "authSubtitle": "Official Driving License Learning Platform",
+  "@authSubtitle": { "description": "Subtitle on auth pages" },
+
+  "loginTitle": "Login to Your Account",
+  "@loginTitle": { "description": "Login page title" },
+
+  "loginSubtitle": "Enter your registered phone number to continue.",
+  "@loginSubtitle": { "description": "Login page subtitle" },
+
+  "authNeedHelp": "Need Help?",
+  "@authNeedHelp": { "description": "Help section title on auth pages" },
+
+  "loginHelpText": "For account issues or inquiries, contact:",
+  "@loginHelpText": { "description": "Login help text" },
+
+  "authPhoneNumber": "Phone Number",
+  "@authPhoneNumber": { "description": "Phone number field label" },
+
+  "authPhoneHint": "0788 000 000",
+  "@authPhoneHint": { "description": "Phone number placeholder" },
+
+  "authContinue": "Continue",
+  "@authContinue": { "description": "Continue button text" },
+
+  "loginNoAccount": "Don't have an account? ",
+  "@loginNoAccount": { "description": "No account prompt" },
+
+  "loginSignUp": "Sign Up",
+  "@loginSignUp": { "description": "Sign up link text" },
+
+  "authSecureTag": "Secure • Fast • Official Road App",
+  "@authSecureTag": { "description": "Brand tagline on auth pages" },
+
+  "loginPhoneRequired": "Please enter your phone number",
+  "@loginPhoneRequired": { "description": "Phone validation error" },
+
+  "registerTitle": "Create Your Account",
+  "@registerTitle": { "description": "Registration page title" },
+
+  "registerSubtitle": "Register using your full name and phone number to begin learning.",
+  "@registerSubtitle": { "description": "Registration page subtitle" },
+
+  "registerHelpText": "For registration issues or inquiries, contact:",
+  "@registerHelpText": { "description": "Registration help text" },
+
+  "authFullName": "Full Name",
+  "@authFullName": { "description": "Full name field label" },
+
+  "authFullNameHint": "Enter your full name",
+  "@authFullNameHint": { "description": "Full name placeholder" },
+
+  "registerTerms": "I agree to the Terms of Service and Privacy Policy.",
+  "@registerTerms": { "description": "Terms agreement text" },
+
+  "registerSignUp": "Sign Up",
+  "@registerSignUp": { "description": "Sign up button text" },
+
+  "registerHaveAccount": "Already have an account? ",
+  "@registerHaveAccount": { "description": "Have account prompt" },
+
+  "registerLogIn": "Log In",
+  "@registerLogIn": { "description": "Log in link text" },
+
+  "registerFillAllFields": "Please fill all fields",
+  "@registerFillAllFields": { "description": "Validation error" },
+
+  "registerAgreeTerms": "Please agree to terms and conditions",
+  "@registerAgreeTerms": { "description": "Terms validation error" },
+
+  "forgotPasswordTitle": "Password reset is not available",
+  "@forgotPasswordTitle": { "description": "Forgot password page title" },
+
+  "forgotPasswordDescription": "This backend uses phone number + device binding (no password reset flow).",
+  "@forgotPasswordDescription": { "description": "Forgot password page description" },
+
+  "forgotPasswordBackToLogin": "Back to Login",
+  "@forgotPasswordBackToLogin": { "description": "Back to login button" },
+
+  "navHome": "Home",
+  "@navHome": { "description": "Bottom nav home label" },
+
+  "navPractice": "Practice",
+  "@navPractice": { "description": "Bottom nav practice label" },
+
+  "navProgress": "Progress",
+  "@navProgress": { "description": "Bottom nav progress label" },
+
+  "navProfile": "Profile",
+  "@navProfile": { "description": "Bottom nav profile label" },
+
+  "practiceTitle": "Practice Quiz",
+  "@practiceTitle": { "description": "Practice page title" },
+
+  "practiceCategorySpeedLimits": "Speed Limits",
+  "@practiceCategorySpeedLimits": { "description": "Practice category" },
+
+  "practiceCategoryRoadSigns": "Road Signs",
+  "@practiceCategoryRoadSigns": { "description": "Practice category" },
+
+  "practiceCategoryLaneControl": "Lane Control",
+  "@practiceCategoryLaneControl": { "description": "Practice category" },
+
+  "practiceCategoryParkingRules": "Parking Rules",
+  "@practiceCategoryParkingRules": { "description": "Practice category" },
+
+  "practiceStart": "Start →",
+  "@practiceStart": { "description": "Start quiz prompt" },
+
+  "quizComplete": "Quiz Complete!",
+  "@quizComplete": { "description": "Quiz completion title" },
+
+  "quizScore": "Score: {score}%",
+  "@quizScore": {
+    "description": "Quiz score display",
+    "placeholders": { "score": { "type": "int" } }
+  },
+
+  "quizResult": "You got {correct} out of {total} correct",
+  "@quizResult": {
+    "description": "Quiz result text",
+    "placeholders": { "correct": { "type": "int" }, "total": { "type": "int" } }
+  },
+
+  "quizBackToPractice": "Back to Practice",
+  "@quizBackToPractice": { "description": "Back button in quiz results" },
+
+  "quizQuestion": "Question {current}/{total}",
+  "@quizQuestion": {
+    "description": "Question counter",
+    "placeholders": { "current": { "type": "int" }, "total": { "type": "int" } }
+  },
+
+  "quizFinish": "Finish Quiz",
+  "@quizFinish": { "description": "Finish quiz button" },
+
+  "quizNextQuestion": "Next Question",
+  "@quizNextQuestion": { "description": "Next question button" },
+
+  "examMockExam": "Mock Exam",
+  "@examMockExam": { "description": "Mock exam title" },
+
+  "examInstructions": "Exam Instructions",
+  "@examInstructions": { "description": "Exam instructions title" },
+
+  "examTimeLimit": "Time Limit",
+  "@examTimeLimit": { "description": "Time limit instruction title" },
+
+  "examTimeLimitDesc": "30 minutes total for 20 questions",
+  "@examTimeLimitDesc": { "description": "Time limit description" },
+
+  "examQuestionCount": "20 Questions",
+  "@examQuestionCount": { "description": "Question count instruction title" },
+
+  "examQuestionCountDesc": "Multiple choice format with 4 options each",
+  "@examQuestionCountDesc": { "description": "Question count description" },
+
+  "examPassingScore": "Passing Score",
+  "@examPassingScore": { "description": "Passing score instruction title" },
+
+  "examPassingScoreDesc": "You need 70% or higher to pass",
+  "@examPassingScoreDesc": { "description": "Passing score description" },
+
+  "examNoGoingBack": "No Going Back",
+  "@examNoGoingBack": { "description": "No going back instruction title" },
+
+  "examNoGoingBackDesc": "You cannot revisit previous questions",
+  "@examNoGoingBackDesc": { "description": "No going back description" },
+
+  "examWarning": "Make sure you have stable internet and won't be interrupted",
+  "@examWarning": { "description": "Exam warning message" },
+
+  "examStartExam": "Start Exam",
+  "@examStartExam": { "description": "Start exam button" },
+
+  "examSubmit": "Submit Exam",
+  "@examSubmit": { "description": "Submit exam button" },
+
+  "examCongratulations": "Congratulations!",
+  "@examCongratulations": { "description": "Exam passed title" },
+
+  "examGoodEffort": "Good Effort",
+  "@examGoodEffort": { "description": "Exam failed title" },
+
+  "examPassedMessage": "You passed the exam with flying colors!",
+  "@examPassedMessage": { "description": "Exam passed message" },
+
+  "examFailedMessage": "Keep practicing to improve your score",
+  "@examFailedMessage": { "description": "Exam failed message" },
+
+  "examYourScore": "Your Score",
+  "@examYourScore": { "description": "Score label" },
+
+  "examCorrect": "Correct",
+  "@examCorrect": { "description": "Correct answers label" },
+
+  "examAccuracy": "Accuracy",
+  "@examAccuracy": { "description": "Accuracy label" },
+
+  "examNeedMorePractice": "You need 70% to pass. Practice more to improve!",
+  "@examNeedMorePractice": { "description": "Encouragement for failing" },
+
+  "examBadgeEarned": "You earned a badge for passing the exam!",
+  "@examBadgeEarned": { "description": "Badge earned message" },
+
+  "examRetakeTest": "Retake Test",
+  "@examRetakeTest": { "description": "Retake test button" },
+
+  "examBackHome": "Back Home",
+  "@examBackHome": { "description": "Back home button" },
+
+  "progressTitle": "Your Progress",
+  "@progressTitle": { "description": "Progress page title" },
+
+  "progressPerformanceSummary": "Performance Summary",
+  "@progressPerformanceSummary": { "description": "Performance section title" },
+
+  "progressTotalAttempts": "Total Attempts",
+  "@progressTotalAttempts": { "description": "Total attempts stat" },
+
+  "progressBestScore": "Best Score",
+  "@progressBestScore": { "description": "Best score stat" },
+
+  "progressAverageScore": "Average Score",
+  "@progressAverageScore": { "description": "Average score stat" },
+
+  "progressSignsLearned": "Signs Learned",
+  "@progressSignsLearned": { "description": "Signs learned stat" },
+
+  "progressRecentExams": "Recent Exams",
+  "@progressRecentExams": { "description": "Recent exams section title" },
+
+  "progressOverall": "Overall Progress",
+  "@progressOverall": { "description": "Overall progress card title" },
+
+  "progressComplete": "Complete",
+  "@progressComplete": { "description": "Complete metric label" },
+
+  "progressAvgScore": "Avg Score",
+  "@progressAvgScore": { "description": "Average score metric label" },
+
+  "progressSigns": "Signs",
+  "@progressSigns": { "description": "Signs metric label" },
+
+  "progressPassed": "Passed",
+  "@progressPassed": { "description": "Passed status label" },
+
+  "progressExcellent": "Excellent",
+  "@progressExcellent": { "description": "Excellent status label" },
+
+  "progressMockExam": "Mock Exam {number}",
+  "@progressMockExam": {
+    "description": "Mock exam name",
+    "placeholders": { "number": { "type": "int" } }
+  },
+
+  "progressPracticeQuiz": "Practice Quiz",
+  "@progressPracticeQuiz": { "description": "Practice quiz name" },
+
+  "profileTitle": "Profile",
+  "@profileTitle": { "description": "Profile page title" },
+
+  "profileLocation": "Kigali, Rwanda",
+  "@profileLocation": { "description": "User location" },
+
+  "profileOverallProgress": "Overall Learning Progress",
+  "@profileOverallProgress": { "description": "Learning progress card title" },
+
+  "profileModulesCompleted": "{completed}/{total} Modules Completed",
+  "@profileModulesCompleted": {
+    "description": "Module completion text",
+    "placeholders": { "completed": { "type": "int" }, "total": { "type": "int" } }
+  },
+
+  "profileAccount": "Account",
+  "@profileAccount": { "description": "Account section header" },
+
+  "profileSettings": "Settings",
+  "@profileSettings": { "description": "Settings menu item" },
+
+  "profileSettingsSubtitle": "Notifications, language, privacy",
+  "@profileSettingsSubtitle": { "description": "Settings menu subtitle" },
+
+  "profileDeleteAccount": "Delete Account",
+  "@profileDeleteAccount": { "description": "Delete account option" },
+
+  "profileSignOut": "Sign Out",
+  "@profileSignOut": { "description": "Sign out option" },
+
+  "profileDeleteConfirmTitle": "Delete Account",
+  "@profileDeleteConfirmTitle": { "description": "Delete confirmation dialog title" },
+
+  "profileDeleteConfirmMessage": "Are you sure you want to permanently delete your account? This action cannot be undone.",
+  "@profileDeleteConfirmMessage": { "description": "Delete confirmation message" },
+
+  "profileDelete": "Delete",
+  "@profileDelete": { "description": "Delete button" },
+
+  "certificatesTitle": "My Certificates",
+  "@certificatesTitle": { "description": "Certificates page title" },
+
+  "certificatesAchievements": "Your Achievements",
+  "@certificatesAchievements": { "description": "Achievements section title" },
+
+  "certificatesEarned": "Earned",
+  "@certificatesEarned": { "description": "Earned status" },
+
+  "certificatesPending": "Pending",
+  "@certificatesPending": { "description": "Pending status" },
+
+  "certificatesInProgress": "In Progress",
+  "@certificatesInProgress": { "description": "In progress date placeholder" },
+
+  "certificateRoadSignsMastery": "Road Signs Mastery",
+  "@certificateRoadSignsMastery": { "description": "Certificate name" },
+
+  "certificateTrafficRulesTest": "Traffic Rules Final Test",
+  "@certificateTrafficRulesTest": { "description": "Certificate name" },
+
+  "certificateDefensiveDriving": "Defensive Driving",
+  "@certificateDefensiveDriving": { "description": "Certificate name" },
+
+  "signsTitle": "Traffic Signs",
+  "@signsTitle": { "description": "Signs page title" },
+
+  "signsSearchHint": "Search traffic signs...",
+  "@signsSearchHint": { "description": "Search hint text" },
+
+  "signsNotFound": "No traffic signs found",
+  "@signsNotFound": { "description": "Empty state text" },
+
+  "signsLearned": "Learned",
+  "@signsLearned": { "description": "Learned badge text" },
+
+  "signsAll": "All",
+  "@signsAll": { "description": "All category filter" },
+
+  "signDetailTitle": "Traffic Sign",
+  "@signDetailTitle": { "description": "Sign detail page title" },
+
+  "signDetailNotFound": "Sign not found",
+  "@signDetailNotFound": { "description": "Sign not found message" },
+
+  "signDetailDescription": "Description",
+  "@signDetailDescription": { "description": "Description section header" },
+
+  "signDetailScenario": "Real-Life Scenario",
+  "@signDetailScenario": { "description": "Scenario section header" },
+
+  "signDetailLearned": "You've learned this sign!",
+  "@signDetailLearned": { "description": "Learned status message" },
+
+  "signDetailMarkAsLearned": "Mark as Learned",
+  "@signDetailMarkAsLearned": { "description": "Mark as learned button" },
+
+  "signDetailMarkedSuccess": "Traffic sign marked as learned!",
+  "@signDetailMarkedSuccess": { "description": "Success snackbar message" }
+}

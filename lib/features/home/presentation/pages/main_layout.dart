@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../config/theme/app_colors.dart';
-import '../../../../config/theme/app_text_styles.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class MainLayout extends StatefulWidget {
   final Widget child;
@@ -13,10 +12,9 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
-  int _selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(
@@ -26,27 +24,22 @@ class _MainLayoutState extends State<MainLayout> {
           BottomNavigationBarItem(
             icon: const Icon(Icons.home_outlined),
             activeIcon: const Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.traffic_outlined),
-            activeIcon: const Icon(Icons.traffic),
-            label: 'Signs',
+            label: l10n.navHome,
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.quiz_outlined),
             activeIcon: const Icon(Icons.quiz),
-            label: 'Practice',
+            label: l10n.navPractice,
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.assessment_outlined),
             activeIcon: const Icon(Icons.assessment),
-            label: 'Progress',
+            label: l10n.navProgress,
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.person_outlined),
             activeIcon: const Icon(Icons.person),
-            label: 'Profile',
+            label: l10n.navProfile,
           ),
         ],
       ),
@@ -56,10 +49,9 @@ class _MainLayoutState extends State<MainLayout> {
   int _getSelectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.path;
     if (location.startsWith('/home')) return 0;
-    if (location.startsWith('/signs')) return 1;
-    if (location.startsWith('/practice')) return 2;
-    if (location.startsWith('/progress')) return 3;
-    if (location.startsWith('/profile')) return 4;
+    if (location.startsWith('/practice')) return 1;
+    if (location.startsWith('/progress')) return 2;
+    if (location.startsWith('/profile')) return 3;
     return 0;
   }
 
@@ -69,15 +61,12 @@ class _MainLayoutState extends State<MainLayout> {
         context.go('/home');
         break;
       case 1:
-        context.go('/signs');
-        break;
-      case 2:
         context.go('/practice');
         break;
-      case 3:
+      case 2:
         context.go('/progress');
         break;
-      case 4:
+      case 3:
         context.go('/profile');
         break;
     }

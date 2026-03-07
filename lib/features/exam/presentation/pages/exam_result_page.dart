@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class ExamResultPage extends StatelessWidget {
   final String attemptId;
@@ -13,6 +14,7 @@ class ExamResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final passed = score >= 70;
     final accuracy = (correctAnswers / totalQuestions * 100).toInt();
 
@@ -49,7 +51,7 @@ class ExamResultPage extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               Text(
-                passed ? 'Congratulations!' : 'Good Effort',
+                passed ? l10n.examCongratulations : l10n.examGoodEffort,
                 style: AppTextStyles.heading2.copyWith(
                   color: passed ? AppColors.success : AppColors.warning,
                 ),
@@ -58,8 +60,8 @@ class ExamResultPage extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 passed
-                    ? 'You passed the exam with flying colors!'
-                    : 'Keep practicing to improve your score',
+                    ? l10n.examPassedMessage
+                    : l10n.examFailedMessage,
                 style: AppTextStyles.bodyMedium.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -84,7 +86,7 @@ class ExamResultPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Your Score',
+                      l10n.examYourScore,
                       style: AppTextStyles.labelLarge,
                       textAlign: TextAlign.center,
                     ),
@@ -96,7 +98,7 @@ class ExamResultPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _buildStatCard(
-                      label: 'Correct',
+                      label: l10n.examCorrect,
                       value: '$correctAnswers/$totalQuestions',
                       icon: Icons.check_circle,
                       color: AppColors.success,
@@ -105,7 +107,7 @@ class ExamResultPage extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: _buildStatCard(
-                      label: 'Accuracy',
+                      label: l10n.examAccuracy,
                       value: '$accuracy%',
                       icon: Icons.bar_chart,
                       color: AppColors.primary,
@@ -124,14 +126,14 @@ class ExamResultPage extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.info,
                         color: AppColors.warning,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'You need 70% to pass. Practice more to improve!',
+                          l10n.examNeedMorePractice,
                           style: AppTextStyles.bodySmall,
                         ),
                       ),
@@ -156,7 +158,7 @@ class ExamResultPage extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'You earned a badge for passing the exam!',
+                          l10n.examBadgeEarned,
                           style: AppTextStyles.bodySmall,
                         ),
                       ),
@@ -169,7 +171,7 @@ class ExamResultPage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: const Text('Retake Test'),
+                child: Text(l10n.examRetakeTest),
               ),
               const SizedBox(height: 12),
               OutlinedButton(
@@ -178,7 +180,7 @@ class ExamResultPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: Text(
-                  'Back Home',
+                  l10n.examBackHome,
                   style: AppTextStyles.buttonMedium.copyWith(
                     color: AppColors.primary,
                   ),

@@ -1,39 +1,96 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 import 'config/theme/app_theme.dart';
 import 'config/router/app_router.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'l10n/generated/app_localizations.dart';
+import 'shared/locale/fallback_localizations.dart';
+import 'shared/locale/locale_provider.dart';
+import 'shared/session/app_launch_session.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Supabase.initialize(
-    url: 'https://mjxsrxnyfcjuhsudiyku.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qeHNyeG55ZmNqdWhzdWRpeWt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1Mjg5MTIsImV4cCI6MjA4ODEwNDkxMn0.SHvvA86dswxWLDPHxLkhsvTq-aIiMAGnXH5D2TB1cn0',
-  );
+  final isFirstLaunch = await AppLaunchSession().consumeFirstLaunch();
+  final authBloc = AuthBloc()..add(const CheckAuthStatusEvent());
+  final localeProvider = LocaleProvider();
+  await localeProvider.loadSavedLocale();
 
-  runApp(const TrafficRulesApp());
+  runApp(TrafficRulesApp(
+    authBloc: authBloc,
+    isFirstLaunch: isFirstLaunch,
+    localeProvider: localeProvider,
+  ));
 }
 
-class TrafficRulesApp extends StatelessWidget {
-  const TrafficRulesApp({Key? key}) : super(key: key);
+class TrafficRulesApp extends StatefulWidget {
+  final AuthBloc authBloc;
+  final bool isFirstLaunch;
+  final LocaleProvider localeProvider;
+
+  const TrafficRulesApp({
+    required this.authBloc,
+    required this.isFirstLaunch,
+    required this.localeProvider,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<TrafficRulesApp> createState() => _TrafficRulesAppState();
+}
+
+class _TrafficRulesAppState extends State<TrafficRulesApp> {
+  late final AppRouter _appRouter;
+
+  @override
+  void initState() {
+    super.initState();
+    _appRouter = AppRouter(
+      authBloc: widget.authBloc,
+      isFirstLaunch: widget.isFirstLaunch,
+      hasLocaleSelected: widget.localeProvider.hasLocaleSelected,
+    );
+  }
+
+  @override
+  void dispose() {
+    widget.authBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => AuthBloc()..add(const CheckAuthStatusEvent()),
+    return ChangeNotifierProvider.value(
+      value: widget.localeProvider,
+      child: BlocProvider.value(
+        value: widget.authBloc,
+        child: Consumer<LocaleProvider>(
+          builder: (context, localeProvider, _) {
+            return MaterialApp.router(
+              title: 'Traffic Rules Learning App',
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: ThemeMode.light,
+              routerConfig: _appRouter.router,
+              debugShowCheckedModeBanner: false,
+              locale: localeProvider.effectiveLocale,
+              supportedLocales: LocaleProvider.supportedLocales,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                // Fallbacks for locales not in GlobalMaterial/Cupertino (e.g. rw)
+                FallbackMaterialLocalizationsDelegate(),
+                FallbackCupertinoLocalizationsDelegate(),
+              ],
+              localeResolutionCallback:
+                  localeProvider.localeResolutionCallback,
+            );
+          },
         ),
-      ],
-      child: MaterialApp.router(
-        title: 'Traffic Rules Learning App',
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.light,
-        routerConfig: AppRouter.router,
-        debugShowCheckedModeBanner: false,
       ),
     );
   }

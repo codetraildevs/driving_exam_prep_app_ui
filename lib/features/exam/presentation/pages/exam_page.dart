@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class ExamPage extends StatefulWidget {
   const ExamPage({Key? key}) : super(key: key);
@@ -85,7 +86,7 @@ class _ExamPageState extends State<ExamPage> {
   void _submitExam() {
     final accuracy = ((_correctAnswers / examQuestions.length) * 100).toInt();
     final passed = accuracy >= 70;
-    context.push('/exam/result/${_currentQuestion}');
+    context.push('/exam/result/$_currentQuestion');
   }
 
   String _formatTime(int seconds) {
@@ -96,6 +97,7 @@ class _ExamPageState extends State<ExamPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final question = examQuestions[_currentQuestion];
     final progress = (_currentQuestion + 1) / examQuestions.length;
     final timeColor = _remainingSeconds < 300 ? AppColors.error : AppColors.primary;
@@ -105,7 +107,7 @@ class _ExamPageState extends State<ExamPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppColors.surface,
-        title: const Text('Mock Exam'),
+        title: Text(AppLocalizations.of(context).examMockExam),
         actions: [
           Padding(
             padding: const EdgeInsets.all(16),
@@ -139,11 +141,11 @@ class _ExamPageState extends State<ExamPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Question ${_currentQuestion + 1}/${examQuestions.length}',
+                        l10n.quizQuestion(_currentQuestion + 1, examQuestions.length),
                         style: AppTextStyles.labelLarge,
                       ),
                       Text(
-                        '${_correctAnswers}/${examQuestions.length}',
+                        '$_correctAnswers/${examQuestions.length}',
                         style: AppTextStyles.labelLarge.copyWith(
                           color: AppColors.success,
                         ),
@@ -245,8 +247,8 @@ class _ExamPageState extends State<ExamPage> {
                   ),
                   child: Text(
                     _currentQuestion == examQuestions.length - 1
-                        ? 'Submit Exam'
-                        : 'Next Question',
+                        ? l10n.examSubmit
+                        : l10n.quizNextQuestion,
                     style: AppTextStyles.buttonLarge,
                   ),
                 ),

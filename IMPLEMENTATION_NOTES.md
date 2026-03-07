@@ -41,11 +41,9 @@ This is a complete, production-ready Flutter application for a Traffic Rules Lea
    - Achievement celebrations
 
 5. **Database**
-   - Complete Supabase schema with 9 tables
-   - Row Level Security policies
-   - Optimized indexes for performance
-   - Foreign key relationships
-   - Cascade delete rules
+   - Backend API (PHP) backed by MySQL
+   - Repository pattern for API access
+   - User session persisted locally (SharedPreferences)
 
 6. **Architecture**
    - BLoC pattern for state management
@@ -110,20 +108,10 @@ Includes:
 
 ### Database Operations
 
-**Supabase Integration**:
-- Direct SQL migrations for schema creation
-- Supabase client integration in repositories
-- Async/await for all database operations
+**API Integration**:
+- HTTP client wrapper for REST calls
+- Async/await for all network operations
 - Error handling with try-catch
-
-**Sample Query Pattern**:
-```dart
-final response = await supabase
-  .from('table_name')
-  .select()
-  .eq('column', value)
-  .maybeSingle();
-```
 
 ## File Organization
 
@@ -144,7 +132,7 @@ feature/
 ### By Responsibility
 
 - **Models**: Data structures and serialization
-- **Repositories**: Supabase queries and business logic
+- **Repositories**: API calls and business logic
 - **BLoCs**: State management and event handling
 - **Pages**: UI screens and user interactions
 
@@ -155,12 +143,8 @@ feature/
 class MyRepository {
   Future<List<Item>> getItems() async {
     try {
-      final response = await supabase
-        .from('items')
-        .select();
-      return (response as List)
-        .map((e) => ItemModel.fromJson(e))
-        .toList();
+      // Call your REST API and map the JSON response to models.
+      throw UnimplementedError();
     } catch (e) {
       rethrow;
     }
@@ -318,14 +302,14 @@ Widget build(BuildContext context) {
 ### App Won't Start
 1. Run `flutter pub get`
 2. Run `flutter clean`
-3. Check Supabase credentials
-4. Verify internet connection
+3. Verify internet connection
+4. Verify your API base URL is reachable from the target device
 
-### Supabase Errors
-1. Check database tables exist
-2. Verify RLS policies
-3. Check API credentials
-4. Review error logs in Supabase dashboard
+### API Errors
+1. Confirm API is running and reachable
+2. Check server logs (PHP)
+3. Check request/response payload shape
+4. Verify authentication token handling (if enabled)
 
 ### UI Issues
 1. Clear app cache
@@ -369,7 +353,6 @@ git push origin feature/add-new-feature
 ### Regular Updates
 - Update dependencies quarterly
 - Check Flutter/Dart releases
-- Monitor Supabase updates
 - Security patches immediately
 
 ### Monitoring
@@ -392,7 +375,6 @@ This is a complete, production-ready application. All core features are implemen
 
 For questions or issues, refer to the official documentation:
 - [Flutter Docs](https://flutter.dev)
-- [Supabase Docs](https://supabase.com/docs)
 - [BLoC Pattern](https://bloclibrary.dev)
 
 **Happy coding! 🚀**

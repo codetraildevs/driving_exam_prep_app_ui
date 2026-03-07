@@ -10,15 +10,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   # State Management
   flutter_bloc: ^9.0.0
+  provider: ^6.1.0
+  url_launcher: ^6.2.5
 
   # Navigation
   go_router: ^13.2.0
 
   # Backend
-  supabase_flutter: ^2.0.0
+  # (Supabase removed) Backend is now a REST API (PHP/MySQL)
 
   # UI & Design
   google_fonts: ^6.1.0
@@ -33,6 +37,7 @@ dependencies:
 
   # Local Storage
   shared_preferences: ^2.2.0
+  device_info_plus: ^11.2.1
 
   # Authentication
   google_sign_in: ^6.2.0
@@ -41,7 +46,7 @@ dependencies:
   http: ^1.1.0
 
   # Date & Time
-  intl: ^0.19.0
+  intl: ^0.20.2
 
   # Icons
   cupertino_icons: ^1.0.2
@@ -52,9 +57,11 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
+  generate: true
   uses-material-design: true
 
   assets:
     - assets/images/
     - assets/animations/
+    - assets/exams/
   # Local fonts removed; using `google_fonts` package instead.

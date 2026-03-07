@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -15,35 +17,39 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late TextEditingController _emailController;
-  late TextEditingController _passwordController;
-  bool _rememberMe = false;
-  bool _obscurePassword = true;
+  late TextEditingController _phoneController;
+
+  final String supportNumber1 = "+250788123456";
+  final String supportNumber2 = "+250722987654";
 
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
+    _phoneController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
+  Future<void> _callNumber(String number) async {
+    final Uri uri = Uri(scheme: 'tel', path: number);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
+  }
+
   void _handleLogin() {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      _showError('Please fill all fields');
+    if (_phoneController.text.trim().isEmpty) {
+      _showError(AppLocalizations.of(context).loginPhoneRequired);
       return;
     }
 
     context.read<AuthBloc>().add(
       SignInEvent(
-        email: _emailController.text,
-        password: _passwordController.text,
+        phoneNumber: _phoneController.text.trim(),
       ),
     );
   }
@@ -59,16 +65,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColors.background,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/landing'),
-        ),
-      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
@@ -78,158 +77,205 @@ class _LoginPageState extends State<LoginPage> {
           }
         },
         child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Welcome Back',
-                  style: AppTextStyles.heading2,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Sign in to continue learning',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-                const SizedBox(height: 48),
-                TextField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email Address',
-                    prefixIcon: const Icon(Icons.email_outlined),
-                    hintText: 'you@example.com',
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 24),
-                TextField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    prefixIcon: const Icon(Icons.lock_outlined),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscurePassword
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
-                    ),
-                  ),
-                  obscureText: _obscurePassword,
-                ),
-                const SizedBox(height: 16),
-                Row(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 420),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Checkbox(
-                      value: _rememberMe,
-                      onChanged: (value) {
-                        setState(() {
-                          _rememberMe = value ?? false;
-                        });
-                      },
-                    ),
+
+                    const SizedBox(height: 40),
+
+                    // App Name
                     Text(
-                      'Remember me',
-                      style: AppTextStyles.bodyMedium,
+                      l10n.authAppName,
+                      style: AppTextStyles.heading2.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    const Spacer(),
-                    TextButton(
-                      onPressed: () => context.push('/forgot-password'),
-                      child: Text(
-                        'Forgot password?',
-                        style: AppTextStyles.labelMedium.copyWith(
-                          color: AppColors.primary,
+
+                    const SizedBox(height: 8),
+
+                    Text(
+                      l10n.authSubtitle,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.neutral500,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Login Title
+                    Text(
+                      l10n.loginTitle,
+                      style: AppTextStyles.heading1.copyWith(
+                        color: AppColors.neutral900,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    Text(
+                      l10n.loginSubtitle,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.neutral600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Support Box
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.primary.withOpacity(0.15),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 32),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                    final isLoading = state is AuthLoading;
-                    return ElevatedButton(
-                      onPressed: isLoading ? null : _handleLogin,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Column(
+                        children: [
+                          Text(
+                            l10n.authNeedHelp,
+                            style: AppTextStyles.labelLarge.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            l10n.loginHelpText,
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.neutral600,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 12),
+
+                          GestureDetector(
+                            onTap: () => _callNumber(supportNumber1),
+                            child: Text(
+                              "📞 +250 788 123 456",
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          GestureDetector(
+                            onTap: () => _callNumber(supportNumber2),
+                            child: Text(
+                              "📞 +250 722 987 654",
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: isLoading
-                          ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            AppColors.textInverse,
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Phone Input
+                    TextField(
+                      controller: _phoneController,
+                      keyboardType: TextInputType.phone,
+                      style: AppTextStyles.bodyLarge,
+                      decoration: InputDecoration(
+                        labelText: l10n.authPhoneNumber,
+                        hintText: l10n.authPhoneHint,
+                        prefixIcon: const Icon(Icons.phone),
+                        filled: true,
+                        fillColor: AppColors.surface,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide(
+                            color: AppColors.primary,
+                            width: 2,
                           ),
                         ),
-                      )
-                          : Text(
-                        'Login',
-                        style: AppTextStyles.buttonLarge,
                       ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Expanded(child: Divider(color: AppColors.neutral200)),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        'Or continue with',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.textSecondary,
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Login Button
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        final isLoading = state is AuthLoading;
+
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: ElevatedButton(
+                            onPressed: isLoading ? null : _handleLogin,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                            child: isLoading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : Text(l10n.authContinue),
+                          ),
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Sign Up Link
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          l10n.loginNoAccount,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.neutral600,
+                          ),
                         ),
-                      ),
+                        GestureDetector(
+                          onTap: () => context.go('/register'),
+                          child: Text(
+                            l10n.loginSignUp,
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Expanded(child: Divider(color: AppColors.neutral200)),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                OutlinedButton.icon(
-                  onPressed: () {},
-                  icon: const Text('🔵', style: TextStyle(fontSize: 20)),
-                  label: Text(
-                    'Sign in with Google',
-                    style: AppTextStyles.buttonMedium.copyWith(
-                      color: AppColors.primary,
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+
+                    const SizedBox(height: 50),
+
                     Text(
-                      "Don't have an account? ",
-                      style: AppTextStyles.bodyMedium,
-                    ),
-                    GestureDetector(
-                      onTap: () => context.push('/register'),
-                      child: Text(
-                        'Create one',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      l10n.authSecureTag,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.neutral400,
                       ),
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

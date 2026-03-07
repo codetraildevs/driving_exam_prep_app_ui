@@ -6,7 +6,7 @@
 - ✅ Flutter SDK installed (3.0+)
 - ✅ Dart SDK installed (3.0+)
 - ✅ Android emulator or iOS simulator ready
-- ✅ Supabase project created
+- ✅ Backend API running (PHP/MySQL)
 
 ### Install Dependencies
 ```bash
@@ -15,7 +15,7 @@ flutter pub get
 
 ## 2. Database Setup
 
-The app uses Supabase PostgreSQL database. The schema has been automatically created with:
+The app uses a backend API (PHP) with a MySQL database. Ensure your API is running and reachable from the device/emulator.
 
 - Users table with authentication integration
 - Traffic signs catalog
@@ -165,11 +165,6 @@ flutter build web --release
 
 ## 10. Debugging Tips
 
-### Check Supabase Connection
-- Verify credentials in `lib/main.dart`
-- Check Supabase project settings
-- Ensure tables exist in database
-
 ### Common Issues
 
 **"Flutter command not found"**
@@ -182,10 +177,10 @@ flutter clean
 flutter pub get
 ```
 
-**"Supabase connection error"**
-- Check internet connection
-- Verify Supabase URL and key
-- Check RLS policies
+**"API connection error"**
+- Ensure the device can reach your API host (don’t use `localhost` on a real phone)
+- Confirm your API base URL is correct
+- Verify the API is listening on `0.0.0.0` (not `127.0.0.1`) and the firewall allows the port
 
 **"Widget not found"**
 - Run `flutter pub get`
@@ -194,14 +189,12 @@ flutter pub get
 ## 11. Performance Optimization
 
 - App uses lazy loading for images
-- Supabase queries are optimized with indexes
 - BLoC efficiently manages state
 - Bottom navigation uses efficient shell routing
 
 ## 12. Resources
 
 - [Flutter Documentation](https://flutter.dev/docs)
-- [Supabase Documentation](https://supabase.com/docs)
 - [BLoC Pattern Guide](https://bloclibrary.dev)
 - [GoRouter Documentation](https://pub.dev/packages/go_router)
 

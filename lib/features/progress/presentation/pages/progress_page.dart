@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class ProgressPage extends StatelessWidget {
   const ProgressPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Your Progress'),
+        title: Text(l10n.progressTitle),
         elevation: 0,
         backgroundColor: AppColors.surface,
       ),
@@ -20,28 +22,28 @@ class ProgressPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildOverviewCard(),
+              _buildOverviewCard(l10n),
               const SizedBox(height: 32),
               Text(
-                'Performance Summary',
+                l10n.progressPerformanceSummary,
                 style: AppTextStyles.heading5,
               ),
               const SizedBox(height: 16),
-              _buildStatRow('Total Attempts', '12', Icons.assignment),
-              _buildStatRow('Best Score', '92%', Icons.emoji_events),
-              _buildStatRow('Average Score', '78%', Icons.trending_up),
-              _buildStatRow('Signs Learned', '45', Icons.traffic),
+              _buildStatRow(l10n.progressTotalAttempts, '12', Icons.assignment),
+              _buildStatRow(l10n.progressBestScore, '92%', Icons.emoji_events),
+              _buildStatRow(l10n.progressAverageScore, '78%', Icons.trending_up),
+              _buildStatRow(l10n.progressSignsLearned, '45', Icons.traffic),
               const SizedBox(height: 32),
               Text(
-                'Recent Exams',
+                l10n.progressRecentExams,
                 style: AppTextStyles.heading5,
               ),
               const SizedBox(height: 16),
-              _buildExamCard('Mock Exam 1', '85%', 'Passed', AppColors.success),
+              _buildExamCard(l10n.progressMockExam(1), '85%', l10n.progressPassed, AppColors.success),
               const SizedBox(height: 12),
-              _buildExamCard('Mock Exam 2', '78%', 'Passed', AppColors.success),
+              _buildExamCard(l10n.progressMockExam(2), '78%', l10n.progressPassed, AppColors.success),
               const SizedBox(height: 12),
-              _buildExamCard('Practice Quiz', '92%', 'Excellent', AppColors.primary),
+              _buildExamCard(l10n.progressPracticeQuiz, '92%', l10n.progressExcellent, AppColors.primary),
             ],
           ),
         ),
@@ -49,7 +51,7 @@ class ProgressPage extends StatelessWidget {
     );
   }
 
-  Widget _buildOverviewCard() {
+  Widget _buildOverviewCard(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -67,7 +69,7 @@ class ProgressPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Overall Progress',
+            l10n.progressOverall,
             style: AppTextStyles.heading6.copyWith(
               color: AppColors.textInverse.withOpacity(0.8),
             ),
@@ -76,9 +78,9 @@ class ProgressPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildProgressMetric('65%', 'Complete'),
-              _buildProgressMetric('78%', 'Avg Score'),
-              _buildProgressMetric('45', 'Signs'),
+              _buildProgressMetric('65%', l10n.progressComplete),
+              _buildProgressMetric('78%', l10n.progressAvgScore),
+              _buildProgressMetric('45', l10n.progressSigns),
             ],
           ),
           const SizedBox(height: 24),

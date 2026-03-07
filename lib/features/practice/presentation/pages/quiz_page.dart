@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class QuizPage extends StatefulWidget {
   final String categoryId;
@@ -62,6 +63,7 @@ class _QuizPageState extends State<QuizPage> {
 
   void _showResults() {
     final accuracy = ((_correctAnswers / quizData.length) * 100).toInt();
+    final l10n = AppLocalizations.of(context);
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -87,13 +89,13 @@ class _QuizPageState extends State<QuizPage> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Quiz Complete!',
+              l10n.quizComplete,
               style: AppTextStyles.heading4,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             Text(
-              'Score: $accuracy%',
+              l10n.quizScore(accuracy),
               style: AppTextStyles.heading3.copyWith(
                 color: accuracy >= 70 ? AppColors.success : AppColors.warning,
               ),
@@ -101,7 +103,7 @@ class _QuizPageState extends State<QuizPage> {
             ),
             const SizedBox(height: 8),
             Text(
-              'You got $_correctAnswers out of ${quizData.length} correct',
+              l10n.quizResult(_correctAnswers, quizData.length),
               style: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -116,7 +118,7 @@ class _QuizPageState extends State<QuizPage> {
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               ),
-              child: const Text('Back to Practice'),
+              child: Text(l10n.quizBackToPractice),
             ),
           ],
         ),
@@ -126,6 +128,7 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final question = quizData[_currentQuestion];
     final progress = (_currentQuestion + 1) / quizData.length;
 
@@ -151,7 +154,7 @@ class _QuizPageState extends State<QuizPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Question ${_currentQuestion + 1}/${quizData.length}',
+                        l10n.quizQuestion(_currentQuestion + 1, quizData.length),
                         style: AppTextStyles.labelLarge,
                       ),
                       Text(
@@ -254,8 +257,8 @@ class _QuizPageState extends State<QuizPage> {
                   ),
                   child: Text(
                     _currentQuestion == quizData.length - 1
-                        ? 'Finish Quiz'
-                        : 'Next Question',
+                        ? l10n.quizFinish
+                        : l10n.quizNextQuestion,
                     style: AppTextStyles.buttonLarge,
                   ),
                 ),
