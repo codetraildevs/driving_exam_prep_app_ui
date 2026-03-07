@@ -14,7 +14,6 @@ class LandingPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -104,7 +103,7 @@ class LandingPage extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () => context.push('/register'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
+              backgroundColor: AppColors.textInverse,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -269,14 +268,14 @@ class LandingPage extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         color: isLight
-            ? Colors.white.withOpacity(0.15)
+            ? AppColors.textInverse.withOpacity(0.15)
             : AppColors.primary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(18),
       ),
       child: Icon(
         Icons.traffic,
         size: size * 0.5,
-        color: isLight ? Colors.white : AppColors.primary,
+        color: isLight ? AppColors.textInverse : AppColors.primary,
       ),
     );
   }
@@ -299,7 +298,7 @@ class _StepItem extends StatelessWidget {
             backgroundColor: AppColors.primary,
             child: Text(
               number,
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+              style: const TextStyle(color: AppColors.textInverse, fontSize: 18),
             ),
           ),
           const SizedBox(height: 16),

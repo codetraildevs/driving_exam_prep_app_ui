@@ -6,6 +6,7 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../bloc/auth_bloc.dart';
+import '../bloc/auth_state.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -19,8 +20,8 @@ class _RegisterPageState extends State<RegisterPage> {
   late TextEditingController _phoneController;
   bool _agreedToTerms = false;
 
-  final String supportNumber1 = "+250788123456";
-  final String supportNumber2 = "+250722987654";
+  final String supportNumber = "+250788657595";
+  final String supportDisplay = "+250 788 657 595";
 
   @override
   void initState() {
@@ -76,11 +77,11 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            context.go('/home');
+            final isAdmin = state.user.role == 'ADMIN' || state.user.role == 'MANAGER';
+            context.go(isAdmin ? '/admin' : '/home');
           } else if (state is AuthError) {
             _showError(state.message);
           }
@@ -169,25 +170,25 @@ class _RegisterPageState extends State<RegisterPage> {
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 12),
-
-                          GestureDetector(
-                            onTap: () => _callNumber(supportNumber1),
-                            child: Text(
-                              "📞 +250 788 123 456",
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
+                          // Callable phone button
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton.icon(
+                              onPressed: () => _callNumber(supportNumber),
+                              icon: const Icon(Icons.phone, size: 18),
+                              label: Text(
+                                supportDisplay,
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          GestureDetector(
-                            onTap: () => _callNumber(supportNumber2),
-                            child: Text(
-                              "📞 +250 722 987 654",
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.primary,
+                                side: BorderSide(color: AppColors.primary.withOpacity(0.4)),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 12),
                               ),
                             ),
                           ),
@@ -206,7 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         hintText: l10n.authFullNameHint,
                         prefixIcon: const Icon(Icons.person),
                         filled: true,
-                        fillColor: AppColors.surface,
+                        fillColor: Theme.of(context).colorScheme.surface,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
@@ -232,7 +233,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         hintText: l10n.authPhoneHint,
                         prefixIcon: const Icon(Icons.phone),
                         filled: true,
-                        fillColor: AppColors.surface,
+                        fillColor: Theme.of(context).colorScheme.surface,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
@@ -293,7 +294,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             child: isLoading
                                 ? const CircularProgressIndicator(
-                                    color: Colors.white,
+                                    color: AppColors.textInverse,
                                   )
                                 : Text(l10n.registerSignUp),
                           ),

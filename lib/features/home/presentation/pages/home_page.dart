@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../../shared/subscription/subscription_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,7 +31,6 @@ class HomePage extends StatelessWidget {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: AppColors.background,
         body: Column(
           children: [
             _CompactHeader(l10n: l10n, userName: userName),
@@ -45,7 +46,6 @@ class HomePage extends StatelessWidget {
                    l10n.homeServices,
                       style: AppTextStyles.labelLarge.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -136,7 +136,7 @@ class _CompactHeader extends StatelessWidget {
                   width: 8,
                   height: 8,
                   decoration: const BoxDecoration(
-                    color: Colors.redAccent,
+                    color: AppColors.error,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -160,91 +160,146 @@ class _CompactAccessCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const int daysLeft = 175;
-    const int totalDays = 180;
-    const progress = daysLeft / totalDays;
+    final sub = context.watch<SubscriptionProvider>();
+    final hasAccess = sub.hasActiveAccess;
+    final expiresAt = sub.expiresAt;
 
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
+    // Compute days left for progress ring.
+    int daysLeft = 0;
+    int totalDays = 180;
+    if (hasAccess && expiresAt != null) {
+      // Clamp to a large value to avoid overflow — display handles "999+ days" gracefully.
+      daysLeft = expiresAt.difference(DateTime.now()).inDays.clamp(0, 9999);
+      // Guess total days from tier label if available.
+      final tier = sub.paymentTier ?? '';
+      if (tier.contains('1_MONTH')) totalDays = 30;
+      else if (tier.contains('3_MONTH')) totalDays = 90;
+      else totalDays = 180;
+    }
+    final progress = hasAccess && totalDays > 0
+        ? (daysLeft / totalDays).clamp(0.0, 1.0)
+        : 0.0;
+
+    final tierLabel = () {
+      final t = sub.paymentTier ?? '';
+      if (t.contains('1_MONTH')) return '1 MONTH';
+      if (t.contains('3_MONTH')) return '3 MONTHS';
+      if (t.contains('6_MONTH')) return '6 MONTHS';
+      return t.isEmpty ? '' : t;
+    }();
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: hasAccess ? null : () => context.push('/subscription'),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.withOpacity(0.1)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+        child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: hasAccess
+                ? AppColors.success.withOpacity(0.3)
+                : AppColors.primary.withOpacity(0.3),
           ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // Circular progress
-          SizedBox(
-            width: 44,
-            height: 44,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                CircularProgressIndicator(
-                  value: progress,
-                  strokeWidth: 4,
-                  backgroundColor: Colors.grey.withOpacity(0.12),
-                  valueColor:
-                      const AlwaysStoppedAnimation<Color>(Colors.green),
-                ),
-                Center(
-                  child: Icon(Icons.check, color: Colors.green, size: 18),
-                ),
-              ],
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).shadowColor.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
             ),
-          ),
-          const SizedBox(width: 12),
-
-          // Info
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.homeAccessActive(daysLeft),
-                  style: AppTextStyles.bodySmall.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 13,
+          ],
+        ),
+        child: Row(
+          children: [
+            // Circular indicator
+            SizedBox(
+              width: 44,
+              height: 44,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  CircularProgressIndicator(
+                    value: hasAccess ? progress : 0.0,
+                    strokeWidth: 4,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.outline.withOpacity(0.15),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      hasAccess
+                          ? AppColors.success
+                          : Theme.of(context).colorScheme.outline,
+                    ),
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  l10n.homePaymentTier('6 MONTHS'),
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
-                    fontSize: 11,
+                  Center(
+                    child: Icon(
+                      hasAccess ? Icons.check : Icons.lock_outline,
+                      color: hasAccess
+                          ? AppColors.success
+                          : Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                      size: 18,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+            const SizedBox(width: 12),
 
-          // CTA chip
-          FilledButton(
-            onPressed: () {},
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            // Info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    hasAccess
+                        ? l10n.homeAccessActive(daysLeft)
+                        : l10n.subscriptionTitle,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    hasAccess && tierLabel.isNotEmpty
+                        ? l10n.homePaymentTier(tierLabel)
+                        : l10n.subscriptionSubtitle,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textSecondary,
+                      fontSize: 11,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            child: Text(
-              l10n.homeContinueLearning,
-              style: const TextStyle(fontSize: 12, color: Colors.white),
+
+            // CTA chip
+            FilledButton(
+              onPressed: () {
+                if (hasAccess) {
+                  context.push('/practice');
+                } else {
+                  context.push('/subscription');
+                }
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor:
+                    hasAccess ? AppColors.primary : AppColors.accent,
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: Text(
+                hasAccess ? l10n.homeContinueLearning : l10n.subscriptionRequestAccess,
+                style: const TextStyle(fontSize: 12, color: AppColors.textInverse),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -399,7 +454,7 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(

@@ -597,4 +597,329 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get signDetailMarkedSuccess => 'Panneau marqué comme appris !';
+
+  @override
+  String get subscriptionTitle => 'Accès aux examens pratiques';
+
+  @override
+  String get subscriptionSubtitle => 'Débloquer tous les examens pratiques';
+
+  @override
+  String get subscriptionCurrentPlan => 'Votre forfait actuel';
+
+  @override
+  String get subscriptionNoPlan => 'Aucun forfait actif';
+
+  @override
+  String get subscriptionMonth1 => '1 Mois';
+
+  @override
+  String get subscriptionMonth3 => '3 Mois';
+
+  @override
+  String get subscriptionMonth6 => '6 Mois';
+
+  @override
+  String subscriptionPrice(int amount) {
+    return '$amount RWF';
+  }
+
+  @override
+  String get subscriptionRequestAccess => 'Demander l\'accès';
+
+  @override
+  String get subscriptionRequestSent =>
+      'Votre demande a été soumise. Vous serez activé une fois le paiement confirmé.';
+
+  @override
+  String get subscriptionPaymentInstructions => 'Instructions de paiement';
+
+  @override
+  String get subscriptionPaymentMomo => 'MoMo Pay: 323294';
+
+  @override
+  String get subscriptionPaymentMobile => 'Mobile Money: 0788657595';
+
+  @override
+  String get subscriptionHelpCall => 'Appel: 0788657595';
+
+  @override
+  String get subscriptionHelpWhatsapp => 'WhatsApp: 0788657595';
+
+  @override
+  String get subscriptionChoosePlan => 'Choisir un forfait';
+
+  @override
+  String get subscriptionCurrency => 'Devise: RWF';
+
+  @override
+  String get subscriptionAccessActive => 'Accès actif';
+
+  @override
+  String subscriptionExpires(String date) {
+    return 'Expire: $date';
+  }
+
+  @override
+  String subscriptionDays(int days) {
+    return '$days jours';
+  }
+
+  @override
+  String get subscriptionNeedHelp => 'Besoin d\'aide ?';
+
+  @override
+  String subscriptionGetAccess(int count) {
+    return 'Accédez à tous les $count+ examens pratiques premium';
+  }
+
+  @override
+  String get adminDashboard => 'Tableau de bord administrateur';
+
+  @override
+  String get adminUsers => 'Utilisateurs';
+
+  @override
+  String get adminAccess => 'Gestion des accès';
+
+  @override
+  String get adminProgress => 'Progression des utilisateurs';
+
+  @override
+  String get adminTotalUsers => 'Utilisateurs totaux';
+
+  @override
+  String get adminActiveSubscriptions => 'Abonnements actifs';
+
+  @override
+  String get adminUsersByLanguage => 'Utilisateurs par langue';
+
+  @override
+  String get adminRecentRegistrations => 'Inscriptions récentes';
+
+  @override
+  String get adminGrantAccess => 'Accorder l\'accès';
+
+  @override
+  String get adminCallUser => 'Appeler l\'utilisateur';
+
+  @override
+  String get adminCallNotes => 'Notes d\'appel';
+
+  @override
+  String get adminLastCalled => 'Dernier appel';
+
+  @override
+  String get adminNoAccess => 'Pas d\'accès';
+
+  @override
+  String get adminHasAccess => 'A l\'accès';
+
+  @override
+  String get adminAccessExpired => 'Accès expiré';
+
+  @override
+  String adminAccessExpires(String date) {
+    return 'Expire: $date';
+  }
+
+  @override
+  String get adminSearchUsers => 'Rechercher des utilisateurs...';
+
+  @override
+  String get adminFilterAll => 'Tous';
+
+  @override
+  String get adminFilterHasAccess => 'A l\'accès';
+
+  @override
+  String get adminFilterNoAccess => 'Pas d\'accès';
+
+  @override
+  String get adminManageUsers => 'Gérer les utilisateurs';
+
+  @override
+  String get adminManageAccess => 'Gérer les accès';
+
+  @override
+  String get adminViewProgress => 'Voir la progression';
+
+  @override
+  String adminRegistrationDate(String date) {
+    return 'Inscrit: $date';
+  }
+
+  @override
+  String get adminEnterCallNotes => 'Entrez les notes d\'appel...';
+
+  @override
+  String get adminSubmitCall => 'Soumettre';
+
+  @override
+  String get adminCallLogged => 'Appel enregistré avec succès';
+
+  @override
+  String get adminAccessGranted => 'Accès accordé avec succès';
+
+  @override
+  String get adminSelectTier => 'Sélectionner le niveau d\'accès';
+
+  @override
+  String get examListTitle => 'Examens pratiques';
+
+  @override
+  String get examFree => 'GRATUIT';
+
+  @override
+  String get examPaid => 'PAYANT';
+
+  @override
+  String get examLocked => 'Verrouillé';
+
+  @override
+  String examQuestions(int count) {
+    return '$count questions';
+  }
+
+  @override
+  String get quizProgress => 'Progression';
+
+  @override
+  String quizAnswered(int answered, int total) {
+    return 'Répondu: $answered/$total';
+  }
+
+  @override
+  String get quizSubmitPractice => 'Soumettre la pratique';
+
+  @override
+  String get quizPrevious => 'Précédent';
+
+  @override
+  String get quizNext => 'Suivant';
+
+  @override
+  String quizTimeRemaining(String time) {
+    return 'Temps: $time';
+  }
+
+  @override
+  String get quizResults => 'Résultats du quiz';
+
+  @override
+  String get quizPassed => 'Réussi !';
+
+  @override
+  String get quizFailed => 'Continuez à pratiquer';
+
+  @override
+  String quizQuestionOf(int current, int total) {
+    return 'Question $current sur $total';
+  }
+
+  @override
+  String get quizSubmitConfirmTitle => 'Soumettre le quiz ?';
+
+  @override
+  String quizSubmitConfirmMessage(int answered, int total) {
+    return 'Vous avez répondu à $answered questions sur $total. Êtes-vous sûr de vouloir soumettre ?';
+  }
+
+  @override
+  String get quizTimeUp => 'Temps écoulé ! Quiz soumis automatiquement.';
+
+  @override
+  String get quizReviewAnswers => 'Revoir les réponses';
+
+  @override
+  String get quizRetake => 'Repasser le quiz';
+
+  @override
+  String get profileRole => 'Rôle';
+
+  @override
+  String get profileLanguage => 'Langue préférée';
+
+  @override
+  String profileRegistered(String date) {
+    return 'Inscrit: $date';
+  }
+
+  @override
+  String get profileAccessStatus => 'Statut d\'accès';
+
+  @override
+  String get profileExamHistory => 'Historique des examens';
+
+  @override
+  String get profileCallHistory => 'Historique des appels';
+
+  @override
+  String get paymentInstructionsTitle => 'Instructions de paiement';
+
+  @override
+  String get paymentMomoPayNumber => 'MoMo Pay: 323294';
+
+  @override
+  String get paymentMobileMoneyNumber => 'Mobile Money: 0788657595';
+
+  @override
+  String get paymentHelpText => 'Besoin d\'aide ? Appelez ou WhatsApp: 0788657595';
+
+  @override
+  String get commonError => 'Quelque chose s\'est mal passé. Veuillez réessayer.';
+
+  @override
+  String get adminTierLabel => 'Niveau';
+
+  @override
+  String get adminExpiresLabel => 'Expire le';
+
+  @override
+  String get adminRenewAccess => 'Renouveler / Prolonger l\'accès';
+
+  @override
+  String get adminManagePlatform => 'Gérer la plateforme';
+
+  @override
+  String get adminManageExams => 'Gérer les examens';
+
+  @override
+  String get adminManageExamsDesc => 'Voir et gérer tous les examens pratiques';
+
+  @override
+  String get adminManageUsersDesc => 'Voir, rechercher et gérer tous les utilisateurs';
+
+  @override
+  String get adminAccessCodesDesc => 'Gérer les codes d\'accès et les paiements';
+
+  @override
+  String get adminQuickStats => 'Statistiques rapides';
+
+  @override
+  String get adminActionsTitle => 'Actions Admin';
+
+  @override
+  String get adminTotalPractices => 'Total des pratiques';
+
+  @override
+  String get adminManagePlatformDesc => 'Gérez votre plateforme d\'apprentissage du code de la route';
+
+  @override
+  String get adminNotifications => 'Notifications';
+
+  @override
+  String get settingsAppearance => 'Apparence';
+
+  @override
+  String get settingsAppearanceDesc => 'Choisissez l\'apparence de l\'application';
+
+  @override
+  String get settingsThemeSystem => 'Système';
+
+  @override
+  String get settingsThemeLight => 'Clair';
+
+  @override
+  String get settingsThemeDark => 'Sombre';
 }

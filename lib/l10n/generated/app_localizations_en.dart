@@ -584,4 +584,329 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signDetailMarkedSuccess => 'Traffic sign marked as learned!';
+
+  @override
+  String get subscriptionTitle => 'Practice Exam Access';
+
+  @override
+  String get subscriptionSubtitle => 'Unlock All Practice Exams';
+
+  @override
+  String get subscriptionCurrentPlan => 'Your Current Plan';
+
+  @override
+  String get subscriptionNoPlan => 'No active plan';
+
+  @override
+  String get subscriptionMonth1 => '1 Month';
+
+  @override
+  String get subscriptionMonth3 => '3 Months';
+
+  @override
+  String get subscriptionMonth6 => '6 Months';
+
+  @override
+  String subscriptionPrice(int amount) {
+    return '$amount RWF';
+  }
+
+  @override
+  String get subscriptionRequestAccess => 'Request Access';
+
+  @override
+  String get subscriptionRequestSent =>
+      'Your request has been submitted. You will be activated once payment is confirmed.';
+
+  @override
+  String get subscriptionPaymentInstructions => 'Payment Instructions';
+
+  @override
+  String get subscriptionPaymentMomo => 'MoMo Pay: 323294';
+
+  @override
+  String get subscriptionPaymentMobile => 'Mobile Money: 0788657595';
+
+  @override
+  String get subscriptionHelpCall => 'Call: 0788657595';
+
+  @override
+  String get subscriptionHelpWhatsapp => 'WhatsApp: 0788657595';
+
+  @override
+  String get subscriptionChoosePlan => 'Choose a Plan';
+
+  @override
+  String get subscriptionCurrency => 'Currency: RWF';
+
+  @override
+  String get subscriptionAccessActive => 'Access Active';
+
+  @override
+  String subscriptionExpires(String date) {
+    return 'Expires: $date';
+  }
+
+  @override
+  String subscriptionDays(int days) {
+    return '$days days';
+  }
+
+  @override
+  String get subscriptionNeedHelp => 'Need Help?';
+
+  @override
+  String subscriptionGetAccess(int count) {
+    return 'Get access to all $count+ premium practice exams';
+  }
+
+  @override
+  String get adminDashboard => 'Admin Dashboard';
+
+  @override
+  String get adminUsers => 'Users';
+
+  @override
+  String get adminAccess => 'Access Management';
+
+  @override
+  String get adminProgress => 'User Progress';
+
+  @override
+  String get adminTotalUsers => 'Total Users';
+
+  @override
+  String get adminActiveSubscriptions => 'Active Subscriptions';
+
+  @override
+  String get adminUsersByLanguage => 'Users by Language';
+
+  @override
+  String get adminRecentRegistrations => 'Recent Registrations';
+
+  @override
+  String get adminGrantAccess => 'Grant Access';
+
+  @override
+  String get adminCallUser => 'Call User';
+
+  @override
+  String get adminCallNotes => 'Call Notes';
+
+  @override
+  String get adminLastCalled => 'Last Called';
+
+  @override
+  String get adminNoAccess => 'No Access';
+
+  @override
+  String get adminHasAccess => 'Has Access';
+
+  @override
+  String get adminAccessExpired => 'Access Expired';
+
+  @override
+  String adminAccessExpires(String date) {
+    return 'Expires: $date';
+  }
+
+  @override
+  String get adminSearchUsers => 'Search users...';
+
+  @override
+  String get adminFilterAll => 'All';
+
+  @override
+  String get adminFilterHasAccess => 'Has Access';
+
+  @override
+  String get adminFilterNoAccess => 'No Access';
+
+  @override
+  String get adminManageUsers => 'Manage Users';
+
+  @override
+  String get adminManageAccess => 'Manage Access';
+
+  @override
+  String get adminViewProgress => 'View Progress';
+
+  @override
+  String adminRegistrationDate(String date) {
+    return 'Registered: $date';
+  }
+
+  @override
+  String get adminEnterCallNotes => 'Enter call notes...';
+
+  @override
+  String get adminSubmitCall => 'Submit';
+
+  @override
+  String get adminCallLogged => 'Call logged successfully';
+
+  @override
+  String get adminAccessGranted => 'Access granted successfully';
+
+  @override
+  String get adminSelectTier => 'Select Access Tier';
+
+  @override
+  String get examListTitle => 'Practice Exams';
+
+  @override
+  String get examFree => 'FREE';
+
+  @override
+  String get examPaid => 'PAID';
+
+  @override
+  String get examLocked => 'Locked';
+
+  @override
+  String examQuestions(int count) {
+    return '$count questions';
+  }
+
+  @override
+  String get quizProgress => 'Progress';
+
+  @override
+  String quizAnswered(int answered, int total) {
+    return 'Answered: $answered/$total';
+  }
+
+  @override
+  String get quizSubmitPractice => 'Submit Practice';
+
+  @override
+  String get quizPrevious => 'Previous';
+
+  @override
+  String get quizNext => 'Next';
+
+  @override
+  String quizTimeRemaining(String time) {
+    return 'Time: $time';
+  }
+
+  @override
+  String get quizResults => 'Quiz Results';
+
+  @override
+  String get quizPassed => 'Passed!';
+
+  @override
+  String get quizFailed => 'Keep Practicing';
+
+  @override
+  String quizQuestionOf(int current, int total) {
+    return 'Question $current of $total';
+  }
+
+  @override
+  String get quizSubmitConfirmTitle => 'Submit Quiz?';
+
+  @override
+  String quizSubmitConfirmMessage(int answered, int total) {
+    return 'You have answered $answered out of $total questions. Are you sure you want to submit?';
+  }
+
+  @override
+  String get quizTimeUp => 'Time\'s up! Quiz submitted automatically.';
+
+  @override
+  String get quizReviewAnswers => 'Review Answers';
+
+  @override
+  String get quizRetake => 'Retake Quiz';
+
+  @override
+  String get profileRole => 'Role';
+
+  @override
+  String get profileLanguage => 'Preferred Language';
+
+  @override
+  String profileRegistered(String date) {
+    return 'Registered: $date';
+  }
+
+  @override
+  String get profileAccessStatus => 'Access Status';
+
+  @override
+  String get profileExamHistory => 'Exam History';
+
+  @override
+  String get profileCallHistory => 'Call History';
+
+  @override
+  String get paymentInstructionsTitle => 'Payment Instructions';
+
+  @override
+  String get paymentMomoPayNumber => 'MoMo Pay: 323294';
+
+  @override
+  String get paymentMobileMoneyNumber => 'Mobile Money: 0788657595';
+
+  @override
+  String get paymentHelpText => 'Need help? Call or WhatsApp: 0788657595';
+
+  @override
+  String get commonError => 'Something went wrong. Please try again.';
+
+  @override
+  String get adminTierLabel => 'Tier';
+
+  @override
+  String get adminExpiresLabel => 'Expires';
+
+  @override
+  String get adminRenewAccess => 'Renew / Extend Access';
+
+  @override
+  String get adminManagePlatform => 'Manage Platform';
+
+  @override
+  String get adminManageExams => 'Manage Exams';
+
+  @override
+  String get adminManageExamsDesc => 'View and manage all practice exams';
+
+  @override
+  String get adminManageUsersDesc => 'View, search, and manage all users';
+
+  @override
+  String get adminAccessCodesDesc => 'Manage access codes and payments';
+
+  @override
+  String get adminQuickStats => 'Quick Stats';
+
+  @override
+  String get adminActionsTitle => 'Admin Actions';
+
+  @override
+  String get adminTotalPractices => 'Total Practices';
+
+  @override
+  String get adminManagePlatformDesc => 'Manage your traffic rules learning platform';
+
+  @override
+  String get adminNotifications => 'Notifications';
+
+  @override
+  String get settingsAppearance => 'Appearance';
+
+  @override
+  String get settingsAppearanceDesc => 'Choose how the app looks';
+
+  @override
+  String get settingsThemeSystem => 'System';
+
+  @override
+  String get settingsThemeLight => 'Light';
+
+  @override
+  String get settingsThemeDark => 'Dark';
 }

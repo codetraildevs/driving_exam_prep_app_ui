@@ -103,10 +103,8 @@ class _ExamPageState extends State<ExamPage> {
     final timeColor = _remainingSeconds < 300 ? AppColors.error : AppColors.primary;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: AppColors.surface,
         title: Text(AppLocalizations.of(context).examMockExam),
         actions: [
           Padding(

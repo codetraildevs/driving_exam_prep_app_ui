@@ -63,11 +63,9 @@ class _SignsPageState extends State<SignsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).signsTitle),
         elevation: 0,
-        backgroundColor: AppColors.surface,
       ),
       body: SafeArea(
         child: Column(
@@ -126,7 +124,6 @@ class _SignsPageState extends State<SignsPage> {
                   _loadSigns();
                 });
               },
-              backgroundColor: AppColors.surface,
               selectedColor: AppColors.primary,
               labelStyle: TextStyle(
                 color: isSelected ? AppColors.textInverse : AppColors.textPrimary,
@@ -204,12 +201,12 @@ class _SignsPageState extends State<SignsPage> {
               onTap: () => context.push('/signs/${sign.id}'),
               child: Container(
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  border: Border.all(color: AppColors.neutral200),
+                  color: Theme.of(context).colorScheme.surface,
+                  border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.5)),
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Theme.of(context).shadowColor.withOpacity(0.05),
                       blurRadius: 8,
                     ),
                   ],
