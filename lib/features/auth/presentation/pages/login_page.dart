@@ -67,7 +67,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
@@ -199,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: l10n.authPhoneHint,
                         prefixIcon: const Icon(Icons.phone),
                         filled: true,
-                        fillColor: AppColors.surface,
+                        fillColor: Theme.of(context).colorScheme.surface,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
@@ -233,7 +232,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             child: isLoading
                                 ? const CircularProgressIndicator(
-                                    color: Colors.white,
+                                    color: AppColors.textInverse,
                                   )
                                 : Text(l10n.authContinue),
                           ),

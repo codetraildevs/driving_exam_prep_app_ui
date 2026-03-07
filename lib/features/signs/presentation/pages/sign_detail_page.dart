@@ -68,10 +68,8 @@ class _SignDetailPageState extends State<SignDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: AppColors.surface,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
@@ -104,7 +102,7 @@ class _SignDetailPageState extends State<SignDetailPage> {
                     decoration: BoxDecoration(
                       color: AppColors.primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: AppColors.neutral200),
+                      border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.5)),
                     ),
                     child: const Center(
                       child: Text(

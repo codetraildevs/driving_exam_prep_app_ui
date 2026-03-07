@@ -77,7 +77,6 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
@@ -208,7 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         hintText: l10n.authFullNameHint,
                         prefixIcon: const Icon(Icons.person),
                         filled: true,
-                        fillColor: AppColors.surface,
+                        fillColor: Theme.of(context).colorScheme.surface,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
@@ -234,7 +233,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         hintText: l10n.authPhoneHint,
                         prefixIcon: const Icon(Icons.phone),
                         filled: true,
-                        fillColor: AppColors.surface,
+                        fillColor: Theme.of(context).colorScheme.surface,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
                         ),
@@ -295,7 +294,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             child: isLoading
                                 ? const CircularProgressIndicator(
-                                    color: Colors.white,
+                                    color: AppColors.textInverse,
                                   )
                                 : Text(l10n.registerSignUp),
                           ),

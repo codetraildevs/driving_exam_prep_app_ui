@@ -101,11 +101,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     final plans = _getPlans(langCode, l10n);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(l10n.subscriptionTitle),
         elevation: 0,
-        backgroundColor: AppColors.surface,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
@@ -168,12 +166,12 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 ),
                 child: Column(
                   children: [
-                    const Icon(Icons.lock_open, size: 48, color: Colors.white),
+                    const Icon(Icons.lock_open, size: 48, color: AppColors.textInverse),
                     const SizedBox(height: 12),
                     Text(
                       l10n.subscriptionSubtitle,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: AppColors.textInverse,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -182,7 +180,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     const SizedBox(height: 8),
                     Text(
                       l10n.subscriptionGetAccess(langCode == 'rw' ? 12 : 20),
-                      style: const TextStyle(color: Colors.white70, fontSize: 14),
+                      style: const TextStyle(color: AppColors.textInverse, fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -214,12 +212,12 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: Theme.of(context).colorScheme.surface,
                   border: Border.all(color: AppColors.primary.withOpacity(0.3)),
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Theme.of(context).shadowColor.withOpacity(0.05),
                       blurRadius: 8,
                     ),
                   ],
@@ -371,11 +369,11 @@ class _PlanCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: Border.all(color: AppColors.neutral200),
+        color: Theme.of(context).colorScheme.surface,
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.5)),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8),
+          BoxShadow(color: Theme.of(context).shadowColor.withOpacity(0.04), blurRadius: 8),
         ],
       ),
       child: Padding(
@@ -413,7 +411,7 @@ class _PlanCard extends StatelessWidget {
                       ? const SizedBox(
                           width: 16,
                           height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                          child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textInverse),
                         )
                       : Text(l10n.subscriptionRequestAccess),
                 ),

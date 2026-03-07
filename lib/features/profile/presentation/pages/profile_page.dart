@@ -249,7 +249,6 @@ class _ProfilePageState extends State<ProfilePage> {
       if (_loadingTarget) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: AppColors.surface,
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
@@ -263,7 +262,6 @@ class _ProfilePageState extends State<ProfilePage> {
       if (_loadError != null || _targetUser == null) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: AppColors.surface,
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
@@ -279,7 +277,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
     // Own profile view
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is! AuthAuthenticated) {
@@ -297,7 +294,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   height: 56,
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: Theme.of(context).colorScheme.surface,
                     border: Border(
                       bottom: BorderSide(color: AppColors.primary.withOpacity(0.1)),
                     ),
@@ -355,7 +352,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       style: const TextStyle(
                                         fontSize: 40,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.white,
+                                        color: AppColors.textInverse,
                                       ),
                                     ),
                                   ),
@@ -403,7 +400,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: AppColors.surface,
+                                color: Theme.of(context).colorScheme.surface,
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(color: AppColors.primary.withOpacity(0.05)),
                               ),
@@ -430,7 +427,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: AppColors.surface,
+                                color: Theme.of(context).colorScheme.surface,
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(color: AppColors.primary.withOpacity(0.05)),
                               ),
@@ -494,10 +491,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
                             ListTile(
                               onTap: () => _showDeleteDialog(context, l10n),
-                              leading: const Icon(Icons.delete_forever, color: Colors.red),
+                              leading: const Icon(Icons.delete_forever, color: AppColors.error),
                               title: Text(
                                 l10n.profileDeleteAccount,
-                                style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+                                style: const TextStyle(color: AppColors.error, fontWeight: FontWeight.w600),
                               ),
                             ),
 
@@ -506,10 +503,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                 context.read<AuthBloc>().add(const SignOutEvent());
                                 context.go('/landing');
                               },
-                              leading: const Icon(Icons.logout, color: Colors.red),
+                              leading: const Icon(Icons.logout, color: AppColors.error),
                               title: Text(
                                 l10n.profileSignOut,
-                                style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+                                style: const TextStyle(color: AppColors.error, fontWeight: FontWeight.w600),
                               ),
                             ),
                           ],
@@ -567,9 +564,7 @@ class _ProfilePageState extends State<ProfilePage> {
             : AppColors.error;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.surface,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -602,7 +597,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: const TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: AppColors.textInverse,
                         ),
                       ),
                     ),
@@ -684,7 +679,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     label: Text(l10n.adminGrantAccess),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.success,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppColors.textInverse,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                   ),
@@ -732,7 +727,7 @@ class _ProfilePageState extends State<ProfilePage> {
               context.read<AuthBloc>().add(const SignOutEvent());
               context.go('/landing');
             },
-            child: Text(l10n.profileDelete, style: const TextStyle(color: Colors.red)),
+            child: Text(l10n.profileDelete, style: const TextStyle(color: AppColors.error)),
           ),
         ],
       ),
@@ -748,7 +743,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.primary.withOpacity(0.05)),
       ),
@@ -776,9 +771,9 @@ class _InfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8)],
+        boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withOpacity(0.04), blurRadius: 8)],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -305,10 +305,8 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(l10n.adminUsers),
-        backgroundColor: AppColors.surface,
         elevation: 0,
         actions: [
           IconButton(icon: const Icon(Icons.refresh), onPressed: _loadUsers),
@@ -318,7 +316,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
         children: [
           // Search bar
           Container(
-            color: AppColors.surface,
+            color: Theme.of(context).colorScheme.surface,
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: TextField(
               controller: _searchController,
@@ -338,7 +336,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
 
           // Filter chips
           Container(
-            color: AppColors.surface,
+            color: Theme.of(context).colorScheme.surface,
             height: 48,
             child: ListView(
               scrollDirection: Axis.horizontal,

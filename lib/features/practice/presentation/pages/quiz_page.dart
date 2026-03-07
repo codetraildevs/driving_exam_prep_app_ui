@@ -202,7 +202,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               child: Icon(
                 passed ? Icons.check_circle : Icons.info,
-                color: Colors.white,
+                color: AppColors.textInverse,
                 size: 44,
               ),
             ),
@@ -283,7 +283,6 @@ class _QuizPageState extends State<QuizPage> {
     if (_error != null || _exam == null) {
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.surface,
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -307,13 +306,12 @@ class _QuizPageState extends State<QuizPage> {
     final isLastQuestion = _currentQuestion == questions.length - 1;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
             // Header
             Container(
-              color: AppColors.surface,
+              color: Theme.of(context).colorScheme.surface,
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -346,12 +344,12 @@ class _QuizPageState extends State<QuizPage> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.timer, color: Colors.white, size: 14),
+                            const Icon(Icons.timer, color: AppColors.textInverse, size: 14),
                             const SizedBox(width: 4),
                             Text(
                               _formattedTime,
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: AppColors.textInverse,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
                               ),
@@ -407,11 +405,11 @@ class _QuizPageState extends State<QuizPage> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
+                            color: Theme.of(context).shadowColor.withOpacity(0.05),
                             blurRadius: 8,
                           ),
                         ],
@@ -431,7 +429,7 @@ class _QuizPageState extends State<QuizPage> {
                                 child: Text(
                                   'Q${_currentQuestion + 1}',
                                   style: const TextStyle(
-                                    color: Colors.white,
+                                    color: AppColors.textInverse,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 12,
                                   ),
@@ -470,7 +468,7 @@ class _QuizPageState extends State<QuizPage> {
 
             // Bottom section
             Container(
-              color: AppColors.surface,
+              color: Theme.of(context).colorScheme.surface,
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
@@ -486,7 +484,7 @@ class _QuizPageState extends State<QuizPage> {
                         onPressed: _submitted ? null : _confirmSubmit,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.warning,
-                          foregroundColor: Colors.white,
+                          foregroundColor: AppColors.textInverse,
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           minimumSize: Size.zero,
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,

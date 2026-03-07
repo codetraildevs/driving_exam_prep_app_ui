@@ -79,10 +79,8 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(l10n.adminProgress),
-        backgroundColor: AppColors.surface,
         elevation: 0,
         actions: [
           IconButton(
@@ -219,10 +217,10 @@ class _StatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8),
+          BoxShadow(color: Theme.of(context).shadowColor.withOpacity(0.05), blurRadius: 8),
         ],
       ),
       child: Column(

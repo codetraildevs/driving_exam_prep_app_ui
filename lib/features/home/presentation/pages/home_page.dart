@@ -29,7 +29,6 @@ class HomePage extends StatelessWidget {
         statusBarBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: AppColors.background,
         body: Column(
           children: [
             _CompactHeader(l10n: l10n, userName: userName),
@@ -136,7 +135,7 @@ class _CompactHeader extends StatelessWidget {
                   width: 8,
                   height: 8,
                   decoration: const BoxDecoration(
-                    color: Colors.redAccent,
+                    color: AppColors.error,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -167,12 +166,12 @@ class _CompactAccessCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.withOpacity(0.1)),
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.2)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Theme.of(context).shadowColor.withOpacity(0.05),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -190,12 +189,12 @@ class _CompactAccessCard extends StatelessWidget {
                 CircularProgressIndicator(
                   value: progress,
                   strokeWidth: 4,
-                  backgroundColor: Colors.grey.withOpacity(0.12),
+                  backgroundColor: Theme.of(context).colorScheme.outline.withOpacity(0.15),
                   valueColor:
-                      const AlwaysStoppedAnimation<Color>(Colors.green),
+                      AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.tertiary),
                 ),
                 Center(
-                  child: Icon(Icons.check, color: Colors.green, size: 18),
+                  child: Icon(Icons.check, color: Theme.of(context).colorScheme.tertiary, size: 18),
                 ),
               ],
             ),
@@ -241,7 +240,7 @@ class _CompactAccessCard extends StatelessWidget {
             ),
             child: Text(
               l10n.homeContinueLearning,
-              style: const TextStyle(fontSize: 12, color: Colors.white),
+              style: const TextStyle(fontSize: 12, color: AppColors.textInverse),
             ),
           ),
         ],
@@ -399,7 +398,7 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(

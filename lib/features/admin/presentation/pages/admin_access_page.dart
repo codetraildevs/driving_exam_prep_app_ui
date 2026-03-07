@@ -215,10 +215,8 @@ class _AdminAccessPageState extends State<AdminAccessPage> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(l10n.adminAccess),
-        backgroundColor: AppColors.surface,
         elevation: 0,
         actions: [
           IconButton(icon: const Icon(Icons.refresh), onPressed: _loadUsers),
@@ -367,13 +365,13 @@ class _AdminAccessPageState extends State<AdminAccessPage> {
                                           ? const SizedBox(
                                               width: 14,
                                               height: 14,
-                                              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                              child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textInverse),
                                             )
                                           : const Icon(Icons.refresh, size: 16),
                                       label: Text(l10n.adminRenewAccess),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: active ? AppColors.primary : AppColors.success,
-                                        foregroundColor: Colors.white,
+                                        foregroundColor: AppColors.textInverse,
                                         padding: const EdgeInsets.symmetric(vertical: 10),
                                       ),
                                     ),

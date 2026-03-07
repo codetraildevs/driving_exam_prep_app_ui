@@ -63,7 +63,6 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
     final isWide = width >= 600;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -237,7 +236,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
             alignment: Alignment.center,
             child: Text(
               _confirmLabel,
-              style: AppTextStyles.buttonLarge.copyWith(color: Colors.white),
+              style: AppTextStyles.buttonLarge.copyWith(color: AppColors.textInverse),
             ),
           ),
         ),
@@ -302,7 +301,6 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
   void _showQuickHelp(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -388,7 +386,7 @@ class _CreativeLanguageCard extends StatelessWidget {
                   ]
                 : [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.02),
+                      color: Theme.of(context).shadowColor.withOpacity(0.04),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     )
@@ -401,7 +399,7 @@ class _CreativeLanguageCard extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(

@@ -71,11 +71,9 @@ class _PracticePageState extends State<PracticePage> {
     final subscription = context.watch<SubscriptionProvider>();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(l10n.practiceTitle),
         elevation: 0,
-        backgroundColor: AppColors.surface,
       ),
       body: SafeArea(
         child: _isLoading
@@ -139,14 +137,14 @@ class _ExamCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Theme.of(context).colorScheme.surface,
           border: Border.all(
             color: exam.isFree ? AppColors.success.withOpacity(0.4) : AppColors.neutral200,
           ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Theme.of(context).shadowColor.withOpacity(0.05),
               blurRadius: 8,
             ),
           ],
@@ -201,7 +199,7 @@ class _ExamCard extends StatelessWidget {
                   child: Text(
                     l10n.examFree,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textInverse,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),
@@ -221,7 +219,7 @@ class _ExamCard extends StatelessWidget {
                   child: Text(
                     l10n.examPaid,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppColors.textInverse,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),

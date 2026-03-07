@@ -19,7 +19,6 @@ class ExamResultPage extends StatelessWidget {
     final accuracy = (correctAnswers / totalQuestions * 100).toInt();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -71,8 +70,8 @@ class ExamResultPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  border: Border.all(color: AppColors.neutral200),
+                  color: Theme.of(context).colorScheme.surface,
+                  border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.5)),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
@@ -202,8 +201,8 @@ class ExamResultPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: Border.all(color: AppColors.neutral200),
+        color: Theme.of(context).colorScheme.surface,
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.5)),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(

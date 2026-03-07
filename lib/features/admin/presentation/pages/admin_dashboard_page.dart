@@ -158,7 +158,6 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     final userInitial = userName.trim().isNotEmpty ? userName.trim()[0].toUpperCase() : 'A';
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           _buildSliverAppBar(context, l10n, userName, userInitial, innerBoxIsScrolled),
@@ -183,7 +182,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
       elevation: 0,
       title: Text(
         l10n.adminDashboard,
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: const TextStyle(color: AppColors.textInverse, fontWeight: FontWeight.bold),
       ),
       centerTitle: false,
       actions: [
@@ -200,17 +199,17 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                   color: AppColors.warning.withOpacity(0.9),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text('OFFLINE', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+                child: const Text('OFFLINE', style: TextStyle(color: AppColors.textInverse, fontSize: 10, fontWeight: FontWeight.bold)),
               ),
             ),
           ),
         IconButton(
-          icon: const Icon(Icons.refresh, color: Colors.white),
+          icon: const Icon(Icons.refresh, color: AppColors.textInverse),
           onPressed: _loadData,
           tooltip: 'Refresh',
         ),
         IconButton(
-          icon: const Icon(Icons.notifications_none, color: Colors.white),
+          icon: const Icon(Icons.notifications_none, color: AppColors.textInverse),
           onPressed: () {},
           tooltip: 'Notifications',
         ),
@@ -232,14 +231,14 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                     height: 52,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.25),
-                      border: Border.all(color: Colors.white.withOpacity(0.5), width: 2),
+                      color: AppColors.textInverse.withOpacity(0.25),
+                      border: Border.all(color: AppColors.textInverse.withOpacity(0.5), width: 2),
                     ),
                     child: Center(
                       child: Text(
                         userInitial,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: AppColors.textInverse,
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
@@ -254,12 +253,12 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                       children: [
                         Text(
                           'Welcome back,',
-                          style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 13),
+                          style: TextStyle(color: AppColors.textInverse.withOpacity(0.8), fontSize: 13),
                         ),
                         Text(
                           userName.isNotEmpty ? userName : 'Admin',
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: AppColors.textInverse,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -278,11 +277,11 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.verified, color: Colors.white, size: 14),
+                        const Icon(Icons.verified, color: AppColors.textInverse, size: 14),
                         const SizedBox(width: 4),
                         Text(
                           '$_activeSubscriptions active',
-                          style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+                          style: const TextStyle(color: AppColors.textInverse, fontSize: 12, fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -366,7 +365,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
@@ -396,7 +395,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                     onPressed: () => context.push('/admin/users'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppColors.textInverse,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -520,9 +519,9 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8)],
+        boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withOpacity(0.04), blurRadius: 8)],
       ),
       child: Column(
         children: [
@@ -591,16 +590,16 @@ class _ActionCard extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: AppColors.textInverse.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: Colors.white, size: 22),
+              child: Icon(icon, color: AppColors.textInverse, size: 22),
             ),
             const SizedBox(height: 12),
             Text(
               title,
               style: const TextStyle(
-                color: Colors.white,
+                color: AppColors.textInverse,
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
               ),
@@ -609,7 +608,7 @@ class _ActionCard extends StatelessWidget {
             Text(
               description,
               style: TextStyle(
-                color: Colors.white.withOpacity(0.8),
+                color: AppColors.textInverse.withOpacity(0.8),
                 fontSize: 11,
               ),
               maxLines: 2,
@@ -644,10 +643,10 @@ class _ActionCardWide extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: accentColor.withOpacity(0.3)),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8)],
+          boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withOpacity(0.04), blurRadius: 8)],
         ),
         child: Row(
           children: [
@@ -663,7 +662,7 @@ class _ActionCardWide extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
                 boxShadow: [BoxShadow(color: accentColor.withOpacity(0.3), blurRadius: 8)],
               ),
-              child: Icon(icon, color: Colors.white, size: 26),
+              child: Icon(icon, color: AppColors.textInverse, size: 26),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -708,9 +707,9 @@ class _StatTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+        boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withOpacity(0.05), blurRadius: 10)],
       ),
       child: Column(
         children: [
