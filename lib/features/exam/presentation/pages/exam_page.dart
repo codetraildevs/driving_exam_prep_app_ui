@@ -84,9 +84,16 @@ class _ExamPageState extends State<ExamPage> {
   }
 
   void _submitExam() {
-    final accuracy = ((_correctAnswers / examQuestions.length) * 100).toInt();
-    final passed = accuracy >= 70;
-    context.push('/exam/result/$_currentQuestion');
+    final total = examQuestions.length;
+    final accuracy = total > 0 ? ((_correctAnswers / total) * 100).toInt() : 0;
+    final elapsed = DateTime.now().difference(_startTime).inSeconds;
+    context.push('/exam/result/0', extra: {
+      'score': accuracy,
+      'totalQuestions': total,
+      'correctAnswers': _correctAnswers,
+      'timeSpentSeconds': elapsed,
+      'examTitle': '',
+    });
   }
 
   String _formatTime(int seconds) {
@@ -113,7 +120,7 @@ class _ExamPageState extends State<ExamPage> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: timeColor.withOpacity(0.1),
+                  color: timeColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -189,14 +196,14 @@ class _ExamPageState extends State<ExamPage> {
                       if (shouldHighlight) {
                         if (isCorrect) {
                           borderColor = AppColors.success;
-                          backgroundColor = AppColors.success.withOpacity(0.1);
+                          backgroundColor = AppColors.success.withValues(alpha: 0.1);
                         } else if (isSelected) {
                           borderColor = AppColors.error;
-                          backgroundColor = AppColors.error.withOpacity(0.1);
+                          backgroundColor = AppColors.error.withValues(alpha: 0.1);
                         }
                       } else if (isSelected && !_answered) {
                         borderColor = AppColors.primary;
-                        backgroundColor = AppColors.primary.withOpacity(0.05);
+                        backgroundColor = AppColors.primary.withValues(alpha: 0.05);
                       }
 
                       return Padding(

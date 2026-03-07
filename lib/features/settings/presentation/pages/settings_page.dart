@@ -106,7 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Text(
           title,
           style: AppTextStyles.heading6.copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
           ),
         ),
       ),
@@ -125,7 +125,7 @@ class _SettingsPageState extends State<SettingsPage> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: surfaceColor,
-        border: Border.all(color: outlineColor.withOpacity(0.5)),
+        border: Border.all(color: outlineColor.withValues(alpha: 0.5)),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
@@ -164,7 +164,7 @@ class _SettingsPageState extends State<SettingsPage> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: surfaceColor,
-        border: Border.all(color: outlineColor.withOpacity(0.5)),
+        border: Border.all(color: outlineColor.withValues(alpha: 0.5)),
         borderRadius: BorderRadius.circular(12),
       ),
       child: ListTile(
@@ -195,7 +195,7 @@ class _SettingsPageState extends State<SettingsPage> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: surfaceColor,
-        border: Border.all(color: outlineColor.withOpacity(0.5)),
+        border: Border.all(color: outlineColor.withValues(alpha: 0.5)),
         borderRadius: BorderRadius.circular(12),
       ),
       child: ListTile(
@@ -277,7 +277,7 @@ class _ThemeSelectorTile extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: surfaceColor,
-        border: Border.all(color: outlineColor.withOpacity(0.5)),
+        border: Border.all(color: outlineColor.withValues(alpha: 0.5)),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -355,13 +355,13 @@ class _ThemeChip extends StatelessWidget {
             color: selected ? cs.primary : cs.surface,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: selected ? cs.primary : cs.outline.withOpacity(0.5),
+              color: selected ? cs.primary : cs.outline.withValues(alpha: 0.5),
               width: selected ? 2 : 1,
             ),
             boxShadow: selected
                 ? [
                     BoxShadow(
-                      color: cs.primary.withOpacity(0.25),
+                      color: cs.primary.withValues(alpha: 0.25),
                       blurRadius: 8,
                       offset: const Offset(0, 3),
                     )
@@ -374,7 +374,7 @@ class _ThemeChip extends StatelessWidget {
               Icon(
                 icon,
                 size: 20,
-                color: selected ? cs.onPrimary : cs.onSurface.withOpacity(0.7),
+                color: selected ? cs.onPrimary : cs.onSurface.withValues(alpha: 0.7),
               ),
               const SizedBox(height: 4),
               Text(
@@ -382,7 +382,7 @@ class _ThemeChip extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
-                  color: selected ? cs.onPrimary : cs.onSurface.withOpacity(0.7),
+                  color: selected ? cs.onPrimary : cs.onSurface.withValues(alpha: 0.7),
                 ),
               ),
             ],

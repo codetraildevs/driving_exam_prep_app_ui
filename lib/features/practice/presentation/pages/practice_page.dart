@@ -93,7 +93,7 @@ class _PracticePageState extends State<PracticePage> {
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () => _loadExams(_lastLangCode),
-                          child: const Text('Retry'),
+                          child: Text(l10n.commonRetry),
                         ),
                       ],
                     ),
@@ -139,12 +139,12 @@ class _ExamCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           border: Border.all(
-            color: exam.isFree ? AppColors.success.withOpacity(0.4) : AppColors.neutral200,
+            color: exam.isFree ? AppColors.success.withValues(alpha: 0.4) : AppColors.neutral200,
           ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).shadowColor.withOpacity(0.05),
+              color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
               blurRadius: 8,
             ),
           ],
@@ -213,7 +213,7 @@ class _ExamCard extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.8),
+                    color: AppColors.primary.withValues(alpha: 0.8),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
@@ -251,8 +251,8 @@ class _ExamCard extends StatelessWidget {
       height: 64,
       decoration: BoxDecoration(
         color: exam.isFree
-            ? AppColors.success.withOpacity(0.15)
-            : AppColors.primary.withOpacity(0.1),
+            ? AppColors.success.withValues(alpha: 0.15)
+            : AppColors.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Icon(

@@ -1327,6 +1327,39 @@ abstract class AppLocalizations {
   /// Select tier label
   String get adminSelectTier;
 
+  /// Custom days label
+  String get adminCustomDays;
+
+  /// Payment amount label
+  String get adminPaymentAmount;
+
+  /// Days input hint
+  String get adminEnterDays;
+
+  /// Amount input hint
+  String get adminEnterAmount;
+
+  /// Custom days toggle label
+  String get adminOrCustom;
+
+  /// Pending requests section title
+  String get adminPendingRequests;
+
+  /// All users section title
+  String get adminAllUsersList;
+
+  /// Invalid amount error
+  String get adminInvalidAmount;
+
+  /// Invalid days error
+  String get adminInvalidDays;
+
+  /// Access revoked message
+  String get adminAccessRevoked;
+
+  /// No users found message
+  String get adminNoUsers;
+
   /// Exam list page title
   String get examListTitle;
 
@@ -1417,8 +1450,29 @@ abstract class AppLocalizations {
   /// Payment help text
   String get paymentHelpText;
 
+  /// Payment error message
+  String get paymentError;
+
+  /// Copy number button
+  String get paymentCopyNumber;
+
+  /// Call number button
+  String get paymentCallNumber;
+
+  /// WhatsApp button
+  String get paymentWhatsApp;
+
+  /// WhatsApp message text for payment request
+  String get paymentWhatsAppMessage;
+
+  /// Duplicate payment request error
+  String get paymentRequestExists;
+
   /// Generic error message
   String get commonError;
+
+  /// Retry button label
+  String get commonRetry;
 
   /// Tier label
   String get adminTierLabel;
@@ -1473,6 +1527,58 @@ abstract class AppLocalizations {
 
   /// Dark theme chip label
   String get settingsThemeDark;
+
+  // ── Exam result ─────────────────────────────────────────────────────────────
+  String get examWrong;
+  String get examTimeSpent;
+
+  // ── Profile ──────────────────────────────────────────────────────────────────
+  String get profileLogoutConfirmTitle;
+  String get profileLogoutConfirmMessage;
+  String get profileDeleteInstructions;
+
+  // ── Progress page ────────────────────────────────────────────────────────────
+  String get progressExamsTaken;
+  String get progressPassedCount;
+  String get progressFailedCount;
+  String get progressPassRate;
+  String get progressNoExams;
+
+  // ── Certificates ─────────────────────────────────────────────────────────────
+  String get certificateReadyTitle;
+  String certificateReadySubtitle(int count);
+  String get certificateIremboLink;
+  String get certificateIremboDesc;
+  String certificateExamsNeeded(int needed);
+  String certificateProgressLabel(int passed, int total);
+
+  // ── Admin extras ─────────────────────────────────────────────────────────────
+  String get adminSortAsc;
+  String get adminSortDesc;
+  String get adminFilterToday;
+  String get adminDateRange;
+  String get adminFilterRole;
+  String get adminBlockUser;
+  String get adminUnblockUser;
+  String get adminDeleteUserAction;
+  String adminBlockUserConfirm(String name);
+  String adminDeleteUserConfirm(String name);
+  String get adminUserBlocked;
+  String get adminUserUnblocked;
+  String get adminUserDeleted;
+  String get adminMustBlockFirst;
+  String get adminBlockAccess;
+  String get adminDeleteAccess;
+  String get adminBlockAccessConfirm;
+  String get adminDeleteAccessConfirm;
+  String get adminAccessBlocked;
+  String get adminAccessDeleted;
+  String adminPage(int page, int total);
+  String get adminLearningLanguage;
+  String get adminIsBlocked;
+  String get adminIsActive;
+  String get generalCopied;
+  String get adminRetry;
 }
 
 class _AppLocalizationsDelegate

@@ -192,8 +192,16 @@ class AppRouter {
                 path: 'result/:attemptId',
                 pageBuilder: (context, state) {
                   final attemptId = state.pathParameters['attemptId']!;
+                  final extra = state.extra as Map<String, dynamic>?;
                   return MaterialPage(
-                    child: ExamResultPage(attemptId: attemptId),
+                    child: ExamResultPage(
+                      attemptId: attemptId,
+                      score: extra?['score'] as int? ?? 0,
+                      totalQuestions: extra?['totalQuestions'] as int? ?? 0,
+                      correctAnswers: extra?['correctAnswers'] as int? ?? 0,
+                      timeSpentSeconds: extra?['timeSpentSeconds'] as int? ?? 0,
+                      examTitle: extra?['examTitle'] as String? ?? '',
+                    ),
                   );
                 },
               ),

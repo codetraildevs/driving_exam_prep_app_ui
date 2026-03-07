@@ -27,11 +27,11 @@ class ExamIntroPage extends StatelessWidget {
               Container(
                 height: 150,
                 decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradient,
+                  gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.2),
+                      color: AppColors.primary.withValues(alpha: 0.2),
                       blurRadius: 16,
                       offset: const Offset(0, 8),
                     ),
@@ -90,8 +90,8 @@ class ExamIntroPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.warning.withOpacity(0.1),
-                  border: Border.all(color: AppColors.warning.withOpacity(0.3)),
+                  color: AppColors.warning.withValues(alpha: 0.1),
+                  border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -150,7 +150,7 @@ class ExamIntroPage extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.5)),
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5)),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -159,7 +159,7 @@ class ExamIntroPage extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: AppColors.primary),

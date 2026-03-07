@@ -62,14 +62,39 @@ class HomePage extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// COMPACT HEADER — shorter, gradient, with greeting and notification bell
-// ──────────────────────────────────────────────────────────────────────���──────
+// COMPACT HEADER — shorter, gradient, with greeting and optional right icon
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// The type of icon shown in the right section of [_CompactHeader].
+enum CompactHeaderIconType {
+  /// Notification bell with optional badge.
+  notification,
+  /// Refresh/reload icon.
+  refresh,
+  /// No icon (empty right section).
+  none,
+}
 
 class _CompactHeader extends StatelessWidget {
   final AppLocalizations l10n;
   final String userName;
 
-  const _CompactHeader({required this.l10n, required this.userName});
+  /// Type of icon to show on the right. Defaults to [CompactHeaderIconType.notification].
+  final CompactHeaderIconType iconType;
+
+  /// Action to perform when the right icon is tapped.
+  final VoidCallback? onIconTap;
+
+  /// Whether to show a badge dot on the notification icon.
+  final bool showBadge;
+
+  const _CompactHeader({
+    required this.l10n,
+    required this.userName,
+    this.iconType = CompactHeaderIconType.notification,
+    this.onIconTap,
+    this.showBadge = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -78,9 +103,9 @@ class _CompactHeader extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(20, topPadding + 12, 12, 18),
-      decoration: const BoxDecoration(
-        gradient: AppColors.primaryGradient,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+      decoration: BoxDecoration(
+        gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
       ),
       child: Row(
         children: [
@@ -93,7 +118,7 @@ class _CompactHeader extends StatelessWidget {
                 Text(
                   l10n.homeWelcomeBack,
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textInverse.withOpacity(0.85),
+                    color: AppColors.textInverse.withValues(alpha: 0.85),
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -111,7 +136,7 @@ class _CompactHeader extends StatelessWidget {
                 Text(
                   l10n.homeContinueMessage,
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textInverse.withOpacity(0.75),
+                    color: AppColors.textInverse.withValues(alpha: 0.75),
                     fontSize: 12,
                   ),
                   maxLines: 1,
@@ -121,28 +146,35 @@ class _CompactHeader extends StatelessWidget {
             ),
           ),
 
-          // Right: notification + avatar
-          Stack(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.notifications_outlined,
-                    color: AppColors.textInverse, size: 26),
-                onPressed: () {},
-              ),
-              Positioned(
-                right: 10,
-                top: 10,
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: AppColors.error,
-                    shape: BoxShape.circle,
+          // Right: optional icon
+          if (iconType != CompactHeaderIconType.none)
+            Stack(
+              children: [
+                IconButton(
+                  icon: Icon(
+                    iconType == CompactHeaderIconType.refresh
+                        ? Icons.refresh_rounded
+                        : Icons.notifications_outlined,
+                    color: AppColors.textInverse,
+                    size: 26,
                   ),
+                  onPressed: onIconTap,
                 ),
-              ),
-            ],
-          ),
+                if (showBadge && iconType == CompactHeaderIconType.notification)
+                  Positioned(
+                    right: 10,
+                    top: 10,
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: const BoxDecoration(
+                        color: AppColors.error,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
         ],
       ),
     );
@@ -200,12 +232,12 @@ class _CompactAccessCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: hasAccess
-                ? AppColors.success.withOpacity(0.3)
-                : AppColors.primary.withOpacity(0.3),
+                ? AppColors.success.withValues(alpha: 0.3)
+                : AppColors.primary.withValues(alpha: 0.3),
           ),
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).shadowColor.withOpacity(0.05),
+              color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),
@@ -224,7 +256,7 @@ class _CompactAccessCard extends StatelessWidget {
                     value: hasAccess ? progress : 0.0,
                     strokeWidth: 4,
                     backgroundColor:
-                        Theme.of(context).colorScheme.outline.withOpacity(0.15),
+                        Theme.of(context).colorScheme.outline.withValues(alpha: 0.15),
                     valueColor: AlwaysStoppedAnimation<Color>(
                       hasAccess
                           ? AppColors.success
@@ -236,7 +268,7 @@ class _CompactAccessCard extends StatelessWidget {
                       hasAccess ? Icons.check : Icons.lock_outline,
                       color: hasAccess
                           ? AppColors.success
-                          : Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                          : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
                       size: 18,
                     ),
                   ),
@@ -458,7 +490,7 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: item.color.withOpacity(0.08),
+                    color: item.color.withValues(alpha: 0.08),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -472,7 +504,7 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
                     width: 42,
                     height: 42,
                     decoration: BoxDecoration(
-                      color: item.color.withOpacity(0.12),
+                      color: item.color.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(item.icon, color: item.color, size: 22),
