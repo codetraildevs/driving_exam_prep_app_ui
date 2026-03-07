@@ -165,6 +165,8 @@ $routes = [
     ['GET', '/api/access-codes/status', 'getAccessCodeStatus'],
     ['GET', '/api/access-codes', 'listAccessCodes'],
     ['POST', '/api/access-codes', 'generateAccessCode'],
+    ['PATCH', '/api/access-codes/:id/block', 'blockAccessCode'],
+    ['DELETE', '/api/access-codes/:id', 'deleteAccessCode'],
     
     // Courses
     ['GET', '/api/courses', 'getCourses'],
@@ -180,6 +182,8 @@ $routes = [
     
     // Admin user management
     ['GET', '/api/admin/users', 'adminListUsers'],
+    ['PATCH', '/api/admin/users/:userId/block', 'adminBlockUser'],
+    ['DELETE', '/api/admin/users/:userId', 'adminDeleteUser'],
     ['POST', '/api/admin/users/:userId/grant-access', 'adminGrantAccess'],
     ['POST', '/api/admin/users/:userId/mark-called', 'adminMarkCalled'],
     
@@ -1286,18 +1290,118 @@ function verifyAccessCode($conn, $params) {
 function listAccessCodes($conn, $params) {
     global $tokenData;
     requireRole($tokenData, ['ADMIN','MANAGER']);
-    
-    $codes = Database::fetchAll($conn,
-        'SELECT id, code, userId, isUsed, expiresAt, createdAt FROM access_codes ORDER BY createdAt DESC LIMIT 100',
-        '',
-        []
-    );
-    
-    if ($codes === null) {
-        ErrorHandler::serverError('Failed to fetch access codes');
+
+    $page      = max(1, intval($_GET['page']   ?? 1));
+    $limit     = max(1, min(100, intval($_GET['limit'] ?? 10)));
+    $offset    = ($page - 1) * $limit;
+    $sortDir   = (strtoupper($_GET['sortDir'] ?? 'DESC') === 'ASC') ? 'ASC' : 'DESC';
+    $dateFrom  = SecurityUtils::sanitizeString($_GET['dateFrom'] ?? '');
+    $dateTo    = SecurityUtils::sanitizeString($_GET['dateTo']   ?? '');
+    $todayOnly = ($_GET['today'] ?? '') === '1';
+    $isBlocked = isset($_GET['isBlocked']) ? $_GET['isBlocked'] : null;
+
+    $conditions = [];
+    $bindTypes  = '';
+    $bindValues = [];
+
+    if ($todayOnly) {
+        $conditions[] = 'DATE(ac.createdAt) = CURDATE()';
+    } elseif (!empty($dateFrom) && !empty($dateTo)) {
+        $conditions[] = 'ac.createdAt BETWEEN ? AND ?';
+        $bindTypes  .= 'ss';
+        $bindValues[] = $dateFrom . ' 00:00:00';
+        $bindValues[] = $dateTo   . ' 23:59:59';
+    } elseif (!empty($dateFrom)) {
+        $conditions[] = 'ac.createdAt >= ?';
+        $bindTypes  .= 's';
+        $bindValues[] = $dateFrom . ' 00:00:00';
     }
-    
-    respond($codes, 200);
+
+    if ($isBlocked === 'true' || $isBlocked === '1') {
+        $conditions[] = '(ac.isUsed = 1 OR ac.expiresAt <= NOW())';
+    } elseif ($isBlocked === 'false' || $isBlocked === '0') {
+        $conditions[] = '(ac.isUsed = 0 AND ac.expiresAt > NOW())';
+    }
+
+    $where = empty($conditions) ? '' : 'WHERE ' . implode(' AND ', $conditions);
+
+    $countSql = "SELECT COUNT(*) as total FROM access_codes ac $where";
+    if (!empty($bindValues)) {
+        $countRefs = [];
+        foreach ($bindValues as $k => &$v) { $countRefs[] = &$v; }
+        unset($v);
+        $countRow = Database::fetchOne($conn, $countSql, $bindTypes, $countRefs);
+    } else {
+        $countRow = Database::fetchOne($conn, $countSql);
+    }
+    $total = $countRow ? intval($countRow['total']) : 0;
+
+    $pageSql = "SELECT ac.id, ac.code, ac.userId, ac.isUsed, ac.expiresAt, ac.createdAt,
+                       ac.paymentTier, ac.paymentAmount, ac.durationDays,
+                       ac.generatedByManagerId,
+                       u.fullName as userName, u.phoneNumber as userPhone,
+                       CASE WHEN ac.isUsed = 1 OR ac.expiresAt <= NOW() THEN 1 ELSE 0 END as isBlocked
+                FROM access_codes ac
+                LEFT JOIN users u ON u.id = ac.userId
+                $where
+                ORDER BY ac.createdAt $sortDir
+                LIMIT ? OFFSET ?";
+
+    $pageTypes  = $bindTypes . 'ii';
+    $pageValues = $bindValues;
+    $pageValues[] = $limit;
+    $pageValues[] = $offset;
+
+    $pageRefs = [];
+    foreach ($pageValues as $k => &$v) { $pageRefs[] = &$v; }
+    unset($v);
+
+    $codes = Database::fetchAll($conn, $pageSql, $pageTypes, $pageRefs);
+
+    respond([
+        'codes' => $codes ?: [],
+        'total' => $total,
+        'page'  => $page,
+        'limit' => $limit,
+    ], 200);
+}
+
+function blockAccessCode($conn, $params) {
+    global $tokenData;
+    requireRole($tokenData, ['ADMIN', 'MANAGER']);
+
+    $id = SecurityUtils::sanitizeString($params['id'] ?? '');
+    if (!$id) ErrorHandler::badRequest('Invalid access code ID');
+
+    $code = Database::fetchOne($conn, 'SELECT id FROM access_codes WHERE id = ? LIMIT 1', 's', [&$id]);
+    if (!$code) ErrorHandler::notFound('Access code not found');
+
+    $now = date('Y-m-d H:i:s');
+    $affected = Database::query($conn,
+        'UPDATE access_codes SET isUsed = 1, expiresAt = ?, updatedAt = ? WHERE id = ?',
+        'sss', [&$now, &$now, &$id]
+    );
+
+    if ($affected === false) ErrorHandler::serverError('Failed to block access code');
+
+    Logger::info('Access code blocked', ['codeId' => $id, 'adminId' => $tokenData['userId']]);
+    respond(['id' => $id, 'blocked' => true], 200, 'Access code blocked');
+}
+
+function deleteAccessCode($conn, $params) {
+    global $tokenData;
+    requireRole($tokenData, ['ADMIN', 'MANAGER']);
+
+    $id = SecurityUtils::sanitizeString($params['id'] ?? '');
+    if (!$id) ErrorHandler::badRequest('Invalid access code ID');
+
+    $affected = Database::query($conn, 'DELETE FROM access_codes WHERE id = ?', 's', [&$id]);
+
+    if ($affected === false) ErrorHandler::serverError('Failed to delete access code');
+    if ($affected === 0) ErrorHandler::notFound('Access code not found');
+
+    Logger::info('Access code deleted', ['codeId' => $id, 'adminId' => $tokenData['userId']]);
+    respond([], 200, 'Access code deleted');
 }
 
 function generateAccessCode($conn, $params) {
@@ -1415,6 +1519,24 @@ function requestPayment($conn, $params) {
             Logger::error('Invalid exam ID in payment', ['examId' => $examId, 'userId' => $userId]);
             ErrorHandler::badRequest('Invalid exam ID');
         }
+    }
+
+    // Prevent duplicate pending requests for the same user
+    $existing = Database::fetchOne(
+        $conn,
+        'SELECT id FROM payment_requests WHERE userId = ? AND status = ? LIMIT 1',
+        'ss',
+        [&$userId, 'PENDING']
+    );
+    if ($existing) {
+        Logger::info('Duplicate payment request blocked', ['userId' => $userId]);
+        http_response_code(409);
+        echo json_encode([
+            'success' => false,
+            'message' => 'A payment request is already pending for your account. Please wait for activation or pay manually: MoMo Pay 323294 / Mobile Money 0788657595 / Help: 0788657595',
+            'code'    => 'DUPLICATE_REQUEST',
+        ]);
+        exit;
     }
     
     // Check for duplicate pending request for same tier
@@ -1621,11 +1743,16 @@ function adminListUsers($conn, $params) {
     requireRole($tokenData, ['ADMIN', 'MANAGER']);
 
     $page      = max(1, intval($_GET['page']   ?? 1));
-    $limit     = max(1, min(100, intval($_GET['limit'] ?? 20)));
+    $limit     = max(1, min(100, intval($_GET['limit'] ?? 10)));
     $offset    = ($page - 1) * $limit;
     $search    = SecurityUtils::sanitizeString($_GET['search']    ?? '');
     $hasAccess = $_GET['hasAccess'] ?? null;
     $language  = SecurityUtils::sanitizeString($_GET['language']  ?? '');
+    $role      = SecurityUtils::sanitizeString($_GET['role']      ?? '');
+    $sortDir   = (strtoupper($_GET['sortDir'] ?? 'DESC') === 'ASC') ? 'ASC' : 'DESC';
+    $dateFrom  = SecurityUtils::sanitizeString($_GET['dateFrom']  ?? '');
+    $dateTo    = SecurityUtils::sanitizeString($_GET['dateTo']    ?? '');
+    $todayOnly = ($_GET['today'] ?? '') === '1';
 
     $conditions = [];
     $bindTypes  = '';
@@ -1651,6 +1778,25 @@ function adminListUsers($conn, $params) {
         $bindValues[] = $language;
     }
 
+    if (!empty($role)) {
+        $conditions[] = 'u.role = ?';
+        $bindTypes  .= 's';
+        $bindValues[] = strtoupper($role);
+    }
+
+    if ($todayOnly) {
+        $conditions[] = 'DATE(u.createdAt) = CURDATE()';
+    } elseif (!empty($dateFrom) && !empty($dateTo)) {
+        $conditions[] = 'u.createdAt BETWEEN ? AND ?';
+        $bindTypes  .= 'ss';
+        $bindValues[] = $dateFrom . ' 00:00:00';
+        $bindValues[] = $dateTo   . ' 23:59:59';
+    } elseif (!empty($dateFrom)) {
+        $conditions[] = 'u.createdAt >= ?';
+        $bindTypes  .= 's';
+        $bindValues[] = $dateFrom . ' 00:00:00';
+    }
+
     $where = empty($conditions) ? '' : 'WHERE ' . implode(' AND ', $conditions);
 
     $joinSql = 'LEFT JOIN (
@@ -1665,17 +1811,10 @@ function adminListUsers($conn, $params) {
     // Count total
     $countSql = "SELECT COUNT(*) as total FROM users u $joinSql $where";
     if (!empty($bindValues)) {
-        // Build references for count
         $countRefs = [];
-        foreach ($bindValues as $k => $v) {
-            $countRefs[$k] = $bindValues[$k];
-        }
-        $countRefArr = [];
-        foreach ($countRefs as $k => &$ref) {
-            $countRefArr[] = &$ref;
-        }
-        unset($ref);
-        $countRow = Database::fetchOne($conn, $countSql, $bindTypes, $countRefArr);
+        foreach ($bindValues as $k => &$v) { $countRefs[] = &$v; }
+        unset($v);
+        $countRow = Database::fetchOne($conn, $countSql, $bindTypes, $countRefs);
     } else {
         $countRow = Database::fetchOne($conn, $countSql);
     }
@@ -1690,24 +1829,19 @@ function adminListUsers($conn, $params) {
                 FROM users u
                 $joinSql
                 $where
-                ORDER BY u.createdAt DESC
+                ORDER BY u.createdAt $sortDir
                 LIMIT ? OFFSET ?";
 
     $pageTypes  = $bindTypes . 'ii';
-    $pageValues = array_merge($bindValues, [$limit, $offset]);
+    $pageValues = $bindValues;
+    $pageValues[] = $limit;
+    $pageValues[] = $offset;
 
-    // Build references array
     $pageRefs = [];
-    foreach ($pageValues as $k => $v) {
-        $pageRefs[$k] = $pageValues[$k];
-    }
-    $pageRefArr = [];
-    foreach ($pageRefs as $k => &$ref) {
-        $pageRefArr[] = &$ref;
-    }
-    unset($ref);
+    foreach ($pageValues as $k => &$v) { $pageRefs[] = &$v; }
+    unset($v);
 
-    $rows = Database::fetchAll($conn, $pageSql, $pageTypes, $pageRefArr);
+    $rows = Database::fetchAll($conn, $pageSql, $pageTypes, $pageRefs);
 
     respond([
         'users' => $rows ?: [],
@@ -1715,6 +1849,56 @@ function adminListUsers($conn, $params) {
         'page'  => $page,
         'limit' => $limit,
     ], 200);
+}
+
+function adminBlockUser($conn, $params) {
+    global $tokenData;
+    requireRole($tokenData, ['ADMIN', 'MANAGER']);
+
+    $userId = SecurityUtils::sanitizeString($params['userId'] ?? '');
+    if (!$userId) ErrorHandler::badRequest('Invalid user ID');
+
+    $user = Database::fetchOne($conn, 'SELECT id, isActive FROM users WHERE id = ? LIMIT 1', 's', [&$userId]);
+    if (!$user) ErrorHandler::notFound('User not found');
+
+    $input     = getInput();
+    $isActive  = isset($input['isActive']) ? (intval($input['isActive']) ? 1 : 0) : 0;
+    $now       = date('Y-m-d H:i:s');
+
+    Database::query($conn, 'UPDATE users SET isActive = ?, updatedAt = ? WHERE id = ?', 'iss', [&$isActive, &$now, &$userId]);
+
+    $status = $isActive ? 'unblocked' : 'blocked';
+    Logger::info("User $status", ['userId' => $userId, 'adminId' => $tokenData['userId']]);
+    respond(['id' => $userId, 'isActive' => $isActive], 200, "User $status successfully");
+}
+
+function adminDeleteUser($conn, $params) {
+    global $tokenData;
+    requireRole($tokenData, ['ADMIN']);
+
+    $userId = SecurityUtils::sanitizeString($params['userId'] ?? '');
+    if (!$userId) ErrorHandler::badRequest('Invalid user ID');
+
+    $user = Database::fetchOne($conn, 'SELECT id, isActive FROM users WHERE id = ? LIMIT 1', 's', [&$userId]);
+    if (!$user) ErrorHandler::notFound('User not found');
+
+    // Must be blocked first
+    if (intval($user['isActive']) !== 0) {
+        http_response_code(422);
+        respond(['error' => 'User must be blocked before deletion. Block the user first.', 'code' => 'BLOCK_FIRST'], 422);
+        exit;
+    }
+
+    // Delete in order to respect FK constraints
+    Database::query($conn, 'DELETE FROM access_codes WHERE userId = ?', 's', [&$userId]);
+    Database::query($conn, 'DELETE FROM exam_results WHERE userId = ?', 's', [&$userId]);
+    $affected = Database::query($conn, 'DELETE FROM users WHERE id = ?', 's', [&$userId]);
+
+    if ($affected === false) ErrorHandler::serverError('Failed to delete user');
+    if ($affected === 0)    ErrorHandler::notFound('User not found');
+
+    Logger::info('User deleted by admin', ['userId' => $userId, 'adminId' => $tokenData['userId']]);
+    respond([], 200, 'User deleted successfully');
 }
 
 function adminGrantAccess($conn, $params) {

@@ -765,6 +765,39 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminSelectTier => 'Sélectionner le niveau d\'accès';
 
   @override
+  String get adminCustomDays => 'Durée personnalisée (jours)';
+
+  @override
+  String get adminPaymentAmount => 'Montant (RWF)';
+
+  @override
+  String get adminEnterDays => 'Entrez le nombre de jours';
+
+  @override
+  String get adminEnterAmount => 'Entrez le montant en RWF';
+
+  @override
+  String get adminOrCustom => 'Ou définir des jours personnalisés';
+
+  @override
+  String get adminPendingRequests => 'Demandes de paiement en attente';
+
+  @override
+  String get adminAllUsersList => 'Tous les utilisateurs';
+
+  @override
+  String get adminInvalidAmount => 'Veuillez entrer un montant valide supérieur à 0';
+
+  @override
+  String get adminInvalidDays => 'Veuillez entrer un nombre de jours valide supérieur à 0';
+
+  @override
+  String get adminAccessRevoked => 'Accès révoqué';
+
+  @override
+  String get adminNoUsers => 'Aucun utilisateur trouvé';
+
+  @override
   String get examListTitle => 'Examens pratiques';
 
   @override
@@ -864,52 +897,31 @@ class AppLocalizationsFr extends AppLocalizations {
   String get paymentMobileMoneyNumber => 'Mobile Money: 0788657595';
 
   @override
-  String get paymentHelpText =>
-      'Besoin d\'aide ? Appelez ou WhatsApp: 0788657595';
+  String get paymentHelpText => 'Besoin d\'aide ? Appelez ou WhatsApp: 0788657595';
 
   @override
-  String paymentDialMomoPay(String amount) {
-    return 'Composez *182*1*1*323294*$amount# pour payer via MoMo Pay';
-  }
+  String get paymentError => 'La demande de paiement a échoué. Veuillez payer manuellement en utilisant les instructions ci-dessous.';
 
   @override
-  String paymentDialMobileMoney(String amount) {
-    return 'Composez *182*8*1*0788657595*$amount# pour payer via Mobile Money';
-  }
+  String get paymentCopyNumber => 'Copier le numéro';
 
   @override
-  String get paymentCopyCode => 'Copier le code';
+  String get paymentCallNumber => 'Appeler le 0788657595';
 
   @override
-  String get paymentDialNow => 'Composer';
+  String get paymentWhatsApp => 'WhatsApp: Envoyer un message';
 
   @override
-  String get paymentCodeCopied => 'Code de paiement copié !';
+  String get paymentWhatsAppMessage => 'Demander l\'accès à l\'application d\'examen de conduite';
 
   @override
-  String get paymentWhatsAppMessage =>
-      'Bonjour, je souhaite m\'abonner à l\'application Rwanda Traffic Rules.';
+  String get paymentRequestExists => 'Une demande de paiement pour ce forfait est déjà en attente. Veuillez attendre l\'activation ou contacter le support.';
 
   @override
-  String get paymentSelectPlanFirst =>
-      'Veuillez d\'abord sélectionner un forfait';
+  String get commonError => 'Quelque chose s\'est mal passé. Veuillez réessayer.';
 
   @override
-  String get paymentConfirmRequest => 'Confirmer la demande de paiement';
-
-  @override
-  String get paymentStep1 => '1. Sélectionnez un forfait ci-dessous';
-
-  @override
-  String get paymentStep2 =>
-      '2. Payez en utilisant l\'une des méthodes ci-dessus';
-
-  @override
-  String get paymentStep3 => '3. Appuyez sur \'Confirmer\' pour nous notifier';
-
-  @override
-  String get commonError =>
-      'Quelque chose s\'est mal passé. Veuillez réessayer.';
+  String get commonRetry => 'Réessayer';
 
   @override
   String get adminTierLabel => 'Niveau';
@@ -930,12 +942,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminManageExamsDesc => 'Voir et gérer tous les examens pratiques';
 
   @override
-  String get adminManageUsersDesc =>
-      'Voir, rechercher et gérer tous les utilisateurs';
+  String get adminManageUsersDesc => 'Voir, rechercher et gérer tous les utilisateurs';
 
   @override
-  String get adminAccessCodesDesc =>
-      'Gérer les codes d\'accès et les paiements';
+  String get adminAccessCodesDesc => 'Gérer les codes d\'accès et les paiements';
 
   @override
   String get adminQuickStats => 'Statistiques rapides';
@@ -947,8 +957,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminTotalPractices => 'Total des pratiques';
 
   @override
-  String get adminManagePlatformDesc =>
-      'Gérez votre plateforme d\'apprentissage du code de la route';
+  String get adminManagePlatformDesc => 'Gérez votre plateforme d\'apprentissage du code de la route';
 
   @override
   String get adminNotifications => 'Notifications';
@@ -957,8 +966,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsAppearance => 'Apparence';
 
   @override
-  String get settingsAppearanceDesc =>
-      'Choisissez l\'apparence de l\'application';
+  String get settingsAppearanceDesc => 'Choisissez l\'apparence de l\'application';
 
   @override
   String get settingsThemeSystem => 'Système';
@@ -968,4 +976,138 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get settingsThemeDark => 'Sombre';
+
+  @override
+  String get examWrong => 'Incorrect';
+
+  @override
+  String get examTimeSpent => 'Temps';
+
+  @override
+  String get profileLogoutConfirmTitle => 'Se déconnecter?';
+
+  @override
+  String get profileLogoutConfirmMessage => 'Êtes-vous sûr de vouloir vous déconnecter?';
+
+  @override
+  String get profileDeleteInstructions =>
+      'Avant de supprimer votre compte:\n• Tous vos résultats d\'examen seront effacés\n• Votre abonnement sera supprimé\n• Cette action ne peut pas être annulée\n• Vous devrez vous réinscrire pour utiliser l\'application';
+
+  @override
+  String get progressExamsTaken => 'Examens passés';
+
+  @override
+  String get progressPassedCount => 'Réussis';
+
+  @override
+  String get progressFailedCount => 'Échoués';
+
+  @override
+  String get progressPassRate => 'Taux de réussite';
+
+  @override
+  String get progressNoExams => 'Aucun examen encore. Commencez à pratiquer!';
+
+  @override
+  String get certificateReadyTitle => 'Prêt pour l\'examen officiel!';
+
+  @override
+  String certificateReadySubtitle(int count) =>
+      'Vous avez réussi $count examens. Vous êtes prêt pour le test officiel.';
+
+  @override
+  String get certificateIremboLink => 'S\'inscrire à l\'examen officiel sur irembo.gov.rw';
+
+  @override
+  String get certificateIremboDesc =>
+      'Cliquez ci-dessous pour vous inscrire au test informatisé officiel du permis de conduire provisoire';
+
+  @override
+  String certificateExamsNeeded(int needed) =>
+      'Réussissez $needed examens supplémentaires pour obtenir votre certificat';
+
+  @override
+  String certificateProgressLabel(int passed, int total) =>
+      '$passed sur $total examens requis réussis';
+
+  @override
+  String get adminSortAsc => 'Plus anciens d\'abord';
+
+  @override
+  String get adminSortDesc => 'Plus récents d\'abord';
+
+  @override
+  String get adminFilterToday => 'Aujourd\'hui';
+
+  @override
+  String get adminDateRange => 'Plage de dates';
+
+  @override
+  String get adminFilterRole => 'Rôle';
+
+  @override
+  String get adminBlockUser => 'Bloquer l\'utilisateur';
+
+  @override
+  String get adminUnblockUser => 'Débloquer l\'utilisateur';
+
+  @override
+  String get adminDeleteUserAction => 'Supprimer l\'utilisateur';
+
+  @override
+  String adminBlockUserConfirm(String name) =>
+      'Bloquer $name? Ils perdront l\'accès.';
+
+  @override
+  String adminDeleteUserConfirm(String name) =>
+      'Supprimer définitivement $name? Toutes leurs données seront effacées.';
+
+  @override
+  String get adminUserBlocked => 'Utilisateur bloqué avec succès';
+
+  @override
+  String get adminUserUnblocked => 'Utilisateur débloqué avec succès';
+
+  @override
+  String get adminUserDeleted => 'Utilisateur supprimé avec succès';
+
+  @override
+  String get adminMustBlockFirst => 'Vous devez bloquer l\'utilisateur avant de le supprimer.';
+
+  @override
+  String get adminBlockAccess => 'Bloquer l\'accès';
+
+  @override
+  String get adminDeleteAccess => 'Supprimer l\'accès';
+
+  @override
+  String get adminBlockAccessConfirm =>
+      'Bloquer ce code d\'accès? L\'utilisateur perdra l\'accès immédiatement.';
+
+  @override
+  String get adminDeleteAccessConfirm => 'Supprimer définitivement ce code d\'accès?';
+
+  @override
+  String get adminAccessBlocked => 'Code d\'accès bloqué';
+
+  @override
+  String get adminAccessDeleted => 'Code d\'accès supprimé';
+
+  @override
+  String adminPage(int page, int total) => 'Page $page sur $total';
+
+  @override
+  String get adminLearningLanguage => 'Apprentissage';
+
+  @override
+  String get adminIsBlocked => 'Bloqué';
+
+  @override
+  String get adminIsActive => 'Actif';
+
+  @override
+  String get generalCopied => 'Copié !';
+
+  @override
+  String get adminRetry => 'Réessayer';
 }

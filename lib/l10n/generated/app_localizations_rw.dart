@@ -762,6 +762,39 @@ class AppLocalizationsRw extends AppLocalizations {
   String get adminSelectTier => 'Hitamo urwego rw\'uburenganzira';
 
   @override
+  String get adminCustomDays => 'Iminsi yihariye';
+
+  @override
+  String get adminPaymentAmount => 'Amafaranga (RWF)';
+
+  @override
+  String get adminEnterDays => 'Injiza umubare w\'iminsi';
+
+  @override
+  String get adminEnterAmount => 'Injiza amafaranga mu RWF';
+
+  @override
+  String get adminOrCustom => 'Cyangwa shyiramo iminsi yihariye';
+
+  @override
+  String get adminPendingRequests => 'Ubusabe bwo kwishyura buriho';
+
+  @override
+  String get adminAllUsersList => 'Abakoresha bose';
+
+  @override
+  String get adminInvalidAmount => 'Nyamuneka injiza amafaranga akwiye arengeje 0';
+
+  @override
+  String get adminInvalidDays => 'Nyamuneka injiza umubare w\'iminsi ukwiye arengeje 0';
+
+  @override
+  String get adminAccessRevoked => 'Uburenganzira bwavanwe';
+
+  @override
+  String get adminNoUsers => 'Nta mukoresha wabonetse';
+
+  @override
   String get examListTitle => 'Ibizamini by\'imyitozo';
 
   @override
@@ -904,7 +937,28 @@ class AppLocalizationsRw extends AppLocalizations {
   String get paymentStep3 => '3. Kanda \'Emeza\' kudumenyesha';
 
   @override
+  String get paymentError => 'Ubusabe bwo kwishyura bwananiranye. Nyamuneka wishyure ukoresha amabwiriza hano epfo.';
+
+  @override
+  String get paymentCopyNumber => 'Kopi nimero';
+
+  @override
+  String get paymentCallNumber => 'Hamagara 0788657595';
+
+  @override
+  String get paymentWhatsApp => 'WhatsApp: Ohereza ubutumwa';
+
+  @override
+  String get paymentWhatsAppMessage => 'Saba uburenganzira bwo gukoresha porogaramu y\'ikizamini cyo gutwara';
+
+  @override
+  String get paymentRequestExists => 'Ubusabe bwo kwishyura kuri iyi gahato buriho. Tegereza ko ubuzima bwawe buremwa cyangwa vugana na serivisi.';
+
+  @override
   String get commonError => 'Hari ikibazo cyabaye. Ongera ugerageze.';
+
+  @override
+  String get commonRetry => 'Ongera ugerageze';
 
   @override
   String get adminTierLabel => 'Urwego';
@@ -963,4 +1017,138 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get settingsThemeDark => 'Umukara';
+
+  @override
+  String get examWrong => 'Binyuranye';
+
+  @override
+  String get examTimeSpent => 'Igihe';
+
+  @override
+  String get profileLogoutConfirmTitle => 'Gusohoka?';
+
+  @override
+  String get profileLogoutConfirmMessage => 'Urashaka gusohoka mu konti yawe?';
+
+  @override
+  String get profileDeleteInstructions =>
+      'Mbere yo gusiba konti yawe:\n• Ibisubizo byawe byose bizasibwa burundu\n• Abonement yawe izakurwa\n• Iyi ntambwe ntigira ingaruka\n• Uzakenera kwiyandikisha nanone kugirango ukoreshe porogaramu';
+
+  @override
+  String get progressExamsTaken => 'Ibizamini byakozwe';
+
+  @override
+  String get progressPassedCount => 'Byakunze';
+
+  @override
+  String get progressFailedCount => 'Byanze';
+
+  @override
+  String get progressPassRate => 'Ijanisha ry\'imenyekana';
+
+  @override
+  String get progressNoExams => 'Nta bizamini birakozwe. Tangira gukora ibibazo!';
+
+  @override
+  String get certificateReadyTitle => 'Witeguye ikizamini cy\'ukuri!';
+
+  @override
+  String certificateReadySubtitle(int count) =>
+      'Warashize $count ibizamini. Witeguye ikizamini cy\'uburenganzira bwo gutwara.';
+
+  @override
+  String get certificateIremboLink => 'Iyandikishe ku kizamini cya leta kuri irembo.gov.rw';
+
+  @override
+  String get certificateIremboDesc =>
+      'Kanda hepfo iyandikishe mu kizamini cya mudasobwa cy\'uburenganzira bwo gutwara bw\'igerageza';
+
+  @override
+  String certificateExamsNeeded(int needed) =>
+      'Shira $needed ibizamini byindi kugirango ubone icyangombwa cyawe';
+
+  @override
+  String certificateProgressLabel(int passed, int total) =>
+      '$passed mu $total ibizamini bisabwa byashize';
+
+  @override
+  String get adminSortAsc => 'Bikuze mbere';
+
+  @override
+  String get adminSortDesc => 'Bishya mbere';
+
+  @override
+  String get adminFilterToday => 'Uyu munsi';
+
+  @override
+  String get adminDateRange => 'Igihe cy\'amakuru';
+
+  @override
+  String get adminFilterRole => 'Uruhare';
+
+  @override
+  String get adminBlockUser => 'Ziba Umukoreshwa';
+
+  @override
+  String get adminUnblockUser => 'Fungura Umukoreshwa';
+
+  @override
+  String get adminDeleteUserAction => 'Siba Umukoreshwa';
+
+  @override
+  String adminBlockUserConfirm(String name) =>
+      'Ziba $name? Bazatakaza uburenganzira bwo kwinjira.';
+
+  @override
+  String adminDeleteUserConfirm(String name) =>
+      'Siba $name burundu? Amakuru yabo yose azasibwa.';
+
+  @override
+  String get adminUserBlocked => 'Umukoreshwa yazibwe neza';
+
+  @override
+  String get adminUserUnblocked => 'Umukoreshwa yafunguriwe neza';
+
+  @override
+  String get adminUserDeleted => 'Umukoreshwa yasibwe neza';
+
+  @override
+  String get adminMustBlockFirst => 'Ugomba kubanza guziba umukoreshwa mbere yo kumusiba.';
+
+  @override
+  String get adminBlockAccess => 'Ziba Uburenganzira';
+
+  @override
+  String get adminDeleteAccess => 'Siba Uburenganzira';
+
+  @override
+  String get adminBlockAccessConfirm =>
+      'Ziba kode y\'uburenganzira? Umukoreshwa azatakaza uburenganzira vuba.';
+
+  @override
+  String get adminDeleteAccessConfirm => 'Siba kode y\'uburenganzira burundu?';
+
+  @override
+  String get adminAccessBlocked => 'Kode y\'uburenganzira yazibwe';
+
+  @override
+  String get adminAccessDeleted => 'Kode y\'uburenganzira yasibwe';
+
+  @override
+  String adminPage(int page, int total) => 'Urupapuro $page rwa $total';
+
+  @override
+  String get adminLearningLanguage => 'Ururimi rwigwa';
+
+  @override
+  String get adminIsBlocked => 'Yazibwe';
+
+  @override
+  String get adminIsActive => 'Birakora';
+
+  @override
+  String get generalCopied => 'Byakopeshejwe!';
+
+  @override
+  String get adminRetry => 'Ongera ugerageze';
 }

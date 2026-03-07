@@ -761,6 +761,39 @@
   "adminSelectTier": "Select Access Tier",
   "@adminSelectTier": { "description": "Select tier label" },
 
+  "adminCustomDays": "Custom Duration (days)",
+  "@adminCustomDays": { "description": "Custom days label" },
+
+  "adminPaymentAmount": "Amount (RWF)",
+  "@adminPaymentAmount": { "description": "Payment amount label" },
+
+  "adminEnterDays": "Enter number of days",
+  "@adminEnterDays": { "description": "Days input hint" },
+
+  "adminEnterAmount": "Enter amount in RWF",
+  "@adminEnterAmount": { "description": "Amount input hint" },
+
+  "adminOrCustom": "Or set custom days",
+  "@adminOrCustom": { "description": "Custom days toggle label" },
+
+  "adminPendingRequests": "Pending Payment Requests",
+  "@adminPendingRequests": { "description": "Pending requests section title" },
+
+  "adminAllUsersList": "All Users",
+  "@adminAllUsersList": { "description": "All users section title" },
+
+  "adminInvalidAmount": "Please enter a valid amount greater than 0",
+  "@adminInvalidAmount": { "description": "Invalid amount error" },
+
+  "adminInvalidDays": "Please enter a valid number of days greater than 0",
+  "@adminInvalidDays": { "description": "Invalid days error" },
+
+  "adminAccessRevoked": "Access revoked",
+  "@adminAccessRevoked": { "description": "Access revoked message" },
+
+  "adminNoUsers": "No users found",
+  "@adminNoUsers": { "description": "No users found message" },
+
   "examListTitle": "Practice Exams",
   "@examListTitle": { "description": "Exam list page title" },
 
@@ -884,41 +917,29 @@
   "paymentHelpText": "Need help? Call or WhatsApp: 0788657595",
   "@paymentHelpText": { "description": "Payment help text" },
 
-  "paymentDialMomoPay": "Dial *182*1*1*323294*{amount}# to pay via MoMo Pay",
-  "@paymentDialMomoPay": { "description": "MoMo Pay USSD dial instruction", "placeholders": { "amount": { "type": "String" } } },
+  "paymentError": "Payment request failed. Please pay manually using the instructions below.",
+  "@paymentError": { "description": "Payment error message" },
 
-  "paymentDialMobileMoney": "Dial *182*8*1*0788657595*{amount}# to pay via Mobile Money",
-  "@paymentDialMobileMoney": { "description": "Mobile Money USSD dial instruction", "placeholders": { "amount": { "type": "String" } } },
+  "paymentCopyNumber": "Copy Number",
+  "@paymentCopyNumber": { "description": "Copy phone number button" },
 
-  "paymentCopyCode": "Copy Code",
-  "@paymentCopyCode": { "description": "Copy payment code button" },
+  "paymentCallNumber": "Call 0788657595",
+  "@paymentCallNumber": { "description": "Call phone number button" },
 
-  "paymentDialNow": "Dial Now",
-  "@paymentDialNow": { "description": "Dial payment code button" },
+  "paymentWhatsApp": "WhatsApp: Send Message",
+  "@paymentWhatsApp": { "description": "WhatsApp button label" },
 
-  "paymentCodeCopied": "Payment code copied!",
-  "@paymentCodeCopied": { "description": "Snackbar message after copying code" },
+  "paymentWhatsAppMessage": "Request access for driving exam app",
+  "@paymentWhatsAppMessage": { "description": "WhatsApp message text for payment request" },
 
-  "paymentWhatsAppMessage": "Hello, I want to subscribe to Rwanda Traffic Rules app.",
-  "@paymentWhatsAppMessage": { "description": "Default WhatsApp message" },
-
-  "paymentSelectPlanFirst": "Please select a plan first",
-  "@paymentSelectPlanFirst": { "description": "Message when no plan selected" },
-
-  "paymentConfirmRequest": "Confirm Payment Request",
-  "@paymentConfirmRequest": { "description": "Confirm payment button" },
-
-  "paymentStep1": "1. Select a plan below",
-  "@paymentStep1": { "description": "Payment step 1" },
-
-  "paymentStep2": "2. Pay using one of the methods above",
-  "@paymentStep2": { "description": "Payment step 2" },
-
-  "paymentStep3": "3. Tap 'Confirm Payment Request' to notify us",
-  "@paymentStep3": { "description": "Payment step 3" },
+  "paymentRequestExists": "A payment request for this plan is already pending. Please wait for activation or contact support.",
+  "@paymentRequestExists": { "description": "Duplicate payment request error" },
 
   "commonError": "Something went wrong. Please try again.",
   "@commonError": { "description": "Generic error message" },
+
+  "commonRetry": "Retry",
+  "@commonRetry": { "description": "Retry button label" },
 
   "adminTierLabel": "Tier",
 
@@ -954,5 +975,155 @@
 
   "settingsThemeLight": "Light",
 
-  "settingsThemeDark": "Dark"
+  "settingsThemeDark": "Dark",
+
+  "examWrong": "Wrong",
+  "@examWrong": { "description": "Wrong answers label in exam result" },
+
+  "examTimeSpent": "Time",
+  "@examTimeSpent": { "description": "Time spent label in exam result" },
+
+  "profileLogoutConfirmTitle": "Sign Out?",
+  "@profileLogoutConfirmTitle": { "description": "Logout confirmation title" },
+
+  "profileLogoutConfirmMessage": "Are you sure you want to sign out of your account?",
+  "@profileLogoutConfirmMessage": { "description": "Logout confirmation message" },
+
+  "profileDeleteInstructions": "Before deleting your account:\n• All your exam results will be permanently erased\n• Your access subscription will be removed\n• This action cannot be undone\n• You will need to re-register to use the app again",
+  "@profileDeleteInstructions": { "description": "Instructions shown before deleting account" },
+
+  "progressExamsTaken": "Exams Taken",
+  "@progressExamsTaken": { "description": "Total exams taken label" },
+
+  "progressPassedCount": "Passed",
+  "@progressPassedCount": { "description": "Number of passed exams label" },
+
+  "progressFailedCount": "Failed",
+  "@progressFailedCount": { "description": "Number of failed exams label" },
+
+  "progressPassRate": "Pass Rate",
+  "@progressPassRate": { "description": "Pass rate label" },
+
+  "progressNoExams": "No exams taken yet. Start practicing!",
+  "@progressNoExams": { "description": "Empty state for progress page" },
+
+  "certificateReadyTitle": "Ready for Official Exam!",
+  "@certificateReadyTitle": { "description": "Certificate ready title" },
+
+  "certificateReadySubtitle": "You have passed {count} exams. You are ready for the official driving license test.",
+  "@certificateReadySubtitle": {
+    "description": "Certificate subtitle with count",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "certificateIremboLink": "Register for Official Exam on irembo.gov.rw",
+  "@certificateIremboLink": { "description": "Irembo link button label" },
+
+  "certificateIremboDesc": "Click below to register for the official provisional driving license computer-based test",
+  "@certificateIremboDesc": { "description": "Irembo link description" },
+
+  "certificateExamsNeeded": "Pass {needed} more exams to earn your certificate",
+  "@certificateExamsNeeded": {
+    "description": "How many more exams needed",
+    "placeholders": { "needed": { "type": "int" } }
+  },
+
+  "certificateProgressLabel": "{passed} of {total} required exams passed",
+  "@certificateProgressLabel": {
+    "description": "Certificate progress label",
+    "placeholders": {
+      "passed": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+
+  "adminSortAsc": "Oldest First",
+  "@adminSortAsc": { "description": "Sort ascending label" },
+
+  "adminSortDesc": "Newest First",
+  "@adminSortDesc": { "description": "Sort descending label" },
+
+  "adminFilterToday": "Today",
+  "@adminFilterToday": { "description": "Filter today label" },
+
+  "adminDateRange": "Date Range",
+  "@adminDateRange": { "description": "Date range filter label" },
+
+  "adminFilterRole": "Role",
+  "@adminFilterRole": { "description": "Filter by role label" },
+
+  "adminBlockUser": "Block User",
+  "@adminBlockUser": { "description": "Block user action" },
+
+  "adminUnblockUser": "Unblock User",
+  "@adminUnblockUser": { "description": "Unblock user action" },
+
+  "adminDeleteUserAction": "Delete User",
+  "@adminDeleteUserAction": { "description": "Delete user action" },
+
+  "adminBlockUserConfirm": "Block {name}? They will lose access and cannot log in.",
+  "@adminBlockUserConfirm": {
+    "description": "Block user confirmation",
+    "placeholders": { "name": { "type": "String" } }
+  },
+
+  "adminDeleteUserConfirm": "Permanently delete {name}? All their data will be erased. This cannot be undone.",
+  "@adminDeleteUserConfirm": {
+    "description": "Delete user confirmation",
+    "placeholders": { "name": { "type": "String" } }
+  },
+
+  "adminUserBlocked": "User blocked successfully",
+  "@adminUserBlocked": { "description": "User blocked success message" },
+
+  "adminUserUnblocked": "User unblocked successfully",
+  "@adminUserUnblocked": { "description": "User unblocked success message" },
+
+  "adminUserDeleted": "User deleted successfully",
+  "@adminUserDeleted": { "description": "User deleted success message" },
+
+  "adminMustBlockFirst": "You must block the user before deleting them.",
+  "@adminMustBlockFirst": { "description": "Must block first error message" },
+
+  "adminBlockAccess": "Block Access",
+  "@adminBlockAccess": { "description": "Block access action" },
+
+  "adminDeleteAccess": "Delete Access",
+  "@adminDeleteAccess": { "description": "Delete access action" },
+
+  "adminBlockAccessConfirm": "Block this access code? The user will lose access immediately.",
+  "@adminBlockAccessConfirm": { "description": "Block access confirmation" },
+
+  "adminDeleteAccessConfirm": "Delete this access code permanently?",
+  "@adminDeleteAccessConfirm": { "description": "Delete access confirmation" },
+
+  "adminAccessBlocked": "Access code blocked",
+  "@adminAccessBlocked": { "description": "Access blocked success message" },
+
+  "adminAccessDeleted": "Access code deleted",
+  "@adminAccessDeleted": { "description": "Access deleted success message" },
+
+  "adminPage": "Page {page} of {total}",
+  "@adminPage": {
+    "description": "Pagination label",
+    "placeholders": {
+      "page": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+
+  "adminLearningLanguage": "Learning",
+  "@adminLearningLanguage": { "description": "Learning language label" },
+
+  "adminIsBlocked": "Blocked",
+  "@adminIsBlocked": { "description": "Blocked status label" },
+
+  "adminIsActive": "Active",
+  "@adminIsActive": { "description": "Active status label" },
+
+  "generalCopied": "Copied!",
+  "@generalCopied": { "description": "Shown in snackbar after copying text to clipboard" },
+
+  "adminRetry": "Retry",
+  "@adminRetry": { "description": "Retry button label" }
 }

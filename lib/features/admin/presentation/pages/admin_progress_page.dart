@@ -104,7 +104,7 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
                       const Icon(Icons.error_outline, size: 48, color: AppColors.error),
                       const SizedBox(height: 16),
                       Text(_error!, style: AppTextStyles.bodyMedium),
-                      ElevatedButton(onPressed: _loadResults, child: const Text('Retry')),
+                      ElevatedButton(onPressed: _loadResults, child: Text(l10n.commonRetry)),
                     ],
                   ),
                 )
@@ -161,7 +161,7 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
                             child: ListTile(
                               leading: CircleAvatar(
                                 backgroundColor: i < 3
-                                    ? AppColors.warning.withOpacity(0.2)
+                                    ? AppColors.warning.withValues(alpha: 0.2)
                                     : AppColors.neutral200,
                                 child: Text(
                                   '${i + 1}',
@@ -180,8 +180,8 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: passed
-                                      ? AppColors.success.withOpacity(0.15)
-                                      : AppColors.warning.withOpacity(0.15),
+                                      ? AppColors.success.withValues(alpha: 0.15)
+                                      : AppColors.warning.withValues(alpha: 0.15),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
@@ -228,7 +228,7 @@ class _StatCard extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Theme.of(context).shadowColor.withOpacity(0.05), blurRadius: 8),
+          BoxShadow(color: Theme.of(context).shadowColor.withValues(alpha: 0.05), blurRadius: 8),
         ],
       ),
       child: Column(

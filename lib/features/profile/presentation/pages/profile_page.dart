@@ -164,11 +164,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: isSelected ? AppColors.primary : AppColors.neutral300,
+                        color: isSelected ? primary : AppColors.neutral300,
                         width: isSelected ? 2 : 1,
                       ),
                       borderRadius: BorderRadius.circular(12),
-                      color: isSelected ? AppColors.primary.withOpacity(0.08) : null,
+                      color: isSelected ? primary.withValues(alpha: 0.08) : null,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -176,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(tier['label'] as String, style: AppTextStyles.bodyMedium),
                         Text(
                           l10n.subscriptionPrice(tier['price'] as int),
-                          style: AppTextStyles.heading6.copyWith(color: AppColors.primary),
+                          style: AppTextStyles.heading6.copyWith(color: primary),
                         ),
                       ],
                     ),
@@ -242,8 +242,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-
-    // Admin view: loading another user's data
+    final primary = Theme.of(context).colorScheme.primary;
     if (_isAdminView) {
       if (_loadingTarget) {
         return Scaffold(
@@ -295,7 +294,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     border: Border(
-                      bottom: BorderSide(color: AppColors.primary.withOpacity(0.1)),
+                      bottom: BorderSide(color: primary.withValues(alpha: 0.1)),
                     ),
                   ),
                   child: Row(
@@ -335,10 +334,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                   height: 120,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    gradient: AppColors.primaryGradient,
+                                    gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColors.primary.withOpacity(0.3),
+                                        color: primary.withValues(alpha: 0.3),
                                         blurRadius: 20,
                                       ),
                                     ],
@@ -363,13 +362,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: AppColors.primary.withOpacity(0.12),
+                                    color: primary.withValues(alpha: 0.12),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Text(
                                     user.role,
                                     style: TextStyle(
-                                      color: AppColors.primary,
+                                      color: primary,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12,
                                     ),
@@ -379,12 +378,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Icon(Icons.location_on, size: 16, color: AppColors.primary),
+                                    Icon(Icons.location_on, size: 16, color: primary),
                                     const SizedBox(width: 4),
                                     Text(
                                       l10n.profileLocation,
-                                      style: const TextStyle(
-                                        color: AppColors.primary,
+                                      style: TextStyle(
+                                        color: primary,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -401,7 +400,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.surface,
                                 borderRadius: BorderRadius.circular(16),
-                                border: Border.all(color: AppColors.primary.withOpacity(0.05)),
+                                border: Border.all(color: primary.withValues(alpha: 0.05)),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -428,7 +427,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.surface,
                                 borderRadius: BorderRadius.circular(16),
-                                border: Border.all(color: AppColors.primary.withOpacity(0.05)),
+                                border: Border.all(color: primary.withValues(alpha: 0.05)),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -444,7 +443,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                       const Text(
                                         '75%',
-                                        style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primary),
+                                        style: TextStyle(fontWeight: FontWeight.bold, color: primary),
                                       ),
                                     ],
                                   ),
@@ -454,14 +453,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     child: LinearProgressIndicator(
                                       value: 0.75,
                                       minHeight: 10,
-                                      backgroundColor: AppColors.primary.withOpacity(0.1),
-                                      color: AppColors.primary,
+                                      backgroundColor: primary.withValues(alpha: 0.1),
+                                      color: primary,
                                     ),
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
                                     l10n.profileModulesCompleted(15, 20),
-                                    style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+                                    style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6)),
                                   ),
                                 ],
                               ),
@@ -522,10 +521,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
 
                             ListTile(
-                              onTap: () {
-                                context.read<AuthBloc>().add(const SignOutEvent());
-                                context.go('/landing');
-                              },
+                              onTap: () => _showLogoutDialog(context, l10n),
                               leading: const Icon(Icons.logout, color: AppColors.error),
                               title: Text(
                                 l10n.profileSignOut,
@@ -609,9 +605,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 90,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      gradient: AppColors.primaryGradient,
+                      gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
                       boxShadow: [
-                        BoxShadow(color: AppColors.primary.withOpacity(0.3), blurRadius: 16),
+                        BoxShadow(color: primary.withValues(alpha: 0.3), blurRadius: 16),
                       ],
                     ),
                     child: Center(
@@ -631,13 +627,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.15),
+                      color: primary.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       role,
-                      style: const TextStyle(
-                        color: AppColors.primary,
+                      style: TextStyle(
+                        color: primary,
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
                       ),
@@ -737,20 +733,92 @@ class _ProfilePageState extends State<ProfilePage> {
   void _showDeleteDialog(BuildContext context, AppLocalizations l10n) {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text(l10n.profileDeleteConfirmTitle),
-        content: Text(l10n.profileDeleteConfirmMessage),
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        title: Row(
+          children: [
+            const Icon(Icons.warning_amber_rounded, color: AppColors.error, size: 28),
+            const SizedBox(width: 10),
+            Expanded(child: Text(l10n.profileDeleteConfirmTitle)),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Instructions
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.warning.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
+                ),
+                child: Text(
+                  l10n.profileDeleteInstructions,
+                  style: const TextStyle(fontSize: 13, height: 1.6),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.profileDeleteConfirmMessage,
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(ctx),
             child: Text(l10n.commonCancel),
           ),
-          TextButton(
+          ElevatedButton(
             onPressed: () {
+              Navigator.pop(ctx);
               context.read<AuthBloc>().add(const SignOutEvent());
               context.go('/landing');
             },
-            child: Text(l10n.profileDelete, style: const TextStyle(color: AppColors.error)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.error,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(l10n.profileDelete),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context, AppLocalizations l10n) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        title: Row(
+          children: [
+            const Icon(Icons.logout, color: AppColors.warning, size: 26),
+            const SizedBox(width: 10),
+            Expanded(child: Text(l10n.profileLogoutConfirmTitle)),
+          ],
+        ),
+        content: Text(l10n.profileLogoutConfirmMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.commonCancel),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              context.read<AuthBloc>().add(const SignOutEvent());
+              context.go('/landing');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primary,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(l10n.profileSignOut),
           ),
         ],
       ),
@@ -769,11 +837,11 @@ class _ProfilePageState extends State<ProfilePage> {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.primary.withOpacity(0.05)),
+        border: Border.all(color: primary.withValues(alpha: 0.05)),
       ),
       child: ListTile(
         onTap: onTap,
-        leading: Icon(icon, color: AppColors.primary),
+        leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
         subtitle: Text(subtitle),
         trailing: const Icon(Icons.chevron_right),
@@ -797,7 +865,7 @@ class _InfoCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withOpacity(0.04), blurRadius: 8)],
+        boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withValues(alpha: 0.04), blurRadius: 8)],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -837,7 +905,7 @@ class _InfoRow extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         children: [
-          Icon(icon, size: 18, color: AppColors.primary),
+          Icon(icon, size: 18, color: Theme.of(context).colorScheme.primary),
           const SizedBox(width: 12),
           Expanded(
             child: Text(

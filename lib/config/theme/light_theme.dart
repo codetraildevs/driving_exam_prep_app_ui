@@ -160,7 +160,7 @@ ThemeData buildLightTheme() {
         return AppColors.neutral400;
       }),
       trackColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return AppColors.primaryLight.withOpacity(0.5);
+        if (states.contains(WidgetState.selected)) return AppColors.primaryLight.withValues(alpha: 0.4);
         return AppColors.neutral200;
       }),
     ),

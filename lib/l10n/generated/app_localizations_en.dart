@@ -752,6 +752,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminSelectTier => 'Select Access Tier';
 
   @override
+  String get adminCustomDays => 'Custom Duration (days)';
+
+  @override
+  String get adminPaymentAmount => 'Amount (RWF)';
+
+  @override
+  String get adminEnterDays => 'Enter number of days';
+
+  @override
+  String get adminEnterAmount => 'Enter amount in RWF';
+
+  @override
+  String get adminOrCustom => 'Or set custom days';
+
+  @override
+  String get adminPendingRequests => 'Pending Payment Requests';
+
+  @override
+  String get adminAllUsersList => 'All Users';
+
+  @override
+  String get adminInvalidAmount => 'Please enter a valid amount greater than 0';
+
+  @override
+  String get adminInvalidDays => 'Please enter a valid number of days greater than 0';
+
+  @override
+  String get adminAccessRevoked => 'Access revoked';
+
+  @override
+  String get adminNoUsers => 'No users found';
+
+  @override
   String get examListTitle => 'Practice Exams';
 
   @override
@@ -854,45 +887,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentHelpText => 'Need help? Call or WhatsApp: 0788657595';
 
   @override
-  String paymentDialMomoPay(String amount) {
-    return 'Dial *182*1*1*323294*$amount# to pay via MoMo Pay';
-  }
+  String get paymentError => 'Payment request failed. Please pay manually using the instructions below.';
 
   @override
-  String paymentDialMobileMoney(String amount) {
-    return 'Dial *182*8*1*0788657595*$amount# to pay via Mobile Money';
-  }
+  String get paymentCopyNumber => 'Copy Number';
 
   @override
-  String get paymentCopyCode => 'Copy Code';
+  String get paymentCallNumber => 'Call 0788657595';
 
   @override
-  String get paymentDialNow => 'Dial Now';
+  String get paymentWhatsApp => 'WhatsApp: Send Message';
 
   @override
-  String get paymentCodeCopied => 'Payment code copied!';
+  String get paymentWhatsAppMessage => 'Request access for driving exam app';
 
   @override
-  String get paymentWhatsAppMessage =>
-      'Hello, I want to subscribe to Rwanda Traffic Rules app.';
-
-  @override
-  String get paymentSelectPlanFirst => 'Please select a plan first';
-
-  @override
-  String get paymentConfirmRequest => 'Confirm Payment Request';
-
-  @override
-  String get paymentStep1 => '1. Select a plan below';
-
-  @override
-  String get paymentStep2 => '2. Pay using one of the methods above';
-
-  @override
-  String get paymentStep3 => '3. Tap \'Confirm Payment Request\' to notify us';
+  String get paymentRequestExists => 'A payment request for this plan is already pending. Please wait for activation or contact support.';
 
   @override
   String get commonError => 'Something went wrong. Please try again.';
+
+  @override
+  String get commonRetry => 'Retry';
 
   @override
   String get adminTierLabel => 'Tier';
@@ -928,8 +944,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminTotalPractices => 'Total Practices';
 
   @override
-  String get adminManagePlatformDesc =>
-      'Manage your traffic rules learning platform';
+  String get adminManagePlatformDesc => 'Manage your traffic rules learning platform';
 
   @override
   String get adminNotifications => 'Notifications';
@@ -948,4 +963,138 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsThemeDark => 'Dark';
+
+  @override
+  String get examWrong => 'Wrong';
+
+  @override
+  String get examTimeSpent => 'Time';
+
+  @override
+  String get profileLogoutConfirmTitle => 'Sign Out?';
+
+  @override
+  String get profileLogoutConfirmMessage => 'Are you sure you want to sign out of your account?';
+
+  @override
+  String get profileDeleteInstructions =>
+      'Before deleting your account:\n• All your exam results will be permanently erased\n• Your access subscription will be removed\n• This action cannot be undone\n• You will need to re-register to use the app again';
+
+  @override
+  String get progressExamsTaken => 'Exams Taken';
+
+  @override
+  String get progressPassedCount => 'Passed';
+
+  @override
+  String get progressFailedCount => 'Failed';
+
+  @override
+  String get progressPassRate => 'Pass Rate';
+
+  @override
+  String get progressNoExams => 'No exams taken yet. Start practicing!';
+
+  @override
+  String get certificateReadyTitle => 'Ready for Official Exam!';
+
+  @override
+  String certificateReadySubtitle(int count) =>
+      'You have passed $count exams. You are ready for the official driving license test.';
+
+  @override
+  String get certificateIremboLink => 'Register for Official Exam on irembo.gov.rw';
+
+  @override
+  String get certificateIremboDesc =>
+      'Click below to register for the official provisional driving license computer-based test';
+
+  @override
+  String certificateExamsNeeded(int needed) =>
+      'Pass $needed more exams to earn your certificate';
+
+  @override
+  String certificateProgressLabel(int passed, int total) =>
+      '$passed of $total required exams passed';
+
+  @override
+  String get adminSortAsc => 'Oldest First';
+
+  @override
+  String get adminSortDesc => 'Newest First';
+
+  @override
+  String get adminFilterToday => 'Today';
+
+  @override
+  String get adminDateRange => 'Date Range';
+
+  @override
+  String get adminFilterRole => 'Role';
+
+  @override
+  String get adminBlockUser => 'Block User';
+
+  @override
+  String get adminUnblockUser => 'Unblock User';
+
+  @override
+  String get adminDeleteUserAction => 'Delete User';
+
+  @override
+  String adminBlockUserConfirm(String name) =>
+      'Block $name? They will lose access and cannot log in.';
+
+  @override
+  String adminDeleteUserConfirm(String name) =>
+      'Permanently delete $name? All their data will be erased. This cannot be undone.';
+
+  @override
+  String get adminUserBlocked => 'User blocked successfully';
+
+  @override
+  String get adminUserUnblocked => 'User unblocked successfully';
+
+  @override
+  String get adminUserDeleted => 'User deleted successfully';
+
+  @override
+  String get adminMustBlockFirst => 'You must block the user before deleting them.';
+
+  @override
+  String get adminBlockAccess => 'Block Access';
+
+  @override
+  String get adminDeleteAccess => 'Delete Access';
+
+  @override
+  String get adminBlockAccessConfirm =>
+      'Block this access code? The user will lose access immediately.';
+
+  @override
+  String get adminDeleteAccessConfirm => 'Delete this access code permanently?';
+
+  @override
+  String get adminAccessBlocked => 'Access code blocked';
+
+  @override
+  String get adminAccessDeleted => 'Access code deleted';
+
+  @override
+  String adminPage(int page, int total) => 'Page $page of $total';
+
+  @override
+  String get adminLearningLanguage => 'Learning';
+
+  @override
+  String get adminIsBlocked => 'Blocked';
+
+  @override
+  String get adminIsActive => 'Active';
+
+  @override
+  String get generalCopied => 'Copied!';
+
+  @override
+  String get adminRetry => 'Retry';
 }
