@@ -7,6 +7,7 @@ import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/network/api_config.dart';
 import '../../../../shared/session/auth_session.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 
 class AdminUsersPage extends StatefulWidget {
   const AdminUsersPage({Key? key}) : super(key: key);
@@ -489,18 +490,20 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     final primary = Theme.of(context).colorScheme.primary;
     final surfaceColor = Theme.of(context).colorScheme.surface;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.adminUsers),
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadUsers,
-          ),
-        ],
-      ),
       body: Column(
         children: [
+          AppPageHeader(
+            title: l10n.adminUsers,
+            showBack: false,
+            trailing: IconButton(
+              icon: const Icon(Icons.refresh, color: AppColors.textInverse),
+              onPressed: _loadUsers,
+              tooltip: 'Refresh',
+            ),
+          ),
+          Expanded(
+            child: Column(
+              children: [
           // ── Search bar ───────────────────────────────────────────────
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
@@ -759,6 +762,9 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                 ],
               ),
             ),
+              ],
+            ),
+          ),
         ],
       ),
     );

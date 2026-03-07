@@ -76,17 +76,34 @@ class SecurityUtils
     }
 
     /**
-     * Get JWT from Authorization header
+     * Get JWT from Authorization header.
+     *
+     * Works across all PHP SAPI configurations:
+     *  - Apache with mod_php / getallheaders() (case-insensitive lookup)
+     *  - Apache mod_rewrite + PHP-CGI (REDIRECT_HTTP_AUTHORIZATION)
+     *  - Nginx / PHP-FPM (HTTP_AUTHORIZATION in $_SERVER)
      */
     public static function getTokenFromHeaders()
     {
-        $headers = getallheaders();
-        if (isset($headers['Authorization'])) {
-            $authHeader = $headers['Authorization'];
-            if (preg_match('/Bearer\s+(\S+)/', $authHeader, $matches)) {
-                return $matches[1];
+        // 1. getallheaders() – normalise to lowercase for case-insensitive match
+        if (function_exists('getallheaders')) {
+            $headers = array_change_key_case(getallheaders(), CASE_LOWER);
+            if (!empty($headers['authorization'])) {
+                if (preg_match('/Bearer\s+(\S+)/i', $headers['authorization'], $m)) {
+                    return $m[1];
+                }
             }
         }
+
+        // 2. $_SERVER fallbacks (CGI / FastCGI / mod_rewrite pass-through)
+        foreach (['HTTP_AUTHORIZATION', 'REDIRECT_HTTP_AUTHORIZATION'] as $key) {
+            if (!empty($_SERVER[$key])) {
+                if (preg_match('/Bearer\s+(\S+)/i', $_SERVER[$key], $m)) {
+                    return $m[1];
+                }
+            }
+        }
+
         return null;
     }
 

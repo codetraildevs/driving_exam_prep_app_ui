@@ -1083,8 +1083,8 @@ function getUserResults($conn, $params) {
         ErrorHandler::badRequest('Invalid user ID');
     }
     
-    // Only allow users to view their own results, unless they're admin
-    if ($tokenData['userId'] !== $userId && $tokenData['role'] !== 'ADMIN') {
+    // Only allow users to view their own results, or ADMIN/MANAGER for any user
+    if ($tokenData['userId'] !== $userId && !in_array($tokenData['role'], ['ADMIN', 'MANAGER'])) {
         Logger::security('Unauthorized attempt to view another user\'s results', ['requestedUserId' => $userId, 'actualUserId' => $tokenData['userId']]);
         ErrorHandler::forbidden('You can only view your own exam results');
     }

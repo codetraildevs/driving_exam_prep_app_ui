@@ -3,6 +3,7 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/network/api_helper.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 
 class AdminProgressPage extends StatefulWidget {
   const AdminProgressPage({Key? key}) : super(key: key);
@@ -70,27 +71,13 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
     return Scaffold(
       body: Column(
         children: [
-          // Gradient header
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 12, 12, 18),
-            decoration: const BoxDecoration(
-              gradient: AppColors.primaryGradient,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    l10n.adminProgress,
-                    style: AppTextStyles.heading5.copyWith(color: AppColors.textInverse),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.refresh, color: AppColors.textInverse),
-                  onPressed: _loadResults,
-                ),
-              ],
+          AppPageHeader(
+            title: l10n.adminProgress,
+            showBack: false,
+            trailing: IconButton(
+              icon: const Icon(Icons.refresh, color: AppColors.textInverse),
+              onPressed: _loadResults,
+              tooltip: 'Refresh',
             ),
           ),
           Expanded(
