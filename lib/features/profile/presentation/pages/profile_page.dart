@@ -10,6 +10,7 @@ import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../shared/network/api_config.dart';
 import '../../../../shared/session/auth_session.dart';
 import '../../../../shared/subscription/subscription_provider.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 
 class ProfilePage extends StatefulWidget {
   /// When [userId] is provided, admin is viewing another user's profile.

@@ -896,11 +896,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get paymentMomoPayNumber => 'MoMo Pay: 323294';
 
   @override
+  String get paymentMomoPayDial => 'Pour payer avec MoMo Pay, composez: *182*1*1*323294*montant#';
+
+  @override
   String get paymentMobileMoneyNumber => 'Mobile Money: 0788657595';
+
+  @override
+  String get paymentMobileMoneyDial => 'Pour payer avec Mobile Money, composez: *182*8*1*0788657595*montant#';
 
   @override
   String get paymentHelpText =>
       'Besoin d\'aide ? Appelez ou WhatsApp: 0788657595';
+
+  @override
+  String get paymentHelpContact =>
+      'Vous pouvez copier ou appeler: 0788657595 ou WhatsApp: 0788657595 pour de l\'aide.';
 
   @override
   String get paymentError =>
@@ -1229,4 +1239,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get examSampleQ3A4 => '10 mètres';
+
+  @override
+  String get examShareResult => 'Partager le résultat';
+
+  @override
+  String get examCopiedToClipboard => 'Résultat copié dans le presse-papiers';
+
+  @override
+  String get examGradeLabel => 'Note';
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
@@ -7,6 +6,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_provider.dart';
 import '../../../../shared/locale/language_selector_page.dart';
 import '../../../../shared/theme/theme_provider.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -26,19 +26,17 @@ class _SettingsPageState extends State<SettingsPage> {
     final outlineColor = cs.outline;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.settingsTitle),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildSectionHeader(l10n.settingsPreferences),
+      body: Column(
+        children: [
+          AppPageHeader(
+            title: l10n.settingsTitle,
+            showBack: true,
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildSectionHeader(l10n.settingsPreferences),
 
               // ── Theme selector ──────────────────────────────────────
               _ThemeSelectorTile(
@@ -91,9 +89,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: () => _showResetConfirmation(),
               ),
               const SizedBox(height: 32),
-            ],
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

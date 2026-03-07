@@ -894,11 +894,21 @@ class AppLocalizationsRw extends AppLocalizations {
   String get paymentMomoPayNumber => 'MoMo Pay: 323294';
 
   @override
+  String get paymentMomoPayDial => 'Kwishyura na MoMo Pay, kanda: *182*1*1*323294*amafaranga#';
+
+  @override
   String get paymentMobileMoneyNumber => 'Mobile Money: 0788657595';
+
+  @override
+  String get paymentMobileMoneyDial => 'Kwishyura na Mobile Money, kanda: *182*8*1*0788657595*amafaranga#';
 
   @override
   String get paymentHelpText =>
       'Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595';
+
+  @override
+  String get paymentHelpContact =>
+      'Urashobora kopi cyangwa guhamagara: 0788657595 cyangwa WhatsApp: 0788657595 kugira ubufasha.';
 
   @override
   String get paymentError =>
@@ -1224,4 +1234,13 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get examSampleQ3A4 => 'Metero 10';
+
+  @override
+  String get examShareResult => 'Sangira Ibisubizo';
+
+  @override
+  String get examCopiedToClipboard => 'Ibisubizo byakopeshejwe';
+
+  @override
+  String get examGradeLabel => 'Amanota';
 }

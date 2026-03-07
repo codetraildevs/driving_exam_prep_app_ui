@@ -35,23 +35,86 @@ class _AdminAccessPageState extends State<AdminAccessPage>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.adminAccess),
-        elevation: 0,
-        bottom: TabBar(
-          controller: _tabCtrl,
-          tabs: [
-            Tab(text: l10n.adminAccess),
-            Tab(text: l10n.adminManageUsers),
+      body: Column(
+        children: [
+          // ── Gradient header with tabs ───────────────────────────────────
+          _GradientTabHeader(title: l10n.adminAccess, tabCtrl: _tabCtrl, l10n: l10n),
+          Expanded(
+            child: TabBarView(
+              controller: _tabCtrl,
+              children: const [
+                _AccessCodesTab(),
+                _GrantAccessTab(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Gradient header that contains the page title and a [TabBar].
+/// Used by [AdminAccessPage] to match the style of [AppPageHeader]
+/// while also hosting the two-tab navigation.
+class _GradientTabHeader extends StatelessWidget {
+  final String title;
+  final TabController tabCtrl;
+  final AppLocalizations l10n;
+
+  const _GradientTabHeader({
+    required this.title,
+    required this.tabCtrl,
+    required this.l10n,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final topPad = MediaQuery.of(context).padding.top;
+    final gradient = AppColors.primaryGradientFor(Theme.of(context).brightness);
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: gradient,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, topPad + 12, 12, 4),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: AppTextStyles.heading3.copyWith(
+                        color: AppColors.textInverse,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            TabBar(
+              controller: tabCtrl,
+              labelColor: AppColors.textInverse,
+              unselectedLabelColor: AppColors.textInverse.withValues(alpha: 0.6),
+              indicatorColor: AppColors.textInverse,
+              indicatorWeight: 3,
+              tabs: [
+                Tab(text: l10n.adminAccess),
+                Tab(text: l10n.adminManageUsers),
+              ],
+            ),
           ],
         ),
-      ),
-      body: TabBarView(
-        controller: _tabCtrl,
-        children: const [
-          _AccessCodesTab(),
-          _GrantAccessTab(),
-        ],
       ),
     );
   }
@@ -248,59 +311,70 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
           child: Row(
             children: [
-              // Sort
-              _toolChip(context,
-                icon: _sortDir == 'DESC'
-                    ? Icons.arrow_downward
-                    : Icons.arrow_upward,
-                label: _sortDir == 'DESC' ? l10n.adminSortDesc : l10n.adminSortAsc,
-                onTap: () {
-                  setState(() => _sortDir =
-                      _sortDir == 'DESC' ? 'ASC' : 'DESC');
-                  _page = 1;
-                  _load();
-                },
-              ),
-              const SizedBox(width: 8),
-              // Today
-              _toolChip(context,
-                icon: Icons.today,
-                label: l10n.adminFilterToday,
-                selected: _todayOnly,
-                onTap: () {
-                  setState(() {
-                    _todayOnly = !_todayOnly;
-                    if (_todayOnly) {
-                      _dateFrom = null;
-                      _dateTo = null;
-                    }
-                  });
-                  _page = 1;
-                  _load();
-                },
-              ),
-              const SizedBox(width: 8),
-              // Date range
-              if (!_todayOnly)
-                _toolChip(context,
-                  icon: Icons.date_range,
-                  label: _dateFrom != null
-                      ? _dateFrom!.toIso8601String().split('T')[0]
-                      : l10n.adminDateRange,
-                  selected: _dateFrom != null,
-                  onTap: () => _pickDateRange(context, l10n),
-                  onClear: _dateFrom != null
-                      ? () {
+              // Chips group — scrollable so they never overflow on small screens
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      // Sort
+                      _toolChip(context,
+                        icon: _sortDir == 'DESC'
+                            ? Icons.arrow_downward
+                            : Icons.arrow_upward,
+                        label: _sortDir == 'DESC' ? l10n.adminSortDesc : l10n.adminSortAsc,
+                        onTap: () {
+                          setState(() => _sortDir =
+                              _sortDir == 'DESC' ? 'ASC' : 'DESC');
+                          _page = 1;
+                          _load();
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      // Today
+                      _toolChip(context,
+                        icon: Icons.today,
+                        label: l10n.adminFilterToday,
+                        selected: _todayOnly,
+                        onTap: () {
                           setState(() {
-                            _dateFrom = null;
-                            _dateTo = null;
+                            _todayOnly = !_todayOnly;
+                            if (_todayOnly) {
+                              _dateFrom = null;
+                              _dateTo = null;
+                            }
                           });
                           _page = 1;
                           _load();
-                        }
-                      : null,
+                        },
+                      ),
+                      // Date range
+                      if (!_todayOnly) ...[
+                        const SizedBox(width: 8),
+                        _toolChip(context,
+                          icon: Icons.date_range,
+                          label: _dateFrom != null
+                              ? _dateFrom!.toIso8601String().split('T')[0]
+                              : l10n.adminDateRange,
+                          selected: _dateFrom != null,
+                          onTap: () => _pickDateRange(context, l10n),
+                          onClear: _dateFrom != null
+                              ? () {
+                                  setState(() {
+                                    _dateFrom = null;
+                                    _dateTo = null;
+                                  });
+                                  _page = 1;
+                                  _load();
+                                }
+                              : null,
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
-              const Spacer(),
+              ),
+              // Refresh button — always visible on the right
               IconButton(
                 icon: const Icon(Icons.refresh),
                 onPressed: _load,

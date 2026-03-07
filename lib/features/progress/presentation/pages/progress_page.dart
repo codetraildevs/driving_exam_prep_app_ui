@@ -2,14 +2,15 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../shared/network/api_config.dart';
 import '../../../../shared/session/auth_session.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 
 class ProgressPage extends StatefulWidget {
   const ProgressPage({Key? key}) : super(key: key);
@@ -120,65 +121,21 @@ class _ProgressPageState extends State<ProgressPage>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final gradient = AppColors.primaryGradientFor(Theme.of(context).brightness);
 
     return Scaffold(
       body: Column(
         children: [
           // ── Gradient header ──────────────────────────────────────────
-          Container(
-            decoration: BoxDecoration(
-              gradient: gradient,
-              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
-            ),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back,
-                              color: Colors.white),
-                          onPressed: () => context.go('/home'),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          icon: const Icon(Icons.refresh, color: Colors.white),
-                          onPressed: _loadResults,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        l10n.progressTitle,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    if (!_isLoading && _error == null && _total > 0) ...[
-                      const SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: _HeaderStats(
-                          total: _total,
-                          passed: _passed,
-                          passRate: _passRate,
-                          l10n: l10n,
-                          anim: _anim,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
+          AppPageHeader(
+            title: l10n.progressTitle,
+            showBack: false,
+            subtitle: (!_isLoading && _error == null && _total > 0)
+                ? '$_passed / $_total ${l10n.progressPassedCount}'
+                : null,
+            trailing: IconButton(
+              icon: const Icon(Icons.refresh, color: Colors.white),
+              onPressed: _loadResults,
+              tooltip: 'Refresh',
             ),
           ),
 
@@ -243,97 +200,6 @@ class _ProgressPageState extends State<ProgressPage>
                           ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-// ── Header stats ──────────────────────────────────────────────────────────────
-
-class _HeaderStats extends StatelessWidget {
-  final int total;
-  final int passed;
-  final double passRate;
-  final AppLocalizations l10n;
-  final Animation<double> anim;
-
-  const _HeaderStats({
-    required this.total,
-    required this.passed,
-    required this.passRate,
-    required this.l10n,
-    required this.anim,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        _HeaderChip(
-          value: '$total',
-          label: l10n.progressExamsTaken,
-          icon: Icons.quiz_rounded,
-        ),
-        const SizedBox(width: 12),
-        _HeaderChip(
-          value: '$passed',
-          label: l10n.progressPassedCount,
-          icon: Icons.check_circle_rounded,
-        ),
-        const SizedBox(width: 12),
-        _HeaderChip(
-          value: '${(passRate * 100).toInt()}%',
-          label: l10n.progressPassRate,
-          icon: Icons.trending_up_rounded,
-        ),
-      ],
-    );
-  }
-}
-
-class _HeaderChip extends StatelessWidget {
-  final String value;
-  final String label;
-  final IconData icon;
-
-  const _HeaderChip({
-    required this.value,
-    required this.label,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.18),
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, color: Colors.white, size: 18),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            Text(
-              label,
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.85),
-                fontSize: 10,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
       ),
     );
   }

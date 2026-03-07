@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,6 +13,7 @@ import '../../../../shared/locale/locale_provider.dart';
 import '../../../../shared/network/api_config.dart';
 import '../../../../shared/session/auth_session.dart';
 import '../../../../shared/subscription/subscription_provider.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 
 const _kHelpNumber = '0788657595';
 
@@ -25,7 +25,8 @@ class SubscriptionPage extends StatefulWidget {
 }
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
-  bool _isRequesting = false;
+  /// Which tier is currently being submitted (null = none loading).
+  String? _loadingTier;
   String? _successMessage;
   String? _errorMessage;
   bool _isDuplicateRequest = false;
@@ -53,8 +54,11 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     int price,
     String langCode,
   ) async {
+    // Prevent submitting another tier while one is already loading.
+    if (_loadingTier != null) return;
+
     setState(() {
-      _isRequesting = true;
+      _loadingTier = tier;
       _successMessage = null;
       _errorMessage = null;
       _isDuplicateRequest = false;
@@ -69,7 +73,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
     if (userId == null || userId.isEmpty) {
       setState(() {
-        _isRequesting = false;
+        _loadingTier = null;
         _errorMessage = l10n.commonError;
       });
       return;
@@ -95,18 +99,35 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           )
           .timeout(const Duration(seconds: 15));
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        setState(() {
-          _successMessage = l10n.subscriptionRequestSent;
-        });
-      } else if (response.statusCode == 409) {
-        // Duplicate request
+      if (response.statusCode == 409) {
+        // Duplicate request (proper HTTP 409).
         setState(() {
           _isDuplicateRequest = true;
           _errorMessage = l10n.paymentRequestExists;
         });
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        // Backend may return 200 with duplicate:true for an already-pending tier.
+        Map<String, dynamic> data = {};
+        try {
+          final decoded = json.decode(response.body);
+          if (decoded is Map<String, dynamic>) data = decoded;
+        } catch (_) {}
+        if (data['duplicate'] == true) {
+          setState(() {
+            _isDuplicateRequest = true;
+            _errorMessage = l10n.paymentRequestExists;
+          });
+        } else {
+          setState(() {
+            _successMessage = l10n.subscriptionRequestSent;
+          });
+        }
       } else {
-        final data = json.decode(response.body);
+        Map<String, dynamic> data = {};
+        try {
+          final decoded = json.decode(response.body);
+          if (decoded is Map<String, dynamic>) data = decoded;
+        } catch (_) {}
         final msg = (data['message'] as String?)?.isNotEmpty == true
             ? data['message'] as String
             : l10n.paymentError;
@@ -121,7 +142,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
         _errorMessage = l10n.paymentError;
       });
     } finally {
-      setState(() => _isRequesting = false);
+      setState(() => _loadingTier = null);
     }
   }
 
@@ -160,163 +181,185 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     final isLarge = screenWidth >= 600;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.subscriptionTitle),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(isLarge ? 32 : 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Current status
-              if (subscription.hasActiveAccess) ...[
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppColors.success.withValues(alpha: 0.1),
-                    border: Border.all(color: AppColors.success.withValues(alpha: 0.4)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.check_circle, color: AppColors.success),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              l10n.subscriptionAccessActive,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.success,
-                              ),
-                            ),
-                            if (subscription.expiresAt != null)
-                              Text(
-                                l10n.subscriptionExpires(
-                                  subscription.expiresAt!.toLocal().toString().split(' ')[0],
-                                ),
-                                style: AppTextStyles.bodySmall.copyWith(
-                                  color: AppColors.textSecondary,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-              ],
-
-              // Header
-              Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.25),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    const Icon(Icons.lock_open, size: 48, color: AppColors.textInverse),
-                    const SizedBox(height: 12),
-                    Text(
-                      l10n.subscriptionSubtitle,
-                      style: const TextStyle(
-                        color: AppColors.textInverse,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      l10n.subscriptionGetAccess(langCode == 'rw' ? 12 : 20),
-                      style: const TextStyle(color: AppColors.textInverse, fontSize: 14),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // Pricing label
-              Text(l10n.subscriptionChoosePlan, style: AppTextStyles.heading5),
-              const SizedBox(height: 4),
-              Text(
-                l10n.subscriptionCurrency,
-                style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
-              ),
-              const SizedBox(height: 16),
-
-              // Plan cards
-              ...plans.map((plan) => _PlanCard(
-                    plan: plan,
-                    isLoading: _isRequesting,
-                    onRequest: (tier, price) =>
-                        _requestAccess(context, tier, price, langCode),
-                    l10n: l10n,
-                  )),
-
-              const SizedBox(height: 24),
-
-              // Payment Instructions Card — always visible
-              _PaymentInstructionsCard(l10n: l10n),
-
-              // Success/Error messages
-              if (_successMessage != null) ...[
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppColors.success.withValues(alpha: 0.1),
-                    border: Border.all(color: AppColors.success.withValues(alpha: 0.4)),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.check_circle, color: AppColors.success),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          _successMessage!,
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.success),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              if (_errorMessage != null) ...[
-                const SizedBox(height: 16),
-                _ErrorCard(
-                  message: _errorMessage!,
-                  isPaymentError: _isPaymentError,
-                  isDuplicate: _isDuplicateRequest,
-                  l10n: l10n,
-                  onCopy: () => _copyNumber(context),
-                  onCall: _callNumber,
-                  onWhatsApp: () => _openWhatsApp(l10n.paymentWhatsAppMessage),
-                ),
-              ],
-              const SizedBox(height: 16),
-            ],
+      body: Column(
+        children: [
+          AppPageHeader(
+            title: l10n.subscriptionTitle,
+            subtitle: l10n.subscriptionSubtitle,
+            showBack: true,
           ),
-        ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(isLarge ? 32 : 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // ── Active subscription banner ──────────────────────────
+                  if (subscription.hasActiveAccess) ...[
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColors.success.withValues(alpha: 0.1),
+                        border: Border.all(
+                            color: AppColors.success.withValues(alpha: 0.4)),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.check_circle,
+                              color: AppColors.success),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  l10n.subscriptionAccessActive,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.success,
+                                  ),
+                                ),
+                                if (subscription.expiresAt != null)
+                                  Text(
+                                    l10n.subscriptionExpires(
+                                      subscription.expiresAt!
+                                          .toLocal()
+                                          .toString()
+                                          .split(' ')[0],
+                                    ),
+                                    style: AppTextStyles.bodySmall.copyWith(
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+
+                  // ── Promo header card ────────────────────────────────────
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      gradient: AppColors.primaryGradientFor(
+                          Theme.of(context).brightness),
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withValues(alpha: 0.25),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        const Icon(Icons.lock_open,
+                            size: 48, color: AppColors.textInverse),
+                        const SizedBox(height: 12),
+                        Text(
+                          l10n.subscriptionSubtitle,
+                          style: const TextStyle(
+                            color: AppColors.textInverse,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          l10n.subscriptionGetAccess(langCode == 'rw' ? 12 : 20),
+                          style: const TextStyle(
+                              color: AppColors.textInverse, fontSize: 14),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // ── Payment Instructions — shown FIRST before plan cards ──
+                  _PaymentInstructionsCard(
+                    l10n: l10n,
+                    onCopy: () => _copyNumber(context),
+                    onCall: _callNumber,
+                    onWhatsApp: () =>
+                        _openWhatsApp(l10n.paymentWhatsAppMessage),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // ── Plan selection ────────────────────────────────────────
+                  Text(l10n.subscriptionChoosePlan,
+                      style: AppTextStyles.heading5),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.subscriptionCurrency,
+                    style: AppTextStyles.bodySmall
+                        .copyWith(color: AppColors.textSecondary),
+                  ),
+                  const SizedBox(height: 16),
+
+                  ...plans.map((plan) => _PlanCard(
+                        plan: plan,
+                        loadingTier: _loadingTier,
+                        onRequest: (tier, price) =>
+                            _requestAccess(context, tier, price, langCode),
+                        l10n: l10n,
+                      )),
+
+                  // ── Success message ──────────────────────────────────────
+                  if (_successMessage != null) ...[
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColors.success.withValues(alpha: 0.1),
+                        border: Border.all(
+                            color: AppColors.success.withValues(alpha: 0.4)),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.check_circle,
+                              color: AppColors.success),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              _successMessage!,
+                              style: AppTextStyles.bodyMedium
+                                  .copyWith(color: AppColors.success),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+
+                  // ── Error message ────────────────────────────────────────
+                  if (_errorMessage != null) ...[
+                    const SizedBox(height: 16),
+                    _ErrorCard(
+                      message: _errorMessage!,
+                      isPaymentError: _isPaymentError,
+                      isDuplicate: _isDuplicateRequest,
+                      l10n: l10n,
+                      onCopy: () => _copyNumber(context),
+                      onCall: _callNumber,
+                      onWhatsApp: () =>
+                          _openWhatsApp(l10n.paymentWhatsAppMessage),
+                    ),
+                  ],
+
+                  const SizedBox(height: 24),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -331,8 +374,12 @@ class _PaymentRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 16, color: AppColors.textSecondary),
+        Padding(
+          padding: const EdgeInsets.only(top: 2),
+          child: Icon(icon, size: 16, color: AppColors.textSecondary),
+        ),
         const SizedBox(width: 8),
         Expanded(child: Text(text, style: AppTextStyles.bodyMedium)),
       ],
@@ -340,11 +387,20 @@ class _PaymentRow extends StatelessWidget {
   }
 }
 
-// ─── Payment instructions card — always visible ──────────────────────────────
+// ─── Payment instructions card — always visible, with action buttons ──────────
 
 class _PaymentInstructionsCard extends StatelessWidget {
   final AppLocalizations l10n;
-  const _PaymentInstructionsCard({required this.l10n});
+  final VoidCallback onCopy;
+  final VoidCallback onCall;
+  final VoidCallback onWhatsApp;
+
+  const _PaymentInstructionsCard({
+    required this.l10n,
+    required this.onCopy,
+    required this.onCall,
+    required this.onWhatsApp,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -384,31 +440,36 @@ class _PaymentInstructionsCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          _PaymentRow(icon: Icons.phone_android, text: l10n.paymentMomoPayNumber),
+          _PaymentRow(icon: Icons.phone_android, text: l10n.paymentMomoPayDial),
           const SizedBox(height: 8),
-          _PaymentRow(icon: Icons.mobile_friendly, text: l10n.paymentMobileMoneyNumber),
+          _PaymentRow(icon: Icons.mobile_friendly, text: l10n.paymentMobileMoneyDial),
+          const SizedBox(height: 8),
+          _PaymentRow(icon: Icons.info_outline, text: l10n.paymentHelpContact),
           const Divider(height: 24),
-          Row(
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.warning.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(Icons.help_outline, color: AppColors.warning, size: 20),
+              _ActionButton(
+                icon: Icons.copy,
+                label: l10n.paymentCopyNumber,
+                onTap: onCopy,
+                color: AppColors.primary,
               ),
-              const SizedBox(width: 12),
-              Text(
-                l10n.subscriptionNeedHelp,
-                style: AppTextStyles.heading6.copyWith(color: AppColors.warning),
+              _ActionButton(
+                icon: Icons.phone,
+                label: l10n.paymentCallNumber,
+                onTap: onCall,
+                color: AppColors.success,
+              ),
+              _ActionButton(
+                icon: Icons.chat_bubble_outline,
+                label: l10n.paymentWhatsApp,
+                onTap: onWhatsApp,
+                color: const Color(0xFF25D366),
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          _PaymentRow(icon: Icons.phone, text: l10n.subscriptionHelpCall),
-          const SizedBox(height: 8),
-          _PaymentRow(icon: Icons.chat, text: l10n.subscriptionHelpWhatsapp),
         ],
       ),
     );
@@ -547,13 +608,14 @@ class _ActionButton extends StatelessWidget {
 
 class _PlanCard extends StatelessWidget {
   final Map<String, dynamic> plan;
-  final bool isLoading;
+  /// The tier currently loading, or null if nothing is loading.
+  final String? loadingTier;
   final void Function(String tier, int price) onRequest;
   final AppLocalizations l10n;
 
   const _PlanCard({
     required this.plan,
-    required this.isLoading,
+    required this.loadingTier,
     required this.onRequest,
     required this.l10n,
   });
@@ -564,6 +626,9 @@ class _PlanCard extends StatelessWidget {
     final price = plan['price'] as int;
     final label = plan['label'] as String;
     final days = plan['durationDays'] as int;
+
+    final isThisTierLoading = loadingTier == tier;
+    final anyLoading = loadingTier != null;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -600,13 +665,15 @@ class _PlanCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 ElevatedButton(
-                  onPressed: isLoading ? null : () => onRequest(tier, price),
+                  // Disable all buttons while any tier is loading.
+                  onPressed: anyLoading ? null : () => onRequest(tier, price),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     minimumSize: Size.zero,
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
-                  child: isLoading
+                  // Only THIS card's button shows a spinner.
+                  child: isThisTierLoading
                       ? const SizedBox(
                           width: 16,
                           height: 16,

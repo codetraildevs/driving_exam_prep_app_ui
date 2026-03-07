@@ -911,11 +911,20 @@
   "paymentMomoPayNumber": "MoMo Pay: 323294",
   "@paymentMomoPayNumber": { "description": "MoMo pay number" },
 
+  "paymentMomoPayDial": "To pay with MoMo Pay, dial: *182*1*1*323294*amount#",
+  "@paymentMomoPayDial": { "description": "MoMo Pay dial instruction" },
+
   "paymentMobileMoneyNumber": "Mobile Money: 0788657595",
   "@paymentMobileMoneyNumber": { "description": "Mobile money number" },
 
+  "paymentMobileMoneyDial": "To pay with Mobile Money, dial: *182*8*1*0788657595*amount#",
+  "@paymentMobileMoneyDial": { "description": "Mobile Money dial instruction" },
+
   "paymentHelpText": "Need help? Call or WhatsApp: 0788657595",
   "@paymentHelpText": { "description": "Payment help text" },
+
+  "paymentHelpContact": "You can copy or call: 0788657595 or WhatsApp: 0788657595 for help.",
+  "@paymentHelpContact": { "description": "Payment help contact line" },
 
   "paymentError": "Payment request failed. Please pay manually using the instructions below.",
   "@paymentError": { "description": "Payment error message" },
@@ -1197,5 +1206,12 @@
   "examSampleQ3A1": "1 meter",
   "examSampleQ3A2": "3 meters",
   "examSampleQ3A3": "5 meters",
-  "examSampleQ3A4": "10 meters"
+  "examSampleQ3A4": "10 meters",
+
+  "examShareResult": "Share Result",
+  "@examShareResult": { "description": "Share result button on exam result page" },
+  "examCopiedToClipboard": "Result copied to clipboard",
+  "@examCopiedToClipboard": { "description": "Snackbar after copying result to clipboard" },
+  "examGradeLabel": "Grade",
+  "@examGradeLabel": { "description": "Grade label on exam result page" }
 }

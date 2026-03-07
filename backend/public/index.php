@@ -1083,7 +1083,7 @@ function getUserResults($conn, $params) {
         ErrorHandler::badRequest('Invalid user ID');
     }
     
-    // Only allow users to view their own results, unless they're admin
+    // Only allow users to view their own results, or ADMIN for any user
     if ($tokenData['userId'] !== $userId && $tokenData['role'] !== 'ADMIN') {
         Logger::security('Unauthorized attempt to view another user\'s results', ['requestedUserId' => $userId, 'actualUserId' => $tokenData['userId']]);
         ErrorHandler::forbidden('You can only view your own exam results');
@@ -1159,75 +1159,94 @@ function listUsers($conn, $params) {
 
 function updateUser($conn, $params) {
     global $tokenData;
-    requireRole($tokenData, ['ADMIN','MANAGER']);
-    
+
     $id = SecurityUtils::sanitizeString($params['id']);
     if (!$id) {
         ErrorHandler::badRequest('Invalid user ID');
     }
-    
-    $input = getInput();
-    
+
+    if (!$tokenData || !isset($tokenData['userId']) || !isset($tokenData['role'])) {
+        ErrorHandler::unauthorized('Invalid or missing token data');
+    }
+
+    $isAdminOrManager = in_array($tokenData['role'], ['ADMIN', 'MANAGER']);
+    $isSelf           = $tokenData['userId'] === $id;
+
+    // A user may only update their own profile; ADMIN/MANAGER may update any user.
+    if (!$isAdminOrManager && !$isSelf) {
+        Logger::security('Unauthorized attempt to update another user', [
+            'requestedUserId' => $id,
+            'actualUserId'    => $tokenData['userId'],
+        ]);
+        ErrorHandler::forbidden('You can only update your own profile');
+    }
+
     // Verify user exists
     $user = Database::fetchOne($conn, 'SELECT id FROM users WHERE id = ? LIMIT 1', 's', [&$id]);
     if (!$user) {
         ErrorHandler::notFound('User not found');
     }
-    
+
+    $input = getInput();
     if (empty($input)) {
         ErrorHandler::badRequest('No fields to update');
     }
-    
+
+    // Fields any authenticated user may update on their own profile.
+    $selfAllowedFields = ['fullName', 'preferredLanguage'];
+
+    // Additional fields only ADMIN/MANAGER may touch.
+    $adminOnlyFields = ['role', 'isActive', 'lastCalledAt', 'lastCalledBy', 'callNotes'];
+
+    $allowedFields = $isAdminOrManager
+        ? array_merge($selfAllowedFields, $adminOnlyFields)
+        : $selfAllowedFields;
+
     $updates = [];
-    $types = '';
-    $values = [];
-    
-    $allowedFields = [
-        'fullName', 'role', 'isActive',
-        'preferredLanguage', 'lastCalledAt', 'lastCalledBy', 'callNotes',
-    ];
-    
+    $types   = '';
+    $values  = [];
+
     foreach ($allowedFields as $field) {
         if (isset($input[$field])) {
             $val = SecurityUtils::sanitizeString((string)$input[$field]);
-            
+
             // Validate role if being updated
             if ($field === 'role' && !SecurityUtils::isValidRole($val)) {
                 ErrorHandler::badRequest('Invalid role value');
             }
-            
+
             $updates[] = "$field = ?";
-            $values[] = $val;
-            $types .= 's';
+            $values[]  = $val;
+            $types    .= 's';
         }
     }
-    
+
     if (empty($updates)) {
         ErrorHandler::badRequest('No valid fields to update');
     }
-    
-    $now = date('Y-m-d H:i:s');
+
+    $now      = date('Y-m-d H:i:s');
     $updates[] = 'updatedAt = ?';
-    $values[] = $now;
-    $types .= 's';
-    $values[] = $id;
-    $types .= 's';
-    
-    $sql = 'UPDATE users SET ' . implode(', ', $updates) . ' WHERE id = ?';
+    $values[]  = $now;
+    $types    .= 's';
+    $values[]  = $id;
+    $types    .= 's';
+
+    $sql  = 'UPDATE users SET ' . implode(', ', $updates) . ' WHERE id = ?';
     $stmt = Database::execute($conn, $sql, $types, $values);
-    
+
     if (!$stmt) {
         Logger::error('Failed to update user', ['userId' => $id]);
         ErrorHandler::serverError('Failed to update user');
     }
-    
-    Logger::info('User updated', ['userId' => $id, 'adminId' => $tokenData['userId']]);
+
+    Logger::info('User updated', ['userId' => $id, 'updatedBy' => $tokenData['userId']]);
     respond(['id' => $id], 200, 'User updated');
 }
 
 function deleteUser($conn, $params) {
     global $tokenData;
-    requireRole($tokenData, ['ADMIN']);
+    requireRole($tokenData, ['ADMIN', 'MANAGER']);
     
     $id = SecurityUtils::sanitizeString($params['id']);
     if (!$id) {
@@ -1548,8 +1567,14 @@ function requestPayment($conn, $params) {
         );
         if ($existing) {
             Logger::info('Duplicate payment request blocked', ['userId' => $userId, 'tier' => $paymentTier, 'existingId' => $existing['id']]);
-            respond(['id' => $existing['id'], 'amount' => $amount, 'status' => 'PENDING', 'duplicate' => true], 200, 'You already have a pending request for this plan. Please wait for confirmation.');
-            return;
+            http_response_code(409);
+            echo json_encode([
+                'success' => false,
+                'message' => 'A payment request for this plan is already pending. Please wait for confirmation or contact support: MoMo Pay 323294 / Mobile Money 0788657595 / Help: 0788657595',
+                'code'    => 'DUPLICATE_TIER_REQUEST',
+                'id'      => $existing['id'],
+            ]);
+            exit;
         }
     }
     
@@ -1874,7 +1899,7 @@ function adminBlockUser($conn, $params) {
 
 function adminDeleteUser($conn, $params) {
     global $tokenData;
-    requireRole($tokenData, ['ADMIN']);
+    requireRole($tokenData, ['ADMIN', 'MANAGER']);
 
     $userId = SecurityUtils::sanitizeString($params['userId'] ?? '');
     if (!$userId) ErrorHandler::badRequest('Invalid user ID');
