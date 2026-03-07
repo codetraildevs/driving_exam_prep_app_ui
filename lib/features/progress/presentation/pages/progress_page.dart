@@ -10,11 +10,9 @@ class ProgressPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(l10n.progressTitle),
         elevation: 0,
-        backgroundColor: AppColors.surface,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -125,7 +123,7 @@ class ProgressPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: AppColors.neutral200),
+          bottom: BorderSide(color: Theme.of(context).colorScheme.outline.withOpacity(0.5)),
         ),
       ),
       child: Row(
@@ -161,8 +159,8 @@ class ProgressPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: Border.all(color: AppColors.neutral200),
+        color: Theme.of(context).colorScheme.surface,
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.5)),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

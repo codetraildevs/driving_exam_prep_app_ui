@@ -198,5 +198,130 @@
   "signDetailScenario": "Igihe cy'ubuzima nyacyo",
   "signDetailLearned": "Wigeze iki kimenyetso!",
   "signDetailMarkAsLearned": "Shyira nk'icyigishijwe",
-  "signDetailMarkedSuccess": "Ikimenyetso cyashyizwe nk'icyigishijwe!"
+  "signDetailMarkedSuccess": "Ikimenyetso cyashyizwe nk'icyigishijwe!",
+
+  "subscriptionTitle": "Uburenganzira bw'ibizamini by'imyitozo",
+  "subscriptionSubtitle": "Fungura ibizamini byose by'imyitozo",
+  "subscriptionCurrentPlan": "Gahunda yawe ubu",
+  "subscriptionNoPlan": "Nta gahunda ikoreshwa",
+  "subscriptionMonth1": "Ukwezi 1",
+  "subscriptionMonth3": "Amezi 3",
+  "subscriptionMonth6": "Amezi 6",
+  "subscriptionPrice": "{amount} RWF",
+  "subscriptionRequestAccess": "Saba uburenganzira",
+  "subscriptionRequestSent": "Ubusabe bwawe bwoherejwe. Uzakezwa umara kwemeza kwishyura.",
+  "subscriptionPaymentInstructions": "Amabwiriza yo kwishyura",
+  "subscriptionPaymentMomo": "MoMo Pay: 323294",
+  "subscriptionPaymentMobile": "Mobile Money: 0788657595",
+  "subscriptionHelpCall": "Hamagara: 0788657595",
+  "subscriptionHelpWhatsapp": "WhatsApp: 0788657595",
+  "subscriptionChoosePlan": "Hitamo gahunda",
+  "subscriptionCurrency": "Ifaranga: RWF",
+  "subscriptionAccessActive": "Uburenganzira burahari",
+  "subscriptionExpires": "Igihe kirangira: {date}",
+  "subscriptionDays": "Iminsi {days}",
+  "subscriptionNeedHelp": "Ukeneye ubufasha?",
+  "subscriptionGetAccess": "Bona uburenganzira bw'ibizamini {count}+ by'imyitozo",
+
+  "adminDashboard": "Aho abayobozi bakora",
+  "adminUsers": "Abakoresha",
+  "adminAccess": "Gucunga uburenganzira",
+  "adminProgress": "Iterambere ry'abakoresha",
+  "adminTotalUsers": "Abakoresha bose",
+  "adminActiveSubscriptions": "Aboneri ikoreshwa",
+  "adminUsersByLanguage": "Abakoresha nk'ururimi",
+  "adminRecentRegistrations": "Iyandikishe ryashya",
+  "adminGrantAccess": "Ha uburenganzira",
+  "adminCallUser": "Hamagara umukoresha",
+  "adminCallNotes": "Amanotisi y'ikiganiro",
+  "adminLastCalled": "Hamagawe ubwa nyuma",
+  "adminNoAccess": "Nta burenganzira",
+  "adminHasAccess": "Afite uburenganzira",
+  "adminAccessExpired": "Uburenganzira bwarangiye",
+  "adminAccessExpires": "Burangira: {date}",
+  "adminSearchUsers": "Shakisha abakoresha...",
+  "adminFilterAll": "Bose",
+  "adminFilterHasAccess": "Bafite uburenganzira",
+  "adminFilterNoAccess": "Nta burenganzira",
+  "adminManageUsers": "Gucunga abakoresha",
+  "adminManageAccess": "Gucunga uburenganzira",
+  "adminViewProgress": "Reba iterambere",
+  "adminRegistrationDate": "Yiyandikishije: {date}",
+  "adminEnterCallNotes": "Andika amanotisi y'ikiganiro...",
+  "adminSubmitCall": "Ohereza",
+  "adminCallLogged": "Ikiganiro cyanditswe neza",
+  "adminAccessGranted": "Uburenganzira bwatanzwe neza",
+  "adminSelectTier": "Hitamo urwego rw'uburenganzira",
+
+  "examListTitle": "Ibizamini by'imyitozo",
+  "examFree": "UBUNTU",
+  "examPaid": "BIRISHYURWA",
+  "examLocked": "Bifunze",
+  "examQuestions": "Ibibazo {count}",
+
+  "quizProgress": "Iterambere",
+  "quizAnswered": "Byasubijwe: {answered}/{total}",
+  "quizSubmitPractice": "Ohereza imyitozo",
+  "quizPrevious": "Inyuma",
+  "quizNext": "Imbere",
+  "quizTimeRemaining": "Igihe: {time}",
+  "quizResults": "Ibisubizo by'ikizamini",
+  "quizPassed": "Watsinze!",
+  "quizFailed": "Komeza witozera",
+  "quizQuestionOf": "Ikibazo {current} kuri {total}",
+  "quizSubmitConfirmTitle": "Ohereza ikizamini?",
+  "quizSubmitConfirmMessage": "Wasubije ibibazo {answered} kuri {total}. Uzi neza ko ushaka kohereza?",
+  "quizTimeUp": "Igihe kirangiye! Ikizamini cyoherejwe by'ikirenga.",
+  "quizReviewAnswers": "Reba ibisubizo",
+  "quizRetake": "Subiramo ikizamini",
+
+  "profileRole": "Uruhare",
+  "profileLanguage": "Ururimi rwitonderwa",
+  "profileRegistered": "Yiyandikishije: {date}",
+  "profileAccessStatus": "Uko uburenganzira buri",
+  "profileExamHistory": "Amateka y'ibizamini",
+  "profileCallHistory": "Amateka y'ibiganiro",
+
+  "paymentInstructionsTitle": "Amabwiriza yo kwishyura",
+  "paymentMomoPayNumber": "MoMo Pay: 323294",
+  "paymentMobileMoneyNumber": "Mobile Money: 0788657595",
+  "paymentHelpText": "Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595",
+
+  "commonError": "Hari ikibazo cyabaye. Ongera ugerageze.",
+
+  "adminTierLabel": "Urwego",
+
+  "adminExpiresLabel": "Burangira",
+
+  "adminRenewAccess": "Subiramo / Ongerera uburenganzira",
+
+  "adminManagePlatform": "Gucunga urubuga",
+
+  "adminManageExams": "Gucunga ibizamini",
+
+  "adminManageExamsDesc": "Reba no gucunga ibizamini byose byo kwimenyereza",
+
+  "adminManageUsersDesc": "Reba, shakisha no gucunga abakoresha bose",
+
+  "adminAccessCodesDesc": "Gucunga amakoodi y'uburenganzira n'ubwishyu",
+
+  "adminQuickStats": "Imibare y'igihe gito",
+
+  "adminActionsTitle": "Ibikorwa bya Admin",
+
+  "adminTotalPractices": "Imyitozo yose",
+
+  "adminManagePlatformDesc": "Gucunga urubuga rw'amategeko y'umuhanda",
+
+  "adminNotifications": "Imenyesha",
+
+  "settingsAppearance": "Iyongerera",
+
+  "settingsAppearanceDesc": "Hitamo uko porogaramu igaragara",
+
+  "settingsThemeSystem": "Sisitemu",
+
+  "settingsThemeLight": "Urumuri",
+
+  "settingsThemeDark": "Umukara"
 }

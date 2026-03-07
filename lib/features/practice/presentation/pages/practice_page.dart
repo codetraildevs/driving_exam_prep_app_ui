@@ -71,11 +71,9 @@ class _PracticePageState extends State<PracticePage> {
     final subscription = context.watch<SubscriptionProvider>();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(l10n.practiceTitle),
         elevation: 0,
-        backgroundColor: AppColors.surface,
       ),
       body: SafeArea(
         child: _isLoading
@@ -110,6 +108,7 @@ class _PracticePageState extends State<PracticePage> {
                         exam: exam,
                         isLocked: isLocked,
                         onTap: () => _onExamTap(context, exam),
+                        l10n: l10n,
                       );
                     },
                   ),
@@ -122,11 +121,13 @@ class _ExamCard extends StatelessWidget {
   final Exam exam;
   final bool isLocked;
   final VoidCallback onTap;
+  final AppLocalizations l10n;
 
   const _ExamCard({
     required this.exam,
     required this.isLocked,
     required this.onTap,
+    required this.l10n,
   });
 
   @override
@@ -136,14 +137,14 @@ class _ExamCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Theme.of(context).colorScheme.surface,
           border: Border.all(
             color: exam.isFree ? AppColors.success.withOpacity(0.4) : AppColors.neutral200,
           ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Theme.of(context).shadowColor.withOpacity(0.05),
               blurRadius: 8,
             ),
           ],
@@ -154,20 +155,10 @@ class _ExamCard extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      color: exam.isFree
-                          ? AppColors.success.withOpacity(0.15)
-                          : AppColors.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      exam.isFree ? Icons.lock_open : Icons.quiz,
-                      color: exam.isFree ? AppColors.success : AppColors.primary,
-                      size: 28,
-                    ),
+                  // Exam image or fallback icon
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: _buildExamImage(),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -180,7 +171,7 @@ class _ExamCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          '${exam.questions.length} questions',
+                          l10n.examQuestions(exam.questions.length),
                           style: AppTextStyles.bodySmall.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -205,10 +196,30 @@ class _ExamCard extends StatelessWidget {
                     color: AppColors.success,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Text(
-                    'FREE',
-                    style: TextStyle(
-                      color: Colors.white,
+                  child: Text(
+                    l10n.examFree,
+                    style: const TextStyle(
+                      color: AppColors.textInverse,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              )
+            else if (isLocked)
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    l10n.examPaid,
+                    style: const TextStyle(
+                      color: AppColors.textInverse,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                     ),
@@ -217,6 +228,37 @@ class _ExamCard extends StatelessWidget {
               ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildExamImage() {
+    if (exam.examImgUrl.isNotEmpty) {
+      return Image.asset(
+        exam.examImgUrl,
+        width: 64,
+        height: 64,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => _buildFallbackIcon(),
+      );
+    }
+    return _buildFallbackIcon();
+  }
+
+  Widget _buildFallbackIcon() {
+    return Container(
+      width: 64,
+      height: 64,
+      decoration: BoxDecoration(
+        color: exam.isFree
+            ? AppColors.success.withOpacity(0.15)
+            : AppColors.primary.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Icon(
+        exam.isFree ? Icons.lock_open : Icons.quiz,
+        color: exam.isFree ? AppColors.success : AppColors.primary,
+        size: 32,
       ),
     );
   }

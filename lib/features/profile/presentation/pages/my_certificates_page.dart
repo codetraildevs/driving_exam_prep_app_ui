@@ -37,7 +37,6 @@ class MyCertificatesPage extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
@@ -46,7 +45,7 @@ class MyCertificatesPage extends StatelessWidget {
               height: 56,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: Theme.of(context).colorScheme.surface,
                 border: Border(
                   bottom: BorderSide(
                     color: AppColors.primary.withOpacity(0.1),
@@ -115,7 +114,7 @@ class MyCertificatesPage extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isEarned
@@ -134,14 +133,14 @@ class MyCertificatesPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isEarned
                       ? AppColors.primary.withOpacity(0.1)
-                      : Colors.orange.withOpacity(0.1),
+                      : AppColors.warning.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
                   isEarned ? Icons.workspace_premium : Icons.pending_actions,
                   color: isEarned
                       ? AppColors.primary
-                      : Colors.orange,
+                      : AppColors.warning,
                 ),
               ),
               const SizedBox(width: 16),
@@ -160,7 +159,7 @@ class MyCertificatesPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: isEarned
                       ? AppColors.primary
-                      : Colors.orange,
+                      : AppColors.warning,
                 ),
               ),
             ],
@@ -174,7 +173,7 @@ class MyCertificatesPage extends StatelessWidget {
             backgroundColor: AppColors.primary.withOpacity(0.1),
             color: isEarned
                 ? AppColors.primary
-                : Colors.orange,
+                : AppColors.warning,
           ),
 
           const SizedBox(height: 8),

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../features/auth/presentation/bloc/auth_state.dart';
+import '../../features/auth/data/models/user_model.dart';
 import '../../features/auth/presentation/pages/landing_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
@@ -22,16 +24,29 @@ import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/profile/presentation/pages/my_certificates_page.dart';
 import '../../features/subscription/presentation/pages/subscription_page.dart';
+import '../../features/admin/presentation/pages/admin_dashboard_page.dart';
+import '../../features/admin/presentation/pages/admin_users_page.dart';
+import '../../features/admin/presentation/pages/admin_access_page.dart';
+import '../../features/admin/presentation/pages/admin_progress_page.dart';
+
+bool _isAdmin(UserModel? user) {
+  if (user == null) return false;
+  return user.role == 'ADMIN' || user.role == 'MANAGER';
+}
 
 class AppRouter {
   final AuthBloc authBloc;
   final bool isFirstLaunch;
   final bool hasLocaleSelected;
+  /// Role from the locally-cached user — sets correct initial route immediately,
+  /// so returning users never flash the login page.
+  final String? cachedUserRole;
 
   AppRouter({
     required this.authBloc,
     required this.isFirstLaunch,
     required this.hasLocaleSelected,
+    this.cachedUserRole,
   });
 
   static final GlobalKey<NavigatorState> rootNavigatorKey =
@@ -39,17 +54,27 @@ class AppRouter {
   static final GlobalKey<NavigatorState> shellNavigatorKey =
       GlobalKey<NavigatorState>();
 
+  /// Determine the best initial location given the cached session.
+  String get _initialLocation {
+    if (!hasLocaleSelected) return '/language-select';
+    if (cachedUserRole != null) {
+      // User has a cached session — skip landing/login and go straight to their area.
+      return (cachedUserRole == 'ADMIN' || cachedUserRole == 'MANAGER')
+          ? '/admin'
+          : '/home';
+    }
+    // No cached session: first-time vs returning visitor.
+    return isFirstLaunch ? '/landing' : '/login';
+  }
+
   late final GoRouter router = GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: !hasLocaleSelected
-        ? '/language-select'
-        : isFirstLaunch
-            ? '/landing'
-            : '/login',
+    initialLocation: _initialLocation,
     refreshListenable: GoRouterRefreshStream(authBloc.stream),
     redirect: (context, state) {
       final authState = context.read<AuthBloc>().state;
       final isAuthenticated = authState is AuthAuthenticated;
+      final user = isAuthenticated ? (authState as AuthAuthenticated).user : null;
       final location = state.matchedLocation;
 
       final isAuthPage =
@@ -67,10 +92,16 @@ class AppRouter {
           location.startsWith('/profile') ||
           location.startsWith('/settings') ||
           location.startsWith('/certificates') ||
-          location.startsWith('/subscription');
+          location.startsWith('/subscription') ||
+          location.startsWith('/admin');
+
+      // Role guard: block non-admin access to /admin/* routes first
+      if (isAuthenticated && location.startsWith('/admin') && !_isAdmin(user)) {
+        return '/home';
+      }
 
       if (isAuthenticated && isAuthPage) {
-        return '/home';
+        return _isAdmin(user) ? '/admin' : '/home';
       }
 
       if (!isAuthenticated && isProtectedPage) {
@@ -199,6 +230,45 @@ class AppRouter {
             pageBuilder: (context, state) => const MaterialPage(
               child: SubscriptionPage(),
             ),
+          ),
+
+          // Admin routes
+          GoRoute(
+            path: '/admin',
+            name: 'admin',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: AdminDashboardPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/admin/users',
+            name: 'adminUsers',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: AdminUsersPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/admin/access',
+            name: 'adminAccess',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: AdminAccessPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/admin/progress',
+            name: 'adminProgress',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: AdminProgressPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/admin/users/:userId/profile',
+            pageBuilder: (context, state) {
+              final userId = state.pathParameters['userId']!;
+              return MaterialPage(
+                child: ProfilePage(userId: userId),
+              );
+            },
           ),
         ],
       ),
