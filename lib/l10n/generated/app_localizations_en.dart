@@ -69,7 +69,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeCoursesSubtitle => 'Learning modules';
 
   @override
-  String get homeMockExams => 'Mock Exams';
+  String get homeMockExams => 'Practice Exams';
 
   @override
   String get homeMockExamsSubtitle => 'Test knowledge';
@@ -365,7 +365,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizNextQuestion => 'Next Question';
 
   @override
-  String get examMockExam => 'Mock Exam';
+  String get examMockExam => 'Practice Exam';
 
   @override
   String get examInstructions => 'Exam Instructions';

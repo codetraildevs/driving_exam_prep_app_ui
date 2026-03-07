@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +32,48 @@ Widget _buildTestApp({
           ],
           localeResolutionCallback: lp.localeResolutionCallback,
           home: child,
+        );
+      },
+    ),
+  );
+}
+
+/// Helper: wraps a widget with GoRouter so context.go() works in tests.
+Widget _buildTestAppWithRouter({
+  required LocaleProvider localeProvider,
+  required Widget child,
+}) {
+  return ChangeNotifierProvider.value(
+    value: localeProvider,
+    child: Consumer<LocaleProvider>(
+      builder: (context, lp, _) {
+        final router = GoRouter(
+          initialLocation: '/language-select',
+          routes: [
+            GoRoute(
+              path: '/language-select',
+              builder: (_, __) => child,
+            ),
+            GoRoute(
+              path: '/landing',
+              builder: (_, __) =>
+                  const Scaffold(body: Text('Landing')),
+            ),
+          ],
+        );
+        return MaterialApp.router(
+          routerConfig: router,
+          locale: lp.effectiveLocale,
+          supportedLocales: LocaleProvider.supportedLocales,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            FallbackMaterialLocalizationsDelegate(),
+            FallbackCupertinoLocalizationsDelegate(),
+          ],
+          localeResolutionCallback: lp.localeResolutionCallback,
         );
       },
     ),
@@ -71,7 +114,7 @@ void main() {
       expect(find.text('English'), findsOneWidget);
       expect(find.text('Français'), findsOneWidget);
       expect(find.text('Kinyarwanda'), findsOneWidget);
-      expect(find.text('Choose Your Language'), findsOneWidget);
+      expect(find.text('Choose your language'), findsOneWidget);
     });
 
     // ────────────────────────────────────────────────────────────────────────
@@ -85,7 +128,7 @@ void main() {
       await provider.loadSavedLocale();
 
       await tester.pumpWidget(
-        _buildTestApp(
+        _buildTestAppWithRouter(
           localeProvider: provider,
           child: const LanguageSelectorPage(),
         ),

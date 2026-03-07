@@ -193,7 +193,7 @@ abstract class AppLocalizations {
   /// Service card title
   ///
   /// In en, this message translates to:
-  /// **'Mock Exams'**
+  /// **'Practice Exams'**
   String get homeMockExams;
 
   /// Service card subtitle
@@ -751,7 +751,7 @@ abstract class AppLocalizations {
   /// Mock exam title
   ///
   /// In en, this message translates to:
-  /// **'Mock Exam'**
+  /// **'Practice Exam'**
   String get examMockExam;
 
   /// Exam instructions title
