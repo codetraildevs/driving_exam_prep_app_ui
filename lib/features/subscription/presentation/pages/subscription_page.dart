@@ -17,7 +17,6 @@ import '../../../../shared/session/auth_session.dart';
 import '../../../../shared/subscription/subscription_provider.dart';
 
 const _kHelpNumber = '0788657595';
-const _kMomoNumber = '323294';
 
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({Key? key}) : super(key: key);
@@ -337,8 +336,213 @@ class _PaymentRow extends StatelessWidget {
       children: [
         Icon(icon, size: 16, color: AppColors.textSecondary),
         const SizedBox(width: 8),
-        Text(text, style: AppTextStyles.bodyMedium),
+        Expanded(child: Text(text, style: AppTextStyles.bodyMedium)),
       ],
+    );
+  }
+}
+
+// ─── Payment instructions card — always visible ──────────────────────────────
+
+class _PaymentInstructionsCard extends StatelessWidget {
+  final AppLocalizations l10n;
+  const _PaymentInstructionsCard({required this.l10n});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).shadowColor.withOpacity(0.05),
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.payment, color: AppColors.primary, size: 20),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  l10n.paymentInstructionsTitle,
+                  style: AppTextStyles.heading6.copyWith(color: AppColors.primary),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _PaymentRow(icon: Icons.phone_android, text: l10n.paymentMomoPayNumber),
+          const SizedBox(height: 8),
+          _PaymentRow(icon: Icons.mobile_friendly, text: l10n.paymentMobileMoneyNumber),
+          const Divider(height: 24),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.warning.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.help_outline, color: AppColors.warning, size: 20),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                l10n.subscriptionNeedHelp,
+                style: AppTextStyles.heading6.copyWith(color: AppColors.warning),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          _PaymentRow(icon: Icons.phone, text: l10n.subscriptionHelpCall),
+          const SizedBox(height: 8),
+          _PaymentRow(icon: Icons.chat, text: l10n.subscriptionHelpWhatsapp),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Error card with action buttons ─────────────────────────────────────────
+
+class _ErrorCard extends StatelessWidget {
+  final String message;
+  final bool isPaymentError;
+  final bool isDuplicate;
+  final AppLocalizations l10n;
+  final VoidCallback onCopy;
+  final VoidCallback onCall;
+  final VoidCallback onWhatsApp;
+
+  const _ErrorCard({
+    required this.message,
+    required this.isPaymentError,
+    required this.isDuplicate,
+    required this.l10n,
+    required this.onCopy,
+    required this.onCall,
+    required this.onWhatsApp,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final color = isDuplicate ? AppColors.warning : AppColors.error;
+    final icon = isDuplicate ? Icons.info_outline : Icons.error_outline;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.08),
+        border: Border.all(color: color.withOpacity(0.4)),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, color: color, size: 20),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  message,
+                  style: AppTextStyles.bodyMedium.copyWith(color: color),
+                ),
+              ),
+            ],
+          ),
+          if (isPaymentError) ...[
+            const SizedBox(height: 14),
+            const Divider(height: 1),
+            const SizedBox(height: 12),
+            // Action buttons
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _ActionButton(
+                  icon: Icons.copy,
+                  label: l10n.paymentCopyNumber,
+                  onTap: onCopy,
+                  color: AppColors.primary,
+                ),
+                _ActionButton(
+                  icon: Icons.phone,
+                  label: l10n.paymentCallNumber,
+                  onTap: onCall,
+                  color: AppColors.success,
+                ),
+                _ActionButton(
+                  icon: Icons.chat_bubble_outline,
+                  label: l10n.paymentWhatsApp,
+                  onTap: onWhatsApp,
+                  color: const Color(0xFF25D366),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  final Color color;
+
+  const _ActionButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          border: Border.all(color: color.withOpacity(0.4)),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 14, color: color),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                color: color,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -252,6 +252,17 @@
   "adminCallLogged": "Ikiganiro cyanditswe neza",
   "adminAccessGranted": "Uburenganzira bwatanzwe neza",
   "adminSelectTier": "Hitamo urwego rw'uburenganzira",
+  "adminCustomDays": "Iminsi yihariye",
+  "adminPaymentAmount": "Amafaranga (RWF)",
+  "adminEnterDays": "Injiza umubare w'iminsi",
+  "adminEnterAmount": "Injiza amafaranga mu RWF",
+  "adminOrCustom": "Cyangwa shyiramo iminsi yihariye",
+  "adminPendingRequests": "Ubusabe bwo kwishyura buriho",
+  "adminAllUsersList": "Abakoresha bose",
+  "adminInvalidAmount": "Nyamuneka injiza amafaranga akwiye arengeje 0",
+  "adminInvalidDays": "Nyamuneka injiza umubare w'iminsi ukwiye arengeje 0",
+  "adminAccessRevoked": "Uburenganzira bwavanwe",
+  "adminNoUsers": "Nta mukoresha wabonetse",
 
   "examListTitle": "Ibizamini by'imyitozo",
   "examFree": "UBUNTU",
@@ -294,6 +305,7 @@
   "paymentRequestExists": "Ubusabe bwo kwishyura kuri iyi gahato buriho. Tegereza ko ubuzima bwawe buremwa cyangwa vugana na serivisi.",
 
   "commonError": "Hari ikibazo cyabaye. Ongera ugerageze.",
+  "commonRetry": "Ongera ugerageze",
 
   "adminTierLabel": "Urwego",
 

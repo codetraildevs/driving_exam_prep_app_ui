@@ -252,6 +252,17 @@
   "adminCallLogged": "Appel enregistré avec succès",
   "adminAccessGranted": "Accès accordé avec succès",
   "adminSelectTier": "Sélectionner le niveau d'accès",
+  "adminCustomDays": "Durée personnalisée (jours)",
+  "adminPaymentAmount": "Montant (RWF)",
+  "adminEnterDays": "Entrez le nombre de jours",
+  "adminEnterAmount": "Entrez le montant en RWF",
+  "adminOrCustom": "Ou définir des jours personnalisés",
+  "adminPendingRequests": "Demandes de paiement en attente",
+  "adminAllUsersList": "Tous les utilisateurs",
+  "adminInvalidAmount": "Veuillez entrer un montant valide supérieur à 0",
+  "adminInvalidDays": "Veuillez entrer un nombre de jours valide supérieur à 0",
+  "adminAccessRevoked": "Accès révoqué",
+  "adminNoUsers": "Aucun utilisateur trouvé",
 
   "examListTitle": "Examens pratiques",
   "examFree": "GRATUIT",
@@ -294,6 +305,7 @@
   "paymentRequestExists": "Une demande de paiement pour ce forfait est déjà en attente. Veuillez attendre l'activation ou contacter le support.",
 
   "commonError": "Quelque chose s'est mal passé. Veuillez réessayer.",
+  "commonRetry": "Réessayer",
 
   "adminTierLabel": "Niveau",
 

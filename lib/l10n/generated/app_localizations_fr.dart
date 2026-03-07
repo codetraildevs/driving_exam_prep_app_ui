@@ -765,6 +765,39 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminSelectTier => 'Sélectionner le niveau d\'accès';
 
   @override
+  String get adminCustomDays => 'Durée personnalisée (jours)';
+
+  @override
+  String get adminPaymentAmount => 'Montant (RWF)';
+
+  @override
+  String get adminEnterDays => 'Entrez le nombre de jours';
+
+  @override
+  String get adminEnterAmount => 'Entrez le montant en RWF';
+
+  @override
+  String get adminOrCustom => 'Ou définir des jours personnalisés';
+
+  @override
+  String get adminPendingRequests => 'Demandes de paiement en attente';
+
+  @override
+  String get adminAllUsersList => 'Tous les utilisateurs';
+
+  @override
+  String get adminInvalidAmount => 'Veuillez entrer un montant valide supérieur à 0';
+
+  @override
+  String get adminInvalidDays => 'Veuillez entrer un nombre de jours valide supérieur à 0';
+
+  @override
+  String get adminAccessRevoked => 'Accès révoqué';
+
+  @override
+  String get adminNoUsers => 'Aucun utilisateur trouvé';
+
+  @override
   String get examListTitle => 'Examens pratiques';
 
   @override
@@ -883,6 +916,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get commonError => 'Quelque chose s\'est mal passé. Veuillez réessayer.';
+
+  @override
+  String get commonRetry => 'Réessayer';
 
   @override
   String get adminTierLabel => 'Niveau';

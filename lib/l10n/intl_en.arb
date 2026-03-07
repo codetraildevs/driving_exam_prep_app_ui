@@ -761,6 +761,39 @@
   "adminSelectTier": "Select Access Tier",
   "@adminSelectTier": { "description": "Select tier label" },
 
+  "adminCustomDays": "Custom Duration (days)",
+  "@adminCustomDays": { "description": "Custom days label" },
+
+  "adminPaymentAmount": "Amount (RWF)",
+  "@adminPaymentAmount": { "description": "Payment amount label" },
+
+  "adminEnterDays": "Enter number of days",
+  "@adminEnterDays": { "description": "Days input hint" },
+
+  "adminEnterAmount": "Enter amount in RWF",
+  "@adminEnterAmount": { "description": "Amount input hint" },
+
+  "adminOrCustom": "Or set custom days",
+  "@adminOrCustom": { "description": "Custom days toggle label" },
+
+  "adminPendingRequests": "Pending Payment Requests",
+  "@adminPendingRequests": { "description": "Pending requests section title" },
+
+  "adminAllUsersList": "All Users",
+  "@adminAllUsersList": { "description": "All users section title" },
+
+  "adminInvalidAmount": "Please enter a valid amount greater than 0",
+  "@adminInvalidAmount": { "description": "Invalid amount error" },
+
+  "adminInvalidDays": "Please enter a valid number of days greater than 0",
+  "@adminInvalidDays": { "description": "Invalid days error" },
+
+  "adminAccessRevoked": "Access revoked",
+  "@adminAccessRevoked": { "description": "Access revoked message" },
+
+  "adminNoUsers": "No users found",
+  "@adminNoUsers": { "description": "No users found message" },
+
   "examListTitle": "Practice Exams",
   "@examListTitle": { "description": "Exam list page title" },
 
@@ -901,6 +934,9 @@
 
   "commonError": "Something went wrong. Please try again.",
   "@commonError": { "description": "Generic error message" },
+
+  "commonRetry": "Retry",
+  "@commonRetry": { "description": "Retry button label" },
 
   "adminTierLabel": "Tier",
 

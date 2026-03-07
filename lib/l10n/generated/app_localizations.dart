@@ -1327,6 +1327,39 @@ abstract class AppLocalizations {
   /// Select tier label
   String get adminSelectTier;
 
+  /// Custom days label
+  String get adminCustomDays;
+
+  /// Payment amount label
+  String get adminPaymentAmount;
+
+  /// Days input hint
+  String get adminEnterDays;
+
+  /// Amount input hint
+  String get adminEnterAmount;
+
+  /// Custom days toggle label
+  String get adminOrCustom;
+
+  /// Pending requests section title
+  String get adminPendingRequests;
+
+  /// All users section title
+  String get adminAllUsersList;
+
+  /// Invalid amount error
+  String get adminInvalidAmount;
+
+  /// Invalid days error
+  String get adminInvalidDays;
+
+  /// Access revoked message
+  String get adminAccessRevoked;
+
+  /// No users found message
+  String get adminNoUsers;
+
   /// Exam list page title
   String get examListTitle;
 
@@ -1434,6 +1467,9 @@ abstract class AppLocalizations {
 
   /// Generic error message
   String get commonError;
+
+  /// Retry button label
+  String get commonRetry;
 
   /// Tier label
   String get adminTierLabel;

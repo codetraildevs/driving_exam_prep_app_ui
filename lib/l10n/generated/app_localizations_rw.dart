@@ -762,6 +762,39 @@ class AppLocalizationsRw extends AppLocalizations {
   String get adminSelectTier => 'Hitamo urwego rw\'uburenganzira';
 
   @override
+  String get adminCustomDays => 'Iminsi yihariye';
+
+  @override
+  String get adminPaymentAmount => 'Amafaranga (RWF)';
+
+  @override
+  String get adminEnterDays => 'Injiza umubare w\'iminsi';
+
+  @override
+  String get adminEnterAmount => 'Injiza amafaranga mu RWF';
+
+  @override
+  String get adminOrCustom => 'Cyangwa shyiramo iminsi yihariye';
+
+  @override
+  String get adminPendingRequests => 'Ubusabe bwo kwishyura buriho';
+
+  @override
+  String get adminAllUsersList => 'Abakoresha bose';
+
+  @override
+  String get adminInvalidAmount => 'Nyamuneka injiza amafaranga akwiye arengeje 0';
+
+  @override
+  String get adminInvalidDays => 'Nyamuneka injiza umubare w\'iminsi ukwiye arengeje 0';
+
+  @override
+  String get adminAccessRevoked => 'Uburenganzira bwavanwe';
+
+  @override
+  String get adminNoUsers => 'Nta mukoresha wabonetse';
+
+  @override
   String get examListTitle => 'Ibizamini by\'imyitozo';
 
   @override
@@ -880,6 +913,9 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get commonError => 'Hari ikibazo cyabaye. Ongera ugerageze.';
+
+  @override
+  String get commonRetry => 'Ongera ugerageze';
 
   @override
   String get adminTierLabel => 'Urwego';

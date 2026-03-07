@@ -752,6 +752,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminSelectTier => 'Select Access Tier';
 
   @override
+  String get adminCustomDays => 'Custom Duration (days)';
+
+  @override
+  String get adminPaymentAmount => 'Amount (RWF)';
+
+  @override
+  String get adminEnterDays => 'Enter number of days';
+
+  @override
+  String get adminEnterAmount => 'Enter amount in RWF';
+
+  @override
+  String get adminOrCustom => 'Or set custom days';
+
+  @override
+  String get adminPendingRequests => 'Pending Payment Requests';
+
+  @override
+  String get adminAllUsersList => 'All Users';
+
+  @override
+  String get adminInvalidAmount => 'Please enter a valid amount greater than 0';
+
+  @override
+  String get adminInvalidDays => 'Please enter a valid number of days greater than 0';
+
+  @override
+  String get adminAccessRevoked => 'Access revoked';
+
+  @override
+  String get adminNoUsers => 'No users found';
+
+  @override
   String get examListTitle => 'Practice Exams';
 
   @override
@@ -870,6 +903,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonError => 'Something went wrong. Please try again.';
+
+  @override
+  String get commonRetry => 'Retry';
 
   @override
   String get adminTierLabel => 'Tier';

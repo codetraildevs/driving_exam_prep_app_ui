@@ -133,67 +133,194 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
 
   void _showGrantAccessSheet(Map user, AppLocalizations l10n) {
     final userId = (user['id'] ?? '').toString();
+    final name = (user['name'] ?? user['fullName'] ?? 'Unknown').toString();
     final lang = (user['preferredLanguage'] ?? user['preferred_language'] ?? 'en').toString().toLowerCase();
     final tiers = _getTiers(lang, l10n);
     String? selectedTier;
+    bool useCustom = false;
+    final daysCtrl = TextEditingController();
+    final amountCtrl = TextEditingController();
+    String? sheetError;
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setSheetState) => Padding(
+        builder: (ctx, setSheet) => Padding(
           padding: EdgeInsets.only(
             left: 20, right: 20, top: 20,
-            bottom: MediaQuery.of(ctx).viewInsets.bottom + 20,
+            bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(l10n.adminSelectTier, style: AppTextStyles.heading5),
-              const SizedBox(height: 14),
-              ...tiers.map((tier) {
-                final isSelected = selectedTier == tier['tier'];
-                return GestureDetector(
-                  onTap: () => setSheetState(() => selectedTier = tier['tier'] as String),
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: isSelected ? AppColors.primary : AppColors.neutral300,
-                        width: isSelected ? 2 : 1,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.vpn_key_rounded, color: AppColors.primary, size: 22),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        '${l10n.adminGrantAccess}: $name',
+                        style: AppTextStyles.heading6,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      borderRadius: BorderRadius.circular(12),
-                      color: isSelected ? AppColors.primary.withOpacity(0.08) : null,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(tier['label'] as String, style: AppTextStyles.bodyMedium),
-                        Text(
-                          l10n.subscriptionPrice(tier['price'] as int),
-                          style: AppTextStyles.heading6.copyWith(color: AppColors.primary),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.of(ctx).pop(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+
+                if (sheetError != null) ...[
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppColors.error.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(sheetError!, style: const TextStyle(color: AppColors.error)),
+                  ),
+                  const SizedBox(height: 8),
+                ],
+
+                Row(
+                  children: [
+                    Text(l10n.adminSelectTier, style: AppTextStyles.labelMedium),
+                    const Spacer(),
+                    TextButton.icon(
+                      icon: Icon(useCustom ? Icons.list_alt_rounded : Icons.tune_rounded, size: 16),
+                      label: Text(
+                        useCustom ? l10n.adminSelectTier : l10n.adminOrCustom,
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                      onPressed: () => setSheet(() {
+                        useCustom = !useCustom;
+                        selectedTier = null;
+                        daysCtrl.clear();
+                      }),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+
+                if (!useCustom) ...[
+                  ...tiers.map((tier) {
+                    final isSelected = selectedTier == tier['tier'];
+                    return GestureDetector(
+                      onTap: () => setSheet(() {
+                        selectedTier = tier['tier'] as String;
+                        amountCtrl.text = (tier['price'] as int).toString();
+                      }),
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          gradient: isSelected ? AppColors.primaryGradient : null,
+                          color: isSelected ? null : Theme.of(ctx).colorScheme.surface,
+                          border: Border.all(
+                            color: isSelected ? AppColors.primary : AppColors.neutral300,
+                            width: isSelected ? 2 : 1,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      ],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(children: [
+                              Icon(
+                                isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
+                                color: isSelected ? AppColors.textInverse : AppColors.textSecondary,
+                                size: 18,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                tier['label'] as String,
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  color: isSelected ? AppColors.textInverse : null,
+                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                ),
+                              ),
+                            ]),
+                            Text(
+                              l10n.subscriptionPrice(tier['price'] as int),
+                              style: AppTextStyles.heading6.copyWith(
+                                color: isSelected ? AppColors.textInverse : AppColors.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+                ] else ...[
+                  TextField(
+                    controller: daysCtrl,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: l10n.adminCustomDays,
+                      hintText: l10n.adminEnterDays,
+                      prefixIcon: const Icon(Icons.date_range),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                   ),
-                );
-              }),
-              const SizedBox(height: 12),
-              ElevatedButton(
-                onPressed: selectedTier == null
-                    ? null
-                    : () {
-                        Navigator.of(ctx).pop();
-                        _grantAccess(userId, selectedTier!, l10n);
-                      },
-                child: Text(l10n.adminGrantAccess),
-              ),
-            ],
+                  const SizedBox(height: 8),
+                ],
+
+                const SizedBox(height: 4),
+                TextField(
+                  controller: amountCtrl,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: l10n.adminPaymentAmount,
+                    hintText: l10n.adminEnterAmount,
+                    prefixIcon: const Icon(Icons.payments_outlined),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.check_circle_outline),
+                  label: Text(l10n.adminGrantAccess),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.textInverse,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  onPressed: () {
+                    final amount = int.tryParse(amountCtrl.text.trim()) ?? 0;
+                    if (amount <= 0) {
+                      setSheet(() => sheetError = l10n.adminInvalidAmount);
+                      return;
+                    }
+                    if (useCustom) {
+                      final days = int.tryParse(daysCtrl.text.trim()) ?? 0;
+                      if (days <= 0) {
+                        setSheet(() => sheetError = l10n.adminInvalidDays);
+                        return;
+                      }
+                      Navigator.of(ctx).pop();
+                      _grantAccess(userId, null, days, amount, l10n);
+                    } else {
+                      if (selectedTier == null) {
+                        setSheet(() => sheetError = l10n.adminSelectTier);
+                        return;
+                      }
+                      Navigator.of(ctx).pop();
+                      _grantAccess(userId, selectedTier, 0, amount, l10n);
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -243,17 +370,26 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     );
   }
 
-  Future<void> _grantAccess(String userId, String tier, AppLocalizations l10n) async {
+  Future<void> _grantAccess(
+    String userId, String? tier, int customDays, int amount, AppLocalizations l10n,
+  ) async {
     setState(() => _loadingMap[userId] = true);
     try {
       final token = await AuthSession().getToken();
+      final body = <String, dynamic>{'paymentAmount': amount};
+      if (tier != null && tier.isNotEmpty) {
+        body['paymentTier'] = tier;
+      } else {
+        body['durationDays'] = customDays;
+      }
+
       final response = await http.post(
         Uri.parse('${ApiConfig.baseUrl}/api/admin/users/$userId/grant-access'),
         headers: {
           if (token != null) 'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
-        body: json.encode({'tier': tier}),
+        body: json.encode(body),
       ).timeout(const Duration(seconds: 15));
 
       if ((response.statusCode == 200 || response.statusCode == 201) && mounted) {
@@ -261,6 +397,15 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
           SnackBar(content: Text(l10n.adminAccessGranted), backgroundColor: AppColors.success),
         );
         _loadUsers();
+      } else if (mounted) {
+        String msg = l10n.commonError;
+        try {
+          final d = json.decode(response.body);
+          msg = (d['message'] ?? d['error'] ?? msg).toString();
+        } catch (_) {}
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(msg), backgroundColor: AppColors.error),
+        );
       }
     } catch (e) {
       if (mounted) {
