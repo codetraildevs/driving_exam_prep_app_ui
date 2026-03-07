@@ -130,7 +130,7 @@ class _ProgressPageState extends State<ProgressPage>
             title: l10n.progressTitle,
             showBack: false,
             subtitle: (!_isLoading && _error == null && _total > 0)
-                ? '${_passed}/${_total} ${l10n.progressPassedCount.toLowerCase()}'
+                ? '$_passed / $_total ${l10n.progressPassedCount}'
                 : null,
             trailing: IconButton(
               icon: const Icon(Icons.refresh, color: Colors.white),

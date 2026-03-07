@@ -81,7 +81,6 @@ class _GradientTabHeader extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: gradient,
-          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(0)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
