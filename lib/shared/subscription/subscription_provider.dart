@@ -69,8 +69,13 @@ class SubscriptionProvider extends ChangeNotifier {
           await prefs.setString(_keyTier, _paymentTier!);
         }
       }
-    } catch (_) {
-      // Keep cached values on network error
+    } catch (e) {
+      // Keep cached values on network error (logged for debugging)
+      assert(() {
+        // ignore: avoid_print
+        print('[SubscriptionProvider] refreshStatus error: $e');
+        return true;
+      }());
     } finally {
       _isLoading = false;
       notifyListeners();

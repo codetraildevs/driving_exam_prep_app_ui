@@ -51,7 +51,12 @@ class _QuizPageState extends State<QuizPage> {
         });
       }
     } catch (e) {
-      if (mounted) setState(() { _isLoading = false; _error = e.toString(); });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _error = e.toString();
+        });
+      }
     }
   }
 

@@ -1178,7 +1178,12 @@ function updateUser($conn, $params) {
     $types = '';
     $values = [];
     
-    foreach (['fullName', 'role', 'isActive', 'preferredLanguage', 'lastCalledAt', 'lastCalledBy', 'callNotes'] as $field) {
+    $allowedFields = [
+        'fullName', 'role', 'isActive',
+        'preferredLanguage', 'lastCalledAt', 'lastCalledBy', 'callNotes',
+    ];
+    
+    foreach ($allowedFields as $field) {
         if (isset($input[$field])) {
             $val = SecurityUtils::sanitizeString((string)$input[$field]);
             
@@ -1729,7 +1734,7 @@ function adminGrantAccess($conn, $params) {
     }
 
     $id        = generateUUID();
-    $code      = strtoupper(substr(md5(uniqid((string)random_bytes(8), true)), 0, 12));
+    $code      = strtoupper(bin2hex(random_bytes(6)));
     $managerId = $tokenData['userId'];
     $expiresAt = date('Y-m-d H:i:s', strtotime("+{$durationDays} days"));
     $now       = date('Y-m-d H:i:s');

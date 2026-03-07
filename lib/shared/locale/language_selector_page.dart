@@ -280,8 +280,13 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
         },
         body: json.encode({'preferredLanguage': langCode}),
       ).timeout(const Duration(seconds: 10));
-    } catch (_) {
+    } catch (e) {
       // Ignore errors — language is already saved locally
+      assert(() {
+        // ignore: avoid_print
+        print('[LanguageSelector] syncLanguageToBackend error: $e');
+        return true;
+      }());
     }
   }
 

@@ -80,9 +80,11 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           _errorMessage = data['message'] ?? 'Request failed. Please try again.';
         });
       }
-    } catch (_) {
+    } catch (e) {
       setState(() {
-        _errorMessage = 'Network error. Please check your connection and try again.';
+        _errorMessage = e is http.ClientException
+            ? 'Network error. Please check your connection and try again.'
+            : 'Something went wrong. Please try again.';
       });
     } finally {
       setState(() => _isRequesting = false);
