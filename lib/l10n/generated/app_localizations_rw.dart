@@ -865,4 +865,13 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get commonError => 'Hari ikibazo cyabaye. Ongera ugerageze.';
+
+  @override
+  String get adminTierLabel => 'Urwego';
+
+  @override
+  String get adminExpiresLabel => 'Burangira';
+
+  @override
+  String get adminRenewAccess => 'Subiramo / Ongerera uburenganzira';
 }

@@ -287,5 +287,11 @@
   "paymentMobileMoneyNumber": "Mobile Money: 0788657595",
   "paymentHelpText": "Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595",
 
-  "commonError": "Hari ikibazo cyabaye. Ongera ugerageze."
+  "commonError": "Hari ikibazo cyabaye. Ongera ugerageze.",
+
+  "adminTierLabel": "Urwego",
+
+  "adminExpiresLabel": "Burangira",
+
+  "adminRenewAccess": "Subiramo / Ongerera uburenganzira"
 }

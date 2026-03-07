@@ -885,5 +885,11 @@
   "@paymentHelpText": { "description": "Payment help text" },
 
   "commonError": "Something went wrong. Please try again.",
-  "@commonError": { "description": "Generic error message" }
+  "@commonError": { "description": "Generic error message" },
+
+  "adminTierLabel": "Tier",
+
+  "adminExpiresLabel": "Expires",
+
+  "adminRenewAccess": "Renew / Extend Access"
 }

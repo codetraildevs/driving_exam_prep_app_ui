@@ -855,4 +855,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonError => 'Something went wrong. Please try again.';
+
+  @override
+  String get adminTierLabel => 'Tier';
+
+  @override
+  String get adminExpiresLabel => 'Expires';
+
+  @override
+  String get adminRenewAccess => 'Renew / Extend Access';
 }

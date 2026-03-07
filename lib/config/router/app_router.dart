@@ -82,17 +82,17 @@ class AppRouter {
           location.startsWith('/subscription') ||
           location.startsWith('/admin');
 
+      // Role guard: block non-admin access to /admin/* routes first
+      if (isAuthenticated && location.startsWith('/admin') && !_isAdmin(user)) {
+        return '/home';
+      }
+
       if (isAuthenticated && isAuthPage) {
         return _isAdmin(user) ? '/admin' : '/home';
       }
 
       if (!isAuthenticated && isProtectedPage) {
         return '/login';
-      }
-
-      // Role guard: only ADMIN or MANAGER can access /admin routes
-      if (isAuthenticated && location.startsWith('/admin') && !_isAdmin(user)) {
-        return '/home';
       }
 
       if (!isFirstLaunch && !isAuthenticated && location == '/landing') {

@@ -340,13 +340,13 @@ class _AdminAccessPageState extends State<AdminAccessPage> {
                                         if (tierLabel.isNotEmpty)
                                           _DetailRow(
                                             icon: Icons.card_membership,
-                                            label: 'Tier',
+                                            label: l10n.adminTierLabel,
                                             value: tierLabel.toUpperCase(),
                                           ),
                                         if (expiry.isNotEmpty)
                                           _DetailRow(
                                             icon: active ? Icons.event_available : Icons.event_busy,
-                                            label: active ? 'Expires' : 'Expired',
+                                            label: active ? l10n.adminExpiresLabel : l10n.adminAccessExpired,
                                             value: expiry,
                                             valueColor: active ? AppColors.success : AppColors.warning,
                                           ),
@@ -356,7 +356,7 @@ class _AdminAccessPageState extends State<AdminAccessPage> {
 
                                   const SizedBox(height: 10),
 
-                                  // Renew button
+                                  // Renew/extend button
                                   SizedBox(
                                     width: double.infinity,
                                     child: ElevatedButton.icon(
@@ -370,9 +370,7 @@ class _AdminAccessPageState extends State<AdminAccessPage> {
                                               child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                                             )
                                           : const Icon(Icons.refresh, size: 16),
-                                      label: Text(
-                                        active ? l10n.adminGrantAccess : l10n.adminGrantAccess,
-                                      ),
+                                      label: Text(l10n.adminRenewAccess),
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: active ? AppColors.primary : AppColors.success,
                                         foregroundColor: Colors.white,

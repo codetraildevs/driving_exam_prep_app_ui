@@ -287,5 +287,11 @@
   "paymentMobileMoneyNumber": "Mobile Money: 0788657595",
   "paymentHelpText": "Besoin d'aide ? Appelez ou WhatsApp: 0788657595",
 
-  "commonError": "Quelque chose s'est mal passé. Veuillez réessayer."
+  "commonError": "Quelque chose s'est mal passé. Veuillez réessayer.",
+
+  "adminTierLabel": "Niveau",
+
+  "adminExpiresLabel": "Expire le",
+
+  "adminRenewAccess": "Renouveler / Prolonger l'accès"
 }

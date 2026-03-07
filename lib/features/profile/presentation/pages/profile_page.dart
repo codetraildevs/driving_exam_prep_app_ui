@@ -349,7 +349,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
+                                      user.name.trim().isNotEmpty
+                                          ? user.name.trim()[0].toUpperCase()
+                                          : '?',
                                       style: const TextStyle(
                                         fontSize: 40,
                                         fontWeight: FontWeight.bold,

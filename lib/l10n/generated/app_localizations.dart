@@ -1419,6 +1419,15 @@ abstract class AppLocalizations {
 
   /// Generic error message
   String get commonError;
+
+  /// Tier label
+  String get adminTierLabel;
+
+  /// Expires label
+  String get adminExpiresLabel;
+
+  /// Renew / extend access button
+  String get adminRenewAccess;
 }
 
 class _AppLocalizationsDelegate

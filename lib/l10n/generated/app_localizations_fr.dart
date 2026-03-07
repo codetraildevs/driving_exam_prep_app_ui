@@ -868,4 +868,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get commonError => 'Quelque chose s\'est mal passé. Veuillez réessayer.';
+
+  @override
+  String get adminTierLabel => 'Niveau';
+
+  @override
+  String get adminExpiresLabel => 'Expire le';
+
+  @override
+  String get adminRenewAccess => 'Renouveler / Prolonger l\'accès';
 }
