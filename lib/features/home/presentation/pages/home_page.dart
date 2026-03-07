@@ -168,6 +168,7 @@ class _CompactAccessCard extends StatelessWidget {
     int daysLeft = 0;
     int totalDays = 180;
     if (hasAccess && expiresAt != null) {
+      // Clamp to a large value to avoid overflow — display handles "999+ days" gracefully.
       daysLeft = expiresAt.difference(DateTime.now()).inDays.clamp(0, 9999);
       // Guess total days from tier label if available.
       final tier = sub.paymentTier ?? '';
@@ -187,9 +188,12 @@ class _CompactAccessCard extends StatelessWidget {
       return t.isEmpty ? '' : t;
     }();
 
-    return GestureDetector(
-      onTap: hasAccess ? null : () => context.push('/subscription'),
-      child: Container(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: hasAccess ? null : () => context.push('/subscription'),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,

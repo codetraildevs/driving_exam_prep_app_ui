@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -65,6 +67,7 @@ class TrafficRulesApp extends StatefulWidget {
 class _TrafficRulesAppState extends State<TrafficRulesApp> {
   late final AppRouter _appRouter;
   late final SubscriptionProvider _subscriptionProvider;
+  late final StreamSubscription<AuthState> _authSubscription;
 
   @override
   void initState() {
@@ -80,7 +83,7 @@ class _TrafficRulesAppState extends State<TrafficRulesApp> {
     // Listen to auth state changes and refresh subscription status in the
     // background whenever the user signs in. This keeps the app offline-first:
     // cached data is used immediately, and network data updates the UI silently.
-    widget.authBloc.stream.listen((authState) {
+    _authSubscription = widget.authBloc.stream.listen((authState) {
       if (authState is AuthAuthenticated) {
         _refreshSubscriptionInBackground(authState.user.id);
       } else if (authState is AuthUnauthenticated) {
@@ -103,6 +106,7 @@ class _TrafficRulesAppState extends State<TrafficRulesApp> {
 
   @override
   void dispose() {
+    _authSubscription.cancel();
     widget.authBloc.close();
     super.dispose();
   }
