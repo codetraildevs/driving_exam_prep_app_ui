@@ -287,6 +287,18 @@
   "paymentMobileMoneyNumber": "Mobile Money: 0788657595",
   "paymentHelpText": "Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595",
 
+  "paymentDialMomoPay": "Kanda *182*1*1*323294*{amount}# kwishyura kuri MoMo Pay",
+  "paymentDialMobileMoney": "Kanda *182*8*1*0788657595*{amount}# kwishyura kuri Mobile Money",
+  "paymentCopyCode": "Gukoporora code",
+  "paymentDialNow": "Hamagara",
+  "paymentCodeCopied": "Code yo kwishyura yakopowe!",
+  "paymentWhatsAppMessage": "Muraho, ndashaka kwiyandikisha kuri app y'amategeko y'umuhanda mu Rwanda.",
+  "paymentSelectPlanFirst": "Hitamo gahunda mbere",
+  "paymentConfirmRequest": "Emeza ubusabe bwo kwishyura",
+  "paymentStep1": "1. Hitamo gahunda hepfo",
+  "paymentStep2": "2. Ishyura ukoresheje uburyo bumwe bwo hejuru",
+  "paymentStep3": "3. Kanda 'Emeza' kudumenyesha",
+
   "commonError": "Hari ikibazo cyabaye. Ongera ugerageze.",
 
   "adminTierLabel": "Urwego",

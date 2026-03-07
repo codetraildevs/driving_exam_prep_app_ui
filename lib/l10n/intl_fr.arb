@@ -287,6 +287,18 @@
   "paymentMobileMoneyNumber": "Mobile Money: 0788657595",
   "paymentHelpText": "Besoin d'aide ? Appelez ou WhatsApp: 0788657595",
 
+  "paymentDialMomoPay": "Composez *182*1*1*323294*{amount}# pour payer via MoMo Pay",
+  "paymentDialMobileMoney": "Composez *182*8*1*0788657595*{amount}# pour payer via Mobile Money",
+  "paymentCopyCode": "Copier le code",
+  "paymentDialNow": "Composer",
+  "paymentCodeCopied": "Code de paiement copié !",
+  "paymentWhatsAppMessage": "Bonjour, je souhaite m'abonner à l'application Rwanda Traffic Rules.",
+  "paymentSelectPlanFirst": "Veuillez d'abord sélectionner un forfait",
+  "paymentConfirmRequest": "Confirmer la demande de paiement",
+  "paymentStep1": "1. Sélectionnez un forfait ci-dessous",
+  "paymentStep2": "2. Payez en utilisant l'une des méthodes ci-dessus",
+  "paymentStep3": "3. Appuyez sur 'Confirmer' pour nous notifier",
+
   "commonError": "Quelque chose s'est mal passé. Veuillez réessayer.",
 
   "adminTierLabel": "Niveau",

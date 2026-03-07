@@ -97,6 +97,7 @@ class ExamResultPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _buildStatCard(
+                      context: context,
                       label: l10n.examCorrect,
                       value: '$correctAnswers/$totalQuestions',
                       icon: Icons.check_circle,
@@ -106,6 +107,7 @@ class ExamResultPage extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: _buildStatCard(
+                      context: context,
                       label: l10n.examAccuracy,
                       value: '$accuracy%',
                       icon: Icons.bar_chart,
@@ -193,6 +195,7 @@ class ExamResultPage extends StatelessWidget {
   }
 
   Widget _buildStatCard({
+    required BuildContext context,
     required String label,
     required String value,
     required IconData icon,

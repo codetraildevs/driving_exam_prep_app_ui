@@ -864,10 +864,52 @@ class AppLocalizationsFr extends AppLocalizations {
   String get paymentMobileMoneyNumber => 'Mobile Money: 0788657595';
 
   @override
-  String get paymentHelpText => 'Besoin d\'aide ? Appelez ou WhatsApp: 0788657595';
+  String get paymentHelpText =>
+      'Besoin d\'aide ? Appelez ou WhatsApp: 0788657595';
 
   @override
-  String get commonError => 'Quelque chose s\'est mal passé. Veuillez réessayer.';
+  String paymentDialMomoPay(String amount) {
+    return 'Composez *182*1*1*323294*$amount# pour payer via MoMo Pay';
+  }
+
+  @override
+  String paymentDialMobileMoney(String amount) {
+    return 'Composez *182*8*1*0788657595*$amount# pour payer via Mobile Money';
+  }
+
+  @override
+  String get paymentCopyCode => 'Copier le code';
+
+  @override
+  String get paymentDialNow => 'Composer';
+
+  @override
+  String get paymentCodeCopied => 'Code de paiement copié !';
+
+  @override
+  String get paymentWhatsAppMessage =>
+      'Bonjour, je souhaite m\'abonner à l\'application Rwanda Traffic Rules.';
+
+  @override
+  String get paymentSelectPlanFirst =>
+      'Veuillez d\'abord sélectionner un forfait';
+
+  @override
+  String get paymentConfirmRequest => 'Confirmer la demande de paiement';
+
+  @override
+  String get paymentStep1 => '1. Sélectionnez un forfait ci-dessous';
+
+  @override
+  String get paymentStep2 =>
+      '2. Payez en utilisant l\'une des méthodes ci-dessus';
+
+  @override
+  String get paymentStep3 => '3. Appuyez sur \'Confirmer\' pour nous notifier';
+
+  @override
+  String get commonError =>
+      'Quelque chose s\'est mal passé. Veuillez réessayer.';
 
   @override
   String get adminTierLabel => 'Niveau';
@@ -888,10 +930,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminManageExamsDesc => 'Voir et gérer tous les examens pratiques';
 
   @override
-  String get adminManageUsersDesc => 'Voir, rechercher et gérer tous les utilisateurs';
+  String get adminManageUsersDesc =>
+      'Voir, rechercher et gérer tous les utilisateurs';
 
   @override
-  String get adminAccessCodesDesc => 'Gérer les codes d\'accès et les paiements';
+  String get adminAccessCodesDesc =>
+      'Gérer les codes d\'accès et les paiements';
 
   @override
   String get adminQuickStats => 'Statistiques rapides';
@@ -903,7 +947,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminTotalPractices => 'Total des pratiques';
 
   @override
-  String get adminManagePlatformDesc => 'Gérez votre plateforme d\'apprentissage du code de la route';
+  String get adminManagePlatformDesc =>
+      'Gérez votre plateforme d\'apprentissage du code de la route';
 
   @override
   String get adminNotifications => 'Notifications';
@@ -912,7 +957,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsAppearance => 'Apparence';
 
   @override
-  String get settingsAppearanceDesc => 'Choisissez l\'apparence de l\'application';
+  String get settingsAppearanceDesc =>
+      'Choisissez l\'apparence de l\'application';
 
   @override
   String get settingsThemeSystem => 'Système';

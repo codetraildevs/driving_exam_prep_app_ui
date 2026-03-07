@@ -94,7 +94,7 @@ class MyCertificatesPage extends StatelessWidget {
                         const SizedBox(height: 20),
 
                         ...certificates.map((cert) =>
-                            _certificateCard(cert)).toList(),
+                            _certificateCard(context, cert)).toList(),
                       ],
                     ),
                   ),
@@ -107,7 +107,7 @@ class MyCertificatesPage extends StatelessWidget {
     );
   }
 
-  Widget _certificateCard(Map<String, dynamic> cert) {
+  Widget _certificateCard(BuildContext context, Map<String, dynamic> cert) {
     final bool isEarned = cert["earned"] == true;
 
     return Container(

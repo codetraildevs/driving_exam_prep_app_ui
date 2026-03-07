@@ -823,7 +823,8 @@ class AppLocalizationsRw extends AppLocalizations {
   }
 
   @override
-  String get quizTimeUp => 'Igihe kirangiye! Ikizamini cyoherejwe by\'ikirenga.';
+  String get quizTimeUp =>
+      'Igihe kirangiye! Ikizamini cyoherejwe by\'ikirenga.';
 
   @override
   String get quizReviewAnswers => 'Reba ibisubizo';
@@ -861,7 +862,46 @@ class AppLocalizationsRw extends AppLocalizations {
   String get paymentMobileMoneyNumber => 'Mobile Money: 0788657595';
 
   @override
-  String get paymentHelpText => 'Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595';
+  String get paymentHelpText =>
+      'Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595';
+
+  @override
+  String paymentDialMomoPay(String amount) {
+    return 'Kanda *182*1*1*323294*$amount# kwishyura kuri MoMo Pay';
+  }
+
+  @override
+  String paymentDialMobileMoney(String amount) {
+    return 'Kanda *182*8*1*0788657595*$amount# kwishyura kuri Mobile Money';
+  }
+
+  @override
+  String get paymentCopyCode => 'Gukoporora code';
+
+  @override
+  String get paymentDialNow => 'Hamagara';
+
+  @override
+  String get paymentCodeCopied => 'Code yo kwishyura yakopowe!';
+
+  @override
+  String get paymentWhatsAppMessage =>
+      'Muraho, ndashaka kwiyandikisha kuri app y\'amategeko y\'umuhanda mu Rwanda.';
+
+  @override
+  String get paymentSelectPlanFirst => 'Hitamo gahunda mbere';
+
+  @override
+  String get paymentConfirmRequest => 'Emeza ubusabe bwo kwishyura';
+
+  @override
+  String get paymentStep1 => '1. Hitamo gahunda hepfo';
+
+  @override
+  String get paymentStep2 => '2. Ishyura ukoresheje uburyo bumwe bwo hejuru';
+
+  @override
+  String get paymentStep3 => '3. Kanda \'Emeza\' kudumenyesha';
 
   @override
   String get commonError => 'Hari ikibazo cyabaye. Ongera ugerageze.';
@@ -882,13 +922,16 @@ class AppLocalizationsRw extends AppLocalizations {
   String get adminManageExams => 'Gucunga ibizamini';
 
   @override
-  String get adminManageExamsDesc => 'Reba no gucunga ibizamini byose byo kwimenyereza';
+  String get adminManageExamsDesc =>
+      'Reba no gucunga ibizamini byose byo kwimenyereza';
 
   @override
-  String get adminManageUsersDesc => 'Reba, shakisha no gucunga abakoresha bose';
+  String get adminManageUsersDesc =>
+      'Reba, shakisha no gucunga abakoresha bose';
 
   @override
-  String get adminAccessCodesDesc => 'Gucunga amakoodi y\'uburenganzira n\'ubwishyu';
+  String get adminAccessCodesDesc =>
+      'Gucunga amakoodi y\'uburenganzira n\'ubwishyu';
 
   @override
   String get adminQuickStats => 'Imibare y\'igihe gito';
@@ -900,7 +943,8 @@ class AppLocalizationsRw extends AppLocalizations {
   String get adminTotalPractices => 'Imyitozo yose';
 
   @override
-  String get adminManagePlatformDesc => 'Gucunga urubuga rw\'amategeko y\'umuhanda';
+  String get adminManagePlatformDesc =>
+      'Gucunga urubuga rw\'amategeko y\'umuhanda';
 
   @override
   String get adminNotifications => 'Imenyesha';

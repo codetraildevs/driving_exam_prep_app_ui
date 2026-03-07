@@ -884,6 +884,39 @@
   "paymentHelpText": "Need help? Call or WhatsApp: 0788657595",
   "@paymentHelpText": { "description": "Payment help text" },
 
+  "paymentDialMomoPay": "Dial *182*1*1*323294*{amount}# to pay via MoMo Pay",
+  "@paymentDialMomoPay": { "description": "MoMo Pay USSD dial instruction", "placeholders": { "amount": { "type": "String" } } },
+
+  "paymentDialMobileMoney": "Dial *182*8*1*0788657595*{amount}# to pay via Mobile Money",
+  "@paymentDialMobileMoney": { "description": "Mobile Money USSD dial instruction", "placeholders": { "amount": { "type": "String" } } },
+
+  "paymentCopyCode": "Copy Code",
+  "@paymentCopyCode": { "description": "Copy payment code button" },
+
+  "paymentDialNow": "Dial Now",
+  "@paymentDialNow": { "description": "Dial payment code button" },
+
+  "paymentCodeCopied": "Payment code copied!",
+  "@paymentCodeCopied": { "description": "Snackbar message after copying code" },
+
+  "paymentWhatsAppMessage": "Hello, I want to subscribe to Rwanda Traffic Rules app.",
+  "@paymentWhatsAppMessage": { "description": "Default WhatsApp message" },
+
+  "paymentSelectPlanFirst": "Please select a plan first",
+  "@paymentSelectPlanFirst": { "description": "Message when no plan selected" },
+
+  "paymentConfirmRequest": "Confirm Payment Request",
+  "@paymentConfirmRequest": { "description": "Confirm payment button" },
+
+  "paymentStep1": "1. Select a plan below",
+  "@paymentStep1": { "description": "Payment step 1" },
+
+  "paymentStep2": "2. Pay using one of the methods above",
+  "@paymentStep2": { "description": "Payment step 2" },
+
+  "paymentStep3": "3. Tap 'Confirm Payment Request' to notify us",
+  "@paymentStep3": { "description": "Payment step 3" },
+
   "commonError": "Something went wrong. Please try again.",
   "@commonError": { "description": "Generic error message" },
 

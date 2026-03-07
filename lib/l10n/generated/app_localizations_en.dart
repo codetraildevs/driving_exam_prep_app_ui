@@ -854,6 +854,44 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentHelpText => 'Need help? Call or WhatsApp: 0788657595';
 
   @override
+  String paymentDialMomoPay(String amount) {
+    return 'Dial *182*1*1*323294*$amount# to pay via MoMo Pay';
+  }
+
+  @override
+  String paymentDialMobileMoney(String amount) {
+    return 'Dial *182*8*1*0788657595*$amount# to pay via Mobile Money';
+  }
+
+  @override
+  String get paymentCopyCode => 'Copy Code';
+
+  @override
+  String get paymentDialNow => 'Dial Now';
+
+  @override
+  String get paymentCodeCopied => 'Payment code copied!';
+
+  @override
+  String get paymentWhatsAppMessage =>
+      'Hello, I want to subscribe to Rwanda Traffic Rules app.';
+
+  @override
+  String get paymentSelectPlanFirst => 'Please select a plan first';
+
+  @override
+  String get paymentConfirmRequest => 'Confirm Payment Request';
+
+  @override
+  String get paymentStep1 => '1. Select a plan below';
+
+  @override
+  String get paymentStep2 => '2. Pay using one of the methods above';
+
+  @override
+  String get paymentStep3 => '3. Tap \'Confirm Payment Request\' to notify us';
+
+  @override
   String get commonError => 'Something went wrong. Please try again.';
 
   @override
@@ -890,7 +928,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminTotalPractices => 'Total Practices';
 
   @override
-  String get adminManagePlatformDesc => 'Manage your traffic rules learning platform';
+  String get adminManagePlatformDesc =>
+      'Manage your traffic rules learning platform';
 
   @override
   String get adminNotifications => 'Notifications';

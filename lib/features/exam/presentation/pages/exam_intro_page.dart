@@ -64,24 +64,28 @@ class ExamIntroPage extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               _buildInstructionItem(
+                context: context,
                 icon: Icons.timer,
                 title: l10n.examTimeLimit,
                 description: l10n.examTimeLimitDesc,
               ),
               const SizedBox(height: 16),
               _buildInstructionItem(
+                context: context,
                 icon: Icons.help,
                 title: l10n.examQuestionCount,
                 description: l10n.examQuestionCountDesc,
               ),
               const SizedBox(height: 16),
               _buildInstructionItem(
+                context: context,
                 icon: Icons.check_circle,
                 title: l10n.examPassingScore,
                 description: l10n.examPassingScoreDesc,
               ),
               const SizedBox(height: 16),
               _buildInstructionItem(
+                context: context,
                 icon: Icons.info,
                 title: l10n.examNoGoingBack,
                 description: l10n.examNoGoingBackDesc,
@@ -96,7 +100,7 @@ class ExamIntroPage extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.warning_amber,
                       color: AppColors.warning,
                     ),
@@ -142,6 +146,7 @@ class ExamIntroPage extends StatelessWidget {
   }
 
   Widget _buildInstructionItem({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String description,

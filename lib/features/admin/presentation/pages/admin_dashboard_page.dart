@@ -11,7 +11,6 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/network/api_config.dart';
 import '../../../../shared/session/auth_session.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
-import '../../../auth/presentation/bloc/auth_state.dart';
 
 class AdminDashboardPage extends StatefulWidget {
   const AdminDashboardPage({Key? key}) : super(key: key);
@@ -486,7 +485,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
   // Quick Stats
   // ──────────────────────────────────────────────────────────────────────────
   Widget _buildQuickStats(AppLocalizations l10n) {
-    final byLang = _usersByLanguage;
+    // final byLang = _usersByLanguage;
     return Row(
       children: [
         Expanded(

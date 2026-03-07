@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
-import '../../../../features/auth/presentation/bloc/auth_event.dart';
-import '../../../../features/auth/presentation/bloc/auth_state.dart';
 import '../../../../shared/network/api_config.dart';
 import '../../../../shared/session/auth_session.dart';
 import '../../../../shared/subscription/subscription_provider.dart';
@@ -483,6 +480,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             const SizedBox(height: 12),
 
                             _menuTile(
+                              context: context,
                               icon: Icons.settings,
                               title: l10n.profileSettings,
                               subtitle: l10n.profileSettingsSubtitle,
@@ -496,6 +494,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Builder(builder: (context) {
                               final sub = context.watch<SubscriptionProvider>();
                               return _menuTile(
+                                context: context,
                                 icon: sub.hasActiveAccess
                                     ? Icons.verified_outlined
                                     : Icons.lock_open_outlined,
@@ -759,6 +758,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   static Widget _menuTile({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String subtitle,

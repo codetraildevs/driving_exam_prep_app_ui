@@ -1389,44 +1389,67 @@ function requestPayment($conn, $params) {
     global $tokenData;
     
     $input = getInput();
+    Logger::info('Payment request received', ['input' => json_encode($input), 'tokenUserId' => $tokenData['userId'] ?? 'unknown']);
     
     $validation = SecurityUtils::validateRequired($input, ['userId', 'amount']);
     if ($validation) {
+        Logger::error('Payment validation failed', ['error' => $validation, 'input' => json_encode($input)]);
         ErrorHandler::badRequest($validation);
     }
     
     $userId = SecurityUtils::sanitizeString($input['userId']);
     $examId = isset($input['examId']) ? SecurityUtils::sanitizeString($input['examId']) : '';
     $amount = floatval($input['amount']);
-    $method = SecurityUtils::sanitizeString($input['paymentMethod'] ?? 'bank');
+    $method = SecurityUtils::sanitizeString($input['paymentMethod'] ?? 'mobile_money');
+    $paymentTier = SecurityUtils::sanitizeString($input['paymentTier'] ?? '');
     
-    if ($amount <= 0 || $amount > 10000) {
-        ErrorHandler::badRequest('Amount must be between 0.01 and 10000');
+    if ($amount <= 0 || $amount > 100000) {
+        Logger::error('Payment amount out of range', ['amount' => $amount, 'userId' => $userId]);
+        ErrorHandler::badRequest('Amount must be between 0.01 and 100000');
     }
     
     // If examId provided, verify it exists
     if ($examId) {
         $exam = Database::fetchOne($conn, 'SELECT id FROM courses WHERE id = ? LIMIT 1', 's', [&$examId]);
         if (!$exam) {
+            Logger::error('Invalid exam ID in payment', ['examId' => $examId, 'userId' => $userId]);
             ErrorHandler::badRequest('Invalid exam ID');
+        }
+    }
+    
+    // Check for duplicate pending request for same tier
+    if (!empty($paymentTier)) {
+        $existing = Database::fetchOne($conn,
+            'SELECT id FROM payment_requests WHERE userId = ? AND paymentMethod = ? AND status = ? ORDER BY createdAt DESC LIMIT 1',
+            'sss',
+            [&$userId, &$paymentTier, 'PENDING']
+        );
+        if ($existing) {
+            Logger::info('Duplicate payment request blocked', ['userId' => $userId, 'tier' => $paymentTier, 'existingId' => $existing['id']]);
+            respond(['id' => $existing['id'], 'amount' => $amount, 'status' => 'PENDING', 'duplicate' => true], 200, 'You already have a pending request for this plan. Please wait for confirmation.');
+            return;
         }
     }
     
     $id = 'pay_' . generateUUID();
     $now = date('Y-m-d H:i:s');
+    $status = 'PENDING';
+    
+    // Store paymentTier in paymentMethod field for tracking
+    $methodWithTier = !empty($paymentTier) ? $paymentTier : $method;
     
     $result = Database::insert($conn,
         'INSERT INTO payment_requests (id, userId, examId, amount, paymentMethod, status, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
         'sssdssss',
-        [&$id, &$userId, &$examId, &$amount, &$method, 'PENDING', &$now, &$now]
+        [&$id, &$userId, &$examId, &$amount, &$methodWithTier, &$status, &$now, &$now]
     );
     
     if ($result) {
-        Logger::info('Payment request created', ['paymentId' => $id, 'userId' => $userId, 'amount' => $amount]);
-        respond(['id' => $id, 'amount' => $amount, 'status' => 'PENDING'], 201, 'Payment request created');
+        Logger::info('Payment request created', ['paymentId' => $id, 'userId' => $userId, 'amount' => $amount, 'tier' => $paymentTier]);
+        respond(['id' => $id, 'amount' => $amount, 'status' => 'PENDING', 'tier' => $paymentTier], 201, 'Payment request created successfully');
     } else {
-        Logger::error('Failed to create payment request', ['userId' => $userId]);
-        ErrorHandler::serverError('Failed to create payment request');
+        Logger::error('Failed to create payment request', ['userId' => $userId, 'amount' => $amount, 'tier' => $paymentTier, 'mysqlError' => $conn->error]);
+        ErrorHandler::serverError('Failed to create payment request. Please try again.');
     }
 }
 

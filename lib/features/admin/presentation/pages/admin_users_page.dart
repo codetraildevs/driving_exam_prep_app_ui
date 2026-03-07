@@ -6,6 +6,7 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/network/api_config.dart';
+import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/session/auth_session.dart';
 
 class AdminUsersPage extends StatefulWidget {
@@ -45,23 +46,17 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       _error = null;
     });
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.get(
-        Uri.parse('${ApiConfig.baseUrl}/api/admin/users'),
-        headers: {if (token != null) 'Authorization': 'Bearer $token'},
-      ).timeout(const Duration(seconds: 15));
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+      final result = await ApiHelper().get('/api/admin/users');
+      if (result.isSuccess) {
         setState(() {
-          _allUsers = (data is List) ? data : (data['users'] ?? data['data'] ?? []);
+          _allUsers = result.dataList;
         });
         _applyFilters();
       } else {
-        setState(() => _error = 'Failed to load users');
+        setState(() => _error = result.detailedError);
       }
     } catch (e) {
-      setState(() => _error = e.toString());
+      setState(() => _error = 'Unexpected error: $e');
     } finally {
       setState(() => _isLoading = false);
     }
@@ -246,26 +241,25 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
   Future<void> _grantAccess(String userId, String tier, AppLocalizations l10n) async {
     setState(() => _loadingMap[userId] = true);
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/api/admin/users/$userId/grant-access'),
-        headers: {
-          if (token != null) 'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({'tier': tier}),
-      ).timeout(const Duration(seconds: 15));
+      final result = await ApiHelper().post(
+        '/api/admin/users/$userId/grant-access',
+        body: {'tier': tier},
+      );
 
-      if ((response.statusCode == 200 || response.statusCode == 201) && mounted) {
+      if (result.isSuccess && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(l10n.adminAccessGranted), backgroundColor: AppColors.success),
         );
         _loadUsers();
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(result.detailedError), backgroundColor: AppColors.error),
+        );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString()), backgroundColor: AppColors.error),
+          SnackBar(content: Text('Error: $e'), backgroundColor: AppColors.error),
         );
       }
     } finally {
@@ -275,26 +269,25 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
 
   Future<void> _markCalled(String userId, String notes, AppLocalizations l10n) async {
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/api/admin/users/$userId/mark-called'),
-        headers: {
-          if (token != null) 'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({'notes': notes}),
-      ).timeout(const Duration(seconds: 15));
+      final result = await ApiHelper().post(
+        '/api/admin/users/$userId/mark-called',
+        body: {'notes': notes},
+      );
 
-      if ((response.statusCode == 200 || response.statusCode == 201) && mounted) {
+      if (result.isSuccess && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(l10n.adminCallLogged), backgroundColor: AppColors.success),
         );
         _loadUsers();
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(result.detailedError), backgroundColor: AppColors.error),
+        );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString()), backgroundColor: AppColors.error),
+          SnackBar(content: Text('Error: $e'), backgroundColor: AppColors.error),
         );
       }
     }
@@ -305,15 +298,32 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.adminUsers),
-        elevation: 0,
-        actions: [
-          IconButton(icon: const Icon(Icons.refresh), onPressed: _loadUsers),
-        ],
-      ),
       body: Column(
         children: [
+          // Gradient header
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 12, 12, 18),
+            decoration: const BoxDecoration(
+              gradient: AppColors.primaryGradient,
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    l10n.adminUsers,
+                    style: AppTextStyles.heading5.copyWith(color: AppColors.textInverse),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.refresh, color: AppColors.textInverse),
+                  onPressed: _loadUsers,
+                ),
+              ],
+            ),
+          ),
+
           // Search bar
           Container(
             color: Theme.of(context).colorScheme.surface,

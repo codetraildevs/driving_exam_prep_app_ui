@@ -27,21 +27,21 @@ class ProgressPage extends StatelessWidget {
                 style: AppTextStyles.heading5,
               ),
               const SizedBox(height: 16),
-              _buildStatRow(l10n.progressTotalAttempts, '12', Icons.assignment),
-              _buildStatRow(l10n.progressBestScore, '92%', Icons.emoji_events),
-              _buildStatRow(l10n.progressAverageScore, '78%', Icons.trending_up),
-              _buildStatRow(l10n.progressSignsLearned, '45', Icons.traffic),
+              _buildStatRow(context, l10n.progressTotalAttempts, '12', Icons.assignment),
+              _buildStatRow(context, l10n.progressBestScore, '92%', Icons.emoji_events),
+              _buildStatRow(context, l10n.progressAverageScore, '78%', Icons.trending_up),
+              _buildStatRow(context, l10n.progressSignsLearned, '45', Icons.traffic),
               const SizedBox(height: 32),
               Text(
                 l10n.progressRecentExams,
                 style: AppTextStyles.heading5,
               ),
               const SizedBox(height: 16),
-              _buildExamCard(l10n.progressMockExam(1), '85%', l10n.progressPassed, AppColors.success),
+              _buildExamCard(context, l10n.progressMockExam(1), '85%', l10n.progressPassed, AppColors.success),
               const SizedBox(height: 12),
-              _buildExamCard(l10n.progressMockExam(2), '78%', l10n.progressPassed, AppColors.success),
+              _buildExamCard(context, l10n.progressMockExam(2), '78%', l10n.progressPassed, AppColors.success),
               const SizedBox(height: 12),
-              _buildExamCard(l10n.progressPracticeQuiz, '92%', l10n.progressExcellent, AppColors.primary),
+              _buildExamCard(context, l10n.progressPracticeQuiz, '92%', l10n.progressExcellent, AppColors.primary),
             ],
           ),
         ),
@@ -118,7 +118,7 @@ class ProgressPage extends StatelessWidget {
     );
   }
 
-  Widget _buildStatRow(String label, String value, IconData icon) {
+  Widget _buildStatRow(BuildContext context, String label, String value, IconData icon) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
@@ -155,7 +155,7 @@ class ProgressPage extends StatelessWidget {
     );
   }
 
-  Widget _buildExamCard(String title, String score, String status, Color color) {
+  Widget _buildExamCard(BuildContext context, String title, String score, String status, Color color) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(

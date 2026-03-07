@@ -301,6 +301,7 @@ class _CompactAccessCard extends StatelessWidget {
           ],
         ),
       ),
+      ) 
     );
   }
 }

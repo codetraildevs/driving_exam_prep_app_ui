@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../../../shared/network/api_config.dart';
-import '../../../../shared/session/auth_session.dart';
+import '../../../../shared/network/api_helper.dart';
 
 class AdminProgressPage extends StatefulWidget {
   const AdminProgressPage({Key? key}) : super(key: key);
@@ -31,24 +28,16 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
       _error = null;
     });
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.get(
-        Uri.parse('${ApiConfig.baseUrl}/api/exam-results'),
-        headers: {
-          if (token != null) 'Authorization': 'Bearer $token',
-        },
-      ).timeout(const Duration(seconds: 15));
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+      final result = await ApiHelper().get('/api/exam-results');
+      if (result.isSuccess) {
         setState(() {
-          _results = (data is List) ? data : (data['results'] ?? data['data'] ?? []);
+          _results = result.dataList;
         });
       } else {
-        setState(() => _error = 'Failed to load results');
+        setState(() => _error = result.detailedError);
       }
     } catch (e) {
-      setState(() => _error = e.toString());
+      setState(() => _error = 'Unexpected error: $e');
     } finally {
       setState(() => _isLoading = false);
     }
@@ -79,17 +68,33 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.adminProgress),
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadResults,
+      body: Column(
+        children: [
+          // Gradient header
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 12, 12, 18),
+            decoration: const BoxDecoration(
+              gradient: AppColors.primaryGradient,
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    l10n.adminProgress,
+                    style: AppTextStyles.heading5.copyWith(color: AppColors.textInverse),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.refresh, color: AppColors.textInverse),
+                  onPressed: _loadResults,
+                ),
+              ],
+            ),
           ),
-        ],
-      ),
-      body: _isLoading
+          Expanded(
+            child: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
               ? Center(
@@ -195,6 +200,9 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
                     ),
                   ),
                 ),
+          ),
+        ],
+      ),
     );
   }
 }
