@@ -143,6 +143,7 @@ class _ExamResultPageState extends State<ExamResultPage>
                         score: widget.score,
                         passed: passed,
                         size: min(size.width * 0.55, 220),
+                        label: passed ? l10n.progressPassed : l10n.progressFailedCount,
                       ),
                     ),
                   ),
@@ -370,12 +371,14 @@ class _ScoreRing extends StatelessWidget {
   final int score;
   final bool passed;
   final double size;
+  final String label;
 
   const _ScoreRing({
     required this.progress,
     required this.score,
     required this.passed,
     required this.size,
+    required this.label,
   });
 
   @override
@@ -403,7 +406,7 @@ class _ScoreRing extends StatelessWidget {
                 ),
               ),
               Text(
-                passed ? 'PASSED' : 'FAILED',
+                label.toUpperCase(),
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.85),
                   fontSize: size * 0.1,

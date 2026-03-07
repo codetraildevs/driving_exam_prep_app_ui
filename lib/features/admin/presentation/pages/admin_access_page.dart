@@ -1267,9 +1267,9 @@ class _GrantUserCard extends StatelessWidget {
                             color: AppColors.warning.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(6),
                           ),
-                          child: const Text(
-                            '⏳ Pending',
-                            style: TextStyle(
+                          child: Text(
+                            '⏳ ${l10n.certificatesPending}',
+                            style: const TextStyle(
                                 color: AppColors.warning,
                                 fontSize: 9,
                                 fontWeight: FontWeight.bold),
