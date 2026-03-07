@@ -891,5 +891,25 @@
 
   "adminExpiresLabel": "Expires",
 
-  "adminRenewAccess": "Renew / Extend Access"
+  "adminRenewAccess": "Renew / Extend Access",
+
+  "adminManagePlatform": "Manage Platform",
+
+  "adminManageExams": "Manage Exams",
+
+  "adminManageExamsDesc": "View and manage all practice exams",
+
+  "adminManageUsersDesc": "View, search, and manage all users",
+
+  "adminAccessCodesDesc": "Manage access codes and payments",
+
+  "adminQuickStats": "Quick Stats",
+
+  "adminActionsTitle": "Admin Actions",
+
+  "adminTotalPractices": "Total Practices",
+
+  "adminManagePlatformDesc": "Manage your traffic rules learning platform",
+
+  "adminNotifications": "Notifications"
 }

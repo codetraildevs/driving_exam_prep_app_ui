@@ -877,4 +877,34 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get adminRenewAccess => 'Renouveler / Prolonger l\'accès';
+
+  @override
+  String get adminManagePlatform => 'Gérer la plateforme';
+
+  @override
+  String get adminManageExams => 'Gérer les examens';
+
+  @override
+  String get adminManageExamsDesc => 'Voir et gérer tous les examens pratiques';
+
+  @override
+  String get adminManageUsersDesc => 'Voir, rechercher et gérer tous les utilisateurs';
+
+  @override
+  String get adminAccessCodesDesc => 'Gérer les codes d\'accès et les paiements';
+
+  @override
+  String get adminQuickStats => 'Statistiques rapides';
+
+  @override
+  String get adminActionsTitle => 'Actions Admin';
+
+  @override
+  String get adminTotalPractices => 'Total des pratiques';
+
+  @override
+  String get adminManagePlatformDesc => 'Gérez votre plateforme d\'apprentissage du code de la route';
+
+  @override
+  String get adminNotifications => 'Notifications';
 }

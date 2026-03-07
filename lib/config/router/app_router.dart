@@ -38,11 +38,15 @@ class AppRouter {
   final AuthBloc authBloc;
   final bool isFirstLaunch;
   final bool hasLocaleSelected;
+  /// Role from the locally-cached user — sets correct initial route immediately,
+  /// so returning users never flash the login page.
+  final String? cachedUserRole;
 
   AppRouter({
     required this.authBloc,
     required this.isFirstLaunch,
     required this.hasLocaleSelected,
+    this.cachedUserRole,
   });
 
   static final GlobalKey<NavigatorState> rootNavigatorKey =
@@ -50,13 +54,22 @@ class AppRouter {
   static final GlobalKey<NavigatorState> shellNavigatorKey =
       GlobalKey<NavigatorState>();
 
+  /// Determine the best initial location given the cached session.
+  String get _initialLocation {
+    if (!hasLocaleSelected) return '/language-select';
+    if (cachedUserRole != null) {
+      // User has a cached session — skip landing/login and go straight to their area.
+      return (cachedUserRole == 'ADMIN' || cachedUserRole == 'MANAGER')
+          ? '/admin'
+          : '/home';
+    }
+    // No cached session: first-time vs returning visitor.
+    return isFirstLaunch ? '/landing' : '/login';
+  }
+
   late final GoRouter router = GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: !hasLocaleSelected
-        ? '/language-select'
-        : isFirstLaunch
-            ? '/landing'
-            : '/login',
+    initialLocation: _initialLocation,
     refreshListenable: GoRouterRefreshStream(authBloc.stream),
     redirect: (context, state) {
       final authState = context.read<AuthBloc>().state;

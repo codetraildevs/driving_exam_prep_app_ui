@@ -9,20 +9,27 @@ import 'l10n/generated/app_localizations.dart';
 import 'shared/locale/fallback_localizations.dart';
 import 'shared/locale/locale_provider.dart';
 import 'shared/session/app_launch_session.dart';
+import 'shared/session/auth_session.dart';
 import 'shared/subscription/subscription_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final isFirstLaunch = await AppLaunchSession().consumeFirstLaunch();
-  final authBloc = AuthBloc()..add(const CheckAuthStatusEvent());
   final localeProvider = LocaleProvider();
   await localeProvider.loadSavedLocale();
+
+  // Check cached session to determine the initial route without waiting for
+  // a network round-trip — prevents the login-page flash for returning users.
+  final cachedUser = await AuthSession().getUser();
+
+  final authBloc = AuthBloc()..add(const CheckAuthStatusEvent());
 
   runApp(TrafficRulesApp(
     authBloc: authBloc,
     isFirstLaunch: isFirstLaunch,
     localeProvider: localeProvider,
+    cachedUserRole: cachedUser?.role,
   ));
 }
 
@@ -30,11 +37,14 @@ class TrafficRulesApp extends StatefulWidget {
   final AuthBloc authBloc;
   final bool isFirstLaunch;
   final LocaleProvider localeProvider;
+  /// Role from the locally-cached user — used to set the correct initial route.
+  final String? cachedUserRole;
 
   const TrafficRulesApp({
     required this.authBloc,
     required this.isFirstLaunch,
     required this.localeProvider,
+    this.cachedUserRole,
     Key? key,
   }) : super(key: key);
 
@@ -52,6 +62,7 @@ class _TrafficRulesAppState extends State<TrafficRulesApp> {
       authBloc: widget.authBloc,
       isFirstLaunch: widget.isFirstLaunch,
       hasLocaleSelected: widget.localeProvider.hasLocaleSelected,
+      cachedUserRole: widget.cachedUserRole,
     );
   }
 

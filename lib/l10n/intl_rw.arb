@@ -293,5 +293,25 @@
 
   "adminExpiresLabel": "Burangira",
 
-  "adminRenewAccess": "Subiramo / Ongerera uburenganzira"
+  "adminRenewAccess": "Subiramo / Ongerera uburenganzira",
+
+  "adminManagePlatform": "Gucunga urubuga",
+
+  "adminManageExams": "Gucunga ibizamini",
+
+  "adminManageExamsDesc": "Reba no gucunga ibizamini byose byo kwimenyereza",
+
+  "adminManageUsersDesc": "Reba, shakisha no gucunga abakoresha bose",
+
+  "adminAccessCodesDesc": "Gucunga amakoodi y'uburenganzira n'ubwishyu",
+
+  "adminQuickStats": "Imibare y'igihe gito",
+
+  "adminActionsTitle": "Ibikorwa bya Admin",
+
+  "adminTotalPractices": "Imyitozo yose",
+
+  "adminManagePlatformDesc": "Gucunga urubuga rw'amategeko y'umuhanda",
+
+  "adminNotifications": "Imenyesha"
 }

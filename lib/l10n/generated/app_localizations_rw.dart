@@ -874,4 +874,34 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get adminRenewAccess => 'Subiramo / Ongerera uburenganzira';
+
+  @override
+  String get adminManagePlatform => 'Gucunga urubuga';
+
+  @override
+  String get adminManageExams => 'Gucunga ibizamini';
+
+  @override
+  String get adminManageExamsDesc => 'Reba no gucunga ibizamini byose byo kwimenyereza';
+
+  @override
+  String get adminManageUsersDesc => 'Reba, shakisha no gucunga abakoresha bose';
+
+  @override
+  String get adminAccessCodesDesc => 'Gucunga amakoodi y\'uburenganzira n\'ubwishyu';
+
+  @override
+  String get adminQuickStats => 'Imibare y\'igihe gito';
+
+  @override
+  String get adminActionsTitle => 'Ibikorwa bya Admin';
+
+  @override
+  String get adminTotalPractices => 'Imyitozo yose';
+
+  @override
+  String get adminManagePlatformDesc => 'Gucunga urubuga rw\'amategeko y\'umuhanda';
+
+  @override
+  String get adminNotifications => 'Imenyesha';
 }

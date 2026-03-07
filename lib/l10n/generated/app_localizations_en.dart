@@ -864,4 +864,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminRenewAccess => 'Renew / Extend Access';
+
+  @override
+  String get adminManagePlatform => 'Manage Platform';
+
+  @override
+  String get adminManageExams => 'Manage Exams';
+
+  @override
+  String get adminManageExamsDesc => 'View and manage all practice exams';
+
+  @override
+  String get adminManageUsersDesc => 'View, search, and manage all users';
+
+  @override
+  String get adminAccessCodesDesc => 'Manage access codes and payments';
+
+  @override
+  String get adminQuickStats => 'Quick Stats';
+
+  @override
+  String get adminActionsTitle => 'Admin Actions';
+
+  @override
+  String get adminTotalPractices => 'Total Practices';
+
+  @override
+  String get adminManagePlatformDesc => 'Manage your traffic rules learning platform';
+
+  @override
+  String get adminNotifications => 'Notifications';
 }

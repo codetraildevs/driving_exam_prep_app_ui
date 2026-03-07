@@ -19,8 +19,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late TextEditingController _phoneController;
 
-  final String supportNumber1 = "+250788123456";
-  final String supportNumber2 = "+250722987654";
+  final String supportNumber = "+250788657595";
+  final String supportDisplay = "+250 788 657 595";
 
   @override
   void initState() {
@@ -71,7 +71,8 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            context.go('/home');
+            final isAdmin = state.user.role == 'ADMIN' || state.user.role == 'MANAGER';
+            context.go(isAdmin ? '/admin' : '/home');
           } else if (state is AuthError) {
             _showError(state.message);
           }
@@ -160,25 +161,25 @@ class _LoginPageState extends State<LoginPage> {
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 12),
-
-                          GestureDetector(
-                            onTap: () => _callNumber(supportNumber1),
-                            child: Text(
-                              "📞 +250 788 123 456",
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
+                          // Callable phone button
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton.icon(
+                              onPressed: () => _callNumber(supportNumber),
+                              icon: const Icon(Icons.phone, size: 18),
+                              label: Text(
+                                supportDisplay,
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          GestureDetector(
-                            onTap: () => _callNumber(supportNumber2),
-                            child: Text(
-                              "📞 +250 722 987 654",
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.primary,
+                                side: BorderSide(color: AppColors.primary.withOpacity(0.4)),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 12),
                               ),
                             ),
                           ),

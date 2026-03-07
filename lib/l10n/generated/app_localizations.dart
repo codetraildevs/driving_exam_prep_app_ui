@@ -1428,6 +1428,36 @@ abstract class AppLocalizations {
 
   /// Renew / extend access button
   String get adminRenewAccess;
+
+  /// Manage Platform button
+  String get adminManagePlatform;
+
+  /// Manage Exams action
+  String get adminManageExams;
+
+  /// Manage Exams description
+  String get adminManageExamsDesc;
+
+  /// Manage Users description
+  String get adminManageUsersDesc;
+
+  /// Access Codes description
+  String get adminAccessCodesDesc;
+
+  /// Quick Stats section title
+  String get adminQuickStats;
+
+  /// Admin Actions section title
+  String get adminActionsTitle;
+
+  /// Total Practices stat
+  String get adminTotalPractices;
+
+  /// Admin platform description
+  String get adminManagePlatformDesc;
+
+  /// Notifications label
+  String get adminNotifications;
 }
 
 class _AppLocalizationsDelegate

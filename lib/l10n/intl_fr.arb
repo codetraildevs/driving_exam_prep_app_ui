@@ -293,5 +293,25 @@
 
   "adminExpiresLabel": "Expire le",
 
-  "adminRenewAccess": "Renouveler / Prolonger l'accès"
+  "adminRenewAccess": "Renouveler / Prolonger l'accès",
+
+  "adminManagePlatform": "Gérer la plateforme",
+
+  "adminManageExams": "Gérer les examens",
+
+  "adminManageExamsDesc": "Voir et gérer tous les examens pratiques",
+
+  "adminManageUsersDesc": "Voir, rechercher et gérer tous les utilisateurs",
+
+  "adminAccessCodesDesc": "Gérer les codes d'accès et les paiements",
+
+  "adminQuickStats": "Statistiques rapides",
+
+  "adminActionsTitle": "Actions Admin",
+
+  "adminTotalPractices": "Total des pratiques",
+
+  "adminManagePlatformDesc": "Gérez votre plateforme d'apprentissage du code de la route",
+
+  "adminNotifications": "Notifications"
 }
