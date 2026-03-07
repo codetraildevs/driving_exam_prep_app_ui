@@ -963,4 +963,132 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsThemeDark => 'Dark';
+
+  @override
+  String get examWrong => 'Wrong';
+
+  @override
+  String get examTimeSpent => 'Time';
+
+  @override
+  String get profileLogoutConfirmTitle => 'Sign Out?';
+
+  @override
+  String get profileLogoutConfirmMessage => 'Are you sure you want to sign out of your account?';
+
+  @override
+  String get profileDeleteInstructions =>
+      'Before deleting your account:\n• All your exam results will be permanently erased\n• Your access subscription will be removed\n• This action cannot be undone\n• You will need to re-register to use the app again';
+
+  @override
+  String get progressExamsTaken => 'Exams Taken';
+
+  @override
+  String get progressPassedCount => 'Passed';
+
+  @override
+  String get progressFailedCount => 'Failed';
+
+  @override
+  String get progressPassRate => 'Pass Rate';
+
+  @override
+  String get progressNoExams => 'No exams taken yet. Start practicing!';
+
+  @override
+  String get certificateReadyTitle => 'Ready for Official Exam!';
+
+  @override
+  String certificateReadySubtitle(int count) =>
+      'You have passed $count exams. You are ready for the official driving license test.';
+
+  @override
+  String get certificateIremboLink => 'Register for Official Exam on irembo.gov.rw';
+
+  @override
+  String get certificateIremboDesc =>
+      'Click below to register for the official provisional driving license computer-based test';
+
+  @override
+  String certificateExamsNeeded(int needed) =>
+      'Pass $needed more exams to earn your certificate';
+
+  @override
+  String certificateProgressLabel(int passed, int total) =>
+      '$passed of $total required exams passed';
+
+  @override
+  String get adminSortAsc => 'Oldest First';
+
+  @override
+  String get adminSortDesc => 'Newest First';
+
+  @override
+  String get adminFilterToday => 'Today';
+
+  @override
+  String get adminDateRange => 'Date Range';
+
+  @override
+  String get adminFilterRole => 'Role';
+
+  @override
+  String get adminBlockUser => 'Block User';
+
+  @override
+  String get adminUnblockUser => 'Unblock User';
+
+  @override
+  String get adminDeleteUserAction => 'Delete User';
+
+  @override
+  String adminBlockUserConfirm(String name) =>
+      'Block $name? They will lose access and cannot log in.';
+
+  @override
+  String adminDeleteUserConfirm(String name) =>
+      'Permanently delete $name? All their data will be erased. This cannot be undone.';
+
+  @override
+  String get adminUserBlocked => 'User blocked successfully';
+
+  @override
+  String get adminUserUnblocked => 'User unblocked successfully';
+
+  @override
+  String get adminUserDeleted => 'User deleted successfully';
+
+  @override
+  String get adminMustBlockFirst => 'You must block the user before deleting them.';
+
+  @override
+  String get adminBlockAccess => 'Block Access';
+
+  @override
+  String get adminDeleteAccess => 'Delete Access';
+
+  @override
+  String get adminBlockAccessConfirm =>
+      'Block this access code? The user will lose access immediately.';
+
+  @override
+  String get adminDeleteAccessConfirm => 'Delete this access code permanently?';
+
+  @override
+  String get adminAccessBlocked => 'Access code blocked';
+
+  @override
+  String get adminAccessDeleted => 'Access code deleted';
+
+  @override
+  String adminPage(int page, int total) => 'Page $page of $total';
+
+  @override
+  String get adminLearningLanguage => 'Learning';
+
+  @override
+  String get adminIsBlocked => 'Blocked';
+
+  @override
+  String get adminIsActive => 'Active';
 }

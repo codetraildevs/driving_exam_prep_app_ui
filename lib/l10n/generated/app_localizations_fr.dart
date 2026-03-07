@@ -976,4 +976,132 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get settingsThemeDark => 'Sombre';
+
+  @override
+  String get examWrong => 'Incorrect';
+
+  @override
+  String get examTimeSpent => 'Temps';
+
+  @override
+  String get profileLogoutConfirmTitle => 'Se déconnecter?';
+
+  @override
+  String get profileLogoutConfirmMessage => 'Êtes-vous sûr de vouloir vous déconnecter?';
+
+  @override
+  String get profileDeleteInstructions =>
+      'Avant de supprimer votre compte:\n• Tous vos résultats d\'examen seront effacés\n• Votre abonnement sera supprimé\n• Cette action ne peut pas être annulée\n• Vous devrez vous réinscrire pour utiliser l\'application';
+
+  @override
+  String get progressExamsTaken => 'Examens passés';
+
+  @override
+  String get progressPassedCount => 'Réussis';
+
+  @override
+  String get progressFailedCount => 'Échoués';
+
+  @override
+  String get progressPassRate => 'Taux de réussite';
+
+  @override
+  String get progressNoExams => 'Aucun examen encore. Commencez à pratiquer!';
+
+  @override
+  String get certificateReadyTitle => 'Prêt pour l\'examen officiel!';
+
+  @override
+  String certificateReadySubtitle(int count) =>
+      'Vous avez réussi $count examens. Vous êtes prêt pour le test officiel.';
+
+  @override
+  String get certificateIremboLink => 'S\'inscrire à l\'examen officiel sur irembo.gov.rw';
+
+  @override
+  String get certificateIremboDesc =>
+      'Cliquez ci-dessous pour vous inscrire au test informatisé officiel du permis de conduire provisoire';
+
+  @override
+  String certificateExamsNeeded(int needed) =>
+      'Réussissez $needed examens supplémentaires pour obtenir votre certificat';
+
+  @override
+  String certificateProgressLabel(int passed, int total) =>
+      '$passed sur $total examens requis réussis';
+
+  @override
+  String get adminSortAsc => 'Plus anciens d\'abord';
+
+  @override
+  String get adminSortDesc => 'Plus récents d\'abord';
+
+  @override
+  String get adminFilterToday => 'Aujourd\'hui';
+
+  @override
+  String get adminDateRange => 'Plage de dates';
+
+  @override
+  String get adminFilterRole => 'Rôle';
+
+  @override
+  String get adminBlockUser => 'Bloquer l\'utilisateur';
+
+  @override
+  String get adminUnblockUser => 'Débloquer l\'utilisateur';
+
+  @override
+  String get adminDeleteUserAction => 'Supprimer l\'utilisateur';
+
+  @override
+  String adminBlockUserConfirm(String name) =>
+      'Bloquer $name? Ils perdront l\'accès.';
+
+  @override
+  String adminDeleteUserConfirm(String name) =>
+      'Supprimer définitivement $name? Toutes leurs données seront effacées.';
+
+  @override
+  String get adminUserBlocked => 'Utilisateur bloqué avec succès';
+
+  @override
+  String get adminUserUnblocked => 'Utilisateur débloqué avec succès';
+
+  @override
+  String get adminUserDeleted => 'Utilisateur supprimé avec succès';
+
+  @override
+  String get adminMustBlockFirst => 'Vous devez bloquer l\'utilisateur avant de le supprimer.';
+
+  @override
+  String get adminBlockAccess => 'Bloquer l\'accès';
+
+  @override
+  String get adminDeleteAccess => 'Supprimer l\'accès';
+
+  @override
+  String get adminBlockAccessConfirm =>
+      'Bloquer ce code d\'accès? L\'utilisateur perdra l\'accès immédiatement.';
+
+  @override
+  String get adminDeleteAccessConfirm => 'Supprimer définitivement ce code d\'accès?';
+
+  @override
+  String get adminAccessBlocked => 'Code d\'accès bloqué';
+
+  @override
+  String get adminAccessDeleted => 'Code d\'accès supprimé';
+
+  @override
+  String adminPage(int page, int total) => 'Page $page sur $total';
+
+  @override
+  String get adminLearningLanguage => 'Apprentissage';
+
+  @override
+  String get adminIsBlocked => 'Bloqué';
+
+  @override
+  String get adminIsActive => 'Actif';
 }

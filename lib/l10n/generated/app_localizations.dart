@@ -1527,6 +1527,56 @@ abstract class AppLocalizations {
 
   /// Dark theme chip label
   String get settingsThemeDark;
+
+  // ── Exam result ─────────────────────────────────────────────────────────────
+  String get examWrong;
+  String get examTimeSpent;
+
+  // ── Profile ──────────────────────────────────────────────────────────────────
+  String get profileLogoutConfirmTitle;
+  String get profileLogoutConfirmMessage;
+  String get profileDeleteInstructions;
+
+  // ── Progress page ────────────────────────────────────────────────────────────
+  String get progressExamsTaken;
+  String get progressPassedCount;
+  String get progressFailedCount;
+  String get progressPassRate;
+  String get progressNoExams;
+
+  // ── Certificates ─────────────────────────────────────────────────────────────
+  String get certificateReadyTitle;
+  String certificateReadySubtitle(int count);
+  String get certificateIremboLink;
+  String get certificateIremboDesc;
+  String certificateExamsNeeded(int needed);
+  String certificateProgressLabel(int passed, int total);
+
+  // ── Admin extras ─────────────────────────────────────────────────────────────
+  String get adminSortAsc;
+  String get adminSortDesc;
+  String get adminFilterToday;
+  String get adminDateRange;
+  String get adminFilterRole;
+  String get adminBlockUser;
+  String get adminUnblockUser;
+  String get adminDeleteUserAction;
+  String adminBlockUserConfirm(String name);
+  String adminDeleteUserConfirm(String name);
+  String get adminUserBlocked;
+  String get adminUserUnblocked;
+  String get adminUserDeleted;
+  String get adminMustBlockFirst;
+  String get adminBlockAccess;
+  String get adminDeleteAccess;
+  String get adminBlockAccessConfirm;
+  String get adminDeleteAccessConfirm;
+  String get adminAccessBlocked;
+  String get adminAccessDeleted;
+  String adminPage(int page, int total);
+  String get adminLearningLanguage;
+  String get adminIsBlocked;
+  String get adminIsActive;
 }
 
 class _AppLocalizationsDelegate

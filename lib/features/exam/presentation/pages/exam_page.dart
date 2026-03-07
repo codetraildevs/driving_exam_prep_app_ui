@@ -84,9 +84,16 @@ class _ExamPageState extends State<ExamPage> {
   }
 
   void _submitExam() {
-    final accuracy = ((_correctAnswers / examQuestions.length) * 100).toInt();
-    final passed = accuracy >= 70;
-    context.push('/exam/result/$_currentQuestion');
+    final total = examQuestions.length;
+    final accuracy = total > 0 ? ((_correctAnswers / total) * 100).toInt() : 0;
+    final elapsed = DateTime.now().difference(_startTime).inSeconds;
+    context.push('/exam/result/0', extra: {
+      'score': accuracy,
+      'totalQuestions': total,
+      'correctAnswers': _correctAnswers,
+      'timeSpentSeconds': elapsed,
+      'examTitle': '',
+    });
   }
 
   String _formatTime(int seconds) {

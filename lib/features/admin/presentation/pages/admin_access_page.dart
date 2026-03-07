@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
@@ -7,22 +8,12 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/network/api_config.dart';
 import '../../../../shared/session/auth_session.dart';
 
-/// Tier → duration in days mapping (must stay in sync with backend tierMap).
 const Map<String, int> _kTierDays = {
   '1_MONTH': 30,
   '3_MONTHS': 90,
   '6_MONTHS': 180,
 };
 
-/// Default prices per tier (RWF). Language-specific prices are set in _getTiers.
-const Map<String, int> _kTierPrices = {
-  '1_MONTH': 3000,
-  '3_MONTHS': 5000,
-  '6_MONTHS': 10000,
-};
-
-/// Access Management page — shows ALL users so admin can grant, renew, or
-/// revoke access with a tier selection or custom duration.
 class AdminAccessPage extends StatefulWidget {
   const AdminAccessPage({Key? key}) : super(key: key);
 
@@ -30,17 +21,796 @@ class AdminAccessPage extends StatefulWidget {
   State<AdminAccessPage> createState() => _AdminAccessPageState();
 }
 
-class _AdminAccessPageState extends State<AdminAccessPage> {
-  bool _isLoading = true;
-  List<Map<String, dynamic>> _allUsers = [];
-  List<Map<String, dynamic>> _pendingUsers = [];
-  String? _error;
-  final Map<String, bool> _loadingMap = {};
-  String _filter = 'all'; // 'all' | 'active' | 'pending' | 'none'
+class _AdminAccessPageState extends State<AdminAccessPage>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabCtrl;
 
   @override
   void initState() {
     super.initState();
+    _tabCtrl = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(l10n.adminAccess),
+        elevation: 0,
+        bottom: TabBar(
+          controller: _tabCtrl,
+          tabs: [
+            Tab(text: l10n.adminAccess),
+            Tab(text: l10n.adminManageUsers),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabCtrl,
+        children: const [
+          _AccessCodesTab(),
+          _GrantAccessTab(),
+        ],
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Tab 1 – Access Codes list
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _AccessCodesTab extends StatefulWidget {
+  const _AccessCodesTab();
+
+  @override
+  State<_AccessCodesTab> createState() => _AccessCodesTabState();
+}
+
+class _AccessCodesTabState extends State<_AccessCodesTab> {
+  bool _isLoading = true;
+  List<dynamic> _codes = [];
+  int _total = 0;
+  String? _error;
+  String _sortDir = 'DESC';
+  bool _todayOnly = false;
+  DateTime? _dateFrom;
+  DateTime? _dateTo;
+  String? _blockedFilter; // null = all, 'true' = blocked, 'false' = active
+  int _page = 1;
+  static const _limit = 10;
+  final _loadingMap = <String, bool>{};
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    try {
+      final token = await AuthSession().getToken();
+      final qp = <String, String>{
+        'page': '$_page',
+        'limit': '$_limit',
+        'sortDir': _sortDir,
+        if (_todayOnly) 'today': '1',
+        if (!_todayOnly && _dateFrom != null)
+          'dateFrom': _dateFrom!.toIso8601String().split('T')[0],
+        if (!_todayOnly && _dateTo != null)
+          'dateTo': _dateTo!.toIso8601String().split('T')[0],
+        if (_blockedFilter != null) 'isBlocked': _blockedFilter!,
+      };
+      final uri = Uri.parse('${ApiConfig.baseUrl}/api/access-codes')
+          .replace(queryParameters: qp);
+      final res = await http
+          .get(uri, headers: {
+            if (token != null) 'Authorization': 'Bearer $token',
+          })
+          .timeout(const Duration(seconds: 15));
+      if (res.statusCode == 200) {
+        final data = json.decode(res.body);
+        setState(() {
+          _codes = (data is List)
+              ? data
+              : (data['codes'] ?? data['data'] ?? []);
+          _total = (data is Map) ? (data['total'] ?? _codes.length) : _codes.length;
+        });
+      } else {
+        setState(() => _error = 'HTTP ${res.statusCode}');
+      }
+    } catch (e) {
+      setState(() => _error = e.toString());
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _blockCode(String id, AppLocalizations l10n) async {
+    setState(() => _loadingMap[id] = true);
+    try {
+      final token = await AuthSession().getToken();
+      final res = await http.patch(
+        Uri.parse('${ApiConfig.baseUrl}/api/access-codes/$id/block'),
+        headers: {if (token != null) 'Authorization': 'Bearer $token'},
+      ).timeout(const Duration(seconds: 15));
+      if (res.statusCode == 200) {
+        _showSnack(l10n.adminAccessBlocked, AppColors.success);
+        _load();
+      } else {
+        _showSnack('HTTP ${res.statusCode}', AppColors.error);
+      }
+    } catch (e) {
+      _showSnack(e.toString(), AppColors.error);
+    } finally {
+      setState(() => _loadingMap.remove(id));
+    }
+  }
+
+  Future<void> _deleteCode(String id, AppLocalizations l10n) async {
+    setState(() => _loadingMap[id] = true);
+    try {
+      final token = await AuthSession().getToken();
+      final res = await http.delete(
+        Uri.parse('${ApiConfig.baseUrl}/api/access-codes/$id'),
+        headers: {if (token != null) 'Authorization': 'Bearer $token'},
+      ).timeout(const Duration(seconds: 15));
+      if (res.statusCode == 200) {
+        _showSnack(l10n.adminAccessDeleted, AppColors.success);
+        _load();
+      } else {
+        _showSnack('HTTP ${res.statusCode}', AppColors.error);
+      }
+    } catch (e) {
+      _showSnack(e.toString(), AppColors.error);
+    } finally {
+      setState(() => _loadingMap.remove(id));
+    }
+  }
+
+  void _showSnack(String msg, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(msg),
+      backgroundColor: color,
+      behavior: SnackBarBehavior.floating,
+    ));
+  }
+
+  void _confirmBlock(BuildContext ctx, Map code, AppLocalizations l10n) {
+    final id = (code['id'] ?? '').toString();
+    showDialog(
+      context: ctx,
+      builder: (_) => AlertDialog(
+        title: Text(l10n.adminBlockAccess),
+        content: Text(l10n.adminBlockAccessConfirm),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(l10n.commonCancel)),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              _blockCode(id, l10n);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.warning,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(l10n.adminBlockAccess),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _confirmDelete(BuildContext ctx, Map code, AppLocalizations l10n) {
+    final id = (code['id'] ?? '').toString();
+    showDialog(
+      context: ctx,
+      builder: (_) => AlertDialog(
+        title: Text(l10n.adminDeleteAccess),
+        content: Text(l10n.adminDeleteAccessConfirm),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(l10n.commonCancel)),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              _deleteCode(id, l10n);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.error,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(l10n.adminDeleteAccess),
+          ),
+        ],
+      ),
+    );
+  }
+
+  int get _totalPages => (_total / _limit).ceil().clamp(1, 9999);
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
+    return Column(
+      children: [
+        // ── Toolbar ─────────────────────────────────────────────────────
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+          child: Row(
+            children: [
+              // Sort
+              _toolChip(
+                icon: _sortDir == 'DESC'
+                    ? Icons.arrow_downward
+                    : Icons.arrow_upward,
+                label: _sortDir == 'DESC' ? l10n.adminSortDesc : l10n.adminSortAsc,
+                onTap: () {
+                  setState(() => _sortDir =
+                      _sortDir == 'DESC' ? 'ASC' : 'DESC');
+                  _page = 1;
+                  _load();
+                },
+              ),
+              const SizedBox(width: 8),
+              // Today
+              _toolChip(
+                icon: Icons.today,
+                label: l10n.adminFilterToday,
+                selected: _todayOnly,
+                onTap: () {
+                  setState(() {
+                    _todayOnly = !_todayOnly;
+                    if (_todayOnly) {
+                      _dateFrom = null;
+                      _dateTo = null;
+                    }
+                  });
+                  _page = 1;
+                  _load();
+                },
+              ),
+              const SizedBox(width: 8),
+              // Date range
+              if (!_todayOnly)
+                _toolChip(
+                  icon: Icons.date_range,
+                  label: _dateFrom != null
+                      ? '${_dateFrom!.toIso8601String().split('T')[0]}'
+                      : l10n.adminDateRange,
+                  selected: _dateFrom != null,
+                  onTap: () => _pickDateRange(context, l10n),
+                  onClear: _dateFrom != null
+                      ? () {
+                          setState(() {
+                            _dateFrom = null;
+                            _dateTo = null;
+                          });
+                          _page = 1;
+                          _load();
+                        }
+                      : null,
+                ),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: _load,
+                iconSize: 20,
+              ),
+            ],
+          ),
+        ),
+
+        // ── Status filter chips ──────────────────────────────────────────
+        SizedBox(
+          height: 42,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            children: [
+              _filterChip(l10n.adminFilterAll, _blockedFilter == null, () {
+                setState(() => _blockedFilter = null);
+                _page = 1;
+                _load();
+              }),
+              const SizedBox(width: 6),
+              _filterChip(l10n.adminIsActive, _blockedFilter == 'false', () {
+                setState(() =>
+                    _blockedFilter = _blockedFilter == 'false' ? null : 'false');
+                _page = 1;
+                _load();
+              }),
+              const SizedBox(width: 6),
+              _filterChip(l10n.adminIsBlocked, _blockedFilter == 'true', () {
+                setState(() =>
+                    _blockedFilter = _blockedFilter == 'true' ? null : 'true');
+                _page = 1;
+                _load();
+              }),
+            ],
+          ),
+        ),
+
+        // ── List ─────────────────────────────────────────────────────────
+        Expanded(
+          child: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _error != null
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.error_outline,
+                              size: 48, color: AppColors.error),
+                          const SizedBox(height: 12),
+                          Text(_error!,
+                              style: AppTextStyles.bodyMedium,
+                              textAlign: TextAlign.center),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: _load,
+                            child: Text(l10n.commonRetry),
+                          ),
+                        ],
+                      ),
+                    )
+                  : _codes.isEmpty
+                      ? const Center(child: Icon(Icons.key_off, size: 64,
+                          color: AppColors.neutral400))
+                      : RefreshIndicator(
+                          onRefresh: _load,
+                          child: ListView.builder(
+                            padding:
+                                const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                            itemCount: _codes.length,
+                            itemBuilder: (ctx, i) {
+                              final code = _codes[i] as Map;
+                              final id = (code['id'] ?? '').toString();
+                              final isLoading =
+                                  _loadingMap[id] ?? false;
+                              return _AccessCodeCard(
+                                code: code,
+                                isLoading: isLoading,
+                                onBlock: () =>
+                                    _confirmBlock(ctx, code, l10n),
+                                onDelete: () =>
+                                    _confirmDelete(ctx, code, l10n),
+                                l10n: l10n,
+                              );
+                            },
+                          ),
+                        ),
+        ),
+
+        // ── Pagination ───────────────────────────────────────────────────
+        if (!_isLoading && _error == null && _totalPages > 1)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.chevron_left),
+                  onPressed: _page > 1
+                      ? () {
+                          setState(() => _page--);
+                          _load();
+                        }
+                      : null,
+                ),
+                Text(
+                  AppLocalizations.of(context)
+                      .adminPage(_page, _totalPages),
+                  style: AppTextStyles.labelMedium,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.chevron_right),
+                  onPressed: _page < _totalPages
+                      ? () {
+                          setState(() => _page++);
+                          _load();
+                        }
+                      : null,
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _toolChip({
+    required IconData icon,
+    required String label,
+    bool selected = false,
+    required VoidCallback onTap,
+    VoidCallback? onClear,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding:
+            const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: selected
+              ? AppColors.primary.withOpacity(0.12)
+              : AppColors.background,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.primary.withOpacity(0.25)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 14, color: AppColors.primary),
+            const SizedBox(width: 4),
+            Text(label,
+                style: const TextStyle(
+                    color: AppColors.primary, fontSize: 12)),
+            if (onClear != null) ...[
+              const SizedBox(width: 4),
+              GestureDetector(
+                onTap: onClear,
+                child: const Icon(Icons.close,
+                    size: 12, color: AppColors.primary),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _filterChip(String label, bool selected, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: selected
+              ? AppColors.primary.withOpacity(0.15)
+              : AppColors.background,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+              color: selected
+                  ? AppColors.primary
+                  : AppColors.primary.withOpacity(0.2)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (selected) ...[
+              const Icon(Icons.check, size: 12, color: AppColors.primary),
+              const SizedBox(width: 4),
+            ],
+            Text(
+              label,
+              style: TextStyle(
+                color:
+                    selected ? AppColors.primary : AppColors.textSecondary,
+                fontSize: 12,
+                fontWeight:
+                    selected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickDateRange(
+      BuildContext context, AppLocalizations l10n) async {
+    final range = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(2023),
+      lastDate: DateTime.now(),
+      initialDateRange: _dateFrom != null && _dateTo != null
+          ? DateTimeRange(start: _dateFrom!, end: _dateTo!)
+          : null,
+    );
+    if (range != null) {
+      setState(() {
+        _dateFrom = range.start;
+        _dateTo = range.end;
+        _todayOnly = false;
+      });
+      _page = 1;
+      _load();
+    }
+  }
+}
+
+// ── Access code card ──────────────────────────────────────────────────────────
+
+class _AccessCodeCard extends StatelessWidget {
+  final Map code;
+  final bool isLoading;
+  final VoidCallback onBlock;
+  final VoidCallback onDelete;
+  final AppLocalizations l10n;
+
+  const _AccessCodeCard({
+    required this.code,
+    required this.isLoading,
+    required this.onBlock,
+    required this.onDelete,
+    required this.l10n,
+  });
+
+  bool get _isBlocked {
+    final v = code['isBlocked'];
+    return v == true || v == 1 || v == '1';
+  }
+
+  bool get _isExpired {
+    final exp = (code['expiresAt'] ?? '').toString();
+    if (exp.isEmpty) return false;
+    return DateTime.tryParse(exp)?.isBefore(DateTime.now()) ?? false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final codeStr = (code['code'] ?? '').toString();
+    final userName = (code['userName'] ?? '').toString();
+    final userPhone = (code['userPhone'] ?? '').toString();
+    final tier = (code['paymentTier'] ?? '').toString();
+    final amount = code['paymentAmount'];
+    final created =
+        (code['createdAt'] ?? '').toString().split('T')[0];
+    final expires =
+        (code['expiresAt'] ?? '').toString().split('T')[0];
+    final inactive = _isBlocked || _isExpired;
+    final statusColor = inactive ? AppColors.error : AppColors.success;
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ── Code + status ─────────────────────────────────────────
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.key_rounded,
+                          size: 14, color: AppColors.primary),
+                      const SizedBox(width: 6),
+                      Text(
+                        codeStr,
+                        style: const TextStyle(
+                          fontFamily: 'monospace',
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                          fontSize: 14,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () {
+                    Clipboard.setData(ClipboardData(text: codeStr));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Copied'),
+                          duration: Duration(seconds: 1)),
+                    );
+                  },
+                  child: const Icon(Icons.copy, size: 16,
+                      color: AppColors.textSecondary),
+                ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: statusColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    inactive
+                        ? l10n.adminIsBlocked
+                        : l10n.adminIsActive,
+                    style: TextStyle(
+                      color: statusColor,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 10),
+
+            // ── User info ─────────────────────────────────────────────
+            if (userName.isNotEmpty || userPhone.isNotEmpty)
+              Row(
+                children: [
+                  const Icon(Icons.person_outline,
+                      size: 14, color: AppColors.textSecondary),
+                  const SizedBox(width: 6),
+                  Text(
+                    userName.isNotEmpty ? userName : userPhone,
+                    style: AppTextStyles.bodySmall
+                        .copyWith(color: AppColors.textSecondary),
+                  ),
+                  if (userPhone.isNotEmpty && userName.isNotEmpty) ...[
+                    const SizedBox(width: 6),
+                    Text(
+                      userPhone,
+                      style: AppTextStyles.labelSmall
+                          .copyWith(color: AppColors.textTertiary),
+                    ),
+                  ],
+                ],
+              ),
+
+            const SizedBox(height: 6),
+
+            // ── Dates & tier ──────────────────────────────────────────
+            Wrap(
+              spacing: 12,
+              children: [
+                if (tier.isNotEmpty)
+                  _info(Icons.workspace_premium, tier.replaceAll('_', ' ')),
+                if (amount != null)
+                  _info(Icons.payment, '$amount RWF'),
+                if (created.isNotEmpty)
+                  _info(Icons.calendar_today, created),
+                if (expires.isNotEmpty)
+                  _info(Icons.access_time, expires,
+                      color: _isExpired ? AppColors.error : null),
+              ],
+            ),
+
+            const SizedBox(height: 10),
+
+            // ── Actions ───────────────────────────────────────────────
+            if (isLoading)
+              const Center(
+                  child: SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2)))
+            else
+              Row(
+                children: [
+                  if (!inactive)
+                    _actionBtn(
+                      icon: Icons.block,
+                      label: l10n.adminBlockAccess,
+                      color: AppColors.warning,
+                      onTap: onBlock,
+                    ),
+                  if (!inactive) const SizedBox(width: 8),
+                  _actionBtn(
+                    icon: Icons.delete_rounded,
+                    label: l10n.adminDeleteAccess,
+                    color: AppColors.error,
+                    onTap: onDelete,
+                  ),
+                ],
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _info(IconData icon, String text, {Color? color}) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 12,
+              color: color ?? AppColors.textSecondary),
+          const SizedBox(width: 4),
+          Text(text,
+              style: AppTextStyles.labelSmall.copyWith(
+                  color: color ?? AppColors.textSecondary)),
+        ],
+      );
+
+  Widget _actionBtn({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) =>
+      GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: color.withOpacity(0.25)),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: color, size: 14),
+              const SizedBox(width: 4),
+              Text(label,
+                  style: TextStyle(
+                      color: color,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600)),
+            ],
+          ),
+        ),
+      );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Tab 2 – Grant Access to users
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _GrantAccessTab extends StatefulWidget {
+  const _GrantAccessTab();
+
+  @override
+  State<_GrantAccessTab> createState() => _GrantAccessTabState();
+}
+
+class _GrantAccessTabState extends State<_GrantAccessTab> {
+  bool _isLoading = true;
+  List<Map<String, dynamic>> _users = [];
+  int _total = 0;
+  String? _error;
+  final _searchCtrl = TextEditingController();
+  String _accessFilter = 'all';
+  int _page = 1;
+  static const _limit = 10;
+  final _loadingMap = <String, bool>{};
+  // pending payment user IDs
+  final Set<String> _pendingIds = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+    _searchCtrl.addListener(_onSearch);
+  }
+
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    super.dispose();
+  }
+
+  void _onSearch() {
+    _page = 1;
     _loadData();
   }
 
@@ -52,59 +822,48 @@ class _AdminAccessPageState extends State<AdminAccessPage> {
     try {
       final token = await AuthSession().getToken();
       final headers = {if (token != null) 'Authorization': 'Bearer $token'};
+      final qp = <String, String>{
+        'page': '$_page',
+        'limit': '$_limit',
+        if (_searchCtrl.text.isNotEmpty) 'search': _searchCtrl.text,
+        if (_accessFilter == 'hasAccess') 'hasAccess': 'true',
+        if (_accessFilter == 'noAccess') 'hasAccess': 'false',
+      };
+      final usersUri = Uri.parse('${ApiConfig.baseUrl}/api/admin/users')
+          .replace(queryParameters: qp);
 
       final results = await Future.wait([
-        http
-            .get(Uri.parse('${ApiConfig.baseUrl}/api/admin/users?limit=100'),
-                headers: headers)
-            .timeout(const Duration(seconds: 15)),
-        http
-            .get(Uri.parse('${ApiConfig.baseUrl}/api/payments'),
-                headers: headers)
+        http.get(usersUri, headers: headers).timeout(const Duration(seconds: 15)),
+        http.get(Uri.parse('${ApiConfig.baseUrl}/api/payments'), headers: headers)
             .timeout(const Duration(seconds: 15)),
       ]);
 
-      final usersResp = results[0];
-      final paymentsResp = results[1];
-
-      if (usersResp.statusCode == 200) {
-        final data = json.decode(usersResp.body);
-        final users = (data is List)
+      if (results[0].statusCode == 200) {
+        final data = json.decode(results[0].body);
+        final userList = (data is List)
             ? List<dynamic>.from(data)
             : List<dynamic>.from(data['users'] ?? data['data'] ?? []);
+        _total = (data is Map) ? (data['total'] ?? userList.length) : userList.length;
 
-        final Set<String> pendingUserIds = {};
-        if (paymentsResp.statusCode == 200) {
-          final pData = json.decode(paymentsResp.body);
-          final payments = (pData is List)
-              ? pData
-              : (pData['payments'] ?? pData['data'] ?? []);
+        _pendingIds.clear();
+        if (results[1].statusCode == 200) {
+          final pData = json.decode(results[1].body);
+          final payments = (pData is List) ? pData : (pData['payments'] ?? pData['data'] ?? []);
           for (final p in payments) {
             if ((p['status'] ?? '').toString().toUpperCase() == 'PENDING') {
               final uid = (p['userId'] ?? p['user_id'] ?? '').toString();
-              if (uid.isNotEmpty) pendingUserIds.add(uid);
+              if (uid.isNotEmpty) _pendingIds.add(uid);
             }
           }
         }
 
-        final allUsers = users
-            .map((u) => Map<String, dynamic>.from(u as Map))
-            .toList();
-
-        for (final u in allUsers) {
-          u['_hasPendingRequest'] =
-              pendingUserIds.contains((u['id'] ?? '').toString());
-        }
-
         setState(() {
-          _allUsers = allUsers;
-          _pendingUsers = allUsers
-              .where((u) => u['_hasPendingRequest'] == true)
+          _users = userList
+              .map((u) => Map<String, dynamic>.from(u as Map))
               .toList();
         });
       } else {
-        setState(() => _error =
-            '${usersResp.statusCode}: ${_extractMessage(usersResp.body)}');
+        setState(() => _error = 'HTTP ${results[0].statusCode}');
       }
     } catch (e) {
       setState(() => _error = e.toString());
@@ -113,611 +872,323 @@ class _AdminAccessPageState extends State<AdminAccessPage> {
     }
   }
 
-  String _extractMessage(String body) {
-    try {
-      final d = json.decode(body);
-      return (d['message'] ?? d['error'] ?? body).toString();
-    } catch (_) {
-      return body;
-    }
+  bool _hasActiveAccess(Map u) {
+    final exp = (u['accessExpiresAt'])?.toString();
+    if (exp == null) return false;
+    return DateTime.tryParse(exp)?.isAfter(DateTime.now()) ?? false;
   }
 
-  bool _hasActiveAccess(Map<String, dynamic> user) {
-    final access = user['access'] ?? user['subscription'];
-    if (access != null) {
-      final exp = access['expires_at'] ?? access['expiresAt'];
-      if (exp != null) {
-        return DateTime.tryParse(exp.toString())?.isAfter(DateTime.now()) ??
-            false;
-      }
-    }
-    final exp = user['accessExpiresAt'];
-    if (exp != null) {
-      return DateTime.tryParse(exp.toString())?.isAfter(DateTime.now()) ?? false;
-    }
-    return (user['hasActiveAccess'] ?? 0) == 1;
-  }
-
-  bool _isExpired(Map<String, dynamic> user) {
-    final access = user['access'] ?? user['subscription'];
-    String? exp;
-    if (access != null) {
-      exp = (access['expires_at'] ?? access['expiresAt'])?.toString();
-    }
-    exp ??= user['accessExpiresAt']?.toString();
-    if (exp == null || exp.isEmpty) return false;
-    final date = DateTime.tryParse(exp);
-    return date != null && date.isBefore(DateTime.now());
-  }
-
-  String _expiryDate(Map<String, dynamic> user) {
-    final access = user['access'] ?? user['subscription'];
-    String? raw;
-    if (access != null) {
-      raw = (access['expires_at'] ?? access['expiresAt'])?.toString();
-    }
-    raw ??= user['accessExpiresAt']?.toString();
-    if (raw == null || raw.isEmpty) return '';
-    return raw.split('T')[0];
-  }
-
-  String _tier(Map<String, dynamic> user) {
-    final access = user['access'] ?? user['subscription'];
-    if (access != null) {
-      return (access['tier'] ?? access['payment_tier'] ?? '')
-          .toString()
-          .replaceAll('_', ' ');
-    }
-    return (user['paymentTier'] ?? '').toString().replaceAll('_', ' ');
-  }
-
-  List<Map<String, dynamic>> get _filteredUsers {
-    switch (_filter) {
-      case 'active':
-        return _allUsers.where(_hasActiveAccess).toList();
-      case 'pending':
-        return _pendingUsers;
-      case 'none':
-        return _allUsers
-            .where((u) => !_hasActiveAccess(u) && !_isExpired(u))
-            .toList();
-      default:
-        return _allUsers;
-    }
-  }
-
-  List<Map<String, dynamic>> _getTiers(AppLocalizations l10n) => [
-        {'tier': '1_MONTH', 'durationDays': _kTierDays['1_MONTH'], 'price': _kTierPrices['1_MONTH'], 'label': l10n.subscriptionMonth1},
-        {'tier': '3_MONTHS', 'durationDays': _kTierDays['3_MONTHS'], 'price': _kTierPrices['3_MONTHS'], 'label': l10n.subscriptionMonth3},
-        {'tier': '6_MONTHS', 'durationDays': _kTierDays['6_MONTHS'], 'price': _kTierPrices['6_MONTHS'], 'label': l10n.subscriptionMonth6},
-      ];
+  int get _totalPages => (_total / _limit).ceil().clamp(1, 9999);
 
   void _showGrantSheet(Map<String, dynamic> user, AppLocalizations l10n) {
     final userId = (user['id'] ?? '').toString();
-    final name = (user['name'] ?? user['fullName'] ?? 'Unknown').toString();
-    final tiers = _getTiers(l10n);
-
-    String? selectedTier;
-    bool useCustom = false;
+    final lang = (user['preferredLanguage'] ?? 'en').toString();
+    final tiers = _getTiers(lang, l10n);
+    String? selectedTier = tiers.first['tier'] as String;
+    bool customMode = false;
     final daysCtrl = TextEditingController();
-    final amountCtrl = TextEditingController();
-    String? sheetError;
+    final amtCtrl = TextEditingController();
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setSheet) => Padding(
+        builder: (ctx, setModal) => Padding(
           padding: EdgeInsets.only(
-            left: 20, right: 20, top: 20,
-            bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.vpn_key_rounded, color: AppColors.primary, size: 22),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        '${l10n.adminGrantAccess}: $name',
-                        style: AppTextStyles.heading6,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () => Navigator.of(ctx).pop(),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-
-                if (sheetError != null) ...[
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppColors.error.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(sheetError!, style: const TextStyle(color: AppColors.error)),
-                  ),
-                  const SizedBox(height: 8),
-                ],
-
-                Row(
-                  children: [
-                    Text(l10n.adminSelectTier, style: AppTextStyles.labelMedium),
-                    const Spacer(),
-                    TextButton.icon(
-                      icon: Icon(useCustom ? Icons.list_alt_rounded : Icons.tune_rounded, size: 16),
-                      label: Text(
-                        useCustom ? l10n.adminSelectTier : l10n.adminOrCustom,
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                      onPressed: () => setSheet(() {
-                        useCustom = !useCustom;
-                        selectedTier = null;
-                        daysCtrl.clear();
-                      }),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-
-                if (!useCustom) ...[
-                  ...tiers.map((tier) {
-                    final sel = selectedTier == tier['tier'];
-                    return GestureDetector(
-                      onTap: () => setSheet(() {
-                        selectedTier = tier['tier'] as String;
-                        amountCtrl.text = (tier['price'] as int).toString();
-                      }),
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                        decoration: BoxDecoration(
-                          gradient: sel ? AppColors.primaryGradient : null,
-                          color: sel ? null : Theme.of(ctx).colorScheme.surface,
-                          border: Border.all(
-                            color: sel ? AppColors.primary : Theme.of(ctx).colorScheme.outline.withOpacity(0.4),
-                            width: sel ? 2 : 1,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              sel ? Icons.radio_button_checked : Icons.radio_button_off,
-                              color: sel ? AppColors.textInverse : AppColors.textSecondary,
-                              size: 18,
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              tier['label'] as String,
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: sel ? AppColors.textInverse : null,
-                                fontWeight: sel ? FontWeight.bold : FontWeight.normal,
-                              ),
-                            ),
-                            const Spacer(),
-                            Text(
-                              l10n.subscriptionPrice(tier['price'] as int),
-                              style: AppTextStyles.heading6.copyWith(
-                                color: sel ? AppColors.textInverse : AppColors.primary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-                ] else ...[
-                  TextField(
-                    controller: daysCtrl,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: l10n.adminCustomDays,
-                      hintText: l10n.adminEnterDays,
-                      prefixIcon: const Icon(Icons.date_range),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                ],
-
-                const SizedBox(height: 4),
+              bottom: MediaQuery.of(ctx).viewInsets.bottom,
+              left: 20, right: 20, top: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.adminSelectTier, style: AppTextStyles.heading6),
+              const SizedBox(height: 8),
+              if (!customMode)
+                ...tiers.map((t) => RadioListTile<String>(
+                      value: t['tier'] as String,
+                      groupValue: selectedTier,
+                      title: Text(t['label'] as String),
+                      subtitle: Text('${t['price']} RWF'),
+                      onChanged: (v) => setModal(() => selectedTier = v),
+                    )).toList(),
+              CheckboxListTile(
+                value: customMode,
+                title: Text(l10n.adminOrCustom),
+                onChanged: (v) => setModal(() => customMode = v ?? false),
+                dense: true,
+              ),
+              if (customMode)
                 TextField(
-                  controller: amountCtrl,
+                  controller: daysCtrl,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: l10n.adminPaymentAmount,
-                    hintText: l10n.adminEnterAmount,
-                    prefixIcon: const Icon(Icons.payments_outlined),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
+                  decoration:
+                      InputDecoration(labelText: l10n.adminEnterDays),
                 ),
-
-                const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.check_circle_outline),
-                  label: Text(l10n.adminGrantAccess),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.textInverse,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                  onPressed: () {
-                    final amount = int.tryParse(amountCtrl.text.trim()) ?? 0;
-                    if (amount <= 0) {
-                      setSheet(() => sheetError = l10n.adminInvalidAmount);
-                      return;
-                    }
-                    if (useCustom) {
-                      final days = int.tryParse(daysCtrl.text.trim()) ?? 0;
-                      if (days <= 0) {
-                        setSheet(() => sheetError = l10n.adminInvalidDays);
-                        return;
-                      }
-                      Navigator.of(ctx).pop();
-                      _grantAccess(userId, null, days, amount, l10n);
-                    } else {
-                      if (selectedTier == null) {
-                        setSheet(() => sheetError = l10n.adminSelectTier);
-                        return;
-                      }
-                      Navigator.of(ctx).pop();
-                      _grantAccess(userId, selectedTier, 0, amount, l10n);
-                    }
-                  },
-                ),
-              ],
-            ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: amtCtrl,
+                keyboardType: TextInputType.number,
+                decoration:
+                    InputDecoration(labelText: l10n.adminPaymentAmount),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => _submitGrant(ctx, userId, selectedTier,
+                    customMode, daysCtrl.text, amtCtrl.text, l10n),
+                child: Text(l10n.adminAccessGranted),
+              ),
+              const SizedBox(height: 24),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Future<void> _grantAccess(
-    String userId, String? tier, int customDays, int amount, AppLocalizations l10n,
+  Future<void> _submitGrant(
+    BuildContext ctx,
+    String userId,
+    String? tier,
+    bool customMode,
+    String daysText,
+    String amtText,
+    AppLocalizations l10n,
   ) async {
+    final amount = int.tryParse(amtText) ?? 0;
+    if (amount <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(l10n.adminInvalidAmount),
+          backgroundColor: AppColors.error));
+      return;
+    }
+    final body = <String, dynamic>{'paymentAmount': amount};
+    if (customMode) {
+      final d = int.tryParse(daysText) ?? 0;
+      if (d <= 0) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(l10n.adminInvalidDays),
+            backgroundColor: AppColors.error));
+        return;
+      }
+      body['durationDays'] = d;
+    } else {
+      body['paymentTier'] = tier ?? '';
+    }
     setState(() => _loadingMap[userId] = true);
     try {
       final token = await AuthSession().getToken();
-      final body = <String, dynamic>{'paymentAmount': amount};
-      if (tier != null && tier.isNotEmpty) {
-        body['paymentTier'] = tier;
-      } else {
-        body['durationDays'] = customDays;
-      }
-
       final response = await http.post(
         Uri.parse('${ApiConfig.baseUrl}/api/admin/users/$userId/grant-access'),
         headers: {
-          if (token != null) 'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
+          if (token != null) 'Authorization': 'Bearer $token',
         },
         body: json.encode(body),
       ).timeout(const Duration(seconds: 15));
-
-      if ((response.statusCode == 200 || response.statusCode == 201) && mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.adminAccessGranted), backgroundColor: AppColors.success),
-        );
+      if (mounted) Navigator.pop(ctx);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(l10n.adminAccessGranted),
+            backgroundColor: AppColors.success));
         _loadData();
-      } else if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(_extractMessage(response.body)), backgroundColor: AppColors.error),
-        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('HTTP ${response.statusCode}'),
+            backgroundColor: AppColors.error));
       }
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString()), backgroundColor: AppColors.error),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(e.toString()), backgroundColor: AppColors.error));
     } finally {
       setState(() => _loadingMap.remove(userId));
     }
   }
 
+  List<Map<String, dynamic>> _getTiers(String lang, AppLocalizations l10n) {
+    if (lang == 'rw') {
+      return [
+        {'tier': '1_MONTH', 'price': 1500, 'label': l10n.subscriptionMonth1},
+        {'tier': '3_MONTHS', 'price': 3000, 'label': l10n.subscriptionMonth3},
+        {'tier': '6_MONTHS', 'price': 5000, 'label': l10n.subscriptionMonth6},
+      ];
+    }
+    return [
+      {'tier': '1_MONTH', 'price': 3000, 'label': l10n.subscriptionMonth1},
+      {'tier': '3_MONTHS', 'price': 5000, 'label': l10n.subscriptionMonth3},
+      {'tier': '6_MONTHS', 'price': 10000, 'label': l10n.subscriptionMonth6},
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.adminAccess),
-        elevation: 0,
-        actions: [
-          IconButton(icon: const Icon(Icons.refresh), onPressed: _loadData),
-        ],
-      ),
-      body: Column(
-        children: [
-          SingleChildScrollView(
+    return Column(
+      children: [
+        // ── Search bar ───────────────────────────────────────────────────
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+          child: TextField(
+            controller: _searchCtrl,
+            decoration: InputDecoration(
+              hintText: l10n.adminSearchUsers,
+              prefixIcon: const Icon(Icons.search),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none),
+              filled: true,
+              fillColor: AppColors.background,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            ),
+          ),
+        ),
+
+        // ── Filter chips ─────────────────────────────────────────────────
+        SizedBox(
+          height: 42,
+          child: ListView(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Row(
-              children: [
-                _FilterChip(
-                  label: l10n.adminFilterAll,
-                  selected: _filter == 'all',
-                  onTap: () => setState(() => _filter = 'all'),
-                  count: _allUsers.length,
-                ),
-                const SizedBox(width: 8),
-                _FilterChip(
-                  label: l10n.adminPendingRequests,
-                  selected: _filter == 'pending',
-                  onTap: () => setState(() => _filter = 'pending'),
-                  count: _pendingUsers.length,
-                  accentColor: AppColors.warning,
-                ),
-                const SizedBox(width: 8),
-                _FilterChip(
-                  label: l10n.adminHasAccess,
-                  selected: _filter == 'active',
-                  onTap: () => setState(() => _filter = 'active'),
-                  count: _allUsers.where(_hasActiveAccess).length,
-                  accentColor: AppColors.success,
-                ),
-                const SizedBox(width: 8),
-                _FilterChip(
-                  label: l10n.adminNoAccess,
-                  selected: _filter == 'none',
-                  onTap: () => setState(() => _filter = 'none'),
-                  count: _allUsers.where((u) => !_hasActiveAccess(u) && !_isExpired(u)).length,
-                  accentColor: AppColors.error,
-                ),
-              ],
-            ),
-          ),
-          const Divider(height: 1),
-          Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _error != null
-                    ? _buildError(l10n)
-                    : _filteredUsers.isEmpty
-                        ? Center(
-                            child: Text(
-                              l10n.adminNoUsers,
-                              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
-                            ),
-                          )
-                        : RefreshIndicator(
-                            onRefresh: _loadData,
-                            child: ListView.builder(
-                              padding: const EdgeInsets.all(12),
-                              itemCount: _filteredUsers.length,
-                              itemBuilder: (ctx, i) => _buildUserCard(_filteredUsers[i], l10n),
-                            ),
-                          ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildError(AppLocalizations l10n) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline, size: 56, color: AppColors.error),
-            const SizedBox(height: 16),
-            Text(_error!, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary), textAlign: TextAlign.center),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.refresh),
-              label: Text(l10n.commonRetry),
-              onPressed: _loadData,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUserCard(Map<String, dynamic> user, AppLocalizations l10n) {
-    final userId = (user['id'] ?? '').toString();
-    final name = (user['name'] ?? user['fullName'] ?? 'Unknown').toString();
-    final phone = (user['phoneNumber'] ?? user['phone_number'] ?? '').toString();
-    final lang = (user['preferredLanguage'] ?? user['preferred_language'] ?? 'en').toString().toLowerCase();
-    final active = _hasActiveAccess(user);
-    final expired = _isExpired(user);
-    final expiry = _expiryDate(user);
-    final tierLabel = _tier(user);
-    final hasPending = user['_hasPendingRequest'] == true;
-    final isUserLoading = _loadingMap[userId] ?? false;
-
-    Color statusColor;
-    String statusText;
-    if (active) {
-      statusColor = AppColors.success;
-      statusText = l10n.adminHasAccess;
-    } else if (expired) {
-      statusColor = AppColors.warning;
-      statusText = l10n.adminAccessExpired;
-    } else {
-      statusColor = AppColors.error;
-      statusText = l10n.adminNoAccess;
-    }
-
-    return Card(
-      margin: const EdgeInsets.only(bottom: 10),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: hasPending
-            ? BorderSide(color: AppColors.warning.withOpacity(0.6), width: 1.5)
-            : BorderSide.none,
-      ),
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (hasPending)
-              Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.warning.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: AppColors.warning.withOpacity(0.4)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.access_time, color: AppColors.warning, size: 14),
-                    const SizedBox(width: 4),
-                    Text(
-                      l10n.adminPendingRequests,
-                      style: const TextStyle(color: AppColors.warning, fontSize: 11, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: AppColors.primary.withOpacity(0.15),
-                  radius: 20,
-                  child: Text(
-                    name.isNotEmpty ? name[0].toUpperCase() : '?',
-                    style: AppTextStyles.heading6.copyWith(color: AppColors.primary),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(name, style: AppTextStyles.heading6),
-                      Text(phone, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
-                    ],
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    _LangChip(lang: lang),
-                    const SizedBox(height: 4),
-                    _StatusBadge(text: statusText, color: statusColor),
-                  ],
-                ),
-              ],
-            ),
-
-            if (tierLabel.isNotEmpty || expiry.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  children: [
-                    if (tierLabel.isNotEmpty)
-                      _DetailRow(icon: Icons.card_membership, label: l10n.adminTierLabel, value: tierLabel.toUpperCase()),
-                    if (expiry.isNotEmpty)
-                      _DetailRow(
-                        icon: active ? Icons.event_available : Icons.event_busy,
-                        label: active ? l10n.adminExpiresLabel : l10n.adminAccessExpired,
-                        value: expiry,
-                        valueColor: active ? AppColors.success : AppColors.warning,
-                      ),
-                  ],
-                ),
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            children: [
+              _chip(l10n.adminFilterAll, _accessFilter == 'all', () {
+                setState(() => _accessFilter = 'all');
+                _page = 1;
+                _loadData();
+              }),
+              const SizedBox(width: 6),
+              _chip(l10n.adminFilterHasAccess, _accessFilter == 'hasAccess',
+                  () {
+                setState(() => _accessFilter = 'hasAccess');
+                _page = 1;
+                _loadData();
+              }),
+              const SizedBox(width: 6),
+              _chip(l10n.adminFilterNoAccess, _accessFilter == 'noAccess',
+                  () {
+                setState(() => _accessFilter = 'noAccess');
+                _page = 1;
+                _loadData();
+              }),
             ],
-
-            const SizedBox(height: 10),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: isUserLoading ? null : () => _showGrantSheet(user, l10n),
-                icon: isUserLoading
-                    ? const SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textInverse))
-                    : Icon(active ? Icons.refresh_rounded : Icons.vpn_key_rounded),
-                label: Text(active ? l10n.adminRenewAccess : l10n.adminGrantAccess),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: active ? AppColors.primary : AppColors.success,
-                  foregroundColor: AppColors.textInverse,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+
+        Expanded(
+          child: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _error != null
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.error_outline,
+                              size: 48, color: AppColors.error),
+                          const SizedBox(height: 12),
+                          Text(_error!,
+                              style: AppTextStyles.bodyMedium,
+                              textAlign: TextAlign.center),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: _loadData,
+                            child: Text(l10n.commonRetry),
+                          ),
+                        ],
+                      ),
+                    )
+                  : _users.isEmpty
+                      ? Center(child: Text(l10n.adminNoUsers))
+                      : RefreshIndicator(
+                          onRefresh: _loadData,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                            itemCount: _users.length,
+                            itemBuilder: (ctx, i) {
+                              final user = _users[i];
+                              final userId =
+                                  (user['id'] ?? '').toString();
+                              final isLoading =
+                                  _loadingMap[userId] ?? false;
+                              final hasPending =
+                                  _pendingIds.contains(userId);
+                              return _GrantUserCard(
+                                user: user,
+                                isLoading: isLoading,
+                                hasPending: hasPending,
+                                onGrant: () =>
+                                    _showGrantSheet(user, l10n),
+                                l10n: l10n,
+                              );
+                            },
+                          ),
+                        ),
+        ),
+
+        // ── Pagination ───────────────────────────────────────────────────
+        if (!_isLoading && _error == null && _totalPages > 1)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.chevron_left),
+                  onPressed: _page > 1
+                      ? () {
+                          setState(() => _page--);
+                          _loadData();
+                        }
+                      : null,
+                ),
+                Text(l10n.adminPage(_page, _totalPages),
+                    style: AppTextStyles.labelMedium),
+                IconButton(
+                  icon: const Icon(Icons.chevron_right),
+                  onPressed: _page < _totalPages
+                      ? () {
+                          setState(() => _page++);
+                          _loadData();
+                        }
+                      : null,
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
-}
 
-class _FilterChip extends StatelessWidget {
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-  final int count;
-  final Color accentColor;
-
-  const _FilterChip({
-    required this.label, required this.selected, required this.onTap,
-    required this.count, this.accentColor = AppColors.primary,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _chip(String label, bool selected, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      child: Container(
+        padding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: selected ? accentColor : accentColor.withOpacity(0.08),
+          color: selected
+              ? AppColors.primary.withOpacity(0.15)
+              : AppColors.background,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: selected ? accentColor : accentColor.withOpacity(0.3)),
+          border: Border.all(
+              color: selected
+                  ? AppColors.primary
+                  : AppColors.primary.withOpacity(0.2)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (selected) ...[
+              const Icon(Icons.check, size: 12, color: AppColors.primary),
+              const SizedBox(width: 4),
+            ],
             Text(
               label,
               style: TextStyle(
-                color: selected ? Colors.white : accentColor,
-                fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                fontSize: 13,
-              ),
-            ),
-            const SizedBox(width: 6),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-              decoration: BoxDecoration(
-                color: selected ? Colors.white.withOpacity(0.25) : accentColor.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                '$count',
-                style: TextStyle(
-                  color: selected ? Colors.white : accentColor,
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                ),
+                color: selected ? AppColors.primary : AppColors.textSecondary,
+                fontSize: 12,
+                fontWeight:
+                    selected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           ],
@@ -727,54 +1198,140 @@ class _FilterChip extends StatelessWidget {
   }
 }
 
-class _LangChip extends StatelessWidget {
-  final String lang;
-  const _LangChip({required this.lang});
+// ── Grant user card ───────────────────────────────────────────────────────────
 
-  @override
-  Widget build(BuildContext context) {
-    const emojis = {'rw': '🇷🇼', 'fr': '🇫🇷', 'en': '🇬🇧'};
-    return Text(emojis[lang] ?? '🇬🇧', style: const TextStyle(fontSize: 16));
+class _GrantUserCard extends StatelessWidget {
+  final Map<String, dynamic> user;
+  final bool isLoading;
+  final bool hasPending;
+  final VoidCallback onGrant;
+  final AppLocalizations l10n;
+
+  const _GrantUserCard({
+    required this.user,
+    required this.isLoading,
+    required this.hasPending,
+    required this.onGrant,
+    required this.l10n,
+  });
+
+  bool get _hasAccess {
+    final exp = (user['accessExpiresAt'])?.toString();
+    if (exp == null) return false;
+    return DateTime.tryParse(exp)?.isAfter(DateTime.now()) ?? false;
   }
-}
-
-class _StatusBadge extends StatelessWidget {
-  final String text;
-  final Color color;
-  const _StatusBadge({required this.text, required this.color});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(text, style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.bold)),
-    );
-  }
-}
+    final name = (user['fullName'] ?? user['name'] ?? '').toString();
+    final phone = (user['phoneNumber'] ?? '').toString();
+    final lang = (user['preferredLanguage'] ?? 'en').toString();
+    final expires = (user['accessExpiresAt'] ?? '').toString().split('T')[0];
+    final tier = (user['paymentTier'] ?? '').toString();
+    final accessColor = _hasAccess ? AppColors.success : AppColors.error;
 
-class _DetailRow extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String value;
-  final Color? valueColor;
-  const _DetailRow({required this.icon, required this.label, required this.value, this.valueColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Row(
-        children: [
-          Icon(icon, size: 14, color: AppColors.textSecondary),
-          const SizedBox(width: 6),
-          Text(label, style: AppTextStyles.labelSmall.copyWith(color: AppColors.textSecondary)),
-          const Spacer(),
-          Text(value, style: AppTextStyles.labelSmall.copyWith(fontWeight: FontWeight.bold, color: valueColor ?? AppColors.textPrimary)),
-        ],
+    return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: AppColors.primary.withOpacity(0.15),
+              radius: 22,
+              child: Text(
+                name.isNotEmpty ? name[0].toUpperCase() : '?',
+                style: AppTextStyles.heading6
+                    .copyWith(color: AppColors.primary),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                          child: Text(name,
+                              style: AppTextStyles.labelLarge,
+                              overflow: TextOverflow.ellipsis)),
+                      if (hasPending)
+                        Container(
+                          margin: const EdgeInsets.only(left: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: AppColors.warning.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Text(
+                            '⏳ Pending',
+                            style: TextStyle(
+                                color: AppColors.warning,
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                    ],
+                  ),
+                  Text(phone,
+                      style: AppTextStyles.bodySmall
+                          .copyWith(color: AppColors.textSecondary)),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: accessColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          _hasAccess
+                              ? l10n.adminHasAccess
+                              : l10n.adminNoAccess,
+                          style: TextStyle(
+                              color: accessColor,
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        lang.toUpperCase(),
+                        style: AppTextStyles.labelSmall.copyWith(
+                            color: AppColors.textTertiary),
+                      ),
+                      if (_hasAccess && expires.isNotEmpty) ...[
+                        const SizedBox(width: 6),
+                        Text(
+                          expires,
+                          style: AppTextStyles.labelSmall.copyWith(
+                              color: AppColors.textTertiary),
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            if (isLoading)
+              const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2))
+            else
+              IconButton(
+                icon: const Icon(Icons.key_rounded,
+                    color: AppColors.success),
+                onPressed: onGrant,
+                tooltip: l10n.adminAccessGranted,
+              ),
+          ],
+        ),
       ),
     );
   }

@@ -523,10 +523,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
 
                             ListTile(
-                              onTap: () {
-                                context.read<AuthBloc>().add(const SignOutEvent());
-                                context.go('/landing');
-                              },
+                              onTap: () => _showLogoutDialog(context, l10n),
                               leading: const Icon(Icons.logout, color: AppColors.error),
                               title: Text(
                                 l10n.profileSignOut,
@@ -738,20 +735,92 @@ class _ProfilePageState extends State<ProfilePage> {
   void _showDeleteDialog(BuildContext context, AppLocalizations l10n) {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text(l10n.profileDeleteConfirmTitle),
-        content: Text(l10n.profileDeleteConfirmMessage),
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        title: Row(
+          children: [
+            const Icon(Icons.warning_amber_rounded, color: AppColors.error, size: 28),
+            const SizedBox(width: 10),
+            Expanded(child: Text(l10n.profileDeleteConfirmTitle)),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Instructions
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.warning.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: AppColors.warning.withOpacity(0.3)),
+                ),
+                child: Text(
+                  l10n.profileDeleteInstructions,
+                  style: const TextStyle(fontSize: 13, height: 1.6),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.profileDeleteConfirmMessage,
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(ctx),
             child: Text(l10n.commonCancel),
           ),
-          TextButton(
+          ElevatedButton(
             onPressed: () {
+              Navigator.pop(ctx);
               context.read<AuthBloc>().add(const SignOutEvent());
               context.go('/landing');
             },
-            child: Text(l10n.profileDelete, style: const TextStyle(color: AppColors.error)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.error,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(l10n.profileDelete),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context, AppLocalizations l10n) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        title: Row(
+          children: [
+            const Icon(Icons.logout, color: AppColors.warning, size: 26),
+            const SizedBox(width: 10),
+            Expanded(child: Text(l10n.profileLogoutConfirmTitle)),
+          ],
+        ),
+        content: Text(l10n.profileLogoutConfirmMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.commonCancel),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              context.read<AuthBloc>().add(const SignOutEvent());
+              context.go('/landing');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+            ),
+            child: Text(l10n.profileSignOut),
           ),
         ],
       ),
