@@ -65,7 +65,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
         headers: {
           if (token != null) 'Authorization': 'Bearer $token',
         },
-      ).timeout(const Duration(seconds: 12));
+      ).timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -114,7 +114,9 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     for (final u in users) {
       total += (u['practiceCount'] ?? u['practice_count'] ?? 0) as int;
     }
-    return total > 0 ? total : users.length * 3; // fallback estimate
+    // Return 0 when the backend doesn't expose per-user practice counts yet;
+    // the field will be populated once the API supports it.
+    return total;
   }
 
   int get _totalUsers => _users.length;
@@ -500,7 +502,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
         Expanded(
           child: _StatTile(
             icon: Icons.quiz_outlined,
-            value: '${byLang['rw']! + byLang['en']! + byLang['fr']!}',
+            value: '$_totalPractices',
             label: l10n.adminTotalPractices,
             color: AppColors.accent,
           ),
