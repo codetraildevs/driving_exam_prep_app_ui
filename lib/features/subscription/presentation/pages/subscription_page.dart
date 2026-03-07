@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../../../features/auth/presentation/bloc/auth_state.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_provider.dart';
 import '../../../../shared/network/api_config.dart';
@@ -53,6 +56,18 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
     final l10n = AppLocalizations.of(context);
 
+    // Get userId from the AuthBloc state (most reliable, already in memory).
+    final authState = context.read<AuthBloc>().state;
+    final userId = authState is AuthAuthenticated ? authState.user.id : null;
+
+    if (userId == null || userId.isEmpty) {
+      setState(() {
+        _isRequesting = false;
+        _errorMessage = l10n.commonError;
+      });
+      return;
+    }
+
     try {
       final token = await AuthSession().getToken();
       final baseUrl = ApiConfig.baseUrl;
@@ -65,6 +80,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               'Content-Type': 'application/json',
             },
             body: json.encode({
+              'userId': userId,
               'paymentTier': tier,
               'amount': price,
               'currency': 'RWF',

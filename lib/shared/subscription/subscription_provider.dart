@@ -40,6 +40,9 @@ class SubscriptionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Fetches fresh subscription status from the server.
+  /// Offline-first: cached values are used immediately at startup;
+  /// this runs in the background and updates the UI if data changes.
   Future<void> refreshStatus(String userId, String baseUrl, String token) async {
     _isLoading = true;
     notifyListeners();
@@ -64,16 +67,21 @@ class SubscriptionProvider extends ChangeNotifier {
         await prefs.setBool(_keyActive, _hasActiveAccess);
         if (_expiresAt != null) {
           await prefs.setString(_keyExpiresAt, _expiresAt!.toIso8601String());
+        } else {
+          await prefs.remove(_keyExpiresAt);
         }
         if (_paymentTier != null) {
           await prefs.setString(_keyTier, _paymentTier!);
+        } else {
+          await prefs.remove(_keyTier);
         }
       }
+      // On non-200 response, keep cached values to remain offline-capable.
     } catch (e) {
-      // Keep cached values on network error (logged for debugging)
+      // Network failure — keep cached values so the app works offline.
       assert(() {
         // ignore: avoid_print
-        print('[SubscriptionProvider] refreshStatus error: $e');
+        debugPrint('[SubscriptionProvider] refreshStatus error: $e');
         return true;
       }());
     } finally {

@@ -5,9 +5,11 @@ import 'package:provider/provider.dart';
 import 'config/theme/app_theme.dart';
 import 'config/router/app_router.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/auth/presentation/bloc/auth_state.dart';
 import 'l10n/generated/app_localizations.dart';
 import 'shared/locale/fallback_localizations.dart';
 import 'shared/locale/locale_provider.dart';
+import 'shared/network/api_config.dart';
 import 'shared/session/app_launch_session.dart';
 import 'shared/session/auth_session.dart';
 import 'shared/subscription/subscription_provider.dart';
@@ -62,6 +64,7 @@ class TrafficRulesApp extends StatefulWidget {
 
 class _TrafficRulesAppState extends State<TrafficRulesApp> {
   late final AppRouter _appRouter;
+  late final SubscriptionProvider _subscriptionProvider;
 
   @override
   void initState() {
@@ -72,6 +75,30 @@ class _TrafficRulesAppState extends State<TrafficRulesApp> {
       hasLocaleSelected: widget.localeProvider.hasLocaleSelected,
       cachedUserRole: widget.cachedUserRole,
     );
+    _subscriptionProvider = SubscriptionProvider();
+
+    // Listen to auth state changes and refresh subscription status in the
+    // background whenever the user signs in. This keeps the app offline-first:
+    // cached data is used immediately, and network data updates the UI silently.
+    widget.authBloc.stream.listen((authState) {
+      if (authState is AuthAuthenticated) {
+        _refreshSubscriptionInBackground(authState.user.id);
+      } else if (authState is AuthUnauthenticated) {
+        _subscriptionProvider.clearStatus();
+      }
+    });
+  }
+
+  void _refreshSubscriptionInBackground(String userId) {
+    AuthSession().getToken().then((token) {
+      if (token != null && token.isNotEmpty) {
+        _subscriptionProvider.refreshStatus(
+          userId,
+          ApiConfig.baseUrl,
+          token,
+        );
+      }
+    });
   }
 
   @override
@@ -86,7 +113,7 @@ class _TrafficRulesAppState extends State<TrafficRulesApp> {
       providers: [
         ChangeNotifierProvider.value(value: widget.localeProvider),
         ChangeNotifierProvider.value(value: widget.themeProvider),
-        ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
+        ChangeNotifierProvider.value(value: _subscriptionProvider),
       ],
       child: BlocProvider.value(
         value: widget.authBloc,

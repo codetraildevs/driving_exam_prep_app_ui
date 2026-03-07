@@ -268,14 +268,14 @@ class LandingPage extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         color: isLight
-            ? Colors.white.withOpacity(0.15)
+            ? AppColors.textInverse.withOpacity(0.15)
             : AppColors.primary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(18),
       ),
       child: Icon(
         Icons.traffic,
         size: size * 0.5,
-        color: isLight ? Colors.white : AppColors.primary,
+        color: isLight ? AppColors.textInverse : AppColors.primary,
       ),
     );
   }

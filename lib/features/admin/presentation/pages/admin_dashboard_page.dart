@@ -538,7 +538,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
   Widget _sectionHeader(String title) {
     return Text(
       title,
-      style: AppTextStyles.heading5.copyWith(color: AppColors.textPrimary),
+      style: AppTextStyles.heading5,
     );
   }
 }
@@ -671,7 +671,7 @@ class _ActionCardWide extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: AppTextStyles.heading6.copyWith(color: AppColors.textPrimary),
+                    style: AppTextStyles.heading6,
                   ),
                   const SizedBox(height: 3),
                   Text(

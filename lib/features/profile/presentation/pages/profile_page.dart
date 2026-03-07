@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
@@ -11,6 +12,7 @@ import '../../../../features/auth/presentation/bloc/auth_event.dart';
 import '../../../../features/auth/presentation/bloc/auth_state.dart';
 import '../../../../shared/network/api_config.dart';
 import '../../../../shared/session/auth_session.dart';
+import '../../../../shared/subscription/subscription_provider.dart';
 
 class ProfilePage extends StatefulWidget {
   /// When [userId] is provided, admin is viewing another user's profile.
@@ -462,7 +464,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   const SizedBox(height: 8),
                                   Text(
                                     l10n.profileModulesCompleted(15, 20),
-                                    style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                                    style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
                                   ),
                                 ],
                               ),
@@ -486,6 +488,28 @@ class _ProfilePageState extends State<ProfilePage> {
                               subtitle: l10n.profileSettingsSubtitle,
                               onTap: () => context.push('/settings'),
                             ),
+
+                            const SizedBox(height: 8),
+
+                            // Subscription tile — always visible so users can
+                            // view their active access status or request access.
+                            Builder(builder: (context) {
+                              final sub = context.watch<SubscriptionProvider>();
+                              return _menuTile(
+                                icon: sub.hasActiveAccess
+                                    ? Icons.verified_outlined
+                                    : Icons.lock_open_outlined,
+                                title: sub.hasActiveAccess
+                                    ? l10n.subscriptionAccessActive
+                                    : l10n.subscriptionTitle,
+                                subtitle: sub.hasActiveAccess && sub.expiresAt != null
+                                    ? l10n.subscriptionExpires(
+                                        sub.expiresAt!.toLocal().toString().split(' ')[0],
+                                      )
+                                    : l10n.subscriptionSubtitle,
+                                onTap: () => context.push('/subscription'),
+                              );
+                            }),
 
                             const SizedBox(height: 20),
 
