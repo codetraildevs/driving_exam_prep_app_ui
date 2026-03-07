@@ -1119,5 +1119,11 @@
   "@adminIsBlocked": { "description": "Blocked status label" },
 
   "adminIsActive": "Active",
-  "@adminIsActive": { "description": "Active status label" }
+  "@adminIsActive": { "description": "Active status label" },
+
+  "generalCopied": "Copied!",
+  "@generalCopied": { "description": "Shown in snackbar after copying text to clipboard" },
+
+  "adminRetry": "Retry",
+  "@adminRetry": { "description": "Retry button label" }
 }

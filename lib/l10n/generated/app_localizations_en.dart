@@ -1091,4 +1091,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminIsActive => 'Active';
+
+  @override
+  String get generalCopied => 'Copied!';
+
+  @override
+  String get adminRetry => 'Retry';
 }

@@ -1101,4 +1101,10 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get adminIsActive => 'Birakora';
+
+  @override
+  String get generalCopied => 'Byakopeshejwe!';
+
+  @override
+  String get adminRetry => 'Ongera ugerageze';
 }

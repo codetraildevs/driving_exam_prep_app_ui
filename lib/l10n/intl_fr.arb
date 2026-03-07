@@ -383,5 +383,11 @@
   "adminPage": "Page {page} sur {total}",
   "adminLearningLanguage": "Apprentissage",
   "adminIsBlocked": "Bloqué",
-  "adminIsActive": "Actif"
+  "adminIsActive": "Actif",
+
+  "generalCopied": "Copié !",
+  "@generalCopied": { "description": "Shown in snackbar after copying text to clipboard" },
+
+  "adminRetry": "Réessayer",
+  "@adminRetry": { "description": "Retry button label" }
 }

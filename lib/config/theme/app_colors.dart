@@ -62,7 +62,8 @@ class AppColors {
     colors: [Color(0xFF00039E), Color(0xFF3B82F6)],
   );
 
-  /// Dark-mode-friendly gradient that avoids the near-black start of [primaryGradient]
+  /// Dark-mode-friendly gradient that uses brighter blues (starts at #2563EB)
+  /// instead of the very dark navy (#00039E) start of [primaryGradient]
   static const LinearGradient primaryGradientDark = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,

@@ -121,7 +121,6 @@ class _ProgressPageState extends State<ProgressPage>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final gradient = AppColors.primaryGradientFor(Theme.of(context).brightness);
 
     return Scaffold(

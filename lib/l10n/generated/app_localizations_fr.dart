@@ -1104,4 +1104,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get adminIsActive => 'Actif';
+
+  @override
+  String get generalCopied => 'Copié !';
+
+  @override
+  String get adminRetry => 'Réessayer';
 }

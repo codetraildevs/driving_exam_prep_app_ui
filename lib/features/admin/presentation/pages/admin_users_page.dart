@@ -538,33 +538,33 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                   setState(() => _accessFilter = 'all');
                   _page = 1;
                   _loadUsers();
-                }, ctx: context),
+                }),
                 const SizedBox(width: 6),
                 _chip(context, l10n.adminFilterHasAccess, _accessFilter == 'hasAccess', () {
                   setState(() => _accessFilter = 'hasAccess');
                   _page = 1;
                   _loadUsers();
-                }, ctx: context),
+                }),
                 const SizedBox(width: 6),
                 _chip(context, l10n.adminFilterNoAccess, _accessFilter == 'noAccess', () {
                   setState(() => _accessFilter = 'noAccess');
                   _page = 1;
                   _loadUsers();
-                }, ctx: context),
+                }),
                 const SizedBox(width: 6),
                 _chip(context, '👑 Admin', _roleFilter == 'ADMIN', () {
                   setState(() => _roleFilter =
                       _roleFilter == 'ADMIN' ? '' : 'ADMIN');
                   _page = 1;
                   _loadUsers();
-                }, ctx: context),
+                }),
                 const SizedBox(width: 6),
                 _chip(context, '👤 User', _roleFilter == 'USER', () {
                   setState(() =>
                       _roleFilter = _roleFilter == 'USER' ? '' : 'USER');
                   _page = 1;
                   _loadUsers();
-                }, ctx: context),
+                }),
                 const SizedBox(width: 6),
                 _chip(context, l10n.adminFilterToday, _todayOnly, () {
                   setState(() {
@@ -572,7 +572,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                     if (_todayOnly) {
                       _dateFrom = null;
                       _dateTo = null;
-                    }, ctx: context
+                    }
                   });
                   _page = 1;
                   _loadUsers();

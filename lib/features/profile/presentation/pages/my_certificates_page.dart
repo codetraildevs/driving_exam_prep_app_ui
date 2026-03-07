@@ -94,7 +94,6 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final gradient = AppColors.primaryGradientFor(Theme.of(context).brightness);
-    final primary = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
       body: SafeArea(

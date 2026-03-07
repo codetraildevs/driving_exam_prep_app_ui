@@ -1577,6 +1577,8 @@ abstract class AppLocalizations {
   String get adminLearningLanguage;
   String get adminIsBlocked;
   String get adminIsActive;
+  String get generalCopied;
+  String get adminRetry;
 }
 
 class _AppLocalizationsDelegate

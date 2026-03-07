@@ -93,7 +93,7 @@ class _PracticePageState extends State<PracticePage> {
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () => _loadExams(_lastLangCode),
-                          child: const Text('Retry'),
+                          child: Text(l10n.commonRetry),
                         ),
                       ],
                     ),

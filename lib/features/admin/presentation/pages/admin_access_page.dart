@@ -626,9 +626,9 @@ class _AccessCodeCard extends StatelessWidget {
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: codeStr));
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Copied'),
-                          duration: Duration(seconds: 1)),
+                      SnackBar(
+                          content: Text(AppLocalizations.of(context).generalCopied),
+                          duration: const Duration(seconds: 1)),
                     );
                   },
                   child: const Icon(Icons.copy, size: 16,

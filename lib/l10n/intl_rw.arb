@@ -383,5 +383,11 @@
   "adminPage": "Urupapuro {page} rwa {total}",
   "adminLearningLanguage": "Ururimi rwigwa",
   "adminIsBlocked": "Yazibwe",
-  "adminIsActive": "Birakora"
+  "adminIsActive": "Birakora",
+
+  "generalCopied": "Byakopeshejwe!",
+  "@generalCopied": { "description": "Shown in snackbar after copying text to clipboard" },
+
+  "adminRetry": "Ongera ugerageze",
+  "@adminRetry": { "description": "Retry button label" }
 }
