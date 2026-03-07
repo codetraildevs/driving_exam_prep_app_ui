@@ -285,5 +285,7 @@
   "paymentInstructionsTitle": "Amabwiriza yo kwishyura",
   "paymentMomoPayNumber": "MoMo Pay: 323294",
   "paymentMobileMoneyNumber": "Mobile Money: 0788657595",
-  "paymentHelpText": "Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595"
+  "paymentHelpText": "Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595",
+
+  "commonError": "Hari ikibazo cyabaye. Ongera ugerageze."
 }

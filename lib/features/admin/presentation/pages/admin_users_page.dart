@@ -22,6 +22,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
   String? _error;
   final TextEditingController _searchController = TextEditingController();
   String _selectedFilter = 'all';
+  final Map<String, bool> _loadingMap = {};
 
   static const List<String> _filters = ['all', 'hasAccess', 'noAccess', 'rw', 'en', 'fr'];
 
@@ -47,9 +48,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       final token = await AuthSession().getToken();
       final response = await http.get(
         Uri.parse('${ApiConfig.baseUrl}/api/admin/users'),
-        headers: {
-          if (token != null) 'Authorization': 'Bearer $token',
-        },
+        headers: {if (token != null) 'Authorization': 'Bearer $token'},
       ).timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
@@ -117,6 +116,190 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     }
   }
 
+  List<Map<String, dynamic>> _getTiers(String lang, AppLocalizations l10n) {
+    if (lang == 'rw') {
+      return [
+        {'tier': '1_MONTH', 'price': 1500, 'label': l10n.subscriptionMonth1},
+        {'tier': '3_MONTHS', 'price': 3000, 'label': l10n.subscriptionMonth3},
+        {'tier': '6_MONTHS', 'price': 5000, 'label': l10n.subscriptionMonth6},
+      ];
+    }
+    return [
+      {'tier': '1_MONTH', 'price': 3000, 'label': l10n.subscriptionMonth1},
+      {'tier': '3_MONTHS', 'price': 5000, 'label': l10n.subscriptionMonth3},
+      {'tier': '6_MONTHS', 'price': 10000, 'label': l10n.subscriptionMonth6},
+    ];
+  }
+
+  void _showGrantAccessSheet(Map user, AppLocalizations l10n) {
+    final userId = (user['id'] ?? '').toString();
+    final lang = (user['preferredLanguage'] ?? user['preferred_language'] ?? 'en').toString().toLowerCase();
+    final tiers = _getTiers(lang, l10n);
+    String? selectedTier;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setSheetState) => Padding(
+          padding: EdgeInsets.only(
+            left: 20, right: 20, top: 20,
+            bottom: MediaQuery.of(ctx).viewInsets.bottom + 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.adminSelectTier, style: AppTextStyles.heading5),
+              const SizedBox(height: 14),
+              ...tiers.map((tier) {
+                final isSelected = selectedTier == tier['tier'];
+                return GestureDetector(
+                  onTap: () => setSheetState(() => selectedTier = tier['tier'] as String),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: isSelected ? AppColors.primary : AppColors.neutral300,
+                        width: isSelected ? 2 : 1,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      color: isSelected ? AppColors.primary.withOpacity(0.08) : null,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(tier['label'] as String, style: AppTextStyles.bodyMedium),
+                        Text(
+                          l10n.subscriptionPrice(tier['price'] as int),
+                          style: AppTextStyles.heading6.copyWith(color: AppColors.primary),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: selectedTier == null
+                    ? null
+                    : () {
+                        Navigator.of(ctx).pop();
+                        _grantAccess(userId, selectedTier!, l10n);
+                      },
+                child: Text(l10n.adminGrantAccess),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showCallSheet(Map user, AppLocalizations l10n) {
+    final userId = (user['id'] ?? '').toString();
+    final notesController = TextEditingController();
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) => Padding(
+        padding: EdgeInsets.only(
+          left: 20, right: 20, top: 20,
+          bottom: MediaQuery.of(ctx).viewInsets.bottom + 20,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(l10n.adminCallUser, style: AppTextStyles.heading5),
+            const SizedBox(height: 12),
+            TextField(
+              controller: notesController,
+              decoration: InputDecoration(
+                hintText: l10n.adminEnterCallNotes,
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              maxLines: 3,
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                _markCalled(userId, notesController.text, l10n);
+              },
+              child: Text(l10n.adminSubmitCall),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _grantAccess(String userId, String tier, AppLocalizations l10n) async {
+    setState(() => _loadingMap[userId] = true);
+    try {
+      final token = await AuthSession().getToken();
+      final response = await http.post(
+        Uri.parse('${ApiConfig.baseUrl}/api/admin/users/$userId/grant-access'),
+        headers: {
+          if (token != null) 'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({'tier': tier}),
+      ).timeout(const Duration(seconds: 15));
+
+      if ((response.statusCode == 200 || response.statusCode == 201) && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.adminAccessGranted), backgroundColor: AppColors.success),
+        );
+        _loadUsers();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString()), backgroundColor: AppColors.error),
+        );
+      }
+    } finally {
+      setState(() => _loadingMap.remove(userId));
+    }
+  }
+
+  Future<void> _markCalled(String userId, String notes, AppLocalizations l10n) async {
+    try {
+      final token = await AuthSession().getToken();
+      final response = await http.post(
+        Uri.parse('${ApiConfig.baseUrl}/api/admin/users/$userId/mark-called'),
+        headers: {
+          if (token != null) 'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({'notes': notes}),
+      ).timeout(const Duration(seconds: 15));
+
+      if ((response.statusCode == 200 || response.statusCode == 201) && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.adminCallLogged), backgroundColor: AppColors.success),
+        );
+        _loadUsers();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString()), backgroundColor: AppColors.error),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -128,10 +311,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
         backgroundColor: AppColors.surface,
         elevation: 0,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadUsers,
-          ),
+          IconButton(icon: const Icon(Icons.refresh), onPressed: _loadUsers),
         ],
       ),
       body: Column(
@@ -194,6 +374,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                             const Icon(Icons.error_outline, size: 48, color: AppColors.error),
                             const SizedBox(height: 16),
                             Text(_error!, style: AppTextStyles.bodyMedium),
+                            const SizedBox(height: 16),
                             ElevatedButton(onPressed: _loadUsers, child: const Text('Retry')),
                           ],
                         ),
@@ -208,59 +389,122 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                             final name = (user['name'] ?? user['fullName'] ?? 'Unknown').toString();
                             final phone = (user['phoneNumber'] ?? user['phone_number'] ?? '').toString();
                             final lang = (user['preferredLanguage'] ?? user['preferred_language'] ?? 'en').toString().toLowerCase();
-                            final createdAt = user['created_at'] ?? user['createdAt'] ?? '';
+                            final createdAt = (user['created_at'] ?? user['createdAt'] ?? '').toString().split('T')[0];
                             final hasAccess = _hasActiveAccess(user);
                             final userId = (user['id'] ?? '').toString();
+                            final isUserLoading = _loadingMap[userId] ?? false;
 
                             return Card(
-                              margin: const EdgeInsets.only(bottom: 8),
+                              margin: const EdgeInsets.only(bottom: 10),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                              child: ListTile(
-                                onTap: () => context.push('/admin/users/$userId/profile'),
-                                leading: CircleAvatar(
-                                  backgroundColor: AppColors.primary.withOpacity(0.2),
-                                  child: Text(
-                                    name.isNotEmpty ? name[0].toUpperCase() : '?',
-                                    style: AppTextStyles.heading6.copyWith(color: AppColors.primary),
-                                  ),
-                                ),
-                                title: Text(name, style: AppTextStyles.heading6),
-                                subtitle: Column(
+                              child: Padding(
+                                padding: const EdgeInsets.all(14),
+                                child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(phone, style: AppTextStyles.bodySmall),
-                                    if (createdAt.isNotEmpty)
-                                      Text(
-                                        l10n.adminRegistrationDate(createdAt.toString().split('T')[0]),
-                                        style: AppTextStyles.labelSmall.copyWith(color: AppColors.textTertiary),
-                                      ),
-                                  ],
-                                ),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(_langEmoji(lang), style: const TextStyle(fontSize: 18)),
-                                    const SizedBox(width: 8),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                      decoration: BoxDecoration(
-                                        color: hasAccess
-                                            ? AppColors.success.withOpacity(0.15)
-                                            : AppColors.error.withOpacity(0.15),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Text(
-                                        hasAccess ? l10n.adminHasAccess : l10n.adminNoAccess,
-                                        style: TextStyle(
-                                          color: hasAccess ? AppColors.success : AppColors.error,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold,
+                                    // User info row
+                                    Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () => context.push('/admin/users/$userId/profile'),
+                                          child: CircleAvatar(
+                                            backgroundColor: AppColors.primary.withOpacity(0.15),
+                                            radius: 22,
+                                            child: Text(
+                                              name.isNotEmpty ? name[0].toUpperCase() : '?',
+                                              style: AppTextStyles.heading6.copyWith(color: AppColors.primary),
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () => context.push('/admin/users/$userId/profile'),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(name, style: AppTextStyles.heading6),
+                                                Text(phone, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
+                                                if (createdAt.isNotEmpty)
+                                                  Text(
+                                                    l10n.adminRegistrationDate(createdAt),
+                                                    style: AppTextStyles.labelSmall.copyWith(color: AppColors.textTertiary),
+                                                  ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            Text(_langEmoji(lang), style: const TextStyle(fontSize: 18)),
+                                            const SizedBox(height: 4),
+                                            Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                              decoration: BoxDecoration(
+                                                color: hasAccess
+                                                    ? AppColors.success.withOpacity(0.15)
+                                                    : AppColors.error.withOpacity(0.15),
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                              child: Text(
+                                                hasAccess ? l10n.adminHasAccess : l10n.adminNoAccess,
+                                                style: TextStyle(
+                                                  color: hasAccess ? AppColors.success : AppColors.error,
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+                                    // Action buttons
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: OutlinedButton.icon(
+                                            onPressed: isUserLoading
+                                                ? null
+                                                : () => _showGrantAccessSheet(user, l10n),
+                                            icon: const Icon(Icons.key, size: 15),
+                                            label: Text(l10n.adminGrantAccess, style: const TextStyle(fontSize: 12)),
+                                            style: OutlinedButton.styleFrom(
+                                              foregroundColor: AppColors.success,
+                                              side: BorderSide(color: AppColors.success.withOpacity(0.5)),
+                                              padding: const EdgeInsets.symmetric(vertical: 8),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: OutlinedButton.icon(
+                                            onPressed: () => _showCallSheet(user, l10n),
+                                            icon: const Icon(Icons.phone, size: 15),
+                                            label: Text(l10n.adminCallUser, style: const TextStyle(fontSize: 12)),
+                                            style: OutlinedButton.styleFrom(
+                                              foregroundColor: AppColors.primary,
+                                              side: BorderSide(color: AppColors.primary.withOpacity(0.5)),
+                                              padding: const EdgeInsets.symmetric(vertical: 8),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        OutlinedButton(
+                                          onPressed: () => context.push('/admin/users/$userId/profile'),
+                                          style: OutlinedButton.styleFrom(
+                                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                            minimumSize: Size.zero,
+                                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                          ),
+                                          child: const Icon(Icons.person, size: 16),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                                isThreeLine: true,
                               ),
                             );
                           },

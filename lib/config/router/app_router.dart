@@ -28,7 +28,6 @@ import '../../features/admin/presentation/pages/admin_dashboard_page.dart';
 import '../../features/admin/presentation/pages/admin_users_page.dart';
 import '../../features/admin/presentation/pages/admin_access_page.dart';
 import '../../features/admin/presentation/pages/admin_progress_page.dart';
-import '../../features/admin/presentation/pages/admin_user_profile_page.dart';
 
 bool _isAdmin(UserModel? user) {
   if (user == null) return false;
@@ -84,7 +83,7 @@ class AppRouter {
           location.startsWith('/admin');
 
       if (isAuthenticated && isAuthPage) {
-        return '/home';
+        return _isAdmin(user) ? '/admin' : '/home';
       }
 
       if (!isAuthenticated && isProtectedPage) {
@@ -254,7 +253,7 @@ class AppRouter {
             pageBuilder: (context, state) {
               final userId = state.pathParameters['userId']!;
               return MaterialPage(
-                child: AdminUserProfilePage(userId: userId),
+                child: ProfilePage(userId: userId),
               );
             },
           ),

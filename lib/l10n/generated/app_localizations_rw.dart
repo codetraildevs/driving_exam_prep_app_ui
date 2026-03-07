@@ -862,4 +862,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get paymentHelpText => 'Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595';
+
+  @override
+  String get commonError => 'Hari ikibazo cyabaye. Ongera ugerageze.';
 }

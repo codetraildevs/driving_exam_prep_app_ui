@@ -79,12 +79,14 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       } else {
         final data = json.decode(response.body);
         setState(() {
-          _errorMessage = data['message'] ?? 'Request failed. Please try again.';
+          _errorMessage = (data['message'] as String?)?.isNotEmpty == true
+              ? data['message'] as String
+              : l10n.commonError;
         });
       }
     } catch (e) {
       setState(() {
-        _errorMessage = 'Something went wrong. Please try again.';
+        _errorMessage = l10n.commonError;
       });
     } finally {
       setState(() => _isRequesting = false);

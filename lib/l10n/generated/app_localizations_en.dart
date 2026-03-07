@@ -852,4 +852,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paymentHelpText => 'Need help? Call or WhatsApp: 0788657595';
+
+  @override
+  String get commonError => 'Something went wrong. Please try again.';
 }

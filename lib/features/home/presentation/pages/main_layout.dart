@@ -109,12 +109,11 @@ class _MainLayoutState extends State<MainLayout> {
 
   int _getAdminSelectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.path;
-    if (location == '/home') return 0;
-    if (location.startsWith('/admin') && !location.startsWith('/admin/users') && !location.startsWith('/admin/access')) return 1;
     if (location.startsWith('/admin/users')) return 2;
     if (location.startsWith('/admin/access')) return 3;
+    if (location.startsWith('/admin')) return 1;
     if (location.startsWith('/profile')) return 4;
-    return 0;
+    return 0; // /home
   }
 
   void _onUserNavTapped(BuildContext context, int index) {

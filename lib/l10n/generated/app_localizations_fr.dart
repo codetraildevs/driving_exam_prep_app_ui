@@ -865,4 +865,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get paymentHelpText => 'Besoin d\'aide ? Appelez ou WhatsApp: 0788657595';
+
+  @override
+  String get commonError => 'Quelque chose s\'est mal passé. Veuillez réessayer.';
 }

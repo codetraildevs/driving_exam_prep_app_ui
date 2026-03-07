@@ -190,7 +190,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                             ),
                             _StatCard(
                               title: l10n.adminUsersByLanguage,
-                              value: 'RW:${_usersByLanguage['rw']} EN:${_usersByLanguage['en']} FR:${_usersByLanguage['fr']}',
+                              value: '🇷🇼${_usersByLanguage['rw']} 🇬🇧${_usersByLanguage['en']} 🇫🇷${_usersByLanguage['fr']}',
                               icon: Icons.language,
                               color: AppColors.primaryLight,
                               isSmallText: true,

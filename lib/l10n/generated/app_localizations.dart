@@ -1416,6 +1416,9 @@ abstract class AppLocalizations {
 
   /// Payment help text
   String get paymentHelpText;
+
+  /// Generic error message
+  String get commonError;
 }
 
 class _AppLocalizationsDelegate

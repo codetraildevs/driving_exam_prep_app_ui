@@ -882,5 +882,8 @@
   "@paymentMobileMoneyNumber": { "description": "Mobile money number" },
 
   "paymentHelpText": "Need help? Call or WhatsApp: 0788657595",
-  "@paymentHelpText": { "description": "Payment help text" }
+  "@paymentHelpText": { "description": "Payment help text" },
+
+  "commonError": "Something went wrong. Please try again.",
+  "@commonError": { "description": "Generic error message" }
 }
