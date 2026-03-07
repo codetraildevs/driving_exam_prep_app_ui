@@ -421,5 +421,9 @@
   "examSampleQ3A1": "1 mètre",
   "examSampleQ3A2": "3 mètres",
   "examSampleQ3A3": "5 mètres",
-  "examSampleQ3A4": "10 mètres"
+  "examSampleQ3A4": "10 mètres",
+
+  "examShareResult": "Partager le résultat",
+  "examCopiedToClipboard": "Résultat copié dans le presse-papiers",
+  "examGradeLabel": "Note"
 }

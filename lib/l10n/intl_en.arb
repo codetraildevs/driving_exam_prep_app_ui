@@ -1206,5 +1206,12 @@
   "examSampleQ3A1": "1 meter",
   "examSampleQ3A2": "3 meters",
   "examSampleQ3A3": "5 meters",
-  "examSampleQ3A4": "10 meters"
+  "examSampleQ3A4": "10 meters",
+
+  "examShareResult": "Share Result",
+  "@examShareResult": { "description": "Share result button on exam result page" },
+  "examCopiedToClipboard": "Result copied to clipboard",
+  "@examCopiedToClipboard": { "description": "Snackbar after copying result to clipboard" },
+  "examGradeLabel": "Grade",
+  "@examGradeLabel": { "description": "Grade label on exam result page" }
 }

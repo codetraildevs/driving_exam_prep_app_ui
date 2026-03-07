@@ -1083,8 +1083,8 @@ function getUserResults($conn, $params) {
         ErrorHandler::badRequest('Invalid user ID');
     }
     
-    // Only allow users to view their own results, or ADMIN/MANAGER for any user
-    if ($tokenData['userId'] !== $userId && !in_array($tokenData['role'], ['ADMIN', 'MANAGER'])) {
+    // Only allow users to view their own results, or ADMIN for any user
+    if ($tokenData['userId'] !== $userId && $tokenData['role'] !== 'ADMIN') {
         Logger::security('Unauthorized attempt to view another user\'s results', ['requestedUserId' => $userId, 'actualUserId' => $tokenData['userId']]);
         ErrorHandler::forbidden('You can only view your own exam results');
     }
@@ -1246,7 +1246,7 @@ function updateUser($conn, $params) {
 
 function deleteUser($conn, $params) {
     global $tokenData;
-    requireRole($tokenData, ['ADMIN']);
+    requireRole($tokenData, ['ADMIN', 'MANAGER']);
     
     $id = SecurityUtils::sanitizeString($params['id']);
     if (!$id) {
@@ -1899,7 +1899,7 @@ function adminBlockUser($conn, $params) {
 
 function adminDeleteUser($conn, $params) {
     global $tokenData;
-    requireRole($tokenData, ['ADMIN']);
+    requireRole($tokenData, ['ADMIN', 'MANAGER']);
 
     $userId = SecurityUtils::sanitizeString($params['userId'] ?? '');
     if (!$userId) ErrorHandler::badRequest('Invalid user ID');

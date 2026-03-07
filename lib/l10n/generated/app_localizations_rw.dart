@@ -1234,4 +1234,13 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get examSampleQ3A4 => 'Metero 10';
+
+  @override
+  String get examShareResult => 'Sangira Ibisubizo';
+
+  @override
+  String get examCopiedToClipboard => 'Ibisubizo byakopeshejwe';
+
+  @override
+  String get examGradeLabel => 'Amanota';
 }

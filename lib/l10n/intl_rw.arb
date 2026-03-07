@@ -421,5 +421,9 @@
   "examSampleQ3A1": "Metero 1",
   "examSampleQ3A2": "Metero 3",
   "examSampleQ3A3": "Metero 5",
-  "examSampleQ3A4": "Metero 10"
+  "examSampleQ3A4": "Metero 10",
+
+  "examShareResult": "Sangira Ibisubizo",
+  "examCopiedToClipboard": "Ibisubizo byakopeshejwe",
+  "examGradeLabel": "Amanota"
 }

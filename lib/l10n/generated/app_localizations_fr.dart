@@ -1239,4 +1239,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get examSampleQ3A4 => '10 mètres';
+
+  @override
+  String get examShareResult => 'Partager le résultat';
+
+  @override
+  String get examCopiedToClipboard => 'Résultat copié dans le presse-papiers';
+
+  @override
+  String get examGradeLabel => 'Note';
 }

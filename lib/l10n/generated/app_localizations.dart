@@ -2319,6 +2319,15 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'10 meters'**
   String get examSampleQ3A4;
+
+  /// No description provided for @examShareResult.
+  String get examShareResult;
+
+  /// No description provided for @examCopiedToClipboard.
+  String get examCopiedToClipboard;
+
+  /// No description provided for @examGradeLabel.
+  String get examGradeLabel;
 }
 
 class _AppLocalizationsDelegate
