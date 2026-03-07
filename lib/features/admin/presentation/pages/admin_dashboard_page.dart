@@ -128,15 +128,6 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
         return DateTime.tryParse(exp.toString())?.isAfter(DateTime.now()) ?? false;
       }).length;
 
-  int get _recentRegistrations {
-    final cutoff = DateTime.now().subtract(const Duration(days: 7));
-    return _users.where((u) {
-      final c = u['created_at'] ?? u['createdAt'];
-      if (c == null) return false;
-      return DateTime.tryParse(c.toString())?.isAfter(cutoff) ?? false;
-    }).length;
-  }
-
   Map<String, int> get _usersByLanguage {
     final Map<String, int> counts = {'rw': 0, 'en': 0, 'fr': 0};
     for (final u in _users) {
@@ -455,7 +446,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                 icon: Icons.people,
                 title: l10n.adminManageUsers,
                 description: l10n.adminManageUsersDesc,
-                gradientColors: [AppColors.primary, AppColors.primaryLight],
+                gradientColors: const [AppColors.primary, AppColors.primaryLight],
                 onTap: () => context.push('/admin/users'),
               ),
             ),
@@ -465,7 +456,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                 icon: Icons.key_rounded,
                 title: l10n.adminAccess,
                 description: l10n.adminAccessCodesDesc,
-                gradientColors: [AppColors.success, const Color(0xFF4ADE80)],
+                gradientColors: const [AppColors.success, Color(0xFF4ADE80)],
                 onTap: () => context.push('/admin/access'),
               ),
             ),

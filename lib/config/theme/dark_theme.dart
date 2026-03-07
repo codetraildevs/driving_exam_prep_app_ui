@@ -18,8 +18,8 @@ ThemeData buildDarkTheme() {
   // near-black artefacts on dark backgrounds
   const darkPrimary = AppColors.primaryLight;
 
-  final textColor = onSurface;
-  final subColor = onSurface70;
+  const textColor = onSurface;
+  const subColor = onSurface70;
 
   final textTheme = TextTheme(
     displayLarge: AppTextStyles.display.copyWith(color: textColor),
@@ -42,7 +42,7 @@ ThemeData buildDarkTheme() {
     brightness: Brightness.dark,
     scaffoldBackgroundColor: background,
     primaryColor: AppColors.primaryLight,
-    colorScheme: ColorScheme(
+    colorScheme: const ColorScheme(
       brightness: Brightness.dark,
       primary: AppColors.primaryLight,
       onPrimary: AppColors.neutral900,
@@ -183,7 +183,7 @@ ThemeData buildDarkTheme() {
       titleTextStyle: AppTextStyles.heading5.copyWith(color: textColor),
       contentTextStyle: AppTextStyles.bodyMedium.copyWith(color: textColor),
     ),
-    listTileTheme: ListTileThemeData(
+    listTileTheme: const ListTileThemeData(
       iconColor: subColor,
       textColor: textColor,
     ),

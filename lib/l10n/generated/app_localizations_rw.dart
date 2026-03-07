@@ -783,10 +783,12 @@ class AppLocalizationsRw extends AppLocalizations {
   String get adminAllUsersList => 'Abakoresha bose';
 
   @override
-  String get adminInvalidAmount => 'Nyamuneka injiza amafaranga akwiye arengeje 0';
+  String get adminInvalidAmount =>
+      'Nyamuneka injiza amafaranga akwiye arengeje 0';
 
   @override
-  String get adminInvalidDays => 'Nyamuneka injiza umubare w\'iminsi ukwiye arengeje 0';
+  String get adminInvalidDays =>
+      'Nyamuneka injiza umubare w\'iminsi ukwiye arengeje 0';
 
   @override
   String get adminAccessRevoked => 'Uburenganzira bwavanwe';
@@ -899,45 +901,8 @@ class AppLocalizationsRw extends AppLocalizations {
       'Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595';
 
   @override
-  String paymentDialMomoPay(String amount) {
-    return 'Kanda *182*1*1*323294*$amount# kwishyura kuri MoMo Pay';
-  }
-
-  @override
-  String paymentDialMobileMoney(String amount) {
-    return 'Kanda *182*8*1*0788657595*$amount# kwishyura kuri Mobile Money';
-  }
-
-  @override
-  String get paymentCopyCode => 'Gukoporora code';
-
-  @override
-  String get paymentDialNow => 'Hamagara';
-
-  @override
-  String get paymentCodeCopied => 'Code yo kwishyura yakopowe!';
-
-  @override
-  String get paymentWhatsAppMessage =>
-      'Muraho, ndashaka kwiyandikisha kuri app y\'amategeko y\'umuhanda mu Rwanda.';
-
-  @override
-  String get paymentSelectPlanFirst => 'Hitamo gahunda mbere';
-
-  @override
-  String get paymentConfirmRequest => 'Emeza ubusabe bwo kwishyura';
-
-  @override
-  String get paymentStep1 => '1. Hitamo gahunda hepfo';
-
-  @override
-  String get paymentStep2 => '2. Ishyura ukoresheje uburyo bumwe bwo hejuru';
-
-  @override
-  String get paymentStep3 => '3. Kanda \'Emeza\' kudumenyesha';
-
-  @override
-  String get paymentError => 'Ubusabe bwo kwishyura bwananiranye. Nyamuneka wishyure ukoresha amabwiriza hano epfo.';
+  String get paymentError =>
+      'Ubusabe bwo kwishyura bwananiranye. Nyamuneka wishyure ukoresha amabwiriza hano epfo.';
 
   @override
   String get paymentCopyNumber => 'Kopi nimero';
@@ -949,10 +914,12 @@ class AppLocalizationsRw extends AppLocalizations {
   String get paymentWhatsApp => 'WhatsApp: Ohereza ubutumwa';
 
   @override
-  String get paymentWhatsAppMessage => 'Saba uburenganzira bwo gukoresha porogaramu y\'ikizamini cyo gutwara';
+  String get paymentWhatsAppMessage =>
+      'Saba uburenganzira bwo gukoresha porogaramu y\'ikizamini cyo gutwara';
 
   @override
-  String get paymentRequestExists => 'Ubusabe bwo kwishyura kuri iyi gahato buriho. Tegereza ko ubuzima bwawe buremwa cyangwa vugana na serivisi.';
+  String get paymentRequestExists =>
+      'Ubusabe bwo kwishyura kuri iyi gahato buriho. Tegereza ko ubuzima bwawe buremwa cyangwa vugana na serivisi.';
 
   @override
   String get commonError => 'Hari ikibazo cyabaye. Ongera ugerageze.';
@@ -1047,29 +1014,34 @@ class AppLocalizationsRw extends AppLocalizations {
   String get progressPassRate => 'Ijanisha ry\'imenyekana';
 
   @override
-  String get progressNoExams => 'Nta bizamini birakozwe. Tangira gukora ibibazo!';
+  String get progressNoExams =>
+      'Nta bizamini birakozwe. Tangira gukora ibibazo!';
 
   @override
   String get certificateReadyTitle => 'Witeguye ikizamini cy\'ukuri!';
 
   @override
-  String certificateReadySubtitle(int count) =>
-      'Warashize $count ibizamini. Witeguye ikizamini cy\'uburenganzira bwo gutwara.';
+  String certificateReadySubtitle(int count) {
+    return 'Warashize $count ibizamini. Witeguye ikizamini cy\'uburenganzira bwo gutwara.';
+  }
 
   @override
-  String get certificateIremboLink => 'Iyandikishe ku kizamini cya leta kuri irembo.gov.rw';
+  String get certificateIremboLink =>
+      'Iyandikishe ku kizamini cya leta kuri irembo.gov.rw';
 
   @override
   String get certificateIremboDesc =>
       'Kanda hepfo iyandikishe mu kizamini cya mudasobwa cy\'uburenganzira bwo gutwara bw\'igerageza';
 
   @override
-  String certificateExamsNeeded(int needed) =>
-      'Shira $needed ibizamini byindi kugirango ubone icyangombwa cyawe';
+  String certificateExamsNeeded(int needed) {
+    return 'Shira $needed ibizamini byindi kugirango ubone icyangombwa cyawe';
+  }
 
   @override
-  String certificateProgressLabel(int passed, int total) =>
-      '$passed mu $total ibizamini bisabwa byashize';
+  String certificateProgressLabel(int passed, int total) {
+    return '$passed mu $total ibizamini bisabwa byashize';
+  }
 
   @override
   String get adminSortAsc => 'Bikuze mbere';
@@ -1096,12 +1068,14 @@ class AppLocalizationsRw extends AppLocalizations {
   String get adminDeleteUserAction => 'Siba Umukoreshwa';
 
   @override
-  String adminBlockUserConfirm(String name) =>
-      'Ziba $name? Bazatakaza uburenganzira bwo kwinjira.';
+  String adminBlockUserConfirm(String name) {
+    return 'Ziba $name? Bazatakaza uburenganzira bwo kwinjira.';
+  }
 
   @override
-  String adminDeleteUserConfirm(String name) =>
-      'Siba $name burundu? Amakuru yabo yose azasibwa.';
+  String adminDeleteUserConfirm(String name) {
+    return 'Siba $name burundu? Amakuru yabo yose azasibwa.';
+  }
 
   @override
   String get adminUserBlocked => 'Umukoreshwa yazibwe neza';
@@ -1113,7 +1087,8 @@ class AppLocalizationsRw extends AppLocalizations {
   String get adminUserDeleted => 'Umukoreshwa yasibwe neza';
 
   @override
-  String get adminMustBlockFirst => 'Ugomba kubanza guziba umukoreshwa mbere yo kumusiba.';
+  String get adminMustBlockFirst =>
+      'Ugomba kubanza guziba umukoreshwa mbere yo kumusiба.';
 
   @override
   String get adminBlockAccess => 'Ziba Uburenganzira';
@@ -1135,7 +1110,9 @@ class AppLocalizationsRw extends AppLocalizations {
   String get adminAccessDeleted => 'Kode y\'uburenganzira yasibwe';
 
   @override
-  String adminPage(int page, int total) => 'Urupapuro $page rwa $total';
+  String adminPage(int page, int total) {
+    return 'Urupapuro $page rwa $total';
+  }
 
   @override
   String get adminLearningLanguage => 'Ururimi rwigwa';
@@ -1151,4 +1128,100 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get adminRetry => 'Ongera ugerageze';
+
+  @override
+  String get languageSelectDescription =>
+      'Ushobora guhindura ibi nyuma mu igenamiterere — kubona amakuru y\'umuhanda n\'inzira mu rurimi rwawe.';
+
+  @override
+  String get languageSelectDeviceLanguage => 'Koresha ururimi rw\'igikoresho';
+
+  @override
+  String get languageSelectHelpTooltip => 'Ubufasha ku rurimi';
+
+  @override
+  String get languageSelectMaybeLater => 'Birashoboka nyuma';
+
+  @override
+  String get languageSelectHelpTitle => 'Kuki wahitamo ururimi?';
+
+  @override
+  String get languageSelectHelpContent =>
+      'Guhitamo ururimi bituma amakuru, amakarita, n\'amajwi bigaragazwa mu rurimi rwawe. Ushobora guhindura ibi nyuma mu igenamiterere.';
+
+  @override
+  String get commonGotIt => 'Nabyumvise';
+
+  @override
+  String get languageSelectDialogTitle => 'Hitamo ururimi';
+
+  @override
+  String get examNotFound => 'Ikizamini ntigibonetse';
+
+  @override
+  String errorWithDetail(String detail) {
+    return 'Ikosa: $detail';
+  }
+
+  @override
+  String errorUnexpected(String detail) {
+    return 'Ikosa ridateganijwe: $detail';
+  }
+
+  @override
+  String priceRwf(String amount) {
+    return '$amount RWF';
+  }
+
+  @override
+  String errorHttpStatus(int code) {
+    return 'HTTP $code';
+  }
+
+  @override
+  String get examSampleQ1 => 'Umuvuduko ntarengwa ku muhanda nini ni uwuhe?';
+
+  @override
+  String get examSampleQ1A1 => '90 km/h';
+
+  @override
+  String get examSampleQ1A2 => '100 km/h';
+
+  @override
+  String get examSampleQ1A3 => '110 km/h';
+
+  @override
+  String get examSampleQ1A4 => '120 km/h';
+
+  @override
+  String get examSampleQ2 =>
+      'Icyo itara ry\'umuhanda ritukura rishaka kuvuga ni iki?';
+
+  @override
+  String get examSampleQ2A1 => 'Hagarara ako kanya';
+
+  @override
+  String get examSampleQ2A2 => 'Komeza';
+
+  @override
+  String get examSampleQ2A3 => 'Witegure guhagarara';
+
+  @override
+  String get examSampleQ2A4 => 'Hindura inzira';
+
+  @override
+  String get examSampleQ3 =>
+      'Ushobora guparika kure kangahe y\'umuyoboro w\'amazi y\'umuriro?';
+
+  @override
+  String get examSampleQ3A1 => 'Metero 1';
+
+  @override
+  String get examSampleQ3A2 => 'Metero 3';
+
+  @override
+  String get examSampleQ3A3 => 'Metero 5';
+
+  @override
+  String get examSampleQ3A4 => 'Metero 10';
 }

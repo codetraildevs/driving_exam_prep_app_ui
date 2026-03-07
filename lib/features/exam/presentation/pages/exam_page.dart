@@ -19,29 +19,37 @@ class _ExamPageState extends State<ExamPage> {
   late DateTime _startTime;
   int _remainingSeconds = 1800;
 
-  final examQuestions = [
+  List<Map<String, dynamic>> _buildExamQuestions(AppLocalizations l10n) => [
     {
-      'question': 'What is the speed limit on highways?',
-      'answers': ['90 km/h', '100 km/h', '110 km/h', '120 km/h'],
+      'question': l10n.examSampleQ1,
+      'answers': [l10n.examSampleQ1A1, l10n.examSampleQ1A2, l10n.examSampleQ1A3, l10n.examSampleQ1A4],
       'correct': 3,
     },
     {
-      'question': 'What does a yellow traffic light mean?',
-      'answers': ['Stop immediately', 'Go ahead', 'Be prepared to stop', 'Turn around'],
+      'question': l10n.examSampleQ2,
+      'answers': [l10n.examSampleQ2A1, l10n.examSampleQ2A2, l10n.examSampleQ2A3, l10n.examSampleQ2A4],
       'correct': 2,
     },
     {
-      'question': 'How far from a fire hydrant can you park?',
-      'answers': ['1 meter', '3 meters', '5 meters', '10 meters'],
+      'question': l10n.examSampleQ3,
+      'answers': [l10n.examSampleQ3A1, l10n.examSampleQ3A2, l10n.examSampleQ3A3, l10n.examSampleQ3A4],
       'correct': 1,
     },
   ];
+
+  late List<Map<String, dynamic>> examQuestions;
 
   @override
   void initState() {
     super.initState();
     _startTime = DateTime.now();
     _startTimer();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    examQuestions = _buildExamQuestions(AppLocalizations.of(context));
   }
 
   void _startTimer() {

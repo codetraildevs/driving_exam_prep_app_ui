@@ -1125,5 +1125,77 @@
   "@generalCopied": { "description": "Shown in snackbar after copying text to clipboard" },
 
   "adminRetry": "Retry",
-  "@adminRetry": { "description": "Retry button label" }
+  "@adminRetry": { "description": "Retry button label" },
+
+  "languageSelectDescription": "You can change this later in Settings — get localized traffic alerts and routing.",
+  "@languageSelectDescription": { "description": "Full subtitle on language selector page" },
+
+  "languageSelectDeviceLanguage": "Use device language",
+  "@languageSelectDeviceLanguage": { "description": "Button to auto-detect device language" },
+
+  "languageSelectHelpTooltip": "Language help",
+  "@languageSelectHelpTooltip": { "description": "Tooltip for help icon on language selector" },
+
+  "languageSelectMaybeLater": "Maybe later",
+  "@languageSelectMaybeLater": { "description": "Skip button on language selector" },
+
+  "languageSelectHelpTitle": "Why choose a language?",
+  "@languageSelectHelpTitle": { "description": "Help modal title on language selector" },
+
+  "languageSelectHelpContent": "Selecting a language ensures that alerts, maps, and voice prompts are shown in your preferred language. You can change this later in Settings.",
+  "@languageSelectHelpContent": { "description": "Help modal content on language selector" },
+
+  "commonGotIt": "Got it",
+  "@commonGotIt": { "description": "Acknowledge button" },
+
+  "languageSelectDialogTitle": "Select language",
+  "@languageSelectDialogTitle": { "description": "Dialog title for language picker" },
+
+  "examNotFound": "Exam not found",
+  "@examNotFound": { "description": "Error when exam cannot be loaded" },
+
+  "errorWithDetail": "Error: {detail}",
+  "@errorWithDetail": {
+    "description": "Error message with detail",
+    "placeholders": { "detail": { "type": "String" } }
+  },
+
+  "errorUnexpected": "Unexpected error: {detail}",
+  "@errorUnexpected": {
+    "description": "Unexpected error message with detail",
+    "placeholders": { "detail": { "type": "String" } }
+  },
+
+  "priceRwf": "{amount} RWF",
+  "@priceRwf": {
+    "description": "Price formatted in RWF",
+    "placeholders": { "amount": { "type": "String" } }
+  },
+
+  "errorHttpStatus": "HTTP {code}",
+  "@errorHttpStatus": {
+    "description": "HTTP error status",
+    "placeholders": { "code": { "type": "int" } }
+  },
+
+  "examSampleQ1": "What is the speed limit on highways?",
+  "@examSampleQ1": { "description": "Sample exam question 1" },
+  "examSampleQ1A1": "90 km/h",
+  "examSampleQ1A2": "100 km/h",
+  "examSampleQ1A3": "110 km/h",
+  "examSampleQ1A4": "120 km/h",
+
+  "examSampleQ2": "What does a yellow traffic light mean?",
+  "@examSampleQ2": { "description": "Sample exam question 2" },
+  "examSampleQ2A1": "Stop immediately",
+  "examSampleQ2A2": "Go ahead",
+  "examSampleQ2A3": "Be prepared to stop",
+  "examSampleQ2A4": "Turn around",
+
+  "examSampleQ3": "How far from a fire hydrant can you park?",
+  "@examSampleQ3": { "description": "Sample exam question 3" },
+  "examSampleQ3A1": "1 meter",
+  "examSampleQ3A2": "3 meters",
+  "examSampleQ3A3": "5 meters",
+  "examSampleQ3A4": "10 meters"
 }

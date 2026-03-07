@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'config/theme/app_theme.dart';
 import 'config/router/app_router.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
-import 'features/auth/presentation/bloc/auth_state.dart';
 import 'l10n/generated/app_localizations.dart';
 import 'shared/locale/fallback_localizations.dart';
 import 'shared/locale/locale_provider.dart';

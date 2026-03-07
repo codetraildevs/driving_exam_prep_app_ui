@@ -114,7 +114,7 @@ void main() {
       expect(find.text('English'), findsOneWidget);
       expect(find.text('Français'), findsOneWidget);
       expect(find.text('Kinyarwanda'), findsOneWidget);
-      expect(find.text('Choose your language'), findsOneWidget);
+      expect(find.text('Choose Your Language'), findsOneWidget);
     });
 
     // ────────────────────────────────────────────────────────────────────────

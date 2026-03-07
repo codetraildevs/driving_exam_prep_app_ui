@@ -786,10 +786,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminAllUsersList => 'Tous les utilisateurs';
 
   @override
-  String get adminInvalidAmount => 'Veuillez entrer un montant valide supérieur à 0';
+  String get adminInvalidAmount =>
+      'Veuillez entrer un montant valide supérieur à 0';
 
   @override
-  String get adminInvalidDays => 'Veuillez entrer un nombre de jours valide supérieur à 0';
+  String get adminInvalidDays =>
+      'Veuillez entrer un nombre de jours valide supérieur à 0';
 
   @override
   String get adminAccessRevoked => 'Accès révoqué';
@@ -897,10 +899,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get paymentMobileMoneyNumber => 'Mobile Money: 0788657595';
 
   @override
-  String get paymentHelpText => 'Besoin d\'aide ? Appelez ou WhatsApp: 0788657595';
+  String get paymentHelpText =>
+      'Besoin d\'aide ? Appelez ou WhatsApp: 0788657595';
 
   @override
-  String get paymentError => 'La demande de paiement a échoué. Veuillez payer manuellement en utilisant les instructions ci-dessous.';
+  String get paymentError =>
+      'La demande de paiement a échoué. Veuillez payer manuellement en utilisant les instructions ci-dessous.';
 
   @override
   String get paymentCopyNumber => 'Copier le numéro';
@@ -912,13 +916,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get paymentWhatsApp => 'WhatsApp: Envoyer un message';
 
   @override
-  String get paymentWhatsAppMessage => 'Demander l\'accès à l\'application d\'examen de conduite';
+  String get paymentWhatsAppMessage =>
+      'Demander l\'accès à l\'application d\'examen de conduite';
 
   @override
-  String get paymentRequestExists => 'Une demande de paiement pour ce forfait est déjà en attente. Veuillez attendre l\'activation ou contacter le support.';
+  String get paymentRequestExists =>
+      'Une demande de paiement pour ce forfait est déjà en attente. Veuillez attendre l\'activation ou contacter le support.';
 
   @override
-  String get commonError => 'Quelque chose s\'est mal passé. Veuillez réessayer.';
+  String get commonError =>
+      'Quelque chose s\'est mal passé. Veuillez réessayer.';
 
   @override
   String get commonRetry => 'Réessayer';
@@ -942,10 +949,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminManageExamsDesc => 'Voir et gérer tous les examens pratiques';
 
   @override
-  String get adminManageUsersDesc => 'Voir, rechercher et gérer tous les utilisateurs';
+  String get adminManageUsersDesc =>
+      'Voir, rechercher et gérer tous les utilisateurs';
 
   @override
-  String get adminAccessCodesDesc => 'Gérer les codes d\'accès et les paiements';
+  String get adminAccessCodesDesc =>
+      'Gérer les codes d\'accès et les paiements';
 
   @override
   String get adminQuickStats => 'Statistiques rapides';
@@ -957,7 +966,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminTotalPractices => 'Total des pratiques';
 
   @override
-  String get adminManagePlatformDesc => 'Gérez votre plateforme d\'apprentissage du code de la route';
+  String get adminManagePlatformDesc =>
+      'Gérez votre plateforme d\'apprentissage du code de la route';
 
   @override
   String get adminNotifications => 'Notifications';
@@ -966,7 +976,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsAppearance => 'Apparence';
 
   @override
-  String get settingsAppearanceDesc => 'Choisissez l\'apparence de l\'application';
+  String get settingsAppearanceDesc =>
+      'Choisissez l\'apparence de l\'application';
 
   @override
   String get settingsThemeSystem => 'Système';
@@ -987,7 +998,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileLogoutConfirmTitle => 'Se déconnecter?';
 
   @override
-  String get profileLogoutConfirmMessage => 'Êtes-vous sûr de vouloir vous déconnecter?';
+  String get profileLogoutConfirmMessage =>
+      'Êtes-vous sûr de vouloir vous déconnecter?';
 
   @override
   String get profileDeleteInstructions =>
@@ -1012,23 +1024,27 @@ class AppLocalizationsFr extends AppLocalizations {
   String get certificateReadyTitle => 'Prêt pour l\'examen officiel!';
 
   @override
-  String certificateReadySubtitle(int count) =>
-      'Vous avez réussi $count examens. Vous êtes prêt pour le test officiel.';
+  String certificateReadySubtitle(int count) {
+    return 'Vous avez réussi $count examens. Vous êtes prêt pour le test officiel.';
+  }
 
   @override
-  String get certificateIremboLink => 'S\'inscrire à l\'examen officiel sur irembo.gov.rw';
+  String get certificateIremboLink =>
+      'S\'inscrire à l\'examen officiel sur irembo.gov.rw';
 
   @override
   String get certificateIremboDesc =>
       'Cliquez ci-dessous pour vous inscrire au test informatisé officiel du permis de conduire provisoire';
 
   @override
-  String certificateExamsNeeded(int needed) =>
-      'Réussissez $needed examens supplémentaires pour obtenir votre certificat';
+  String certificateExamsNeeded(int needed) {
+    return 'Réussissez $needed examens supplémentaires pour obtenir votre certificat';
+  }
 
   @override
-  String certificateProgressLabel(int passed, int total) =>
-      '$passed sur $total examens requis réussis';
+  String certificateProgressLabel(int passed, int total) {
+    return '$passed sur $total examens requis réussis';
+  }
 
   @override
   String get adminSortAsc => 'Plus anciens d\'abord';
@@ -1055,12 +1071,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminDeleteUserAction => 'Supprimer l\'utilisateur';
 
   @override
-  String adminBlockUserConfirm(String name) =>
-      'Bloquer $name? Ils perdront l\'accès.';
+  String adminBlockUserConfirm(String name) {
+    return 'Bloquer $name? Ils perdront l\'accès.';
+  }
 
   @override
-  String adminDeleteUserConfirm(String name) =>
-      'Supprimer définitivement $name? Toutes leurs données seront effacées.';
+  String adminDeleteUserConfirm(String name) {
+    return 'Supprimer définitivement $name? Toutes leurs données seront effacées.';
+  }
 
   @override
   String get adminUserBlocked => 'Utilisateur bloqué avec succès';
@@ -1072,7 +1090,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminUserDeleted => 'Utilisateur supprimé avec succès';
 
   @override
-  String get adminMustBlockFirst => 'Vous devez bloquer l\'utilisateur avant de le supprimer.';
+  String get adminMustBlockFirst =>
+      'Vous devez bloquer l\'utilisateur avant de le supprimer.';
 
   @override
   String get adminBlockAccess => 'Bloquer l\'accès';
@@ -1085,7 +1104,8 @@ class AppLocalizationsFr extends AppLocalizations {
       'Bloquer ce code d\'accès? L\'utilisateur perdra l\'accès immédiatement.';
 
   @override
-  String get adminDeleteAccessConfirm => 'Supprimer définitivement ce code d\'accès?';
+  String get adminDeleteAccessConfirm =>
+      'Supprimer définitivement ce code d\'accès?';
 
   @override
   String get adminAccessBlocked => 'Code d\'accès bloqué';
@@ -1094,7 +1114,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminAccessDeleted => 'Code d\'accès supprimé';
 
   @override
-  String adminPage(int page, int total) => 'Page $page sur $total';
+  String adminPage(int page, int total) {
+    return 'Page $page sur $total';
+  }
 
   @override
   String get adminLearningLanguage => 'Apprentissage';
@@ -1110,4 +1132,101 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get adminRetry => 'Réessayer';
+
+  @override
+  String get languageSelectDescription =>
+      'Vous pouvez changer cela plus tard dans les Paramètres — recevez des alertes trafic et itinéraires localisés.';
+
+  @override
+  String get languageSelectDeviceLanguage =>
+      'Utiliser la langue de l\'appareil';
+
+  @override
+  String get languageSelectHelpTooltip => 'Aide sur la langue';
+
+  @override
+  String get languageSelectMaybeLater => 'Peut-être plus tard';
+
+  @override
+  String get languageSelectHelpTitle => 'Pourquoi choisir une langue ?';
+
+  @override
+  String get languageSelectHelpContent =>
+      'Choisir une langue garantit que les alertes, cartes et invites vocales sont affichées dans votre langue préférée. Vous pouvez changer cela plus tard dans les Paramètres.';
+
+  @override
+  String get commonGotIt => 'Compris';
+
+  @override
+  String get languageSelectDialogTitle => 'Sélectionner la langue';
+
+  @override
+  String get examNotFound => 'Examen introuvable';
+
+  @override
+  String errorWithDetail(String detail) {
+    return 'Erreur : $detail';
+  }
+
+  @override
+  String errorUnexpected(String detail) {
+    return 'Erreur inattendue : $detail';
+  }
+
+  @override
+  String priceRwf(String amount) {
+    return '$amount RWF';
+  }
+
+  @override
+  String errorHttpStatus(int code) {
+    return 'HTTP $code';
+  }
+
+  @override
+  String get examSampleQ1 =>
+      'Quelle est la limite de vitesse sur l\'autoroute ?';
+
+  @override
+  String get examSampleQ1A1 => '90 km/h';
+
+  @override
+  String get examSampleQ1A2 => '100 km/h';
+
+  @override
+  String get examSampleQ1A3 => '110 km/h';
+
+  @override
+  String get examSampleQ1A4 => '120 km/h';
+
+  @override
+  String get examSampleQ2 => 'Que signifie un feu jaune ?';
+
+  @override
+  String get examSampleQ2A1 => 'Arrêtez-vous immédiatement';
+
+  @override
+  String get examSampleQ2A2 => 'Continuez';
+
+  @override
+  String get examSampleQ2A3 => 'Préparez-vous à vous arrêter';
+
+  @override
+  String get examSampleQ2A4 => 'Faites demi-tour';
+
+  @override
+  String get examSampleQ3 =>
+      'À quelle distance d\'une bouche d\'incendie pouvez-vous stationner ?';
+
+  @override
+  String get examSampleQ3A1 => '1 mètre';
+
+  @override
+  String get examSampleQ3A2 => '3 mètres';
+
+  @override
+  String get examSampleQ3A3 => '5 mètres';
+
+  @override
+  String get examSampleQ3A4 => '10 mètres';
 }

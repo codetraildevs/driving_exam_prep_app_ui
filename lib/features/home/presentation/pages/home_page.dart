@@ -1,3 +1,4 @@
+// ignore_for_file: curly_braces_in_flow_control_structures, unused_element_parameter
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -204,8 +205,9 @@ class _CompactAccessCard extends StatelessWidget {
       daysLeft = expiresAt.difference(DateTime.now()).inDays.clamp(0, 9999);
       // Guess total days from tier label if available.
       final tier = sub.paymentTier ?? '';
-      if (tier.contains('1_MONTH')) totalDays = 30;
-      else if (tier.contains('3_MONTH')) totalDays = 90;
+      if (tier.contains('1_MONTH')) {
+        totalDays = 30;
+      } else if (tier.contains('3_MONTH')) totalDays = 90;
       else totalDays = 180;
     }
     final progress = hasAccess && totalDays > 0

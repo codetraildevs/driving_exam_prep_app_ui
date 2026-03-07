@@ -37,7 +37,7 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
         setState(() => _error = result.detailedError);
       }
     } catch (e) {
-      setState(() => _error = 'Unexpected error: $e');
+      setState(() => _error = AppLocalizations.of(context).errorUnexpected(e.toString()));
     } finally {
       setState(() => _isLoading = false);
     }

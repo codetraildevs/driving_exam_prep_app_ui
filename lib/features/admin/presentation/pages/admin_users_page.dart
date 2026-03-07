@@ -474,13 +474,6 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
 
   // ── Helpers ─────────────────────────────────────────────────────────────────
 
-  bool _hasActiveAccess(Map u) {
-    final expires = (u['accessExpiresAt'] ?? u['access']?['expiresAt'])
-        ?.toString();
-    if (expires == null) return false;
-    return DateTime.tryParse(expires)?.isAfter(DateTime.now()) ?? false;
-  }
-
   bool _isActiveUser(Map u) {
     final v = u['isActive'];
     return v == true || v == 1 || v == '1' || v == 'true';
@@ -894,8 +887,6 @@ class _UserCard extends StatelessWidget {
     final primary = Theme.of(context).colorScheme.primary;
 
     final accessColor = _hasAccess ? AppColors.success : AppColors.error;
-    final blockedColor =
-        !_isActive ? AppColors.error : AppColors.textTertiary;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 10),

@@ -8,12 +8,6 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/network/api_config.dart';
 import '../../../../shared/session/auth_session.dart';
 
-const Map<String, int> _kTierDays = {
-  '1_MONTH': 30,
-  '3_MONTHS': 90,
-  '6_MONTHS': 180,
-};
-
 class AdminAccessPage extends StatefulWidget {
   const AdminAccessPage({Key? key}) : super(key: key);
 
@@ -291,7 +285,7 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
                 _toolChip(context,
                   icon: Icons.date_range,
                   label: _dateFrom != null
-                      ? '${_dateFrom!.toIso8601String().split('T')[0]}'
+                      ? _dateFrom!.toIso8601String().split('T')[0]
                       : l10n.adminDateRange,
                   selected: _dateFrom != null,
                   onTap: () => _pickDateRange(context, l10n),
@@ -690,7 +684,7 @@ class _AccessCodeCard extends StatelessWidget {
                 if (tier.isNotEmpty)
                   _info(Icons.workspace_premium, tier.replaceAll('_', ' ')),
                 if (amount != null)
-                  _info(Icons.payment, '$amount RWF'),
+                  _info(Icons.payment, l10n.priceRwf(amount.toString())),
                 if (created.isNotEmpty)
                   _info(Icons.calendar_today, created),
                 if (expires.isNotEmpty)
@@ -877,12 +871,6 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
     }
   }
 
-  bool _hasActiveAccess(Map u) {
-    final exp = (u['accessExpiresAt'])?.toString();
-    if (exp == null) return false;
-    return DateTime.tryParse(exp)?.isAfter(DateTime.now()) ?? false;
-  }
-
   int get _totalPages => (_total / _limit).ceil().clamp(1, 9999);
 
   void _showGrantSheet(Map<String, dynamic> user, AppLocalizations l10n) {
@@ -915,7 +903,7 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
                       value: t['tier'] as String,
                       groupValue: selectedTier,
                       title: Text(t['label'] as String),
-                      subtitle: Text('${t['price']} RWF'),
+                      subtitle: Text(l10n.priceRwf(t['price'].toString())),
                       onChanged: (v) => setModal(() => selectedTier = v),
                     )).toList(),
               CheckboxListTile(
@@ -1000,7 +988,7 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
         _loadData();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('HTTP ${response.statusCode}'),
+            content: Text(l10n.errorHttpStatus(response.statusCode)),
             backgroundColor: AppColors.error));
       }
     } catch (e) {
@@ -1234,7 +1222,6 @@ class _GrantUserCard extends StatelessWidget {
     final phone = (user['phoneNumber'] ?? '').toString();
     final lang = (user['preferredLanguage'] ?? 'en').toString();
     final expires = (user['accessExpiresAt'] ?? '').toString().split('T')[0];
-    final tier = (user['paymentTier'] ?? '').toString();
     final accessColor = _hasAccess ? AppColors.success : AppColors.error;
     final primary = Theme.of(context).colorScheme.primary;
 

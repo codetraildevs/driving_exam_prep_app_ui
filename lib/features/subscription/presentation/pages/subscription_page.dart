@@ -9,7 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
-import '../../../../features/auth/presentation/bloc/auth_state.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_provider.dart';
 import '../../../../shared/network/api_config.dart';
@@ -78,7 +77,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
     try {
       final token = await AuthSession().getToken();
-      final baseUrl = ApiConfig.baseUrl;
+      const baseUrl = ApiConfig.baseUrl;
 
       final response = await http
           .post(

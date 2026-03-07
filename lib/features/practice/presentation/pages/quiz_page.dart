@@ -54,7 +54,7 @@ class _QuizPageState extends State<QuizPage> {
         setState(() {
           _exam = exam;
           _isLoading = false;
-          _error = exam == null ? 'Exam not found' : null;
+          _error = exam == null ? AppLocalizations.of(context).examNotFound : null;
         });
         if (exam != null) _startTimer();
       }
@@ -291,7 +291,7 @@ class _QuizPageState extends State<QuizPage> {
         ),
         body: Center(
           child: Text(
-            _error ?? 'Exam not found',
+            _error ?? AppLocalizations.of(context).examNotFound,
             style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
           ),
         ),
@@ -302,7 +302,6 @@ class _QuizPageState extends State<QuizPage> {
     final question = questions[_currentQuestion];
     final answeredCount = _answeredCount;
     final progress = answeredCount / questions.length;
-    final isAnswered = _answers.containsKey(_currentQuestion);
     final isLastQuestion = _currentQuestion == questions.length - 1;
 
     return Scaffold(

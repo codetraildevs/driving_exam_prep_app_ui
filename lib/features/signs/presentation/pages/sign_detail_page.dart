@@ -5,7 +5,6 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
-import '../../../../features/auth/presentation/bloc/auth_state.dart';
 import '../../data/models/sign_model.dart';
 import '../../data/repositories/signs_repository.dart';
 
@@ -57,7 +56,7 @@ class _SignDetailPageState extends State<SignDetailPage> {
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e'),
+            content: Text(AppLocalizations.of(context).errorWithDetail(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );

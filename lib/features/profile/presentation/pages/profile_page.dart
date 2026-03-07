@@ -126,6 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _showGrantAccessSheet(AppLocalizations l10n, String lang) {
+    final primary = Theme.of(context).colorScheme.primary;
     final tiers = lang == 'rw'
         ? [
             {'tier': '1_MONTH', 'price': 1500, 'label': l10n.subscriptionMonth1},
@@ -441,7 +442,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           style: const TextStyle(fontWeight: FontWeight.bold),
                                         ),
                                       ),
-                                      const Text(
+                                      Text(
                                         '75%',
                                         style: TextStyle(fontWeight: FontWeight.bold, color: primary),
                                       ),
@@ -571,6 +572,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final callNotes = user['call_notes'] ?? user['callNotes'];
 
     final langDisplay = _langLabel(lang);
+    final primary = Theme.of(context).colorScheme.primary;
     final statusText = hasAccess
         ? l10n.adminHasAccess
         : isExpired
@@ -791,6 +793,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _showLogoutDialog(BuildContext context, AppLocalizations l10n) {
+    final primary = Theme.of(context).colorScheme.primary;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -837,7 +840,7 @@ class _ProfilePageState extends State<ProfilePage> {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: primary.withValues(alpha: 0.05)),
+        border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.05)),
       ),
       child: ListTile(
         onTap: onTap,

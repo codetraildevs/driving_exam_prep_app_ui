@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../config/theme/app_colors.dart';
 import '../../config/theme/app_text_styles.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../locale/locale_provider.dart';
 import '../network/api_config.dart';
 import '../session/auth_session.dart';
@@ -29,9 +30,9 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
 
   // Short, native-language taglines to hint at benefits for a traffic app.
   static const Map<String, String> _nativeTaglines = {
-    'en': 'Traffic alerts & maps',
-    'fr': 'Alertes trafic & cartes',
-    'rw': 'Amakuru y\'imihanda & amakarita',
+    'en': 'Traffic alerts & signs',
+    'fr': 'Alertes trafic & panneaux',
+    'rw': 'Amategeko y\'umuhanda n\'ibyapa',
   };
 
   @override
@@ -75,7 +76,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
 
               // Title & subtitle
               Text(
-                'Choose your language',
+                AppLocalizations.of(context).languageSelectTitle,
                 style: AppTextStyles.heading2.copyWith(
                   color: AppColors.textPrimary,
                 ),
@@ -83,7 +84,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
               ),
               const SizedBox(height: 6),
               Text(
-                'You can change this later in Settings — get localized traffic alerts and routing.',
+                AppLocalizations.of(context).languageSelectDescription,
                 style: AppTextStyles.bodyMedium
                     .copyWith(color: AppColors.textSecondary),
                 textAlign: TextAlign.center,
@@ -98,7 +99,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                     child: OutlinedButton.icon(
                       onPressed: _useDeviceLanguage,
                       icon: const Icon(Icons.phone_iphone_outlined),
-                      label: const Text('Use device language'),
+                      label: Text(AppLocalizations.of(context).languageSelectDeviceLanguage),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.primary,
                         side: BorderSide(color: AppColors.primary.withValues(alpha: 0.18)),
@@ -111,7 +112,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                   ),
                   const SizedBox(width: 12),
                   Tooltip(
-                    message: 'Language help',
+                    message: AppLocalizations.of(context).languageSelectHelpTooltip,
                     child: IconButton(
                       onPressed: () => _showQuickHelp(context),
                       icon: const Icon(Icons.help_outline),
@@ -145,7 +146,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                   context.go('/landing');
                 },
                 child: Text(
-                  'Maybe later',
+                  AppLocalizations.of(context).languageSelectMaybeLater,
                   style: AppTextStyles.bodyMedium
                       .copyWith(color: AppColors.neutral600),
                 ),
@@ -310,10 +311,10 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Why choose a language?', style: AppTextStyles.heading3),
+              Text(AppLocalizations.of(context).languageSelectHelpTitle, style: AppTextStyles.heading3),
               const SizedBox(height: 8),
               Text(
-                'Selecting a language ensures that alerts, maps, and voice prompts are shown in your preferred language. You can change this later in Settings.',
+                AppLocalizations.of(context).languageSelectHelpContent,
                 style:
                     AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
               ),
@@ -325,7 +326,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
                 ),
-                child: const Text('Got it'),
+                child: Text(AppLocalizations.of(context).commonGotIt),
               ),
             ],
           ),
@@ -471,7 +472,7 @@ Future<Locale?> showLanguageSelectorDialog(BuildContext context) {
       return StatefulBuilder(
         builder: (ctx, setDialogState) {
           return AlertDialog(
-            title: const Text('Select language'),
+            title: Text(AppLocalizations.of(context).languageSelectDialogTitle),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             content: SingleChildScrollView(
@@ -495,11 +496,11 @@ Future<Locale?> showLanguageSelectorDialog(BuildContext context) {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(ctx),
-                child: const Text('Cancel'),
+                child: Text(AppLocalizations.of(context).commonCancel),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(ctx, Locale(selectedCode)),
-                child: const Text('Confirm'),
+                child: Text(AppLocalizations.of(context).commonConfirm),
               ),
             ],
           );

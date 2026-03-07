@@ -1175,410 +1175,1132 @@ abstract class AppLocalizations {
   String get signDetailMarkedSuccess;
 
   /// Subscription page title
+  ///
+  /// In en, this message translates to:
+  /// **'Practice Exam Access'**
   String get subscriptionTitle;
 
   /// Subscription page subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock All Practice Exams'**
   String get subscriptionSubtitle;
 
   /// Current plan section label
+  ///
+  /// In en, this message translates to:
+  /// **'Your Current Plan'**
   String get subscriptionCurrentPlan;
 
   /// No plan label
+  ///
+  /// In en, this message translates to:
+  /// **'No active plan'**
   String get subscriptionNoPlan;
 
   /// 1 month plan label
+  ///
+  /// In en, this message translates to:
+  /// **'1 Month'**
   String get subscriptionMonth1;
 
   /// 3 months plan label
+  ///
+  /// In en, this message translates to:
+  /// **'3 Months'**
   String get subscriptionMonth3;
 
   /// 6 months plan label
+  ///
+  /// In en, this message translates to:
+  /// **'6 Months'**
   String get subscriptionMonth6;
 
   /// Price label with amount
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} RWF'**
   String subscriptionPrice(int amount);
 
   /// Request access button
+  ///
+  /// In en, this message translates to:
+  /// **'Request Access'**
   String get subscriptionRequestAccess;
 
   /// Request sent success message
+  ///
+  /// In en, this message translates to:
+  /// **'Your request has been submitted. You will be activated once payment is confirmed.'**
   String get subscriptionRequestSent;
 
   /// Payment instructions section title
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Instructions'**
   String get subscriptionPaymentInstructions;
 
   /// MoMo pay number
+  ///
+  /// In en, this message translates to:
+  /// **'MoMo Pay: 323294'**
   String get subscriptionPaymentMomo;
 
   /// Mobile money number
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile Money: 0788657595'**
   String get subscriptionPaymentMobile;
 
   /// Help call number
+  ///
+  /// In en, this message translates to:
+  /// **'Call: 0788657595'**
   String get subscriptionHelpCall;
 
   /// Help WhatsApp number
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp: 0788657595'**
   String get subscriptionHelpWhatsapp;
 
   /// Choose plan label
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a Plan'**
   String get subscriptionChoosePlan;
 
   /// Currency label
+  ///
+  /// In en, this message translates to:
+  /// **'Currency: RWF'**
   String get subscriptionCurrency;
 
   /// Access active label
+  ///
+  /// In en, this message translates to:
+  /// **'Access Active'**
   String get subscriptionAccessActive;
 
   /// Expiry date label
+  ///
+  /// In en, this message translates to:
+  /// **'Expires: {date}'**
   String subscriptionExpires(String date);
 
   /// Days label
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days'**
   String subscriptionDays(int days);
 
   /// Need help label
+  ///
+  /// In en, this message translates to:
+  /// **'Need Help?'**
   String get subscriptionNeedHelp;
 
   /// Get access subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Get access to all {count}+ premium practice exams'**
   String subscriptionGetAccess(int count);
 
   /// Admin dashboard page title
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Dashboard'**
   String get adminDashboard;
 
   /// Admin users page title
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
   String get adminUsers;
 
   /// Admin access page title
+  ///
+  /// In en, this message translates to:
+  /// **'Access Management'**
   String get adminAccess;
 
   /// Admin progress page title
+  ///
+  /// In en, this message translates to:
+  /// **'User Progress'**
   String get adminProgress;
 
   /// Total users stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Total Users'**
   String get adminTotalUsers;
 
   /// Active subscriptions stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Active Subscriptions'**
   String get adminActiveSubscriptions;
 
   /// Users by language stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Users by Language'**
   String get adminUsersByLanguage;
 
   /// Recent registrations stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Registrations'**
   String get adminRecentRegistrations;
 
   /// Grant access button
+  ///
+  /// In en, this message translates to:
+  /// **'Grant Access'**
   String get adminGrantAccess;
 
   /// Call user button
+  ///
+  /// In en, this message translates to:
+  /// **'Call User'**
   String get adminCallUser;
 
   /// Call notes label
+  ///
+  /// In en, this message translates to:
+  /// **'Call Notes'**
   String get adminCallNotes;
 
   /// Last called label
+  ///
+  /// In en, this message translates to:
+  /// **'Last Called'**
   String get adminLastCalled;
 
   /// No access badge
+  ///
+  /// In en, this message translates to:
+  /// **'No Access'**
   String get adminNoAccess;
 
   /// Has access badge
+  ///
+  /// In en, this message translates to:
+  /// **'Has Access'**
   String get adminHasAccess;
 
   /// Access expired badge
+  ///
+  /// In en, this message translates to:
+  /// **'Access Expired'**
   String get adminAccessExpired;
 
   /// Access expiry date
+  ///
+  /// In en, this message translates to:
+  /// **'Expires: {date}'**
   String adminAccessExpires(String date);
 
   /// Search users hint
+  ///
+  /// In en, this message translates to:
+  /// **'Search users...'**
   String get adminSearchUsers;
 
   /// Filter all chip
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
   String get adminFilterAll;
 
   /// Filter has access chip
+  ///
+  /// In en, this message translates to:
+  /// **'Has Access'**
   String get adminFilterHasAccess;
 
   /// Filter no access chip
+  ///
+  /// In en, this message translates to:
+  /// **'No Access'**
   String get adminFilterNoAccess;
 
   /// Manage users quick action
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Users'**
   String get adminManageUsers;
 
   /// Manage access quick action
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Access'**
   String get adminManageAccess;
 
   /// View progress quick action
+  ///
+  /// In en, this message translates to:
+  /// **'View Progress'**
   String get adminViewProgress;
 
   /// Registration date label
+  ///
+  /// In en, this message translates to:
+  /// **'Registered: {date}'**
   String adminRegistrationDate(String date);
 
   /// Call notes hint text
+  ///
+  /// In en, this message translates to:
+  /// **'Enter call notes...'**
   String get adminEnterCallNotes;
 
   /// Submit call notes button
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
   String get adminSubmitCall;
 
   /// Call logged success message
+  ///
+  /// In en, this message translates to:
+  /// **'Call logged successfully'**
   String get adminCallLogged;
 
   /// Access granted success message
+  ///
+  /// In en, this message translates to:
+  /// **'Access granted successfully'**
   String get adminAccessGranted;
 
   /// Select tier label
+  ///
+  /// In en, this message translates to:
+  /// **'Select Access Tier'**
   String get adminSelectTier;
 
   /// Custom days label
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Duration (days)'**
   String get adminCustomDays;
 
   /// Payment amount label
+  ///
+  /// In en, this message translates to:
+  /// **'Amount (RWF)'**
   String get adminPaymentAmount;
 
   /// Days input hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter number of days'**
   String get adminEnterDays;
 
   /// Amount input hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter amount in RWF'**
   String get adminEnterAmount;
 
   /// Custom days toggle label
+  ///
+  /// In en, this message translates to:
+  /// **'Or set custom days'**
   String get adminOrCustom;
 
   /// Pending requests section title
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Payment Requests'**
   String get adminPendingRequests;
 
   /// All users section title
+  ///
+  /// In en, this message translates to:
+  /// **'All Users'**
   String get adminAllUsersList;
 
   /// Invalid amount error
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid amount greater than 0'**
   String get adminInvalidAmount;
 
   /// Invalid days error
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number of days greater than 0'**
   String get adminInvalidDays;
 
   /// Access revoked message
+  ///
+  /// In en, this message translates to:
+  /// **'Access revoked'**
   String get adminAccessRevoked;
 
   /// No users found message
+  ///
+  /// In en, this message translates to:
+  /// **'No users found'**
   String get adminNoUsers;
 
   /// Exam list page title
+  ///
+  /// In en, this message translates to:
+  /// **'Practice Exams'**
   String get examListTitle;
 
   /// Free exam badge
+  ///
+  /// In en, this message translates to:
+  /// **'FREE'**
   String get examFree;
 
   /// Paid exam badge
+  ///
+  /// In en, this message translates to:
+  /// **'PAID'**
   String get examPaid;
 
   /// Locked exam label
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
   String get examLocked;
 
   /// Question count label
+  ///
+  /// In en, this message translates to:
+  /// **'{count} questions'**
   String examQuestions(int count);
 
   /// Quiz progress label
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
   String get quizProgress;
 
   /// Answered counter
+  ///
+  /// In en, this message translates to:
+  /// **'Answered: {answered}/{total}'**
   String quizAnswered(int answered, int total);
 
   /// Submit practice button
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Practice'**
   String get quizSubmitPractice;
 
   /// Previous question button
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
   String get quizPrevious;
 
   /// Next question button
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
   String get quizNext;
 
   /// Time remaining label
+  ///
+  /// In en, this message translates to:
+  /// **'Time: {time}'**
   String quizTimeRemaining(String time);
 
   /// Quiz results title
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Results'**
   String get quizResults;
 
   /// Quiz passed label
+  ///
+  /// In en, this message translates to:
+  /// **'Passed!'**
   String get quizPassed;
 
   /// Quiz failed label
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Practicing'**
   String get quizFailed;
 
   /// Question counter
+  ///
+  /// In en, this message translates to:
+  /// **'Question {current} of {total}'**
   String quizQuestionOf(int current, int total);
 
   /// Submit confirmation dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Quiz?'**
   String get quizSubmitConfirmTitle;
 
   /// Submit confirmation dialog message
+  ///
+  /// In en, this message translates to:
+  /// **'You have answered {answered} out of {total} questions. Are you sure you want to submit?'**
   String quizSubmitConfirmMessage(int answered, int total);
 
   /// Time up message
+  ///
+  /// In en, this message translates to:
+  /// **'Time\'s up! Quiz submitted automatically.'**
   String get quizTimeUp;
 
   /// Review answers button
+  ///
+  /// In en, this message translates to:
+  /// **'Review Answers'**
   String get quizReviewAnswers;
 
   /// Retake quiz button
+  ///
+  /// In en, this message translates to:
+  /// **'Retake Quiz'**
   String get quizRetake;
 
   /// Profile role label
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
   String get profileRole;
 
   /// Profile language label
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred Language'**
   String get profileLanguage;
 
   /// Registration date
+  ///
+  /// In en, this message translates to:
+  /// **'Registered: {date}'**
   String profileRegistered(String date);
 
   /// Access status label
+  ///
+  /// In en, this message translates to:
+  /// **'Access Status'**
   String get profileAccessStatus;
 
   /// Exam history label
+  ///
+  /// In en, this message translates to:
+  /// **'Exam History'**
   String get profileExamHistory;
 
   /// Call history label
+  ///
+  /// In en, this message translates to:
+  /// **'Call History'**
   String get profileCallHistory;
 
   /// Payment instructions title
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Instructions'**
   String get paymentInstructionsTitle;
 
   /// MoMo pay number
+  ///
+  /// In en, this message translates to:
+  /// **'MoMo Pay: 323294'**
   String get paymentMomoPayNumber;
 
   /// Mobile money number
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile Money: 0788657595'**
   String get paymentMobileMoneyNumber;
 
   /// Payment help text
+  ///
+  /// In en, this message translates to:
+  /// **'Need help? Call or WhatsApp: 0788657595'**
   String get paymentHelpText;
 
   /// Payment error message
+  ///
+  /// In en, this message translates to:
+  /// **'Payment request failed. Please pay manually using the instructions below.'**
   String get paymentError;
 
-  /// Copy number button
+  /// Copy phone number button
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Number'**
   String get paymentCopyNumber;
 
-  /// Call number button
+  /// Call phone number button
+  ///
+  /// In en, this message translates to:
+  /// **'Call 0788657595'**
   String get paymentCallNumber;
 
-  /// WhatsApp button
+  /// WhatsApp button label
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp: Send Message'**
   String get paymentWhatsApp;
 
   /// WhatsApp message text for payment request
+  ///
+  /// In en, this message translates to:
+  /// **'Request access for driving exam app'**
   String get paymentWhatsAppMessage;
 
   /// Duplicate payment request error
+  ///
+  /// In en, this message translates to:
+  /// **'A payment request for this plan is already pending. Please wait for activation or contact support.'**
   String get paymentRequestExists;
 
   /// Generic error message
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
   String get commonError;
 
   /// Retry button label
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
   String get commonRetry;
 
-  /// Tier label
+  /// No description provided for @adminTierLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier'**
   String get adminTierLabel;
 
-  /// Expires label
+  /// No description provided for @adminExpiresLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires'**
   String get adminExpiresLabel;
 
-  /// Renew / extend access button
+  /// No description provided for @adminRenewAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Renew / Extend Access'**
   String get adminRenewAccess;
 
-  /// Manage Platform button
+  /// No description provided for @adminManagePlatform.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Platform'**
   String get adminManagePlatform;
 
-  /// Manage Exams action
+  /// No description provided for @adminManageExams.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Exams'**
   String get adminManageExams;
 
-  /// Manage Exams description
+  /// No description provided for @adminManageExamsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View and manage all practice exams'**
   String get adminManageExamsDesc;
 
-  /// Manage Users description
+  /// No description provided for @adminManageUsersDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'View, search, and manage all users'**
   String get adminManageUsersDesc;
 
-  /// Access Codes description
+  /// No description provided for @adminAccessCodesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage access codes and payments'**
   String get adminAccessCodesDesc;
 
-  /// Quick Stats section title
+  /// No description provided for @adminQuickStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Stats'**
   String get adminQuickStats;
 
-  /// Admin Actions section title
+  /// No description provided for @adminActionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Actions'**
   String get adminActionsTitle;
 
-  /// Total Practices stat
+  /// No description provided for @adminTotalPractices.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Practices'**
   String get adminTotalPractices;
 
-  /// Admin platform description
+  /// No description provided for @adminManagePlatformDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your traffic rules learning platform'**
   String get adminManagePlatformDesc;
 
-  /// Notifications label
+  /// No description provided for @adminNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
   String get adminNotifications;
 
-  /// Appearance section title in Settings
+  /// No description provided for @settingsAppearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
   String get settingsAppearance;
 
-  /// Appearance section subtitle
+  /// No description provided for @settingsAppearanceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how the app looks'**
   String get settingsAppearanceDesc;
 
-  /// System default theme chip label
+  /// No description provided for @settingsThemeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
   String get settingsThemeSystem;
 
-  /// Light theme chip label
+  /// No description provided for @settingsThemeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
   String get settingsThemeLight;
 
-  /// Dark theme chip label
+  /// No description provided for @settingsThemeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
   String get settingsThemeDark;
 
-  // ── Exam result ─────────────────────────────────────────────────────────────
+  /// Wrong answers label in exam result
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong'**
   String get examWrong;
+
+  /// Time spent label in exam result
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
   String get examTimeSpent;
 
-  // ── Profile ──────────────────────────────────────────────────────────────────
+  /// Logout confirmation title
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out?'**
   String get profileLogoutConfirmTitle;
+
+  /// Logout confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to sign out of your account?'**
   String get profileLogoutConfirmMessage;
+
+  /// Instructions shown before deleting account
+  ///
+  /// In en, this message translates to:
+  /// **'Before deleting your account:\n• All your exam results will be permanently erased\n• Your access subscription will be removed\n• This action cannot be undone\n• You will need to re-register to use the app again'**
   String get profileDeleteInstructions;
 
-  // ── Progress page ────────────────────────────────────────────────────────────
+  /// Total exams taken label
+  ///
+  /// In en, this message translates to:
+  /// **'Exams Taken'**
   String get progressExamsTaken;
+
+  /// Number of passed exams label
+  ///
+  /// In en, this message translates to:
+  /// **'Passed'**
   String get progressPassedCount;
+
+  /// Number of failed exams label
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
   String get progressFailedCount;
+
+  /// Pass rate label
+  ///
+  /// In en, this message translates to:
+  /// **'Pass Rate'**
   String get progressPassRate;
+
+  /// Empty state for progress page
+  ///
+  /// In en, this message translates to:
+  /// **'No exams taken yet. Start practicing!'**
   String get progressNoExams;
 
-  // ── Certificates ─────────────────────────────────────────────────────────────
+  /// Certificate ready title
+  ///
+  /// In en, this message translates to:
+  /// **'Ready for Official Exam!'**
   String get certificateReadyTitle;
+
+  /// Certificate subtitle with count
+  ///
+  /// In en, this message translates to:
+  /// **'You have passed {count} exams. You are ready for the official driving license test.'**
   String certificateReadySubtitle(int count);
+
+  /// Irembo link button label
+  ///
+  /// In en, this message translates to:
+  /// **'Register for Official Exam on irembo.gov.rw'**
   String get certificateIremboLink;
+
+  /// Irembo link description
+  ///
+  /// In en, this message translates to:
+  /// **'Click below to register for the official provisional driving license computer-based test'**
   String get certificateIremboDesc;
+
+  /// How many more exams needed
+  ///
+  /// In en, this message translates to:
+  /// **'Pass {needed} more exams to earn your certificate'**
   String certificateExamsNeeded(int needed);
+
+  /// Certificate progress label
+  ///
+  /// In en, this message translates to:
+  /// **'{passed} of {total} required exams passed'**
   String certificateProgressLabel(int passed, int total);
 
-  // ── Admin extras ─────────────────────────────────────────────────────────────
+  /// Sort ascending label
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest First'**
   String get adminSortAsc;
+
+  /// Sort descending label
+  ///
+  /// In en, this message translates to:
+  /// **'Newest First'**
   String get adminSortDesc;
+
+  /// Filter today label
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
   String get adminFilterToday;
+
+  /// Date range filter label
+  ///
+  /// In en, this message translates to:
+  /// **'Date Range'**
   String get adminDateRange;
+
+  /// Filter by role label
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
   String get adminFilterRole;
+
+  /// Block user action
+  ///
+  /// In en, this message translates to:
+  /// **'Block User'**
   String get adminBlockUser;
+
+  /// Unblock user action
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock User'**
   String get adminUnblockUser;
+
+  /// Delete user action
+  ///
+  /// In en, this message translates to:
+  /// **'Delete User'**
   String get adminDeleteUserAction;
+
+  /// Block user confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Block {name}? They will lose access and cannot log in.'**
   String adminBlockUserConfirm(String name);
+
+  /// Delete user confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently delete {name}? All their data will be erased. This cannot be undone.'**
   String adminDeleteUserConfirm(String name);
+
+  /// User blocked success message
+  ///
+  /// In en, this message translates to:
+  /// **'User blocked successfully'**
   String get adminUserBlocked;
+
+  /// User unblocked success message
+  ///
+  /// In en, this message translates to:
+  /// **'User unblocked successfully'**
   String get adminUserUnblocked;
+
+  /// User deleted success message
+  ///
+  /// In en, this message translates to:
+  /// **'User deleted successfully'**
   String get adminUserDeleted;
+
+  /// Must block first error message
+  ///
+  /// In en, this message translates to:
+  /// **'You must block the user before deleting them.'**
   String get adminMustBlockFirst;
+
+  /// Block access action
+  ///
+  /// In en, this message translates to:
+  /// **'Block Access'**
   String get adminBlockAccess;
+
+  /// Delete access action
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Access'**
   String get adminDeleteAccess;
+
+  /// Block access confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Block this access code? The user will lose access immediately.'**
   String get adminBlockAccessConfirm;
+
+  /// Delete access confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this access code permanently?'**
   String get adminDeleteAccessConfirm;
+
+  /// Access blocked success message
+  ///
+  /// In en, this message translates to:
+  /// **'Access code blocked'**
   String get adminAccessBlocked;
+
+  /// Access deleted success message
+  ///
+  /// In en, this message translates to:
+  /// **'Access code deleted'**
   String get adminAccessDeleted;
+
+  /// Pagination label
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {total}'**
   String adminPage(int page, int total);
+
+  /// Learning language label
+  ///
+  /// In en, this message translates to:
+  /// **'Learning'**
   String get adminLearningLanguage;
+
+  /// Blocked status label
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked'**
   String get adminIsBlocked;
+
+  /// Active status label
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
   String get adminIsActive;
+
+  /// Shown in snackbar after copying text to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'Copied!'**
   String get generalCopied;
+
+  /// Retry button label
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
   String get adminRetry;
+
+  /// Full subtitle on language selector page
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this later in Settings — get localized traffic alerts and routing.'**
+  String get languageSelectDescription;
+
+  /// Button to auto-detect device language
+  ///
+  /// In en, this message translates to:
+  /// **'Use device language'**
+  String get languageSelectDeviceLanguage;
+
+  /// Tooltip for help icon on language selector
+  ///
+  /// In en, this message translates to:
+  /// **'Language help'**
+  String get languageSelectHelpTooltip;
+
+  /// Skip button on language selector
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe later'**
+  String get languageSelectMaybeLater;
+
+  /// Help modal title on language selector
+  ///
+  /// In en, this message translates to:
+  /// **'Why choose a language?'**
+  String get languageSelectHelpTitle;
+
+  /// Help modal content on language selector
+  ///
+  /// In en, this message translates to:
+  /// **'Selecting a language ensures that alerts, maps, and voice prompts are shown in your preferred language. You can change this later in Settings.'**
+  String get languageSelectHelpContent;
+
+  /// Acknowledge button
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get commonGotIt;
+
+  /// Dialog title for language picker
+  ///
+  /// In en, this message translates to:
+  /// **'Select language'**
+  String get languageSelectDialogTitle;
+
+  /// Error when exam cannot be loaded
+  ///
+  /// In en, this message translates to:
+  /// **'Exam not found'**
+  String get examNotFound;
+
+  /// Error message with detail
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {detail}'**
+  String errorWithDetail(String detail);
+
+  /// Unexpected error message with detail
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected error: {detail}'**
+  String errorUnexpected(String detail);
+
+  /// Price formatted in RWF
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} RWF'**
+  String priceRwf(String amount);
+
+  /// HTTP error status
+  ///
+  /// In en, this message translates to:
+  /// **'HTTP {code}'**
+  String errorHttpStatus(int code);
+
+  /// Sample exam question 1
+  ///
+  /// In en, this message translates to:
+  /// **'What is the speed limit on highways?'**
+  String get examSampleQ1;
+
+  /// No description provided for @examSampleQ1A1.
+  ///
+  /// In en, this message translates to:
+  /// **'90 km/h'**
+  String get examSampleQ1A1;
+
+  /// No description provided for @examSampleQ1A2.
+  ///
+  /// In en, this message translates to:
+  /// **'100 km/h'**
+  String get examSampleQ1A2;
+
+  /// No description provided for @examSampleQ1A3.
+  ///
+  /// In en, this message translates to:
+  /// **'110 km/h'**
+  String get examSampleQ1A3;
+
+  /// No description provided for @examSampleQ1A4.
+  ///
+  /// In en, this message translates to:
+  /// **'120 km/h'**
+  String get examSampleQ1A4;
+
+  /// Sample exam question 2
+  ///
+  /// In en, this message translates to:
+  /// **'What does a yellow traffic light mean?'**
+  String get examSampleQ2;
+
+  /// No description provided for @examSampleQ2A1.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop immediately'**
+  String get examSampleQ2A1;
+
+  /// No description provided for @examSampleQ2A2.
+  ///
+  /// In en, this message translates to:
+  /// **'Go ahead'**
+  String get examSampleQ2A2;
+
+  /// No description provided for @examSampleQ2A3.
+  ///
+  /// In en, this message translates to:
+  /// **'Be prepared to stop'**
+  String get examSampleQ2A3;
+
+  /// No description provided for @examSampleQ2A4.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn around'**
+  String get examSampleQ2A4;
+
+  /// Sample exam question 3
+  ///
+  /// In en, this message translates to:
+  /// **'How far from a fire hydrant can you park?'**
+  String get examSampleQ3;
+
+  /// No description provided for @examSampleQ3A1.
+  ///
+  /// In en, this message translates to:
+  /// **'1 meter'**
+  String get examSampleQ3A1;
+
+  /// No description provided for @examSampleQ3A2.
+  ///
+  /// In en, this message translates to:
+  /// **'3 meters'**
+  String get examSampleQ3A2;
+
+  /// No description provided for @examSampleQ3A3.
+  ///
+  /// In en, this message translates to:
+  /// **'5 meters'**
+  String get examSampleQ3A3;
+
+  /// No description provided for @examSampleQ3A4.
+  ///
+  /// In en, this message translates to:
+  /// **'10 meters'**
+  String get examSampleQ3A4;
 }
 
 class _AppLocalizationsDelegate

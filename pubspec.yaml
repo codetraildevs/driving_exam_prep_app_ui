@@ -26,21 +26,10 @@ dependencies:
 
   # UI & Design
   google_fonts: ^6.1.0
-  flutter_animate: ^4.2.0
-  lottie: ^3.0.0
-
-  # Charts & Data Visualization
-  fl_chart: ^0.68.0
-
-  # Image Handling
-  cached_network_image: ^3.3.0
 
   # Local Storage
   shared_preferences: ^2.2.0
   device_info_plus: ^11.2.1
-
-  # Authentication
-  google_sign_in: ^6.2.0
 
   # HTTP
   http: ^1.1.0
