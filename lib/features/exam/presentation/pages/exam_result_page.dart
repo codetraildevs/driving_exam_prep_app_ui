@@ -82,6 +82,7 @@ class _ExamResultPageState extends State<ExamResultPage>
         ? widget.correctAnswers / widget.totalQuestions
         : 0.0;
     final primaryColor = passed ? AppColors.success : AppColors.warning;
+    final themePrimary = Theme.of(context).colorScheme.primary;
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -161,7 +162,7 @@ class _ExamResultPageState extends State<ExamResultPage>
                   Text(
                     passed ? l10n.examPassedMessage : l10n.examFailedMessage,
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.85),
+                      color: Colors.white.withValues(alpha: 0.85),
                       fontSize: 14,
                     ),
                     textAlign: TextAlign.center,
@@ -181,7 +182,7 @@ class _ExamResultPageState extends State<ExamResultPage>
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: Colors.black.withValues(alpha: 0.1),
                               blurRadius: 20,
                               offset: const Offset(0, 8),
                             ),
@@ -212,7 +213,7 @@ class _ExamResultPageState extends State<ExamResultPage>
                                     icon: Icons.timer_rounded,
                                     value: _formatTime(widget.timeSpentSeconds),
                                     label: l10n.examTimeSpent,
-                                    color: AppColors.primary,
+                                    color: themePrimary,
                                   ),
                                 ],
                               ),
@@ -252,7 +253,7 @@ class _ExamResultPageState extends State<ExamResultPage>
                                             _ringAnim.value,
                                         minHeight: 12,
                                         backgroundColor:
-                                            primaryColor.withOpacity(0.12),
+                                            primaryColor.withValues(alpha: 0.12),
                                         valueColor:
                                             AlwaysStoppedAnimation<Color>(
                                                 primaryColor),
@@ -268,10 +269,10 @@ class _ExamResultPageState extends State<ExamResultPage>
                               margin: const EdgeInsets.fromLTRB(16, 0, 16, 20),
                               padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
-                                color: primaryColor.withOpacity(0.08),
+                                color: primaryColor.withValues(alpha: 0.08),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
-                                    color: primaryColor.withOpacity(0.3)),
+                                    color: primaryColor.withValues(alpha: 0.3)),
                               ),
                               child: Row(
                                 children: [
@@ -390,7 +391,7 @@ class _ScoreRing extends StatelessWidget {
         painter: _RingPainter(
           progress: progress,
           passed: passed,
-          bgColor: Colors.white.withOpacity(0.2),
+          bgColor: Colors.white.withValues(alpha: 0.2),
           fgColor: Colors.white,
         ),
         child: Center(
@@ -408,7 +409,7 @@ class _ScoreRing extends StatelessWidget {
               Text(
                 label.toUpperCase(),
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.85),
+                  color: Colors.white.withValues(alpha: 0.85),
                   fontSize: size * 0.1,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 2,

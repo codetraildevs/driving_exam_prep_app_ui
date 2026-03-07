@@ -121,15 +121,17 @@ class _ProgressPageState extends State<ProgressPage>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final gradient = AppColors.primaryGradientFor(Theme.of(context).brightness);
 
     return Scaffold(
       body: Column(
         children: [
           // ── Gradient header ──────────────────────────────────────────
           Container(
-            decoration: const BoxDecoration(
-              gradient: AppColors.primaryGradient,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(28)),
+            decoration: BoxDecoration(
+              gradient: gradient,
+              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
             ),
             child: SafeArea(
               child: Padding(
@@ -308,9 +310,9 @@ class _HeaderChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.18),
+          color: Colors.white.withValues(alpha: 0.18),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.white.withOpacity(0.3)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
         ),
         child: Column(
           children: [
@@ -327,7 +329,7 @@ class _HeaderChip extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                color: Colors.white.withOpacity(0.85),
+                color: Colors.white.withValues(alpha: 0.85),
                 fontSize: 10,
               ),
               textAlign: TextAlign.center,
@@ -362,6 +364,7 @@ class _SummaryGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gradient = AppColors.primaryGradientFor(Theme.of(context).brightness);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -420,7 +423,7 @@ class _SummaryGrid extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            gradient: AppColors.primaryGradient,
+            gradient: gradient,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -456,7 +459,7 @@ class _SummaryGrid extends StatelessWidget {
                         ? (passed / total) * anim.value
                         : 0,
                     minHeight: 10,
-                    backgroundColor: Colors.white.withOpacity(0.2),
+                    backgroundColor: Colors.white.withValues(alpha: 0.2),
                     valueColor: const AlwaysStoppedAnimation<Color>(
                       Colors.white,
                     ),
@@ -467,7 +470,7 @@ class _SummaryGrid extends StatelessWidget {
               Text(
                 '$passed / $total ${l10n.progressPassedCount.toLowerCase()}',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.8),
+                  color: Colors.white.withValues(alpha: 0.8),
                   fontSize: 12,
                 ),
               ),
@@ -505,8 +508,8 @@ class _StatCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.08),
-          border: Border.all(color: color.withOpacity(0.2)),
+          color: color.withValues(alpha: 0.08),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
           borderRadius: BorderRadius.circular(14),
         ),
         child: Column(
@@ -571,10 +574,10 @@ class _ExamResultCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 8,
           ),
         ],
@@ -585,7 +588,7 @@ class _ExamResultCard extends StatelessWidget {
             width: 52,
             height: 52,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -688,7 +691,7 @@ class _EmptyView extends StatelessWidget {
               width: 100,
               height: 100,
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
+                color: AppColors.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: const Icon(Icons.quiz_outlined,

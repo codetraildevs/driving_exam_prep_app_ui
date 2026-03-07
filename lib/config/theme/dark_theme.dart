@@ -3,15 +3,20 @@ import 'app_colors.dart';
 import 'app_text_styles.dart';
 
 /// Dark theme for the Traffic Rules App.
-/// Keeps the app's primary blue branding on a deep dark background.
+/// Uses a comfortable dark palette that avoids eye-straining high contrast.
 ThemeData buildDarkTheme() {
   // Dark-mode surface and background
-  const surface = AppColors.surfaceDark;
-  const background = AppColors.backgroundDark;
-  const onSurface = AppColors.neutral100;
-  const onSurface70 = AppColors.neutral400;
+  const surface = AppColors.surfaceDark;         // #1E293B
+  const background = AppColors.backgroundDark;   // #0F0F23
+  // Use neutral200 (#E5E7EB) instead of near-white neutral100 to reduce harshness
+  const onSurface = AppColors.neutral200;
+  const onSurface70 = AppColors.neutral400;      // #9CA3AF
   const outline = AppColors.neutral700;
   const outlineVariant = AppColors.neutral800;
+
+  // In dark mode use primaryLight (#3B82F6) wherever primary would create
+  // near-black artefacts on dark backgrounds
+  const darkPrimary = AppColors.primaryLight;
 
   final textColor = onSurface;
   final subColor = onSurface70;
@@ -185,18 +190,18 @@ ThemeData buildDarkTheme() {
     iconTheme: const IconThemeData(color: onSurface),
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return AppColors.primaryLight;
+        if (states.contains(WidgetState.selected)) return darkPrimary;
         return onSurface70;
       }),
       trackColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return AppColors.primary.withOpacity(0.5);
+        if (states.contains(WidgetState.selected)) return darkPrimary.withValues(alpha: 0.4);
         return outline;
       }),
     ),
     drawerTheme: const DrawerThemeData(backgroundColor: background),
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: surface,
-      indicatorColor: AppColors.primary.withOpacity(0.2),
+      indicatorColor: darkPrimary.withValues(alpha: 0.2),
       iconTheme: WidgetStateProperty.all(const IconThemeData(color: onSurface)),
     ),
   );

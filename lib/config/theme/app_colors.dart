@@ -31,6 +31,8 @@ class AppColors {
   static const Color backgroundDark = Color(0xFF0F0F23); // Match HTML dark
   static const Color surface = Color(0xFFFFFFFF);
   static const Color surfaceDark = Color(0xFF1E293B); // Adjusted for better contrast with 0F0F23
+  /// Slightly elevated dark surface for cards/chips inside surfaceDark pages
+  static const Color surfaceDark2 = Color(0xFF243045);
 
   // Neutral
   static const Color neutral900 = Color(0xFF111827);
@@ -60,6 +62,13 @@ class AppColors {
     colors: [Color(0xFF00039E), Color(0xFF3B82F6)],
   );
 
+  /// Dark-mode-friendly gradient that avoids the near-black start of [primaryGradient]
+  static const LinearGradient primaryGradientDark = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF2563EB), Color(0xFF60A5FA)],
+  );
+
   static const LinearGradient accentGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -71,4 +80,8 @@ class AppColors {
     end: Alignment.bottomRight,
     colors: [Color(0xFF16A34A), Color(0xFF4ADE80)],
   );
+
+  /// Returns the theme-appropriate primary gradient.
+  static LinearGradient primaryGradientFor(Brightness brightness) =>
+      brightness == Brightness.dark ? primaryGradientDark : primaryGradient;
 }

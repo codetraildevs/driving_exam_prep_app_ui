@@ -100,9 +100,9 @@ class _SignDetailPageState extends State<SignDetailPage> {
                   Container(
                     height: 200,
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: AppColors.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.5)),
+                      border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5)),
                     ),
                     child: const Center(
                       child: Text(
@@ -123,7 +123,7 @@ class _SignDetailPageState extends State<SignDetailPage> {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: AppColors.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
@@ -155,9 +155,9 @@ class _SignDetailPageState extends State<SignDetailPage> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.05),
+                        color: AppColors.primary.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
+                        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
                       ),
                       child: Text(
                         sign.scenario!,
@@ -170,10 +170,10 @@ class _SignDetailPageState extends State<SignDetailPage> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppColors.success.withOpacity(0.1),
+                        color: AppColors.success.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: AppColors.success.withOpacity(0.3),
+                          color: AppColors.success.withValues(alpha: 0.3),
                         ),
                       ),
                       child: Row(

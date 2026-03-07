@@ -182,7 +182,7 @@ class _QuizPageState extends State<QuizPage> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppColors.warning.withOpacity(0.1),
+                  color: AppColors.warning.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -409,7 +409,7 @@ class _QuizPageState extends State<QuizPage> {
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: Theme.of(context).shadowColor.withOpacity(0.05),
+                            color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
                             blurRadius: 8,
                           ),
                         ],
@@ -564,11 +564,11 @@ class _QuizPageState extends State<QuizPage> {
       if (shouldHighlight) {
         if (isCorrect) {
           borderColor = AppColors.success;
-          backgroundColor = AppColors.success.withOpacity(0.1);
+          backgroundColor = AppColors.success.withValues(alpha: 0.1);
           trailingIcon = const Icon(Icons.check_circle, color: AppColors.success);
         } else if (isSelected) {
           borderColor = AppColors.error;
-          backgroundColor = AppColors.error.withOpacity(0.1);
+          backgroundColor = AppColors.error.withValues(alpha: 0.1);
           trailingIcon = const Icon(Icons.cancel, color: AppColors.error);
         }
       }
@@ -599,7 +599,7 @@ class _QuizPageState extends State<QuizPage> {
                       width: 2,
                     ),
                     color: isSelected
-                        ? (isCorrect ? AppColors.success : AppColors.error).withOpacity(0.2)
+                        ? (isCorrect ? AppColors.success : AppColors.error).withValues(alpha: 0.2)
                         : Colors.transparent,
                   ),
                   child: isSelected

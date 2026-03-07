@@ -120,7 +120,7 @@ class _ExamPageState extends State<ExamPage> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: timeColor.withOpacity(0.1),
+                  color: timeColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -196,14 +196,14 @@ class _ExamPageState extends State<ExamPage> {
                       if (shouldHighlight) {
                         if (isCorrect) {
                           borderColor = AppColors.success;
-                          backgroundColor = AppColors.success.withOpacity(0.1);
+                          backgroundColor = AppColors.success.withValues(alpha: 0.1);
                         } else if (isSelected) {
                           borderColor = AppColors.error;
-                          backgroundColor = AppColors.error.withOpacity(0.1);
+                          backgroundColor = AppColors.error.withValues(alpha: 0.1);
                         }
                       } else if (isSelected && !_answered) {
                         borderColor = AppColors.primary;
-                        backgroundColor = AppColors.primary.withOpacity(0.05);
+                        backgroundColor = AppColors.primary.withValues(alpha: 0.05);
                       }
 
                       return Padding(

@@ -93,6 +93,8 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final gradient = AppColors.primaryGradientFor(Theme.of(context).brightness);
+    final primary = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
       body: SafeArea(
@@ -100,8 +102,8 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
           children: [
             // ── Header ─────────────────────────────────────────────────
             Container(
-              decoration: const BoxDecoration(
-                gradient: AppColors.primaryGradient,
+              decoration: BoxDecoration(
+                gradient: gradient,
                 borderRadius:
                     BorderRadius.vertical(bottom: Radius.circular(24)),
               ),
@@ -167,17 +169,19 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
     final pct = (_passedCount / _kRequiredPassed).clamp(0.0, 1.0);
     final passed = _passedCount;
     final needed = (_kRequiredPassed - passed).clamp(0, _kRequiredPassed);
-    final color = _hasCertificate ? AppColors.success : AppColors.primary;
+    final color = _hasCertificate
+        ? AppColors.success
+        : Theme.of(context).colorScheme.primary;
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.08),
+            color: color.withValues(alpha: 0.08),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -192,7 +196,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -250,7 +254,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
             child: LinearProgressIndicator(
               value: pct,
               minHeight: 12,
-              backgroundColor: color.withOpacity(0.1),
+              backgroundColor: color.withValues(alpha: 0.1),
               valueColor: AlwaysStoppedAnimation<Color>(color),
             ),
           ),
@@ -271,7 +275,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF1A237E).withOpacity(0.3),
+            color: const Color(0xFF1A237E).withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -301,13 +305,13 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
           Container(
             width: double.infinity,
             height: 1,
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
           ),
           const SizedBox(height: 16),
           Text(
             l10n.certificateReadySubtitle(_passedCount),
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               fontSize: 14,
               height: 1.5,
             ),
@@ -329,7 +333,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
+                  color: Colors.white.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
@@ -352,8 +356,8 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.success.withOpacity(0.06),
-        border: Border.all(color: AppColors.success.withOpacity(0.3)),
+        color: AppColors.success.withValues(alpha: 0.06),
+        border: Border.all(color: AppColors.success.withValues(alpha: 0.3)),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(

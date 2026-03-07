@@ -254,9 +254,9 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: AppColors.warning.withOpacity(0.1),
+                  color: AppColors.warning.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.warning.withOpacity(0.3)),
+                  border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
@@ -493,6 +493,8 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final primary = Theme.of(context).colorScheme.primary;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.adminUsers),
@@ -518,7 +520,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none),
                 filled: true,
-                fillColor: AppColors.background,
+                fillColor: surfaceColor,
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               ),
@@ -532,47 +534,45 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               children: [
-                _chip(l10n.adminFilterAll, 'all' == _accessFilter, () {
+                _chip(context, l10n.adminFilterAll, 'all' == _accessFilter, () {
                   setState(() => _accessFilter = 'all');
                   _page = 1;
                   _loadUsers();
-                }),
+                }, ctx: context),
                 const SizedBox(width: 6),
-                _chip(l10n.adminFilterHasAccess, _accessFilter == 'hasAccess',
-                    () {
+                _chip(context, l10n.adminFilterHasAccess, _accessFilter == 'hasAccess', () {
                   setState(() => _accessFilter = 'hasAccess');
                   _page = 1;
                   _loadUsers();
-                }),
+                }, ctx: context),
                 const SizedBox(width: 6),
-                _chip(l10n.adminFilterNoAccess, _accessFilter == 'noAccess',
-                    () {
+                _chip(context, l10n.adminFilterNoAccess, _accessFilter == 'noAccess', () {
                   setState(() => _accessFilter = 'noAccess');
                   _page = 1;
                   _loadUsers();
-                }),
+                }, ctx: context),
                 const SizedBox(width: 6),
-                _chip('👑 Admin', _roleFilter == 'ADMIN', () {
+                _chip(context, '👑 Admin', _roleFilter == 'ADMIN', () {
                   setState(() => _roleFilter =
                       _roleFilter == 'ADMIN' ? '' : 'ADMIN');
                   _page = 1;
                   _loadUsers();
-                }),
+                }, ctx: context),
                 const SizedBox(width: 6),
-                _chip('👤 User', _roleFilter == 'USER', () {
+                _chip(context, '👤 User', _roleFilter == 'USER', () {
                   setState(() =>
                       _roleFilter = _roleFilter == 'USER' ? '' : 'USER');
                   _page = 1;
                   _loadUsers();
-                }),
+                }, ctx: context),
                 const SizedBox(width: 6),
-                _chip(l10n.adminFilterToday, _todayOnly, () {
+                _chip(context, l10n.adminFilterToday, _todayOnly, () {
                   setState(() {
                     _todayOnly = !_todayOnly;
                     if (_todayOnly) {
                       _dateFrom = null;
                       _dateTo = null;
-                    }
+                    }, ctx: context
                   });
                   _page = 1;
                   _loadUsers();
@@ -597,10 +597,10 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.08),
+                      color: primary.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                          color: AppColors.primary.withOpacity(0.2)),
+                          color: primary.withValues(alpha: 0.2)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -610,15 +610,15 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                               ? Icons.arrow_downward
                               : Icons.arrow_upward,
                           size: 14,
-                          color: AppColors.primary,
+                          color: primary,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           _sortDir == 'DESC'
                               ? l10n.adminSortDesc
                               : l10n.adminSortAsc,
-                          style: const TextStyle(
-                              color: AppColors.primary, fontSize: 12),
+                          style: TextStyle(
+                              color: primary, fontSize: 12),
                         ),
                       ],
                     ),
@@ -633,24 +633,24 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                           horizontal: 10, vertical: 6),
                       decoration: BoxDecoration(
                         color: (_dateFrom != null)
-                            ? AppColors.primary.withOpacity(0.1)
-                            : AppColors.background,
+                            ? primary.withValues(alpha: 0.1)
+                            : surfaceColor,
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                            color: AppColors.primary.withOpacity(0.2)),
+                            color: primary.withValues(alpha: 0.2)),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.date_range, size: 14,
-                              color: AppColors.primary),
+                          Icon(Icons.date_range, size: 14,
+                              color: primary),
                           const SizedBox(width: 4),
                           Text(
                             _dateFrom != null
                                 ? '${_dateFrom!.toIso8601String().split('T')[0]} – ${_dateTo?.toIso8601String().split('T')[0] ?? '...'}'
                                 : l10n.adminDateRange,
-                            style: const TextStyle(
-                                color: AppColors.primary, fontSize: 12),
+                            style: TextStyle(
+                                color: primary, fontSize: 12),
                           ),
                           if (_dateFrom != null) ...[
                             const SizedBox(width: 4),
@@ -663,8 +663,8 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                                 _page = 1;
                                 _loadUsers();
                               },
-                              child: const Icon(Icons.close,
-                                  size: 14, color: AppColors.primary),
+                              child: Icon(Icons.close,
+                                  size: 14, color: primary),
                             ),
                           ],
                         ],
@@ -771,33 +771,35 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     );
   }
 
-  Widget _chip(String label, bool selected, VoidCallback onTap) {
+  Widget _chip(BuildContext ctx, String label, bool selected, VoidCallback onTap) {
+    final primary = Theme.of(ctx).colorScheme.primary;
+    final bgColor = Theme.of(ctx).colorScheme.surface;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: selected
-              ? AppColors.primary.withOpacity(0.15)
-              : AppColors.background,
+              ? primary.withValues(alpha: 0.15)
+              : bgColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: selected
-                ? AppColors.primary
-                : AppColors.primary.withOpacity(0.2),
+                ? primary
+                : primary.withValues(alpha: 0.2),
           ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (selected) ...[
-              const Icon(Icons.check, size: 12, color: AppColors.primary),
+              Icon(Icons.check, size: 12, color: primary),
               const SizedBox(width: 4),
             ],
             Text(
               label,
               style: TextStyle(
-                color: selected ? AppColors.primary : AppColors.textSecondary,
+                color: selected ? primary : AppColors.textSecondary,
                 fontSize: 12,
                 fontWeight:
                     selected ? FontWeight.bold : FontWeight.normal,
@@ -889,6 +891,7 @@ class _UserCard extends StatelessWidget {
         (user['createdAt'] ?? user['created_at'] ?? '').toString().split('T')[0];
     final calledAt = (user['lastCalledAt'] ?? '').toString();
     final lang = (user['preferredLanguage'] ?? 'en').toString();
+    final primary = Theme.of(context).colorScheme.primary;
 
     final accessColor = _hasAccess ? AppColors.success : AppColors.error;
     final blockedColor =
@@ -910,12 +913,12 @@ class _UserCard extends StatelessWidget {
                   onTap: onProfile,
                   child: CircleAvatar(
                     backgroundColor:
-                        AppColors.primary.withOpacity(0.15),
+                        primary.withValues(alpha: 0.15),
                     radius: 22,
                     child: Text(
                       name.isNotEmpty ? name[0].toUpperCase() : '?',
                       style: AppTextStyles.heading6
-                          .copyWith(color: AppColors.primary),
+                          .copyWith(color: primary),
                     ),
                   ),
                 ),
@@ -939,7 +942,7 @@ class _UserCard extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 6, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: AppColors.error.withOpacity(0.1),
+                                  color: AppColors.error.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
@@ -991,7 +994,7 @@ class _UserCard extends StatelessWidget {
                   _hasAccess ? l10n.adminHasAccess : l10n.adminNoAccess,
                   accessColor,
                 ),
-                _badge(role, AppColors.primary),
+                _badge(role, primary),
                 if (calledAt.isNotEmpty)
                   _badge('📞 ${calledAt.split('T')[0]}',
                       AppColors.textSecondary),
@@ -1024,7 +1027,7 @@ class _UserCard extends StatelessWidget {
                   _actionBtn(
                     icon: Icons.phone_rounded,
                     label: l10n.adminCallUser,
-                    color: AppColors.primary,
+                    color: primary,
                     onTap: onCall,
                   ),
                   _actionBtn(
@@ -1058,7 +1061,7 @@ class _UserCard extends StatelessWidget {
   Widget _badge(String label, Color color) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.12),
+          color: color.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
@@ -1083,9 +1086,9 @@ class _UserCard extends StatelessWidget {
           padding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: color.withOpacity(0.25)),
+            border: Border.all(color: color.withValues(alpha: 0.25)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,

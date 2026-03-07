@@ -136,10 +136,10 @@ class _LoginPageState extends State<LoginPage> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.05),
+                        color: AppColors.primary.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: AppColors.primary.withOpacity(0.15),
+                          color: AppColors.primary.withValues(alpha: 0.15),
                         ),
                       ),
                       child: Column(
@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppColors.primary,
-                                side: BorderSide(color: AppColors.primary.withOpacity(0.4)),
+                                side: BorderSide(color: AppColors.primary.withValues(alpha: 0.4)),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

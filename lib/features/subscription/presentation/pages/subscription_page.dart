@@ -180,8 +180,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.success.withOpacity(0.1),
-                    border: Border.all(color: AppColors.success.withOpacity(0.4)),
+                    color: AppColors.success.withValues(alpha: 0.1),
+                    border: Border.all(color: AppColors.success.withValues(alpha: 0.4)),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
@@ -221,11 +221,11 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradient,
+                  gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.25),
+                      color: AppColors.primary.withValues(alpha: 0.25),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -284,8 +284,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.success.withOpacity(0.1),
-                    border: Border.all(color: AppColors.success.withOpacity(0.4)),
+                    color: AppColors.success.withValues(alpha: 0.1),
+                    border: Border.all(color: AppColors.success.withValues(alpha: 0.4)),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
@@ -353,11 +353,11 @@ class _PaymentInstructionsCard extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).shadowColor.withOpacity(0.05),
+            color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
             blurRadius: 8,
           ),
         ],
@@ -370,7 +370,7 @@ class _PaymentInstructionsCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(Icons.payment, color: AppColors.primary, size: 20),
@@ -394,7 +394,7 @@ class _PaymentInstructionsCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.warning.withOpacity(0.1),
+                  color: AppColors.warning.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(Icons.help_outline, color: AppColors.warning, size: 20),
@@ -445,8 +445,8 @@ class _ErrorCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
-        border: Border.all(color: color.withOpacity(0.4)),
+        color: color.withValues(alpha: 0.08),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -522,8 +522,8 @@ class _ActionButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
-          border: Border.all(color: color.withOpacity(0.4)),
+          color: color.withValues(alpha: 0.1),
+          border: Border.all(color: color.withValues(alpha: 0.4)),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
@@ -570,10 +570,10 @@ class _PlanCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.5)),
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5)),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Theme.of(context).shadowColor.withOpacity(0.04), blurRadius: 8),
+          BoxShadow(color: Theme.of(context).shadowColor.withValues(alpha: 0.04), blurRadius: 8),
         ],
       ),
       child: Padding(

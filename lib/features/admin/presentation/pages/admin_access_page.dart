@@ -255,7 +255,7 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
           child: Row(
             children: [
               // Sort
-              _toolChip(
+              _toolChip(context,
                 icon: _sortDir == 'DESC'
                     ? Icons.arrow_downward
                     : Icons.arrow_upward,
@@ -269,7 +269,7 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
               ),
               const SizedBox(width: 8),
               // Today
-              _toolChip(
+              _toolChip(context,
                 icon: Icons.today,
                 label: l10n.adminFilterToday,
                 selected: _todayOnly,
@@ -288,7 +288,7 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
               const SizedBox(width: 8),
               // Date range
               if (!_todayOnly)
-                _toolChip(
+                _toolChip(context,
                   icon: Icons.date_range,
                   label: _dateFrom != null
                       ? '${_dateFrom!.toIso8601String().split('T')[0]}'
@@ -323,20 +323,20 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             children: [
-              _filterChip(l10n.adminFilterAll, _blockedFilter == null, () {
+              _filterChip(context, l10n.adminFilterAll, _blockedFilter == null, () {
                 setState(() => _blockedFilter = null);
                 _page = 1;
                 _load();
               }),
               const SizedBox(width: 6),
-              _filterChip(l10n.adminIsActive, _blockedFilter == 'false', () {
+              _filterChip(context, l10n.adminIsActive, _blockedFilter == 'false', () {
                 setState(() =>
                     _blockedFilter = _blockedFilter == 'false' ? null : 'false');
                 _page = 1;
                 _load();
               }),
               const SizedBox(width: 6),
-              _filterChip(l10n.adminIsBlocked, _blockedFilter == 'true', () {
+              _filterChip(context, l10n.adminIsBlocked, _blockedFilter == 'true', () {
                 setState(() =>
                     _blockedFilter = _blockedFilter == 'true' ? null : 'true');
                 _page = 1;
@@ -434,13 +434,15 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
     );
   }
 
-  Widget _toolChip({
+  Widget _toolChip(BuildContext context, {
     required IconData icon,
     required String label,
     bool selected = false,
     required VoidCallback onTap,
     VoidCallback? onClear,
   }) {
+    final primary = Theme.of(context).colorScheme.primary;
+    final bg = Theme.of(context).colorScheme.surface;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -448,25 +450,25 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
             const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
           color: selected
-              ? AppColors.primary.withOpacity(0.12)
-              : AppColors.background,
+              ? primary.withValues(alpha: 0.12)
+              : bg,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.primary.withOpacity(0.25)),
+          border: Border.all(color: primary.withValues(alpha: 0.25)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 14, color: AppColors.primary),
+            Icon(icon, size: 14, color: primary),
             const SizedBox(width: 4),
             Text(label,
-                style: const TextStyle(
-                    color: AppColors.primary, fontSize: 12)),
+                style: TextStyle(
+                    color: primary, fontSize: 12)),
             if (onClear != null) ...[
               const SizedBox(width: 4),
               GestureDetector(
                 onTap: onClear,
-                child: const Icon(Icons.close,
-                    size: 12, color: AppColors.primary),
+                child: Icon(Icons.close,
+                    size: 12, color: primary),
               ),
             ],
           ],
@@ -475,7 +477,9 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
     );
   }
 
-  Widget _filterChip(String label, bool selected, VoidCallback onTap) {
+  Widget _filterChip(BuildContext context, String label, bool selected, VoidCallback onTap) {
+    final primary = Theme.of(context).colorScheme.primary;
+    final bg = Theme.of(context).colorScheme.surface;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -483,26 +487,26 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
             const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: selected
-              ? AppColors.primary.withOpacity(0.15)
-              : AppColors.background,
+              ? primary.withValues(alpha: 0.15)
+              : bg,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
               color: selected
-                  ? AppColors.primary
-                  : AppColors.primary.withOpacity(0.2)),
+                  ? primary
+                  : primary.withValues(alpha: 0.2)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (selected) ...[
-              const Icon(Icons.check, size: 12, color: AppColors.primary),
+              Icon(Icons.check, size: 12, color: primary),
               const SizedBox(width: 4),
             ],
             Text(
               label,
               style: TextStyle(
                 color:
-                    selected ? AppColors.primary : AppColors.textSecondary,
+                    selected ? primary : AppColors.textSecondary,
                 fontSize: 12,
                 fontWeight:
                     selected ? FontWeight.bold : FontWeight.normal,
@@ -577,6 +581,7 @@ class _AccessCodeCard extends StatelessWidget {
         (code['expiresAt'] ?? '').toString().split('T')[0];
     final inactive = _isBlocked || _isExpired;
     final statusColor = inactive ? AppColors.error : AppColors.success;
+    final primary = Theme.of(context).colorScheme.primary;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
@@ -594,21 +599,21 @@ class _AccessCodeCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.08),
+                    color: primary.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.key_rounded,
-                          size: 14, color: AppColors.primary),
+                      Icon(Icons.key_rounded,
+                          size: 14, color: primary),
                       const SizedBox(width: 6),
                       Text(
                         codeStr,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'monospace',
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
+                          color: primary,
                           fontSize: 14,
                           letterSpacing: 2,
                         ),
@@ -634,7 +639,7 @@ class _AccessCodeCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: statusColor.withOpacity(0.1),
+                    color: statusColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
@@ -752,9 +757,9 @@ class _AccessCodeCard extends StatelessWidget {
           padding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: color.withOpacity(0.25)),
+            border: Border.all(color: color.withValues(alpha: 0.25)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -1038,7 +1043,7 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none),
               filled: true,
-              fillColor: AppColors.background,
+              fillColor: Theme.of(context).colorScheme.surface,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
@@ -1052,20 +1057,20 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             children: [
-              _chip(l10n.adminFilterAll, _accessFilter == 'all', () {
+              _chip(context, l10n.adminFilterAll, _accessFilter == 'all', () {
                 setState(() => _accessFilter = 'all');
                 _page = 1;
                 _loadData();
               }),
               const SizedBox(width: 6),
-              _chip(l10n.adminFilterHasAccess, _accessFilter == 'hasAccess',
+              _chip(context, l10n.adminFilterHasAccess, _accessFilter == 'hasAccess',
                   () {
                 setState(() => _accessFilter = 'hasAccess');
                 _page = 1;
                 _loadData();
               }),
               const SizedBox(width: 6),
-              _chip(l10n.adminFilterNoAccess, _accessFilter == 'noAccess',
+              _chip(context, l10n.adminFilterNoAccess, _accessFilter == 'noAccess',
                   () {
                 setState(() => _accessFilter = 'noAccess');
                 _page = 1;
@@ -1159,7 +1164,9 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
     );
   }
 
-  Widget _chip(String label, bool selected, VoidCallback onTap) {
+  Widget _chip(BuildContext context, String label, bool selected, VoidCallback onTap) {
+    final primary = Theme.of(context).colorScheme.primary;
+    final bg = Theme.of(context).colorScheme.surface;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -1167,25 +1174,25 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
             const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: selected
-              ? AppColors.primary.withOpacity(0.15)
-              : AppColors.background,
+              ? primary.withValues(alpha: 0.15)
+              : bg,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
               color: selected
-                  ? AppColors.primary
-                  : AppColors.primary.withOpacity(0.2)),
+                  ? primary
+                  : primary.withValues(alpha: 0.2)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (selected) ...[
-              const Icon(Icons.check, size: 12, color: AppColors.primary),
+              Icon(Icons.check, size: 12, color: primary),
               const SizedBox(width: 4),
             ],
             Text(
               label,
               style: TextStyle(
-                color: selected ? AppColors.primary : AppColors.textSecondary,
+                color: selected ? primary : AppColors.textSecondary,
                 fontSize: 12,
                 fontWeight:
                     selected ? FontWeight.bold : FontWeight.normal,
@@ -1229,6 +1236,7 @@ class _GrantUserCard extends StatelessWidget {
     final expires = (user['accessExpiresAt'] ?? '').toString().split('T')[0];
     final tier = (user['paymentTier'] ?? '').toString();
     final accessColor = _hasAccess ? AppColors.success : AppColors.error;
+    final primary = Theme.of(context).colorScheme.primary;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
@@ -1239,12 +1247,12 @@ class _GrantUserCard extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: AppColors.primary.withOpacity(0.15),
+              backgroundColor: primary.withValues(alpha: 0.15),
               radius: 22,
               child: Text(
                 name.isNotEmpty ? name[0].toUpperCase() : '?',
                 style: AppTextStyles.heading6
-                    .copyWith(color: AppColors.primary),
+                    .copyWith(color: primary),
               ),
             ),
             const SizedBox(width: 12),
@@ -1264,7 +1272,7 @@ class _GrantUserCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: AppColors.warning.withOpacity(0.1),
+                            color: AppColors.warning.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
@@ -1286,7 +1294,7 @@ class _GrantUserCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: accessColor.withOpacity(0.1),
+                          color: accessColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(

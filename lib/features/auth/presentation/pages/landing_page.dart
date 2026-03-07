@@ -39,7 +39,7 @@ class LandingPage extends StatelessWidget {
         vertical: isMobile ? 48 : 100,
       ),
       decoration: BoxDecoration(
-        gradient: AppColors.primaryGradient,
+        gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
       ),
       child: isMobile
           ? Column(
@@ -86,7 +86,7 @@ class LandingPage extends StatelessWidget {
         Text(
           l10n.landingHeroSubtitle,
           style: AppTextStyles.bodyLarge.copyWith(
-            color: AppColors.textInverse.withOpacity(0.9),
+            color: AppColors.textInverse.withValues(alpha: 0.9),
           ),
           textAlign: isMobile ? TextAlign.center : TextAlign.left,
         ),
@@ -171,7 +171,7 @@ class LandingPage extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 36,
-            backgroundColor: AppColors.primary.withOpacity(0.1),
+            backgroundColor: AppColors.primary.withValues(alpha: 0.1),
             child: Icon(icon, size: 36, color: AppColors.primary),
           ),
           const SizedBox(height: 20),
@@ -198,7 +198,7 @@ class LandingPage extends StatelessWidget {
         horizontal: isMobile ? 24 : 80,
         vertical: 80,
       ),
-      color: AppColors.primary.withOpacity(0.05),
+      color: AppColors.primary.withValues(alpha: 0.05),
       child: Column(
         children: [
           Text(
@@ -268,8 +268,8 @@ class LandingPage extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         color: isLight
-            ? AppColors.textInverse.withOpacity(0.15)
-            : AppColors.primary.withOpacity(0.1),
+            ? AppColors.textInverse.withValues(alpha: 0.15)
+            : AppColors.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(18),
       ),
       child: Icon(

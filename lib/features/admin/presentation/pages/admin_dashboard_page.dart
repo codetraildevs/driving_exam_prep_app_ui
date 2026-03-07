@@ -196,7 +196,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                 margin: const EdgeInsets.symmetric(vertical: 14, horizontal: 4),
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: AppColors.warning.withOpacity(0.9),
+                  color: AppColors.warning.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text('OFFLINE', style: TextStyle(color: AppColors.textInverse, fontSize: 10, fontWeight: FontWeight.bold)),
@@ -218,7 +218,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.parallax,
         background: Container(
-          decoration: const BoxDecoration(gradient: AppColors.primaryGradient),
+          decoration: BoxDecoration(gradient: AppColors.primaryGradientFor(Theme.of(context).brightness)),
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 56, 20, 16),
@@ -231,8 +231,8 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                     height: 52,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: AppColors.textInverse.withOpacity(0.25),
-                      border: Border.all(color: AppColors.textInverse.withOpacity(0.5), width: 2),
+                      color: AppColors.textInverse.withValues(alpha: 0.25),
+                      border: Border.all(color: AppColors.textInverse.withValues(alpha: 0.5), width: 2),
                     ),
                     child: Center(
                       child: Text(
@@ -253,7 +253,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                       children: [
                         Text(
                           l10n.homeWelcomeBack,
-                          style: TextStyle(color: AppColors.textInverse.withOpacity(0.8), fontSize: 13),
+                          style: TextStyle(color: AppColors.textInverse.withValues(alpha: 0.8), fontSize: 13),
                         ),
                         Text(
                           userName.isNotEmpty ? userName : 'Admin',
@@ -271,7 +271,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AppColors.success.withOpacity(0.85),
+                      color: AppColors.success.withValues(alpha: 0.85),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
@@ -365,11 +365,11 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        gradient: AppColors.primaryGradient,
+        gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.25),
+            color: AppColors.primary.withValues(alpha: 0.25),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -389,7 +389,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                 Text(
                   l10n.adminManagePlatformDesc,
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textInverse.withOpacity(0.85),
+                    color: AppColors.textInverse.withValues(alpha: 0.85),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -434,9 +434,9 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
       width: 38,
       height: 38,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
+        color: color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Icon(icon, color: color, size: 18),
     );
@@ -524,7 +524,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withOpacity(0.04), blurRadius: 8)],
+        boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withValues(alpha: 0.04), blurRadius: 8)],
       ),
       child: Column(
         children: [
@@ -580,7 +580,7 @@ class _ActionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: gradientColors.first.withOpacity(0.3),
+              color: gradientColors.first.withValues(alpha: 0.3),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -593,7 +593,7 @@ class _ActionCard extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: AppColors.textInverse.withOpacity(0.2),
+                color: AppColors.textInverse.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(icon, color: AppColors.textInverse, size: 22),
@@ -611,7 +611,7 @@ class _ActionCard extends StatelessWidget {
             Text(
               description,
               style: TextStyle(
-                color: AppColors.textInverse.withOpacity(0.8),
+                color: AppColors.textInverse.withValues(alpha: 0.8),
                 fontSize: 11,
               ),
               maxLines: 2,
@@ -648,8 +648,8 @@ class _ActionCardWide extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: accentColor.withOpacity(0.3)),
-          boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withOpacity(0.04), blurRadius: 8)],
+          border: Border.all(color: accentColor.withValues(alpha: 0.3)),
+          boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withValues(alpha: 0.04), blurRadius: 8)],
         ),
         child: Row(
           children: [
@@ -658,12 +658,12 @@ class _ActionCardWide extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [accentColor, accentColor.withOpacity(0.7)],
+                  colors: [accentColor, accentColor.withValues(alpha: 0.7)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(14),
-                boxShadow: [BoxShadow(color: accentColor.withOpacity(0.3), blurRadius: 8)],
+                boxShadow: [BoxShadow(color: accentColor.withValues(alpha: 0.3), blurRadius: 8)],
               ),
               child: Icon(icon, color: AppColors.textInverse, size: 26),
             ),
@@ -712,7 +712,7 @@ class _StatTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withOpacity(0.05), blurRadius: 10)],
+        boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withValues(alpha: 0.05), blurRadius: 10)],
       ),
       child: Column(
         children: [
@@ -766,7 +766,7 @@ class _LangRow extends StatelessWidget {
             child: LinearProgressIndicator(
               value: pct.clamp(0.0, 1.0),
               minHeight: 8,
-              backgroundColor: color.withOpacity(0.1),
+              backgroundColor: color.withValues(alpha: 0.1),
               color: color,
             ),
           ),

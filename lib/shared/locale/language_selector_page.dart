@@ -101,7 +101,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                       label: const Text('Use device language'),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.primary,
-                        side: BorderSide(color: AppColors.primary.withOpacity(0.18)),
+                        side: BorderSide(color: AppColors.primary.withValues(alpha: 0.18)),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -225,7 +225,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
         child: Ink(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [AppColors.primary, AppColors.primary.withOpacity(0.1)],
+              colors: [AppColors.primary, AppColors.primary.withValues(alpha: 0.1)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -358,7 +358,7 @@ class _CreativeLanguageCard extends StatelessWidget {
     final borderColor =
         isSelected ? AppColors.primary : AppColors.neutral200;
     final bgColor = isSelected
-        ? AppColors.primary.withOpacity(0.06)
+        ? AppColors.primary.withValues(alpha: 0.06)
         : AppColors.surface;
 
     return Semantics(
@@ -379,14 +379,14 @@ class _CreativeLanguageCard extends StatelessWidget {
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.08),
+                      color: AppColors.primary.withValues(alpha: 0.08),
                       blurRadius: 12,
                       offset: const Offset(0, 6),
                     )
                   ]
                 : [
                     BoxShadow(
-                      color: Theme.of(context).shadowColor.withOpacity(0.04),
+                      color: Theme.of(context).shadowColor.withValues(alpha: 0.04),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     )
