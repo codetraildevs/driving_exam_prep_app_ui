@@ -594,4 +594,272 @@ class AppLocalizationsRw extends AppLocalizations {
   @override
   String get signDetailMarkedSuccess =>
       'Ikimenyetso cyashyizwe nk\'icyigishijwe!';
+
+  @override
+  String get subscriptionTitle => 'Uburenganzira bw\'ibizamini by\'imyitozo';
+
+  @override
+  String get subscriptionSubtitle => 'Fungura ibizamini byose by\'imyitozo';
+
+  @override
+  String get subscriptionCurrentPlan => 'Gahunda yawe ubu';
+
+  @override
+  String get subscriptionNoPlan => 'Nta gahunda ikoreshwa';
+
+  @override
+  String get subscriptionMonth1 => 'Ukwezi 1';
+
+  @override
+  String get subscriptionMonth3 => 'Amezi 3';
+
+  @override
+  String get subscriptionMonth6 => 'Amezi 6';
+
+  @override
+  String subscriptionPrice(int amount) {
+    return '$amount RWF';
+  }
+
+  @override
+  String get subscriptionRequestAccess => 'Saba uburenganzira';
+
+  @override
+  String get subscriptionRequestSent =>
+      'Ubusabe bwawe bwoherejwe. Uzakezwa umara kwemeza kwishyura.';
+
+  @override
+  String get subscriptionPaymentInstructions => 'Amabwiriza yo kwishyura';
+
+  @override
+  String get subscriptionPaymentMomo => 'MoMo Pay: 323294';
+
+  @override
+  String get subscriptionPaymentMobile => 'Mobile Money: 0788657595';
+
+  @override
+  String get subscriptionHelpCall => 'Hamagara: 0788657595';
+
+  @override
+  String get subscriptionHelpWhatsapp => 'WhatsApp: 0788657595';
+
+  @override
+  String get subscriptionChoosePlan => 'Hitamo gahunda';
+
+  @override
+  String get subscriptionCurrency => 'Ifaranga: RWF';
+
+  @override
+  String get subscriptionAccessActive => 'Uburenganzira burahari';
+
+  @override
+  String subscriptionExpires(String date) {
+    return 'Igihe kirangira: $date';
+  }
+
+  @override
+  String subscriptionDays(int days) {
+    return 'Iminsi $days';
+  }
+
+  @override
+  String get subscriptionNeedHelp => 'Ukeneye ubufasha?';
+
+  @override
+  String subscriptionGetAccess(int count) {
+    return 'Bona uburenganzira bw\'ibizamini $count+ by\'imyitozo';
+  }
+
+  @override
+  String get adminDashboard => 'Aho abayobozi bakora';
+
+  @override
+  String get adminUsers => 'Abakoresha';
+
+  @override
+  String get adminAccess => 'Gucunga uburenganzira';
+
+  @override
+  String get adminProgress => 'Iterambere ry\'abakoresha';
+
+  @override
+  String get adminTotalUsers => 'Abakoresha bose';
+
+  @override
+  String get adminActiveSubscriptions => 'Aboneri ikoreshwa';
+
+  @override
+  String get adminUsersByLanguage => 'Abakoresha nk\'ururimi';
+
+  @override
+  String get adminRecentRegistrations => 'Iyandikishe ryashya';
+
+  @override
+  String get adminGrantAccess => 'Ha uburenganzira';
+
+  @override
+  String get adminCallUser => 'Hamagara umukoresha';
+
+  @override
+  String get adminCallNotes => 'Amanotisi y\'ikiganiro';
+
+  @override
+  String get adminLastCalled => 'Hamagawe ubwa nyuma';
+
+  @override
+  String get adminNoAccess => 'Nta burenganzira';
+
+  @override
+  String get adminHasAccess => 'Afite uburenganzira';
+
+  @override
+  String get adminAccessExpired => 'Uburenganzira bwarangiye';
+
+  @override
+  String adminAccessExpires(String date) {
+    return 'Burangira: $date';
+  }
+
+  @override
+  String get adminSearchUsers => 'Shakisha abakoresha...';
+
+  @override
+  String get adminFilterAll => 'Bose';
+
+  @override
+  String get adminFilterHasAccess => 'Bafite uburenganzira';
+
+  @override
+  String get adminFilterNoAccess => 'Nta burenganzira';
+
+  @override
+  String get adminManageUsers => 'Gucunga abakoresha';
+
+  @override
+  String get adminManageAccess => 'Gucunga uburenganzira';
+
+  @override
+  String get adminViewProgress => 'Reba iterambere';
+
+  @override
+  String adminRegistrationDate(String date) {
+    return 'Yiyandikishije: $date';
+  }
+
+  @override
+  String get adminEnterCallNotes => 'Andika amanotisi y\'ikiganiro...';
+
+  @override
+  String get adminSubmitCall => 'Ohereza';
+
+  @override
+  String get adminCallLogged => 'Ikiganiro cyanditswe neza';
+
+  @override
+  String get adminAccessGranted => 'Uburenganzira bwatanzwe neza';
+
+  @override
+  String get adminSelectTier => 'Hitamo urwego rw\'uburenganzira';
+
+  @override
+  String get examListTitle => 'Ibizamini by\'imyitozo';
+
+  @override
+  String get examFree => 'UBUNTU';
+
+  @override
+  String get examPaid => 'BIRISHYURWA';
+
+  @override
+  String get examLocked => 'Bifunze';
+
+  @override
+  String examQuestions(int count) {
+    return 'Ibibazo $count';
+  }
+
+  @override
+  String get quizProgress => 'Iterambere';
+
+  @override
+  String quizAnswered(int answered, int total) {
+    return 'Byasubijwe: $answered/$total';
+  }
+
+  @override
+  String get quizSubmitPractice => 'Ohereza imyitozo';
+
+  @override
+  String get quizPrevious => 'Inyuma';
+
+  @override
+  String get quizNext => 'Imbere';
+
+  @override
+  String quizTimeRemaining(String time) {
+    return 'Igihe: $time';
+  }
+
+  @override
+  String get quizResults => 'Ibisubizo by\'ikizamini';
+
+  @override
+  String get quizPassed => 'Watsinze!';
+
+  @override
+  String get quizFailed => 'Komeza witozera';
+
+  @override
+  String quizQuestionOf(int current, int total) {
+    return 'Ikibazo $current kuri $total';
+  }
+
+  @override
+  String get quizSubmitConfirmTitle => 'Ohereza ikizamini?';
+
+  @override
+  String quizSubmitConfirmMessage(int answered, int total) {
+    return 'Wasubije ibibazo $answered kuri $total. Uzi neza ko ushaka kohereza?';
+  }
+
+  @override
+  String get quizTimeUp => 'Igihe kirangiye! Ikizamini cyoherejwe by\'ikirenga.';
+
+  @override
+  String get quizReviewAnswers => 'Reba ibisubizo';
+
+  @override
+  String get quizRetake => 'Subiramo ikizamini';
+
+  @override
+  String get profileRole => 'Uruhare';
+
+  @override
+  String get profileLanguage => 'Ururimi rwitonderwa';
+
+  @override
+  String profileRegistered(String date) {
+    return 'Yiyandikishije: $date';
+  }
+
+  @override
+  String get profileAccessStatus => 'Uko uburenganzira buri';
+
+  @override
+  String get profileExamHistory => 'Amateka y\'ibizamini';
+
+  @override
+  String get profileCallHistory => 'Amateka y\'ibiganiro';
+
+  @override
+  String get paymentInstructionsTitle => 'Amabwiriza yo kwishyura';
+
+  @override
+  String get paymentMomoPayNumber => 'MoMo Pay: 323294';
+
+  @override
+  String get paymentMobileMoneyNumber => 'Mobile Money: 0788657595';
+
+  @override
+  String get paymentHelpText => 'Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595';
 }

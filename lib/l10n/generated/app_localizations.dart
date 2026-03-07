@@ -1173,6 +1173,249 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Traffic sign marked as learned!'**
   String get signDetailMarkedSuccess;
+
+  /// Subscription page title
+  String get subscriptionTitle;
+
+  /// Subscription page subtitle
+  String get subscriptionSubtitle;
+
+  /// Current plan section label
+  String get subscriptionCurrentPlan;
+
+  /// No plan label
+  String get subscriptionNoPlan;
+
+  /// 1 month plan label
+  String get subscriptionMonth1;
+
+  /// 3 months plan label
+  String get subscriptionMonth3;
+
+  /// 6 months plan label
+  String get subscriptionMonth6;
+
+  /// Price label with amount
+  String subscriptionPrice(int amount);
+
+  /// Request access button
+  String get subscriptionRequestAccess;
+
+  /// Request sent success message
+  String get subscriptionRequestSent;
+
+  /// Payment instructions section title
+  String get subscriptionPaymentInstructions;
+
+  /// MoMo pay number
+  String get subscriptionPaymentMomo;
+
+  /// Mobile money number
+  String get subscriptionPaymentMobile;
+
+  /// Help call number
+  String get subscriptionHelpCall;
+
+  /// Help WhatsApp number
+  String get subscriptionHelpWhatsapp;
+
+  /// Choose plan label
+  String get subscriptionChoosePlan;
+
+  /// Currency label
+  String get subscriptionCurrency;
+
+  /// Access active label
+  String get subscriptionAccessActive;
+
+  /// Expiry date label
+  String subscriptionExpires(String date);
+
+  /// Days label
+  String subscriptionDays(int days);
+
+  /// Need help label
+  String get subscriptionNeedHelp;
+
+  /// Get access subtitle
+  String subscriptionGetAccess(int count);
+
+  /// Admin dashboard page title
+  String get adminDashboard;
+
+  /// Admin users page title
+  String get adminUsers;
+
+  /// Admin access page title
+  String get adminAccess;
+
+  /// Admin progress page title
+  String get adminProgress;
+
+  /// Total users stat label
+  String get adminTotalUsers;
+
+  /// Active subscriptions stat label
+  String get adminActiveSubscriptions;
+
+  /// Users by language stat label
+  String get adminUsersByLanguage;
+
+  /// Recent registrations stat label
+  String get adminRecentRegistrations;
+
+  /// Grant access button
+  String get adminGrantAccess;
+
+  /// Call user button
+  String get adminCallUser;
+
+  /// Call notes label
+  String get adminCallNotes;
+
+  /// Last called label
+  String get adminLastCalled;
+
+  /// No access badge
+  String get adminNoAccess;
+
+  /// Has access badge
+  String get adminHasAccess;
+
+  /// Access expired badge
+  String get adminAccessExpired;
+
+  /// Access expiry date
+  String adminAccessExpires(String date);
+
+  /// Search users hint
+  String get adminSearchUsers;
+
+  /// Filter all chip
+  String get adminFilterAll;
+
+  /// Filter has access chip
+  String get adminFilterHasAccess;
+
+  /// Filter no access chip
+  String get adminFilterNoAccess;
+
+  /// Manage users quick action
+  String get adminManageUsers;
+
+  /// Manage access quick action
+  String get adminManageAccess;
+
+  /// View progress quick action
+  String get adminViewProgress;
+
+  /// Registration date label
+  String adminRegistrationDate(String date);
+
+  /// Call notes hint text
+  String get adminEnterCallNotes;
+
+  /// Submit call notes button
+  String get adminSubmitCall;
+
+  /// Call logged success message
+  String get adminCallLogged;
+
+  /// Access granted success message
+  String get adminAccessGranted;
+
+  /// Select tier label
+  String get adminSelectTier;
+
+  /// Exam list page title
+  String get examListTitle;
+
+  /// Free exam badge
+  String get examFree;
+
+  /// Paid exam badge
+  String get examPaid;
+
+  /// Locked exam label
+  String get examLocked;
+
+  /// Question count label
+  String examQuestions(int count);
+
+  /// Quiz progress label
+  String get quizProgress;
+
+  /// Answered counter
+  String quizAnswered(int answered, int total);
+
+  /// Submit practice button
+  String get quizSubmitPractice;
+
+  /// Previous question button
+  String get quizPrevious;
+
+  /// Next question button
+  String get quizNext;
+
+  /// Time remaining label
+  String quizTimeRemaining(String time);
+
+  /// Quiz results title
+  String get quizResults;
+
+  /// Quiz passed label
+  String get quizPassed;
+
+  /// Quiz failed label
+  String get quizFailed;
+
+  /// Question counter
+  String quizQuestionOf(int current, int total);
+
+  /// Submit confirmation dialog title
+  String get quizSubmitConfirmTitle;
+
+  /// Submit confirmation dialog message
+  String quizSubmitConfirmMessage(int answered, int total);
+
+  /// Time up message
+  String get quizTimeUp;
+
+  /// Review answers button
+  String get quizReviewAnswers;
+
+  /// Retake quiz button
+  String get quizRetake;
+
+  /// Profile role label
+  String get profileRole;
+
+  /// Profile language label
+  String get profileLanguage;
+
+  /// Registration date
+  String profileRegistered(String date);
+
+  /// Access status label
+  String get profileAccessStatus;
+
+  /// Exam history label
+  String get profileExamHistory;
+
+  /// Call history label
+  String get profileCallHistory;
+
+  /// Payment instructions title
+  String get paymentInstructionsTitle;
+
+  /// MoMo pay number
+  String get paymentMomoPayNumber;
+
+  /// Mobile money number
+  String get paymentMobileMoneyNumber;
+
+  /// Payment help text
+  String get paymentHelpText;
 }
 
 class _AppLocalizationsDelegate

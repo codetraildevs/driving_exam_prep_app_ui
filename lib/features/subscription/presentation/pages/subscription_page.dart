@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_provider.dart';
 import '../../../../shared/network/api_config.dart';
 import '../../../../shared/session/auth_session.dart';
@@ -22,18 +23,18 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   String? _successMessage;
   String? _errorMessage;
 
-  List<Map<String, dynamic>> _getPlans(String langCode) {
+  List<Map<String, dynamic>> _getPlans(String langCode, AppLocalizations l10n) {
     if (langCode == 'rw') {
       return [
-        {'tier': '1_MONTH', 'durationDays': 30, 'price': 1500, 'label': '1 Month'},
-        {'tier': '3_MONTHS', 'durationDays': 90, 'price': 3000, 'label': '3 Months'},
-        {'tier': '6_MONTHS', 'durationDays': 180, 'price': 5000, 'label': '6 Months'},
+        {'tier': '1_MONTH', 'durationDays': 30, 'price': 1500, 'label': l10n.subscriptionMonth1},
+        {'tier': '3_MONTHS', 'durationDays': 90, 'price': 3000, 'label': l10n.subscriptionMonth3},
+        {'tier': '6_MONTHS', 'durationDays': 180, 'price': 5000, 'label': l10n.subscriptionMonth6},
       ];
     } else {
       return [
-        {'tier': '1_MONTH', 'durationDays': 30, 'price': 3000, 'label': '1 Month'},
-        {'tier': '3_MONTHS', 'durationDays': 90, 'price': 5000, 'label': '3 Months'},
-        {'tier': '6_MONTHS', 'durationDays': 180, 'price': 10000, 'label': '6 Months'},
+        {'tier': '1_MONTH', 'durationDays': 30, 'price': 3000, 'label': l10n.subscriptionMonth1},
+        {'tier': '3_MONTHS', 'durationDays': 90, 'price': 5000, 'label': l10n.subscriptionMonth3},
+        {'tier': '6_MONTHS', 'durationDays': 180, 'price': 10000, 'label': l10n.subscriptionMonth6},
       ];
     }
   }
@@ -49,6 +50,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       _successMessage = null;
       _errorMessage = null;
     });
+
+    final l10n = AppLocalizations.of(context);
 
     try {
       final token = await AuthSession().getToken();
@@ -71,8 +74,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
-          _successMessage =
-              'Your request has been submitted. You will be activated once payment is confirmed.';
+          _successMessage = l10n.subscriptionRequestSent;
         });
       } else {
         final data = json.decode(response.body);
@@ -82,9 +84,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       }
     } catch (e) {
       setState(() {
-        _errorMessage = e is http.ClientException
-            ? 'Network error. Please check your connection and try again.'
-            : 'Something went wrong. Please try again.';
+        _errorMessage = 'Something went wrong. Please try again.';
       });
     } finally {
       setState(() => _isRequesting = false);
@@ -93,14 +93,15 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final langCode = context.watch<LocaleProvider>().effectiveLocale.languageCode;
     final subscription = context.watch<SubscriptionProvider>();
-    final plans = _getPlans(langCode);
+    final plans = _getPlans(langCode, l10n);
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Practice Exam Access'),
+        title: Text(l10n.subscriptionTitle),
         elevation: 0,
         backgroundColor: AppColors.surface,
         leading: IconButton(
@@ -131,16 +132,18 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Access Active',
-                              style: TextStyle(
+                            Text(
+                              l10n.subscriptionAccessActive,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.success,
                               ),
                             ),
                             if (subscription.expiresAt != null)
                               Text(
-                                'Expires: ${subscription.expiresAt!.toLocal().toString().split(' ')[0]}',
+                                l10n.subscriptionExpires(
+                                  subscription.expiresAt!.toLocal().toString().split(' ')[0],
+                                ),
                                 style: AppTextStyles.bodySmall.copyWith(
                                   color: AppColors.textSecondary,
                                 ),
@@ -165,9 +168,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   children: [
                     const Icon(Icons.lock_open, size: 48, color: Colors.white),
                     const SizedBox(height: 12),
-                    const Text(
-                      'Unlock All Practice Exams',
-                      style: TextStyle(
+                    Text(
+                      l10n.subscriptionSubtitle,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -176,7 +179,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Get access to all ${langCode == 'rw' ? '12' : '20'}+ premium practice exams',
+                      l10n.subscriptionGetAccess(langCode == 'rw' ? 12 : 20),
                       style: const TextStyle(color: Colors.white70, fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
@@ -186,13 +189,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               const SizedBox(height: 24),
 
               // Pricing label
-              Text(
-                'Choose a Plan',
-                style: AppTextStyles.heading5,
-              ),
+              Text(l10n.subscriptionChoosePlan, style: AppTextStyles.heading5),
               const SizedBox(height: 4),
               Text(
-                'Currency: RWF',
+                l10n.subscriptionCurrency,
                 style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
               ),
               const SizedBox(height: 16),
@@ -203,7 +203,74 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     isLoading: _isRequesting,
                     onRequest: (tier, price) =>
                         _requestAccess(context, tier, price, langCode),
+                    l10n: l10n,
                   )),
+
+              const SizedBox(height: 24),
+
+              // Payment Instructions Card
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 8,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(Icons.payment, color: AppColors.primary, size: 20),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          l10n.paymentInstructionsTitle,
+                          style: AppTextStyles.heading6.copyWith(color: AppColors.primary),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    _PaymentRow(icon: Icons.phone_android, text: l10n.paymentMomoPayNumber),
+                    const SizedBox(height: 8),
+                    _PaymentRow(icon: Icons.mobile_friendly, text: l10n.paymentMobileMoneyNumber),
+                    const Divider(height: 24),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.warning.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(Icons.help_outline, color: AppColors.warning, size: 20),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          l10n.subscriptionNeedHelp,
+                          style: AppTextStyles.heading6.copyWith(color: AppColors.warning),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    _PaymentRow(icon: Icons.phone, text: l10n.subscriptionHelpCall),
+                    const SizedBox(height: 8),
+                    _PaymentRow(icon: Icons.chat, text: l10n.subscriptionHelpWhatsapp),
+                  ],
+                ),
+              ),
 
               // Success/Error messages
               if (_successMessage != null) ...[
@@ -252,6 +319,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   ),
                 ),
               ],
+              const SizedBox(height: 16),
             ],
           ),
         ),
@@ -260,15 +328,35 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   }
 }
 
+class _PaymentRow extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const _PaymentRow({required this.icon, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: AppColors.textSecondary),
+        const SizedBox(width: 8),
+        Text(text, style: AppTextStyles.bodyMedium),
+      ],
+    );
+  }
+}
+
 class _PlanCard extends StatelessWidget {
   final Map<String, dynamic> plan;
   final bool isLoading;
   final void Function(String tier, int price) onRequest;
+  final AppLocalizations l10n;
 
   const _PlanCard({
     required this.plan,
     required this.isLoading,
     required this.onRequest,
+    required this.l10n,
   });
 
   @override
@@ -298,7 +386,7 @@ class _PlanCard extends StatelessWidget {
                 children: [
                   Text(label, style: AppTextStyles.heading6),
                   Text(
-                    '$days days',
+                    l10n.subscriptionDays(days),
                     style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
                   ),
                 ],
@@ -308,7 +396,7 @@ class _PlanCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '${price.toString()} RWF',
+                  l10n.subscriptionPrice(price),
                   style: AppTextStyles.heading5.copyWith(color: AppColors.primary),
                 ),
                 const SizedBox(height: 8),
@@ -325,7 +413,7 @@ class _PlanCard extends StatelessWidget {
                           height: 16,
                           child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                         )
-                      : const Text('Request Access'),
+                      : Text(l10n.subscriptionRequestAccess),
                 ),
               ],
             ),

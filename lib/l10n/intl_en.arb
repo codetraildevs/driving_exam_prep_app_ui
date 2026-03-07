@@ -576,5 +576,311 @@
   "@signDetailMarkAsLearned": { "description": "Mark as learned button" },
 
   "signDetailMarkedSuccess": "Traffic sign marked as learned!",
-  "@signDetailMarkedSuccess": { "description": "Success snackbar message" }
+  "@signDetailMarkedSuccess": { "description": "Success snackbar message" },
+
+  "subscriptionTitle": "Practice Exam Access",
+  "@subscriptionTitle": { "description": "Subscription page title" },
+
+  "subscriptionSubtitle": "Unlock All Practice Exams",
+  "@subscriptionSubtitle": { "description": "Subscription page subtitle" },
+
+  "subscriptionCurrentPlan": "Your Current Plan",
+  "@subscriptionCurrentPlan": { "description": "Current plan section label" },
+
+  "subscriptionNoPlan": "No active plan",
+  "@subscriptionNoPlan": { "description": "No plan label" },
+
+  "subscriptionMonth1": "1 Month",
+  "@subscriptionMonth1": { "description": "1 month plan label" },
+
+  "subscriptionMonth3": "3 Months",
+  "@subscriptionMonth3": { "description": "3 months plan label" },
+
+  "subscriptionMonth6": "6 Months",
+  "@subscriptionMonth6": { "description": "6 months plan label" },
+
+  "subscriptionPrice": "{amount} RWF",
+  "@subscriptionPrice": {
+    "description": "Price label with amount",
+    "placeholders": {
+      "amount": { "type": "int", "example": "3000" }
+    }
+  },
+
+  "subscriptionRequestAccess": "Request Access",
+  "@subscriptionRequestAccess": { "description": "Request access button" },
+
+  "subscriptionRequestSent": "Your request has been submitted. You will be activated once payment is confirmed.",
+  "@subscriptionRequestSent": { "description": "Request sent success message" },
+
+  "subscriptionPaymentInstructions": "Payment Instructions",
+  "@subscriptionPaymentInstructions": { "description": "Payment instructions section title" },
+
+  "subscriptionPaymentMomo": "MoMo Pay: 323294",
+  "@subscriptionPaymentMomo": { "description": "MoMo pay number" },
+
+  "subscriptionPaymentMobile": "Mobile Money: 0788657595",
+  "@subscriptionPaymentMobile": { "description": "Mobile money number" },
+
+  "subscriptionHelpCall": "Call: 0788657595",
+  "@subscriptionHelpCall": { "description": "Help call number" },
+
+  "subscriptionHelpWhatsapp": "WhatsApp: 0788657595",
+  "@subscriptionHelpWhatsapp": { "description": "Help WhatsApp number" },
+
+  "subscriptionChoosePlan": "Choose a Plan",
+  "@subscriptionChoosePlan": { "description": "Choose plan label" },
+
+  "subscriptionCurrency": "Currency: RWF",
+  "@subscriptionCurrency": { "description": "Currency label" },
+
+  "subscriptionAccessActive": "Access Active",
+  "@subscriptionAccessActive": { "description": "Access active label" },
+
+  "subscriptionExpires": "Expires: {date}",
+  "@subscriptionExpires": {
+    "description": "Expiry date label",
+    "placeholders": {
+      "date": { "type": "String", "example": "2025-01-01" }
+    }
+  },
+
+  "subscriptionDays": "{days} days",
+  "@subscriptionDays": {
+    "description": "Days label",
+    "placeholders": {
+      "days": { "type": "int", "example": "30" }
+    }
+  },
+
+  "subscriptionNeedHelp": "Need Help?",
+  "@subscriptionNeedHelp": { "description": "Need help label" },
+
+  "subscriptionGetAccess": "Get access to all {count}+ premium practice exams",
+  "@subscriptionGetAccess": {
+    "description": "Get access subtitle",
+    "placeholders": {
+      "count": { "type": "int", "example": "20" }
+    }
+  },
+
+  "adminDashboard": "Admin Dashboard",
+  "@adminDashboard": { "description": "Admin dashboard page title" },
+
+  "adminUsers": "Users",
+  "@adminUsers": { "description": "Admin users page title" },
+
+  "adminAccess": "Access Management",
+  "@adminAccess": { "description": "Admin access page title" },
+
+  "adminProgress": "User Progress",
+  "@adminProgress": { "description": "Admin progress page title" },
+
+  "adminTotalUsers": "Total Users",
+  "@adminTotalUsers": { "description": "Total users stat label" },
+
+  "adminActiveSubscriptions": "Active Subscriptions",
+  "@adminActiveSubscriptions": { "description": "Active subscriptions stat label" },
+
+  "adminUsersByLanguage": "Users by Language",
+  "@adminUsersByLanguage": { "description": "Users by language stat label" },
+
+  "adminRecentRegistrations": "Recent Registrations",
+  "@adminRecentRegistrations": { "description": "Recent registrations stat label" },
+
+  "adminGrantAccess": "Grant Access",
+  "@adminGrantAccess": { "description": "Grant access button" },
+
+  "adminCallUser": "Call User",
+  "@adminCallUser": { "description": "Call user button" },
+
+  "adminCallNotes": "Call Notes",
+  "@adminCallNotes": { "description": "Call notes label" },
+
+  "adminLastCalled": "Last Called",
+  "@adminLastCalled": { "description": "Last called label" },
+
+  "adminNoAccess": "No Access",
+  "@adminNoAccess": { "description": "No access badge" },
+
+  "adminHasAccess": "Has Access",
+  "@adminHasAccess": { "description": "Has access badge" },
+
+  "adminAccessExpired": "Access Expired",
+  "@adminAccessExpired": { "description": "Access expired badge" },
+
+  "adminAccessExpires": "Expires: {date}",
+  "@adminAccessExpires": {
+    "description": "Access expiry date",
+    "placeholders": {
+      "date": { "type": "String", "example": "2025-01-01" }
+    }
+  },
+
+  "adminSearchUsers": "Search users...",
+  "@adminSearchUsers": { "description": "Search users hint" },
+
+  "adminFilterAll": "All",
+  "@adminFilterAll": { "description": "Filter all chip" },
+
+  "adminFilterHasAccess": "Has Access",
+  "@adminFilterHasAccess": { "description": "Filter has access chip" },
+
+  "adminFilterNoAccess": "No Access",
+  "@adminFilterNoAccess": { "description": "Filter no access chip" },
+
+  "adminManageUsers": "Manage Users",
+  "@adminManageUsers": { "description": "Manage users quick action" },
+
+  "adminManageAccess": "Manage Access",
+  "@adminManageAccess": { "description": "Manage access quick action" },
+
+  "adminViewProgress": "View Progress",
+  "@adminViewProgress": { "description": "View progress quick action" },
+
+  "adminRegistrationDate": "Registered: {date}",
+  "@adminRegistrationDate": {
+    "description": "Registration date label",
+    "placeholders": {
+      "date": { "type": "String", "example": "2025-01-01" }
+    }
+  },
+
+  "adminEnterCallNotes": "Enter call notes...",
+  "@adminEnterCallNotes": { "description": "Call notes hint text" },
+
+  "adminSubmitCall": "Submit",
+  "@adminSubmitCall": { "description": "Submit call notes button" },
+
+  "adminCallLogged": "Call logged successfully",
+  "@adminCallLogged": { "description": "Call logged success message" },
+
+  "adminAccessGranted": "Access granted successfully",
+  "@adminAccessGranted": { "description": "Access granted success message" },
+
+  "adminSelectTier": "Select Access Tier",
+  "@adminSelectTier": { "description": "Select tier label" },
+
+  "examListTitle": "Practice Exams",
+  "@examListTitle": { "description": "Exam list page title" },
+
+  "examFree": "FREE",
+  "@examFree": { "description": "Free exam badge" },
+
+  "examPaid": "PAID",
+  "@examPaid": { "description": "Paid exam badge" },
+
+  "examLocked": "Locked",
+  "@examLocked": { "description": "Locked exam label" },
+
+  "examQuestions": "{count} questions",
+  "@examQuestions": {
+    "description": "Question count label",
+    "placeholders": {
+      "count": { "type": "int", "example": "20" }
+    }
+  },
+
+  "quizProgress": "Progress",
+  "@quizProgress": { "description": "Quiz progress label" },
+
+  "quizAnswered": "Answered: {answered}/{total}",
+  "@quizAnswered": {
+    "description": "Answered counter",
+    "placeholders": {
+      "answered": { "type": "int", "example": "5" },
+      "total": { "type": "int", "example": "20" }
+    }
+  },
+
+  "quizSubmitPractice": "Submit Practice",
+  "@quizSubmitPractice": { "description": "Submit practice button" },
+
+  "quizPrevious": "Previous",
+  "@quizPrevious": { "description": "Previous question button" },
+
+  "quizNext": "Next",
+  "@quizNext": { "description": "Next question button" },
+
+  "quizTimeRemaining": "Time: {time}",
+  "@quizTimeRemaining": {
+    "description": "Time remaining label",
+    "placeholders": {
+      "time": { "type": "String", "example": "19:34" }
+    }
+  },
+
+  "quizResults": "Quiz Results",
+  "@quizResults": { "description": "Quiz results title" },
+
+  "quizPassed": "Passed!",
+  "@quizPassed": { "description": "Quiz passed label" },
+
+  "quizFailed": "Keep Practicing",
+  "@quizFailed": { "description": "Quiz failed label" },
+
+  "quizQuestionOf": "Question {current} of {total}",
+  "@quizQuestionOf": {
+    "description": "Question counter",
+    "placeholders": {
+      "current": { "type": "int", "example": "1" },
+      "total": { "type": "int", "example": "20" }
+    }
+  },
+
+  "quizSubmitConfirmTitle": "Submit Quiz?",
+  "@quizSubmitConfirmTitle": { "description": "Submit confirmation dialog title" },
+
+  "quizSubmitConfirmMessage": "You have answered {answered} out of {total} questions. Are you sure you want to submit?",
+  "@quizSubmitConfirmMessage": {
+    "description": "Submit confirmation dialog message",
+    "placeholders": {
+      "answered": { "type": "int", "example": "15" },
+      "total": { "type": "int", "example": "20" }
+    }
+  },
+
+  "quizTimeUp": "Time's up! Quiz submitted automatically.",
+  "@quizTimeUp": { "description": "Time up message" },
+
+  "quizReviewAnswers": "Review Answers",
+  "@quizReviewAnswers": { "description": "Review answers button" },
+
+  "quizRetake": "Retake Quiz",
+  "@quizRetake": { "description": "Retake quiz button" },
+
+  "profileRole": "Role",
+  "@profileRole": { "description": "Profile role label" },
+
+  "profileLanguage": "Preferred Language",
+  "@profileLanguage": { "description": "Profile language label" },
+
+  "profileRegistered": "Registered: {date}",
+  "@profileRegistered": {
+    "description": "Registration date",
+    "placeholders": {
+      "date": { "type": "String", "example": "2025-01-01" }
+    }
+  },
+
+  "profileAccessStatus": "Access Status",
+  "@profileAccessStatus": { "description": "Access status label" },
+
+  "profileExamHistory": "Exam History",
+  "@profileExamHistory": { "description": "Exam history label" },
+
+  "profileCallHistory": "Call History",
+  "@profileCallHistory": { "description": "Call history label" },
+
+  "paymentInstructionsTitle": "Payment Instructions",
+  "@paymentInstructionsTitle": { "description": "Payment instructions title" },
+
+  "paymentMomoPayNumber": "MoMo Pay: 323294",
+  "@paymentMomoPayNumber": { "description": "MoMo pay number" },
+
+  "paymentMobileMoneyNumber": "Mobile Money: 0788657595",
+  "@paymentMobileMoneyNumber": { "description": "Mobile money number" },
+
+  "paymentHelpText": "Need help? Call or WhatsApp: 0788657595",
+  "@paymentHelpText": { "description": "Payment help text" }
 }

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../features/auth/presentation/bloc/auth_state.dart';
+import '../../features/auth/data/models/user_model.dart';
 import '../../features/auth/presentation/pages/landing_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
@@ -22,6 +24,16 @@ import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/profile/presentation/pages/my_certificates_page.dart';
 import '../../features/subscription/presentation/pages/subscription_page.dart';
+import '../../features/admin/presentation/pages/admin_dashboard_page.dart';
+import '../../features/admin/presentation/pages/admin_users_page.dart';
+import '../../features/admin/presentation/pages/admin_access_page.dart';
+import '../../features/admin/presentation/pages/admin_progress_page.dart';
+import '../../features/admin/presentation/pages/admin_user_profile_page.dart';
+
+bool _isAdmin(UserModel? user) {
+  if (user == null) return false;
+  return user.role == 'ADMIN' || user.role == 'MANAGER';
+}
 
 class AppRouter {
   final AuthBloc authBloc;
@@ -50,6 +62,7 @@ class AppRouter {
     redirect: (context, state) {
       final authState = context.read<AuthBloc>().state;
       final isAuthenticated = authState is AuthAuthenticated;
+      final user = isAuthenticated ? (authState as AuthAuthenticated).user : null;
       final location = state.matchedLocation;
 
       final isAuthPage =
@@ -67,7 +80,8 @@ class AppRouter {
           location.startsWith('/profile') ||
           location.startsWith('/settings') ||
           location.startsWith('/certificates') ||
-          location.startsWith('/subscription');
+          location.startsWith('/subscription') ||
+          location.startsWith('/admin');
 
       if (isAuthenticated && isAuthPage) {
         return '/home';
@@ -75,6 +89,11 @@ class AppRouter {
 
       if (!isAuthenticated && isProtectedPage) {
         return '/login';
+      }
+
+      // Role guard: only ADMIN or MANAGER can access /admin routes
+      if (isAuthenticated && location.startsWith('/admin') && !_isAdmin(user)) {
+        return '/home';
       }
 
       if (!isFirstLaunch && !isAuthenticated && location == '/landing') {
@@ -199,6 +218,45 @@ class AppRouter {
             pageBuilder: (context, state) => const MaterialPage(
               child: SubscriptionPage(),
             ),
+          ),
+
+          // Admin routes
+          GoRoute(
+            path: '/admin',
+            name: 'admin',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: AdminDashboardPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/admin/users',
+            name: 'adminUsers',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: AdminUsersPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/admin/access',
+            name: 'adminAccess',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: AdminAccessPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/admin/progress',
+            name: 'adminProgress',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: AdminProgressPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/admin/users/:userId/profile',
+            pageBuilder: (context, state) {
+              final userId = state.pathParameters['userId']!;
+              return MaterialPage(
+                child: AdminUserProfilePage(userId: userId),
+              );
+            },
           ),
         ],
       ),
