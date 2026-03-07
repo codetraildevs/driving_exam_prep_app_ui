@@ -1,11 +1,15 @@
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../../config/theme/app_colors.dart';
 import '../../config/theme/app_text_styles.dart';
 import '../locale/locale_provider.dart';
+import '../network/api_config.dart';
+import '../session/auth_session.dart';
 
 /// Creative, responsive language selector optimized for a Rwanda traffic app.
 /// - Traffic-themed animated header
@@ -255,8 +259,35 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
   Future<void> _onConfirm() async {
     final provider = context.read<LocaleProvider>();
     await provider.setLocale(Locale(_selectedCode));
+    // Best-effort sync to backend if authenticated
+    _syncLanguageToBackend(_selectedCode);
     if (!mounted) return;
     context.go('/landing');
+  }
+
+  Future<void> _syncLanguageToBackend(String langCode) async {
+    try {
+      final session = AuthSession();
+      final token = await session.getToken();
+      if (token == null || token.isEmpty) return;
+      final user = await session.getUser();
+      if (user == null) return;
+      await http.put(
+        Uri.parse('${ApiConfig.baseUrl}/api/users/${user.id}'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({'preferredLanguage': langCode}),
+      ).timeout(const Duration(seconds: 10));
+    } catch (e) {
+      // Ignore errors — language is already saved locally
+      assert(() {
+        // ignore: avoid_print
+        print('[LanguageSelector] syncLanguageToBackend error: $e');
+        return true;
+      }());
+    }
   }
 
   void _useDeviceLanguage() {

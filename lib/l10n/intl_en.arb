@@ -66,7 +66,7 @@
   "homeCoursesSubtitle": "Learning modules",
   "@homeCoursesSubtitle": { "description": "Service card subtitle" },
 
-  "homeMockExams": "Mock Exams",
+  "homeMockExams": "Practice Exams",
   "@homeMockExams": { "description": "Service card title" },
 
   "homeMockExamsSubtitle": "Test knowledge",
@@ -359,7 +359,7 @@
   "quizNextQuestion": "Next Question",
   "@quizNextQuestion": { "description": "Next question button" },
 
-  "examMockExam": "Mock Exam",
+  "examMockExam": "Practice Exam",
   "@examMockExam": { "description": "Mock exam title" },
 
   "examInstructions": "Exam Instructions",

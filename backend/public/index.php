@@ -71,6 +71,7 @@ $publicRoutes = [
     'GET:/api/health',
     'POST:/api/auth/register',
     'POST:/api/auth/login',
+    'GET:/api/pricing',
 ];
 
 // Parse request
@@ -160,6 +161,8 @@ $routes = [
     
     // Access Codes
     ['POST', '/api/access-codes/verify', 'verifyAccessCode'],
+    // status must be declared before the generic /api/access-codes route
+    ['GET', '/api/access-codes/status', 'getAccessCodeStatus'],
     ['GET', '/api/access-codes', 'listAccessCodes'],
     ['POST', '/api/access-codes', 'generateAccessCode'],
     
@@ -171,6 +174,14 @@ $routes = [
     // Payments
     ['POST', '/api/payments/request', 'requestPayment'],
     ['GET', '/api/payments', 'listPayments'],
+    
+    // Pricing plans (public)
+    ['GET', '/api/pricing', 'getPricingPlans'],
+    
+    // Admin user management
+    ['GET', '/api/admin/users', 'adminListUsers'],
+    ['POST', '/api/admin/users/:userId/grant-access', 'adminGrantAccess'],
+    ['POST', '/api/admin/users/:userId/mark-called', 'adminMarkCalled'],
     
     // Analytics
     ['GET', '/api/analytics/stats', 'getAnalytics'],
@@ -1167,7 +1178,12 @@ function updateUser($conn, $params) {
     $types = '';
     $values = [];
     
-    foreach (['fullName', 'role', 'isActive'] as $field) {
+    $allowedFields = [
+        'fullName', 'role', 'isActive',
+        'preferredLanguage', 'lastCalledAt', 'lastCalledBy', 'callNotes',
+    ];
+    
+    foreach ($allowedFields as $field) {
         if (isset($input[$field])) {
             $val = SecurityUtils::sanitizeString((string)$input[$field]);
             
@@ -1519,3 +1535,273 @@ function createNotification($conn, $params) {
     respond(['message' => 'Notification created'], 201);
 }
 
+
+// ===== ACCESS CODE STATUS =====
+
+function getAccessCodeStatus($conn, $params) {
+    global $tokenData;
+    
+    $userId = SecurityUtils::sanitizeString($_GET['userId'] ?? '');
+    if (!$userId) {
+        $userId = $tokenData['userId'];
+    }
+    
+    $row = Database::fetchOne(
+        $conn,
+        'SELECT code, expiresAt, paymentTier, paymentAmount FROM access_codes WHERE userId = ? AND expiresAt > NOW() ORDER BY createdAt DESC LIMIT 1',
+        's',
+        [&$userId]
+    );
+    
+    if ($row) {
+        respond([
+            'hasActiveAccess' => true,
+            'expiresAt'       => $row['expiresAt'],
+            'paymentTier'     => $row['paymentTier'],
+            'code'            => $row['code'],
+        ], 200);
+    } else {
+        respond(['hasActiveAccess' => false], 200);
+    }
+}
+
+// ===== PRICING PLANS =====
+
+function getPricingPlans($conn, $params) {
+    $language = SecurityUtils::sanitizeString($_GET['language'] ?? 'rw');
+    
+    if ($language === 'rw') {
+        $plans = [
+            ['tier' => '1_MONTH',  'durationDays' => 30,  'price' => 1500,  'label' => '1 Month'],
+            ['tier' => '3_MONTHS', 'durationDays' => 90,  'price' => 3000,  'label' => '3 Months'],
+            ['tier' => '6_MONTHS', 'durationDays' => 180, 'price' => 5000,  'label' => '6 Months'],
+        ];
+    } else {
+        $plans = [
+            ['tier' => '1_MONTH',  'durationDays' => 30,  'price' => 3000,  'label' => '1 Month'],
+            ['tier' => '3_MONTHS', 'durationDays' => 90,  'price' => 5000,  'label' => '3 Months'],
+            ['tier' => '6_MONTHS', 'durationDays' => 180, 'price' => 10000, 'label' => '6 Months'],
+        ];
+    }
+    
+    respond([
+        'language' => $language,
+        'currency' => 'RWF',
+        'plans'    => $plans,
+    ], 200);
+}
+
+// ===== ADMIN USER MANAGEMENT =====
+
+function adminListUsers($conn, $params) {
+    global $tokenData;
+    requireRole($tokenData, ['ADMIN', 'MANAGER']);
+
+    $page      = max(1, intval($_GET['page']   ?? 1));
+    $limit     = max(1, min(100, intval($_GET['limit'] ?? 20)));
+    $offset    = ($page - 1) * $limit;
+    $search    = SecurityUtils::sanitizeString($_GET['search']    ?? '');
+    $hasAccess = $_GET['hasAccess'] ?? null;
+    $language  = SecurityUtils::sanitizeString($_GET['language']  ?? '');
+
+    $conditions = [];
+    $bindTypes  = '';
+    $bindValues = [];
+
+    if (!empty($search)) {
+        $conditions[] = '(u.fullName LIKE ? OR u.phoneNumber LIKE ?)';
+        $like = '%' . $search . '%';
+        $bindTypes  .= 'ss';
+        $bindValues[] = $like;
+        $bindValues[] = $like;
+    }
+
+    if ($hasAccess === 'true' || $hasAccess === '1') {
+        $conditions[] = 'ac.expiresAt > NOW()';
+    } elseif ($hasAccess === 'false' || $hasAccess === '0') {
+        $conditions[] = '(ac.expiresAt IS NULL OR ac.expiresAt <= NOW())';
+    }
+
+    if (!empty($language)) {
+        $conditions[] = 'u.preferredLanguage = ?';
+        $bindTypes  .= 's';
+        $bindValues[] = $language;
+    }
+
+    $where = empty($conditions) ? '' : 'WHERE ' . implode(' AND ', $conditions);
+
+    $joinSql = 'LEFT JOIN (
+        SELECT ac1.* FROM access_codes ac1
+        INNER JOIN (
+            SELECT userId, MAX(createdAt) as maxCreated
+            FROM access_codes
+            GROUP BY userId
+        ) ac2 ON ac1.userId = ac2.userId AND ac1.createdAt = ac2.maxCreated
+    ) ac ON u.id = ac.userId';
+
+    // Count total
+    $countSql = "SELECT COUNT(*) as total FROM users u $joinSql $where";
+    if (!empty($bindValues)) {
+        // Build references for count
+        $countRefs = [];
+        foreach ($bindValues as $k => $v) {
+            $countRefs[$k] = $bindValues[$k];
+        }
+        $countRefArr = [];
+        foreach ($countRefs as $k => &$ref) {
+            $countRefArr[] = &$ref;
+        }
+        unset($ref);
+        $countRow = Database::fetchOne($conn, $countSql, $bindTypes, $countRefArr);
+    } else {
+        $countRow = Database::fetchOne($conn, $countSql);
+    }
+    $total = $countRow ? intval($countRow['total']) : 0;
+
+    // Fetch page with LIMIT/OFFSET
+    $pageSql = "SELECT u.id, u.fullName, u.phoneNumber, u.role, u.isActive,
+                       u.preferredLanguage, u.lastCalledAt, u.lastCalledBy, u.callNotes, u.createdAt,
+                       ac.code as accessCode, ac.expiresAt as accessExpiresAt,
+                       ac.paymentTier, ac.paymentAmount,
+                       CASE WHEN ac.expiresAt > NOW() THEN 1 ELSE 0 END as hasActiveAccess
+                FROM users u
+                $joinSql
+                $where
+                ORDER BY u.createdAt DESC
+                LIMIT ? OFFSET ?";
+
+    $pageTypes  = $bindTypes . 'ii';
+    $pageValues = array_merge($bindValues, [$limit, $offset]);
+
+    // Build references array
+    $pageRefs = [];
+    foreach ($pageValues as $k => $v) {
+        $pageRefs[$k] = $pageValues[$k];
+    }
+    $pageRefArr = [];
+    foreach ($pageRefs as $k => &$ref) {
+        $pageRefArr[] = &$ref;
+    }
+    unset($ref);
+
+    $rows = Database::fetchAll($conn, $pageSql, $pageTypes, $pageRefArr);
+
+    respond([
+        'users' => $rows ?: [],
+        'total' => $total,
+        'page'  => $page,
+        'limit' => $limit,
+    ], 200);
+}
+
+function adminGrantAccess($conn, $params) {
+    global $tokenData;
+    requireRole($tokenData, ['ADMIN', 'MANAGER']);
+
+    $userId = SecurityUtils::sanitizeString($params['userId'] ?? '');
+    if (!$userId) {
+        ErrorHandler::badRequest('Invalid user ID');
+    }
+
+    $user = Database::fetchOne($conn, 'SELECT id FROM users WHERE id = ? LIMIT 1', 's', [&$userId]);
+    if (!$user) {
+        ErrorHandler::notFound('User not found');
+    }
+
+    $input = getInput();
+
+    $paymentTier   = SecurityUtils::sanitizeString($input['paymentTier'] ?? '');
+    $paymentAmount = isset($input['paymentAmount']) ? intval($input['paymentAmount']) : 0;
+    $customDays    = isset($input['durationDays'])  ? intval($input['durationDays'])  : 0;
+
+    // Map tier to days
+    $tierMap = ['1_MONTH' => 30, '3_MONTHS' => 90, '6_MONTHS' => 180];
+
+    if ($customDays > 0) {
+        $durationDays = $customDays;
+        if (empty($paymentTier)) {
+            // Default to nearest tier for custom durations
+            $paymentTier = $customDays <= 30 ? '1_MONTH' : ($customDays <= 90 ? '3_MONTHS' : '6_MONTHS');
+        }
+    } elseif (isset($tierMap[$paymentTier])) {
+        $durationDays = $tierMap[$paymentTier];
+    } else {
+        ErrorHandler::badRequest('Provide paymentTier (1_MONTH|3_MONTHS|6_MONTHS) or durationDays');
+    }
+
+    if ($paymentAmount <= 0) {
+        ErrorHandler::badRequest('paymentAmount must be greater than 0');
+    }
+
+    $id        = generateUUID();
+    $code      = strtoupper(bin2hex(random_bytes(6)));
+    $managerId = $tokenData['userId'];
+    $expiresAt = date('Y-m-d H:i:s', strtotime("+{$durationDays} days"));
+    $now       = date('Y-m-d H:i:s');
+
+    // Types: id(s) userId(s) code(s) managerId(s) amount(i) days(i) tier(s) expiresAt(s) createdAt(s) updatedAt(s)
+    $result = Database::insert(
+        $conn,
+        'INSERT INTO access_codes (id, userId, code, generatedByManagerId, paymentAmount, durationDays, paymentTier, expiresAt, isUsed, createdAt, updatedAt) VALUES (?,?,?,?,?,?,?,?,0,?,?)',
+        'ssssiissss',
+        [&$id, &$userId, &$code, &$managerId, &$paymentAmount, &$durationDays, &$paymentTier, &$expiresAt, &$now, &$now]
+    );
+
+    if (!$result) {
+        Logger::error('Failed to grant access', ['userId' => $userId]);
+        ErrorHandler::serverError('Failed to grant access');
+    }
+
+    Logger::info('Access granted', ['userId' => $userId, 'adminId' => $managerId, 'tier' => $paymentTier]);
+    respond([
+        'id'            => $id,
+        'code'          => $code,
+        'userId'        => $userId,
+        'paymentTier'   => $paymentTier,
+        'paymentAmount' => $paymentAmount,
+        'durationDays'  => $durationDays,
+        'expiresAt'     => $expiresAt,
+        'message'       => 'Access granted successfully',
+    ], 201);
+}
+
+function adminMarkCalled($conn, $params) {
+    global $tokenData;
+    requireRole($tokenData, ['ADMIN', 'MANAGER']);
+
+    $userId = SecurityUtils::sanitizeString($params['userId'] ?? '');
+    if (!$userId) {
+        ErrorHandler::badRequest('Invalid user ID');
+    }
+
+    $user = Database::fetchOne($conn, 'SELECT id FROM users WHERE id = ? LIMIT 1', 's', [&$userId]);
+    if (!$user) {
+        ErrorHandler::notFound('User not found');
+    }
+
+    $input    = getInput();
+    $notes    = SecurityUtils::sanitizeString($input['notes'] ?? '');
+    $adminId  = $tokenData['userId'];
+    $calledAt = date('Y-m-d H:i:s');
+
+    $stmt = Database::execute(
+        $conn,
+        'UPDATE users SET lastCalledAt = ?, lastCalledBy = ?, callNotes = ?, updatedAt = ? WHERE id = ?',
+        'sssss',
+        [&$calledAt, &$adminId, &$notes, &$calledAt, &$userId]
+    );
+
+    if (!$stmt) {
+        Logger::error('Failed to mark called', ['userId' => $userId]);
+        ErrorHandler::serverError('Failed to log call');
+    }
+
+    Logger::info('Call logged', ['userId' => $userId, 'adminId' => $adminId]);
+    respond([
+        'userId'       => $userId,
+        'lastCalledAt' => $calledAt,
+        'lastCalledBy' => $adminId,
+        'callNotes'    => $notes,
+        'message'      => 'Call logged successfully',
+    ], 200);
+}

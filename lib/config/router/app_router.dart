@@ -21,6 +21,7 @@ import '../../features/progress/presentation/pages/progress_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/profile/presentation/pages/my_certificates_page.dart';
+import '../../features/subscription/presentation/pages/subscription_page.dart';
 
 class AppRouter {
   final AuthBloc authBloc;
@@ -65,7 +66,8 @@ class AppRouter {
           location.startsWith('/progress') ||
           location.startsWith('/profile') ||
           location.startsWith('/settings') ||
-          location.startsWith('/certificates');
+          location.startsWith('/certificates') ||
+          location.startsWith('/subscription');
 
       if (isAuthenticated && isAuthPage) {
         return '/home';
@@ -132,11 +134,11 @@ class AppRouter {
             ),
             routes: [
               GoRoute(
-                path: 'quiz/:categoryId',
+                path: 'quiz/:quizId',
                 pageBuilder: (context, state) {
-                  final categoryId = state.pathParameters['categoryId']!;
+                  final quizId = state.pathParameters['quizId']!;
                   return MaterialPage(
-                    child: QuizPage(categoryId: categoryId),
+                    child: QuizPage(quizId: quizId),
                   );
                 },
               ),
@@ -189,6 +191,13 @@ class AppRouter {
             name: 'settings',
             pageBuilder: (context, state) => const MaterialPage(
               child: SettingsPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/subscription',
+            name: 'subscription',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: SubscriptionPage(),
             ),
           ),
         ],

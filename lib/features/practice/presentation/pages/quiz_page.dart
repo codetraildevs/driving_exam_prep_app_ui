@@ -1,48 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../../shared/locale/locale_provider.dart';
+import '../../../exam/data/models/exam_model.dart';
+import '../../../exam/data/models/exam_question.dart';
+import '../../../exam/data/repositories/exam_repository.dart';
 
 class QuizPage extends StatefulWidget {
-  final String categoryId;
+  final String quizId;
 
-  const QuizPage({required this.categoryId, Key? key}) : super(key: key);
+  const QuizPage({required this.quizId, Key? key}) : super(key: key);
 
   @override
   State<QuizPage> createState() => _QuizPageState();
 }
 
 class _QuizPageState extends State<QuizPage> {
+  final ExamRepository _examRepository = ExamRepository();
+
+  Exam? _exam;
+  bool _isLoading = true;
+  String? _error;
+
   int _currentQuestion = 0;
   int _correctAnswers = 0;
   bool _answered = false;
-  int? _selectedAnswer;
+  String? _selectedAnswer;
 
-  final quizData = [
-    {
-      'question': 'What does a red traffic light mean?',
-      'answers': ['Stop', 'Go', 'Slow down', 'Turn left'],
-      'correct': 0,
-    },
-    {
-      'question': 'What is the maximum speed limit in urban areas?',
-      'answers': ['60 km/h', '80 km/h', '50 km/h', '90 km/h'],
-      'correct': 2,
-    },
-    {
-      'question': 'Can you park in a no-parking zone?',
-      'answers': ['Yes, always', 'No, never', 'Only at night', 'Only on weekends'],
-      'correct': 1,
-    },
-  ];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_isLoading) {
+      final langCode =
+          context.read<LocaleProvider>().effectiveLocale.languageCode;
+      _loadExam(langCode);
+    }
+  }
 
-  void _handleAnswerSelected(int index) {
+  Future<void> _loadExam(String langCode) async {
+    try {
+      final exam = await _examRepository.getExamById(widget.quizId, langCode);
+      if (mounted) {
+        setState(() {
+          _exam = exam;
+          _isLoading = false;
+          _error = exam == null ? 'Exam not found' : null;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _error = e.toString();
+        });
+      }
+    }
+  }
+
+  void _handleAnswerSelected(String answer) {
     if (!_answered) {
+      final question = _exam!.questions[_currentQuestion];
       setState(() {
-        _selectedAnswer = index;
+        _selectedAnswer = answer;
         _answered = true;
-        if (index == quizData[_currentQuestion]['correct']) {
+        if (answer == question.correctAnswer) {
           _correctAnswers++;
         }
       });
@@ -50,7 +74,8 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void _handleNext() {
-    if (_currentQuestion < quizData.length - 1) {
+    final questions = _exam!.questions;
+    if (_currentQuestion < questions.length - 1) {
       setState(() {
         _currentQuestion++;
         _answered = false;
@@ -62,15 +87,14 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void _showResults() {
-    final accuracy = ((_correctAnswers / quizData.length) * 100).toInt();
+    final total = _exam!.questions.length;
+    final accuracy = (((_correctAnswers / total) * 100)).toInt();
     final l10n = AppLocalizations.of(context);
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -88,11 +112,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
             const SizedBox(height: 24),
-            Text(
-              l10n.quizComplete,
-              style: AppTextStyles.heading4,
-              textAlign: TextAlign.center,
-            ),
+            Text(l10n.quizComplete, style: AppTextStyles.heading4, textAlign: TextAlign.center),
             const SizedBox(height: 16),
             Text(
               l10n.quizScore(accuracy),
@@ -103,10 +123,8 @@ class _QuizPageState extends State<QuizPage> {
             ),
             const SizedBox(height: 8),
             Text(
-              l10n.quizResult(_correctAnswers, quizData.length),
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondary,
-              ),
+              l10n.quizResult(_correctAnswers, total),
+              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
@@ -129,14 +147,44 @@ class _QuizPageState extends State<QuizPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final question = quizData[_currentQuestion];
-    final progress = (_currentQuestion + 1) / quizData.length;
+
+    if (_isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
+    if (_error != null || _exam == null) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.surface,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => context.pop(),
+          ),
+        ),
+        body: Center(
+          child: Text(
+            _error ?? 'Exam not found',
+            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+          ),
+        ),
+      );
+    }
+
+    final questions = _exam!.questions;
+    final question = questions[_currentQuestion];
+    final progress = (_currentQuestion + 1) / questions.length;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppColors.surface,
+        title: Text(
+          _exam!.title,
+          style: AppTextStyles.labelLarge,
+          overflow: TextOverflow.ellipsis,
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
@@ -154,14 +202,12 @@ class _QuizPageState extends State<QuizPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        l10n.quizQuestion(_currentQuestion + 1, quizData.length),
+                        l10n.quizQuestion(_currentQuestion + 1, questions.length),
                         style: AppTextStyles.labelLarge,
                       ),
                       Text(
-                        '${(_correctAnswers)}/${quizData.length}',
-                        style: AppTextStyles.labelLarge.copyWith(
-                          color: AppColors.success,
-                        ),
+                        '$_correctAnswers/${questions.length}',
+                        style: AppTextStyles.labelLarge.copyWith(color: AppColors.success),
                       ),
                     ],
                   ),
@@ -172,9 +218,7 @@ class _QuizPageState extends State<QuizPage> {
                       value: progress,
                       minHeight: 8,
                       backgroundColor: AppColors.neutral200,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        AppColors.primary,
-                      ),
+                      valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
                     ),
                   ),
                 ],
@@ -186,63 +230,22 @@ class _QuizPageState extends State<QuizPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      question['question'] as String,
-                      style: AppTextStyles.heading4,
-                    ),
-                    const SizedBox(height: 32),
-                    ...(question['answers'] as List<String>).asMap().entries.map((e) {
-                      final index = e.key;
-                      final answer = e.value;
-                      final isSelected = _selectedAnswer == index;
-                      final isCorrect = index == question['correct'];
-                      final shouldHighlight = _answered && (isSelected || isCorrect);
-
-                      Color borderColor = AppColors.neutral300;
-                      Color backgroundColor = AppColors.surface;
-
-                      if (shouldHighlight) {
-                        if (isCorrect) {
-                          borderColor = AppColors.success;
-                          backgroundColor = AppColors.success.withOpacity(0.1);
-                        } else if (isSelected) {
-                          borderColor = AppColors.error;
-                          backgroundColor = AppColors.error.withOpacity(0.1);
-                        }
-                      }
-
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: GestureDetector(
-                          onTap: () => _handleAnswerSelected(index),
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: backgroundColor,
-                              border: Border.all(color: borderColor, width: 2),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    answer,
-                                    style: AppTextStyles.bodyMedium,
-                                  ),
-                                ),
-                                if (shouldHighlight)
-                                  Icon(
-                                    isCorrect ? Icons.check_circle : Icons.cancel,
-                                    color: isCorrect
-                                        ? AppColors.success
-                                        : AppColors.error,
-                                  ),
-                              ],
-                            ),
+                    if (question.questionImgUrl.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.asset(
+                            question.questionImgUrl,
+                            height: 180,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => const SizedBox.shrink(),
                           ),
                         ),
-                      );
-                    }),
+                      ),
+                    Text(question.question, style: AppTextStyles.heading4),
+                    const SizedBox(height: 32),
+                    ..._buildOptions(question),
                   ],
                 ),
               ),
@@ -256,7 +259,7 @@ class _QuizPageState extends State<QuizPage> {
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   child: Text(
-                    _currentQuestion == quizData.length - 1
+                    _currentQuestion == questions.length - 1
                         ? l10n.quizFinish
                         : l10n.quizNextQuestion,
                     style: AppTextStyles.buttonLarge,
@@ -267,5 +270,58 @@ class _QuizPageState extends State<QuizPage> {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildOptions(ExamQuestion question) {
+    final options = [
+      question.option1,
+      question.option2,
+      question.option3,
+      question.option4,
+    ].where((o) => o.isNotEmpty).toList();
+
+    return options.map((option) {
+      final isSelected = _selectedAnswer == option;
+      final isCorrect = option == question.correctAnswer;
+      final shouldHighlight = _answered && (isSelected || isCorrect);
+
+      Color borderColor = AppColors.neutral300;
+      Color backgroundColor = AppColors.surface;
+
+      if (shouldHighlight) {
+        if (isCorrect) {
+          borderColor = AppColors.success;
+          backgroundColor = AppColors.success.withOpacity(0.1);
+        } else if (isSelected) {
+          borderColor = AppColors.error;
+          backgroundColor = AppColors.error.withOpacity(0.1);
+        }
+      }
+
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: GestureDetector(
+          onTap: () => _handleAnswerSelected(option),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              border: Border.all(color: borderColor, width: 2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Expanded(child: Text(option, style: AppTextStyles.bodyMedium)),
+                if (shouldHighlight)
+                  Icon(
+                    isCorrect ? Icons.check_circle : Icons.cancel,
+                    color: isCorrect ? AppColors.success : AppColors.error,
+                  ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }).toList();
   }
 }

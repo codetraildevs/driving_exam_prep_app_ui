@@ -4,7 +4,7 @@ A professional, modern Flutter application for learning traffic rules and prepar
 
 ## Overview
 
-Master Traffic Rules is a comprehensive mobile and web application designed to help aspiring drivers prepare for their driving license exams. The app combines interactive learning, practice quizzes, and mock exams with engaging gamification elements to make exam preparation rewarding and effective.
+Master Traffic Rules is a comprehensive mobile and web application designed to help aspiring drivers prepare for their driving license exams. The app combines interactive learning, practice quizzes, and practice exams with engaging gamification elements to make exam preparation rewarding and effective.
 
 ## Features
 
@@ -20,7 +20,7 @@ Master Traffic Rules is a comprehensive mobile and web application designed to h
 - **Home Dashboard**:
   - Time-based greeting (Good Morning/Afternoon/Evening)
   - Progress indicator showing overall completion
-  - Last mock exam score display
+  - Last practice exam score display
   - Daily streak tracker
   - Quick action buttons for:
     - Start Mock Test
@@ -42,7 +42,7 @@ Master Traffic Rules is a comprehensive mobile and web application designed to h
   - Progress tracking
   - Score calculation and results
 
-- **Mock Exam**:
+- **Practice Exam**:
   - Timed exam experience (30 minutes)
   - 20 questions covering all categories
   - Real exam simulation
@@ -170,11 +170,21 @@ lib/
 │   │           ├── practice_page.dart
 │   │           └── quiz_page.dart
 │   ├── exam/
+│   │   ├── data/
+│   │   │   ├── models/
+│   │   │   │   ├── exam_model.dart
+│   │   │   │   └── exam_question.dart
+│   │   │   └── repositories/
+│   │   │       └── exam_repository.dart
 │   │   └── presentation/
 │   │       └── pages/
 │   │           ├── exam_intro_page.dart
 │   │           ├── exam_page.dart
 │   │           └── exam_result_page.dart
+│   ├── subscription/
+│   │   └── presentation/
+│   │       └── pages/
+│   │           └── subscription_page.dart
 │   ├── progress/
 │   │   └── presentation/
 │   │       └── pages/
@@ -187,7 +197,18 @@ lib/
 │       └── presentation/
 │           └── pages/
 │               └── settings_page.dart
-└── shared/                            # Shared utilities (future expansion)
+└── shared/                            # Shared utilities
+    ├── locale/
+    │   └── locale_provider.dart
+    └── subscription/
+        └── subscription_provider.dart
+```
+
+```
+assets/exams/
+├── rw_exams.json
+├── en_exams.json
+└── fr_exams.json
 ```
 
 ## Database Schema
@@ -333,6 +354,58 @@ Tests verify:
 - Selecting a language persists the choice in `SharedPreferences`.
 - Changing language at runtime updates the provider's locale immediately.
 
+## 🔒 Offline Practice Exam System
+
+The app bundles all exam content as JSON files in `assets/exams/`, enabling **fully offline** exam practice:
+
+- **Three language files**: `rw_exams.json` (Kinyarwanda), `en_exams.json` (English), `fr_exams.json` (French)
+- Exams load offline based on the user's selected locale — **no network required**
+- `examType: "Free"` = 1 free practice exam per language (accessible to everyone)
+- `examType: "Paid"` = premium practice exams (require an active access code)
+- `ExamRepository` loads, caches, and clears cache on language change
+
+### How to Add/Edit Exam Questions
+
+1. Edit the JSON files in `assets/exams/{lang}_exams.json`
+2. Keep `quizId` consistent across all three language files
+3. Maintain the same number of questions per exam across languages
+4. Images referenced in `questionImgUrl` must exist in `assets/images/`
+
+## 💳 Language-Based Pricing System
+
+Pricing varies by the user's selected language:
+
+| Tier | Kinyarwanda (RWF) | English/French (RWF) |
+|------|-------------------|----------------------|
+| 1 Month (30 days) | 1,500 | 3,000 |
+| 3 Months (90 days) | 3,000 | 5,000 |
+| 6 Months (180 days) | 5,000 | 10,000 |
+| Custom | Admin sets any amount/duration | Admin sets any amount/duration |
+
+**Flow**: User requests access → Admin verifies payment → Admin grants access via dashboard → User gets instant access
+
+Uses the existing `access_codes` table — **no new tables needed**.
+
+## 👨‍💼 Admin User Management
+
+Admins can manage all registered users through backend API endpoints:
+
+- **View all users** with: full name, phone, registration date, selected language, active access status/expiry, last call date/notes
+- **Grant access** by selecting a payment tier (prices auto-calculated from user's language)
+- **Mark phone calls** with notes — synced across all admin devices (stored server-side)
+- **Filter users** by language, access status, or search by name/phone
+- **Custom subscriptions** with any amount and duration
+
+### Backend API — New Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `GET` | `/api/pricing?language=rw` | Public | Language-specific pricing plans |
+| `GET` | `/api/access-codes/status?userId=X` | User | User's active access status |
+| `GET` | `/api/admin/users?search=&hasAccess=` | Admin | List all users with details |
+| `POST` | `/api/admin/users/:id/grant-access` | Admin | Grant access to a user |
+| `POST` | `/api/admin/users/:id/mark-called` | Admin | Log a phone call to user |
+
 ## Architecture Highlights
 
 ### Clean Architecture
@@ -358,7 +431,7 @@ Tests verify:
 
 ## Future Enhancements
 
-- Offline mode support
+- ✅ Offline practice exams (bundled JSON)
 - Push notifications
 - Social leaderboard
 - Video tutorials
@@ -366,8 +439,12 @@ Tests verify:
 - AI-powered recommendations
 - Advanced analytics
 - Export/certificate generation
-- Multiple language support (in-app)
+- ✅ Multi-language exams (en, fr, rw)
 - Adaptive difficulty levels
+- ✅ Language-based pricing
+- ✅ Admin user management with call tracking
+- Mobile Money (MoMo) payment integration
+- Admin dashboard web UI
 
 ## Development Notes
 

@@ -9,6 +9,7 @@ import 'l10n/generated/app_localizations.dart';
 import 'shared/locale/fallback_localizations.dart';
 import 'shared/locale/locale_provider.dart';
 import 'shared/session/app_launch_session.dart';
+import 'shared/subscription/subscription_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,8 +63,11 @@ class _TrafficRulesAppState extends State<TrafficRulesApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: widget.localeProvider,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: widget.localeProvider),
+        ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
+      ],
       child: BlocProvider.value(
         value: widget.authBloc,
         child: Consumer<LocaleProvider>(
