@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/data/models/user_model.dart';
 import '../../features/auth/presentation/pages/landing_page.dart';
@@ -12,6 +13,7 @@ import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/home/presentation/pages/main_layout.dart';
 import '../../shared/locale/language_selector_page.dart';
+import '../../shared/subscription/subscription_provider.dart';
 
 import '../../features/practice/presentation/pages/practice_page.dart';
 import '../../features/practice/presentation/pages/quiz_page.dart';
@@ -93,6 +95,14 @@ class AppRouter {
           location.startsWith('/certificates') ||
           location.startsWith('/subscription') ||
           location.startsWith('/admin');
+
+      // Subscription guard: redirect users who already have active access away from /subscription.
+      if (isAuthenticated && location.startsWith('/subscription')) {
+        final subscription = context.read<SubscriptionProvider>();
+        if (subscription.hasActiveAccess) {
+          return '/home';
+        }
+      }
 
       // Role guard: block non-admin access to /admin/* routes first
       if (isAuthenticated && location.startsWith('/admin') && !_isAdmin(user)) {

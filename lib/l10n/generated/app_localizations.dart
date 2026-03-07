@@ -1714,17 +1714,35 @@ abstract class AppLocalizations {
   /// **'MoMo Pay: 323294'**
   String get paymentMomoPayNumber;
 
+  /// MoMo Pay dial instruction
+  ///
+  /// In en, this message translates to:
+  /// **'To pay with MoMo Pay, dial: *182*1*1*323294*amount#'**
+  String get paymentMomoPayDial;
+
   /// Mobile money number
   ///
   /// In en, this message translates to:
   /// **'Mobile Money: 0788657595'**
   String get paymentMobileMoneyNumber;
 
+  /// Mobile Money dial instruction
+  ///
+  /// In en, this message translates to:
+  /// **'To pay with Mobile Money, dial: *182*8*1*0788657595*amount#'**
+  String get paymentMobileMoneyDial;
+
   /// Payment help text
   ///
   /// In en, this message translates to:
   /// **'Need help? Call or WhatsApp: 0788657595'**
   String get paymentHelpText;
+
+  /// Payment help contact line
+  ///
+  /// In en, this message translates to:
+  /// **'You can copy or call: 0788657595 or WhatsApp: 0788657595 for help.'**
+  String get paymentHelpContact;
 
   /// Payment error message
   ///

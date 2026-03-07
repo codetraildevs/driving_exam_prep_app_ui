@@ -295,8 +295,11 @@
 
   "paymentInstructionsTitle": "Instructions de paiement",
   "paymentMomoPayNumber": "MoMo Pay: 323294",
+  "paymentMomoPayDial": "Pour payer avec MoMo Pay, composez: *182*1*1*323294*montant#",
   "paymentMobileMoneyNumber": "Mobile Money: 0788657595",
+  "paymentMobileMoneyDial": "Pour payer avec Mobile Money, composez: *182*8*1*0788657595*montant#",
   "paymentHelpText": "Besoin d'aide ? Appelez ou WhatsApp: 0788657595",
+  "paymentHelpContact": "Vous pouvez copier ou appeler: 0788657595 ou WhatsApp: 0788657595 pour de l'aide.",
 
   "paymentError": "La demande de paiement a échoué. Veuillez payer manuellement en utilisant les instructions ci-dessous.",
   "paymentCopyNumber": "Copier le numéro",

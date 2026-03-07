@@ -248,59 +248,70 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
           child: Row(
             children: [
-              // Sort
-              _toolChip(context,
-                icon: _sortDir == 'DESC'
-                    ? Icons.arrow_downward
-                    : Icons.arrow_upward,
-                label: _sortDir == 'DESC' ? l10n.adminSortDesc : l10n.adminSortAsc,
-                onTap: () {
-                  setState(() => _sortDir =
-                      _sortDir == 'DESC' ? 'ASC' : 'DESC');
-                  _page = 1;
-                  _load();
-                },
-              ),
-              const SizedBox(width: 8),
-              // Today
-              _toolChip(context,
-                icon: Icons.today,
-                label: l10n.adminFilterToday,
-                selected: _todayOnly,
-                onTap: () {
-                  setState(() {
-                    _todayOnly = !_todayOnly;
-                    if (_todayOnly) {
-                      _dateFrom = null;
-                      _dateTo = null;
-                    }
-                  });
-                  _page = 1;
-                  _load();
-                },
-              ),
-              const SizedBox(width: 8),
-              // Date range
-              if (!_todayOnly)
-                _toolChip(context,
-                  icon: Icons.date_range,
-                  label: _dateFrom != null
-                      ? _dateFrom!.toIso8601String().split('T')[0]
-                      : l10n.adminDateRange,
-                  selected: _dateFrom != null,
-                  onTap: () => _pickDateRange(context, l10n),
-                  onClear: _dateFrom != null
-                      ? () {
+              // Chips group — scrollable so they never overflow on small screens
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      // Sort
+                      _toolChip(context,
+                        icon: _sortDir == 'DESC'
+                            ? Icons.arrow_downward
+                            : Icons.arrow_upward,
+                        label: _sortDir == 'DESC' ? l10n.adminSortDesc : l10n.adminSortAsc,
+                        onTap: () {
+                          setState(() => _sortDir =
+                              _sortDir == 'DESC' ? 'ASC' : 'DESC');
+                          _page = 1;
+                          _load();
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      // Today
+                      _toolChip(context,
+                        icon: Icons.today,
+                        label: l10n.adminFilterToday,
+                        selected: _todayOnly,
+                        onTap: () {
                           setState(() {
-                            _dateFrom = null;
-                            _dateTo = null;
+                            _todayOnly = !_todayOnly;
+                            if (_todayOnly) {
+                              _dateFrom = null;
+                              _dateTo = null;
+                            }
                           });
                           _page = 1;
                           _load();
-                        }
-                      : null,
+                        },
+                      ),
+                      // Date range
+                      if (!_todayOnly) ...[
+                        const SizedBox(width: 8),
+                        _toolChip(context,
+                          icon: Icons.date_range,
+                          label: _dateFrom != null
+                              ? _dateFrom!.toIso8601String().split('T')[0]
+                              : l10n.adminDateRange,
+                          selected: _dateFrom != null,
+                          onTap: () => _pickDateRange(context, l10n),
+                          onClear: _dateFrom != null
+                              ? () {
+                                  setState(() {
+                                    _dateFrom = null;
+                                    _dateTo = null;
+                                  });
+                                  _page = 1;
+                                  _load();
+                                }
+                              : null,
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
-              const Spacer(),
+              ),
+              // Refresh button — always visible on the right
               IconButton(
                 icon: const Icon(Icons.refresh),
                 onPressed: _load,

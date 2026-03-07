@@ -295,8 +295,11 @@
 
   "paymentInstructionsTitle": "Amabwiriza yo kwishyura",
   "paymentMomoPayNumber": "MoMo Pay: 323294",
+  "paymentMomoPayDial": "Kwishyura na MoMo Pay, kanda: *182*1*1*323294*amafaranga#",
   "paymentMobileMoneyNumber": "Mobile Money: 0788657595",
+  "paymentMobileMoneyDial": "Kwishyura na Mobile Money, kanda: *182*8*1*0788657595*amafaranga#",
   "paymentHelpText": "Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595",
+  "paymentHelpContact": "Urashobora kopi cyangwa guhamagara: 0788657595 cyangwa WhatsApp: 0788657595 kugira ubufasha.",
 
   "paymentError": "Ubusabe bwo kwishyura bwananiranye. Nyamuneka wishyure ukoresha amabwiriza hano epfo.",
   "paymentCopyNumber": "Kopi nimero",

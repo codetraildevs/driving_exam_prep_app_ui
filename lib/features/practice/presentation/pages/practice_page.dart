@@ -6,6 +6,7 @@ import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_provider.dart';
 import '../../../../shared/subscription/subscription_provider.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 import '../../../exam/data/models/exam_model.dart';
 import '../../../exam/data/repositories/exam_repository.dart';
 
@@ -71,47 +72,57 @@ class _PracticePageState extends State<PracticePage> {
     final subscription = context.watch<SubscriptionProvider>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.practiceTitle),
-        elevation: 0,
-      ),
-      body: SafeArea(
-        child: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : _error != null
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.error_outline, size: 48, color: AppColors.error),
-                        const SizedBox(height: 16),
-                        Text(
-                          _error!,
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
-                          textAlign: TextAlign.center,
+      body: Column(
+        children: [
+          AppPageHeader(
+            title: l10n.practiceTitle,
+            showBack: false,
+          ),
+          Expanded(
+            child: SafeArea(
+              top: false,
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _error != null
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.error_outline,
+                                  size: 48, color: AppColors.error),
+                              const SizedBox(height: 16),
+                              Text(
+                                _error!,
+                                style: AppTextStyles.bodyMedium
+                                    .copyWith(color: AppColors.textSecondary),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () => _loadExams(_lastLangCode),
+                                child: Text(l10n.commonRetry),
+                              ),
+                            ],
+                          ),
+                        )
+                      : ListView.builder(
+                          padding: const EdgeInsets.all(16),
+                          itemCount: _exams.length,
+                          itemBuilder: (context, index) {
+                            final exam = _exams[index];
+                            final isLocked =
+                                exam.isPaid && !subscription.hasActiveAccess;
+                            return _ExamCard(
+                              exam: exam,
+                              isLocked: isLocked,
+                              onTap: () => _onExamTap(context, exam),
+                              l10n: l10n,
+                            );
+                          },
                         ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () => _loadExams(_lastLangCode),
-                          child: Text(l10n.commonRetry),
-                        ),
-                      ],
-                    ),
-                  )
-                : ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: _exams.length,
-                    itemBuilder: (context, index) {
-                      final exam = _exams[index];
-                      final isLocked = exam.isPaid && !subscription.hasActiveAccess;
-                      return _ExamCard(
-                        exam: exam,
-                        isLocked: isLocked,
-                        onTap: () => _onExamTap(context, exam),
-                        l10n: l10n,
-                      );
-                    },
-                  ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -882,10 +882,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentMomoPayNumber => 'MoMo Pay: 323294';
 
   @override
+  String get paymentMomoPayDial => 'To pay with MoMo Pay, dial: *182*1*1*323294*amount#';
+
+  @override
   String get paymentMobileMoneyNumber => 'Mobile Money: 0788657595';
 
   @override
+  String get paymentMobileMoneyDial => 'To pay with Mobile Money, dial: *182*8*1*0788657595*amount#';
+
+  @override
   String get paymentHelpText => 'Need help? Call or WhatsApp: 0788657595';
+
+  @override
+  String get paymentHelpContact => 'You can copy or call: 0788657595 or WhatsApp: 0788657595 for help.';
 
   @override
   String get paymentError =>

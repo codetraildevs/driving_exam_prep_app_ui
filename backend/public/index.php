@@ -1548,8 +1548,14 @@ function requestPayment($conn, $params) {
         );
         if ($existing) {
             Logger::info('Duplicate payment request blocked', ['userId' => $userId, 'tier' => $paymentTier, 'existingId' => $existing['id']]);
-            respond(['id' => $existing['id'], 'amount' => $amount, 'status' => 'PENDING', 'duplicate' => true], 200, 'You already have a pending request for this plan. Please wait for confirmation.');
-            return;
+            http_response_code(409);
+            echo json_encode([
+                'success' => false,
+                'message' => 'A payment request for this plan is already pending. Please wait for confirmation or contact support: MoMo Pay 323294 / Mobile Money 0788657595 / Help: 0788657595',
+                'code'    => 'DUPLICATE_TIER_REQUEST',
+                'id'      => $existing['id'],
+            ]);
+            exit;
         }
     }
     
