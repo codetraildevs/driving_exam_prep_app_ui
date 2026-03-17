@@ -1,5 +1,5 @@
-name: traffic_rules_app
-description: Master Traffic Rules. Pass With Confidence.
+name: driveprep_rwanda
+description: Learn Rwanda traffic rules and practice theory questions for the driving licence test.
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -29,7 +29,6 @@ dependencies:
 
   # Local Storage
   shared_preferences: ^2.2.0
-  device_info_plus: ^11.2.1
 
   # HTTP
   http: ^1.1.0
@@ -53,4 +52,12 @@ flutter:
     - assets/images/
     - assets/animations/
     - assets/exams/
-  # Local fonts removed; using `google_fonts` package instead.
+    - assets/icons/
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+  # Make sure the above font files exist in assets/fonts/ and are included in your repository.
+  # If you use google_fonts and set allowRuntimeFetching to false, these files must be present.
