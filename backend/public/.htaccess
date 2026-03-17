@@ -1,6 +1,10 @@
 Options +FollowSymLinks
 RewriteEngine On
 
+# Pass Authorization header through to PHP (required for CGI/FastCGI)
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 # Handle API routes
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

@@ -1,16 +1,17 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
-import '../../../../shared/network/api_config.dart';
+import '../../../../shared/network/api_helper.dart';
+import '../../../../shared/network/offline_cache.dart';
 import '../../../../shared/session/auth_session.dart';
 import '../../../../shared/subscription/subscription_provider.dart';
-import '../../../../shared/widgets/app_page_header.dart';
 
 class ProfilePage extends StatefulWidget {
   /// When [userId] is provided, admin is viewing another user's profile.
@@ -29,12 +30,71 @@ class _ProfilePageState extends State<ProfilePage> {
   bool _loadingTarget = false;
   String? _loadError;
 
+  // Dynamic progress for own profile
+  int _uniqueExamsPassed = 0;
+  static const _kTotalExams = 20;
+  static const _kPassPercent = 90;
+
   bool get _isAdminView => widget.userId != null;
 
   @override
   void initState() {
     super.initState();
-    if (_isAdminView) _loadTargetUser();
+    if (_isAdminView) {
+      _loadTargetUser();
+    } else {
+      _loadProgress();
+    }
+  }
+
+  /// Load exam results to compute certificate progress.
+  Future<void> _loadProgress() async {
+    final authState = context.read<AuthBloc>().state;
+    final userId = authState is AuthAuthenticated ? authState.user.id : null;
+    if (userId == null) return;
+
+    final cache = OfflineCache();
+    final cacheKey = cache.examResultsKey(userId);
+    List<dynamic> results = [];
+
+    try {
+      final res = await ApiHelper().get('/api/exam-results/$userId');
+      if (res.isSuccess) {
+        results = res.dataList;
+        await cache.save(cacheKey, results);
+      } else {
+        final cached = await cache.load(cacheKey);
+        if (cached is List) results = cached;
+      }
+    } catch (_) {
+      final cached = await cache.load(cacheKey);
+      if (cached is List) results = cached;
+    }
+
+    // Deduplicate: latest attempt per examId
+    final unique = <String, Map<String, dynamic>>{};
+    for (final r in results) {
+      if (r is! Map<String, dynamic>) continue;
+      final eid = (r['examId'] ?? '').toString();
+      if (eid.isEmpty || unique.containsKey(eid)) continue;
+      unique[eid] = r;
+    }
+    final passed = unique.values.where((r) {
+      final s = r['score'];
+      final score = s is int ? s : int.tryParse(s?.toString() ?? '') ?? 0;
+      return score >= _kPassPercent;
+    }).length;
+
+    if (mounted) setState(() => _uniqueExamsPassed = passed);
+  }
+
+  /// Mask phone: show first 2 and last 2 digits, e.g. "07******00"
+  String _maskPhone(String phone) {
+    if (phone.length < 5) return phone;
+    final start = phone.substring(0, 2);
+    final end = phone.substring(phone.length - 2);
+    final masked = '*' * (phone.length - 4);
+    return '$start$masked$end';
   }
 
   Future<void> _loadTargetUser() async {
@@ -43,16 +103,9 @@ class _ProfilePageState extends State<ProfilePage> {
       _loadError = null;
     });
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.get(
-        Uri.parse('${ApiConfig.baseUrl}/api/admin/users'),
-        headers: {
-          if (token != null) 'Authorization': 'Bearer $token',
-        },
-      ).timeout(const Duration(seconds: 15));
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+      final result = await ApiHelper().get('/api/admin/users');
+      if (result.isSuccess) {
+        final data = result.data;
         final users = (data is List) ? data : (data['users'] ?? data['data'] ?? []);
         final found = users.firstWhere(
           (u) => u['id']?.toString() == widget.userId,
@@ -62,8 +115,14 @@ class _ProfilePageState extends State<ProfilePage> {
           _targetUser = found != null ? Map<String, dynamic>.from(found) : null;
           if (_targetUser == null) _loadError = 'User not found';
         });
+      } else if (result.statusCode == 401) {
+        if (mounted) {
+          await AuthSession().clear();
+          if (mounted) context.go('/login');
+        }
+        return;
       } else {
-        setState(() => _loadError = 'Failed to load user');
+        setState(() => _loadError = result.errorMessage ?? 'Failed to load user');
       }
     } catch (e) {
       setState(() => _loadError = e.toString());
@@ -74,17 +133,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _grantAccess(String tier, AppLocalizations l10n) async {
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/api/admin/users/${widget.userId}/grant-access'),
-        headers: {
-          if (token != null) 'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({'tier': tier}),
-      ).timeout(const Duration(seconds: 15));
+      final result = await ApiHelper().post(
+        '/api/admin/users/${widget.userId}/grant-access',
+        body: {'tier': tier},
+      );
 
-      if ((response.statusCode == 200 || response.statusCode == 201) && mounted) {
+      if (result.statusCode == 401 && mounted) {
+        await AuthSession().clear();
+        if (mounted) context.go('/login');
+        return;
+      }
+
+      if (result.isSuccess && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(l10n.adminAccessGranted), backgroundColor: AppColors.success),
         );
@@ -101,17 +161,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _markCalled(String notes, AppLocalizations l10n) async {
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/api/admin/users/${widget.userId}/mark-called'),
-        headers: {
-          if (token != null) 'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({'notes': notes}),
-      ).timeout(const Duration(seconds: 15));
+      final result = await ApiHelper().post(
+        '/api/admin/users/${widget.userId}/mark-called',
+        body: {'notes': notes},
+      );
 
-      if ((response.statusCode == 200 || response.statusCode == 201) && mounted) {
+      if (result.statusCode == 401 && mounted) {
+        await AuthSession().clear();
+        if (mounted) context.go('/login');
+        return;
+      }
+
+      if (result.isSuccess && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(l10n.adminCallLogged), backgroundColor: AppColors.success),
         );
@@ -202,43 +263,15 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void _showCallSheet(AppLocalizations l10n) {
-    final notesController = TextEditingController();
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-      builder: (ctx) => Padding(
-        padding: EdgeInsets.only(
-          left: 20, right: 20, top: 20,
-          bottom: MediaQuery.of(ctx).viewInsets.bottom + 20,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(l10n.adminCallUser, style: AppTextStyles.heading5),
-            const SizedBox(height: 12),
-            TextField(
-              controller: notesController,
-              decoration: InputDecoration(
-                hintText: l10n.adminEnterCallNotes,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-              maxLines: 3,
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(ctx).pop();
-                _markCalled(notesController.text, l10n);
-              },
-              child: Text(l10n.adminSubmitCall),
-            ),
-          ],
-        ),
-      ),
-    );
+  Future<void> _callUserDirect(AppLocalizations l10n) async {
+    final phone = (_targetUser?['phoneNumber'] ?? _targetUser?['phone_number'] ?? '').toString();
+    if (phone.isEmpty) return;
+    final uri = Uri(scheme: 'tel', path: phone);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
+    // Mark as called in backend
+    _markCalled('', l10n);
   }
 
   @override
@@ -286,32 +319,96 @@ class _ProfilePageState extends State<ProfilePage> {
           final screenWidth = MediaQuery.of(context).size.width;
           final maxContentWidth = screenWidth > 600 ? 500.0 : double.infinity;
 
-          return SafeArea(
-            child: Column(
+          final topPadding = MediaQuery.of(context).padding.top;
+          return Column(
               children: [
-                // Header
+                // Curved gradient header with avatar
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  height: 56,
+                  width: double.infinity,
+                  padding: EdgeInsets.fromLTRB(20, topPadding + 12, 20, 24),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    border: Border(
-                      bottom: BorderSide(color: primary.withValues(alpha: 0.1)),
-                    ),
+                    gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
+                    borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
                   ),
-                  child: Row(
+                  child: Column(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        onPressed: () => context.go('/home'),
+                      // Title row
+                      Row(
+                        children: [
+                          const SizedBox(width: 40), // balance for centering
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                l10n.profileTitle,
+                                style: AppTextStyles.heading5.copyWith(
+                                  color: AppColors.textInverse,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 40),
+                        ],
                       ),
-                      Expanded(
+                      const SizedBox(height: 16),
+                      // Avatar
+                      Container(
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withValues(alpha: 0.2),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.4), width: 3),
+                        ),
                         child: Center(
                           child: Text(
-                            l10n.profileTitle,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                            user.name.trim().isNotEmpty
+                                ? user.name.trim()[0].toUpperCase()
+                                : '?',
+                            style: const TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textInverse,
+                            ),
                           ),
                         ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        user.name,
+                        style: AppTextStyles.heading4.copyWith(color: AppColors.textInverse),
+                      ),
+                      const SizedBox(height: 4),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          user.role,
+                          style: const TextStyle(
+                            color: AppColors.textInverse,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.location_on, size: 14, color: AppColors.textInverse),
+                          const SizedBox(width: 4),
+                          Text(
+                            l10n.profileLocation,
+                            style: TextStyle(
+                              color: AppColors.textInverse.withValues(alpha: 0.85),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -328,73 +425,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            // Avatar
-                            Column(
-                              children: [
-                                Container(
-                                  width: 120,
-                                  height: 120,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: primary.withValues(alpha: 0.3),
-                                        blurRadius: 20,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      user.name.trim().isNotEmpty
-                                          ? user.name.trim()[0].toUpperCase()
-                                          : '?',
-                                      style: const TextStyle(
-                                        fontSize: 40,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.textInverse,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Text(user.name, style: AppTextStyles.heading3),
-                                const SizedBox(height: 6),
-                                // Role badge
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: primary.withValues(alpha: 0.12),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    user.role,
-                                    style: TextStyle(
-                                      color: primary,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.location_on, size: 16, color: primary),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      l10n.profileLocation,
-                                      style: TextStyle(
-                                        color: primary,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 28),
+                            const SizedBox(height: 8),
 
                             // Info card
                             Container(
@@ -424,7 +455,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             const SizedBox(height: 20),
 
                             // Progress card
-                            Container(
+                            Builder(builder: (context) {
+                              final passed = _uniqueExamsPassed;
+                              final total = _kTotalExams;
+                              final pct = total > 0 ? (passed / total).clamp(0.0, 1.0) : 0.0;
+                              final pctInt = (pct * 100).toInt();
+                              return Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.surface,
@@ -444,7 +480,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         ),
                                       ),
                                       Text(
-                                        '75%',
+                                        '$pctInt%',
                                         style: TextStyle(fontWeight: FontWeight.bold, color: primary),
                                       ),
                                     ],
@@ -453,7 +489,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(20),
                                     child: LinearProgressIndicator(
-                                      value: 0.75,
+                                      value: pct,
                                       minHeight: 10,
                                       backgroundColor: primary.withValues(alpha: 0.1),
                                       color: primary,
@@ -461,12 +497,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    l10n.profileModulesCompleted(15, 20),
+                                    l10n.profileModulesCompleted(passed, total),
                                     style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6)),
                                   ),
                                 ],
                               ),
-                            ),
+                            );
+                            }),
 
                             const SizedBox(height: 24),
 
@@ -489,7 +526,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
 
                             const SizedBox(height: 8),
-
+                            _menuTile(
+                              context: context,
+                              icon: Icons.verified_rounded,
+                              title: l10n.profileCertificatesTitle,
+                              subtitle: l10n.profileCertificatesSubtitle,
+                              onTap: () => context.push('/certificates'),
+                            ),
+  const SizedBox(height: 8),
                             // Subscription tile — always visible so users can
                             // view their active access status or request access.
                             Builder(builder: (context) {
@@ -537,7 +581,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ],
-            ),
           );
         },
       ),
@@ -709,7 +752,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () => _showCallSheet(l10n),
+                    onPressed: () => _callUserDirect(l10n),
                     icon: const Icon(Icons.phone),
                     label: Text(l10n.adminCallUser),
                     style: ElevatedButton.styleFrom(
@@ -734,6 +777,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _showDeleteDialog(BuildContext context, AppLocalizations l10n) {
+    final textColor = Theme.of(context).colorScheme.onSurface;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -742,7 +786,7 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             const Icon(Icons.warning_amber_rounded, color: AppColors.error, size: 28),
             const SizedBox(width: 10),
-            Expanded(child: Text(l10n.profileDeleteConfirmTitle)),
+            Expanded(child: Text(l10n.profileDeleteConfirmTitle, style: TextStyle(color: textColor))),
           ],
         ),
         content: SingleChildScrollView(
@@ -760,13 +804,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 child: Text(
                   l10n.profileDeleteInstructions,
-                  style: const TextStyle(fontSize: 13, height: 1.6),
+                  style: TextStyle(fontSize: 13, height: 1.6, color: textColor),
                 ),
               ),
               const SizedBox(height: 12),
               Text(
                 l10n.profileDeleteConfirmMessage,
-                style: const TextStyle(fontWeight: FontWeight.w500),
+                style: TextStyle(fontWeight: FontWeight.w500, color: textColor),
               ),
             ],
           ),
@@ -778,9 +822,13 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(ctx);
-              context.read<AuthBloc>().add(const SignOutEvent());
-              context.go('/landing');
+              final authState = context.read<AuthBloc>().state;
+              if (authState is AuthAuthenticated) {
+                Navigator.pop(ctx);
+                context.read<AuthBloc>().add(
+                  DeleteAccountEvent(userId: authState.user.id),
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
@@ -795,6 +843,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _showLogoutDialog(BuildContext context, AppLocalizations l10n) {
     final primary = Theme.of(context).colorScheme.primary;
+    final textColor = Theme.of(context).colorScheme.onSurface;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -803,10 +852,10 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             const Icon(Icons.logout, color: AppColors.warning, size: 26),
             const SizedBox(width: 10),
-            Expanded(child: Text(l10n.profileLogoutConfirmTitle)),
+            Expanded(child: Text(l10n.profileLogoutConfirmTitle, style: TextStyle(color: textColor))),
           ],
         ),
-        content: Text(l10n.profileLogoutConfirmMessage),
+        content: Text(l10n.profileLogoutConfirmMessage, style: TextStyle(color: textColor)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -816,7 +865,6 @@ class _ProfilePageState extends State<ProfilePage> {
             onPressed: () {
               Navigator.pop(ctx);
               context.read<AuthBloc>().add(const SignOutEvent());
-              context.go('/landing');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: primary,

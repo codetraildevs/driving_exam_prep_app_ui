@@ -52,6 +52,47 @@ class ApiHelper {
     }
   }
 
+  /// Performs a PATCH request with auth token and debug logging.
+  Future<ApiResponse> patch(String path, {Map<String, dynamic>? body}) async {
+    final uri = _buildUri(path);
+    _logRequest('PATCH', uri, body: body);
+    try {
+      final token = await AuthSession().getToken();
+      final response = await http.patch(
+        uri,
+        headers: _headers(token),
+        body: body != null ? json.encode(body) : null,
+      ).timeout(const Duration(seconds: 20));
+      return _processResponse('PATCH', uri, response);
+    } on SocketException catch (e) {
+      return _networkError('PATCH', uri, 'No internet connection: $e');
+    } on http.ClientException catch (e) {
+      return _networkError('PATCH', uri, 'Connection failed: $e');
+    } catch (e) {
+      return _networkError('PATCH', uri, '$e');
+    }
+  }
+
+  /// Performs a DELETE request with auth token and debug logging.
+  Future<ApiResponse> delete(String path) async {
+    final uri = _buildUri(path);
+    _logRequest('DELETE', uri);
+    try {
+      final token = await AuthSession().getToken();
+      final response = await http.delete(
+        uri,
+        headers: _headers(token),
+      ).timeout(const Duration(seconds: 20));
+      return _processResponse('DELETE', uri, response);
+    } on SocketException catch (e) {
+      return _networkError('DELETE', uri, 'No internet connection: $e');
+    } on http.ClientException catch (e) {
+      return _networkError('DELETE', uri, 'Connection failed: $e');
+    } catch (e) {
+      return _networkError('DELETE', uri, '$e');
+    }
+  }
+
   Uri _buildUri(String path, [Map<String, String>? queryParams]) {
     final base = Uri.parse(ApiConfig.baseUrl);
     return base.replace(
@@ -78,12 +119,23 @@ class ApiHelper {
     final isSuccess = response.statusCode >= 200 && response.statusCode < 300;
     String? errorMessage;
     if (!isSuccess) {
-      if (data is Map) {
+      if (response.statusCode == 401) {
+        // Token expired or invalid — clear local session so user is forced to re-login.
+        AuthSession().clear();
+        errorMessage = 'Session expired. Please log in again.';
+      } else if (response.statusCode == 403) {
+        errorMessage = 'Insufficient permissions for this operation.';
+      } else if (data is Map) {
         errorMessage = (data['message'] ?? data['error'] ?? '').toString();
       }
       if (errorMessage == null || errorMessage.isEmpty) {
         errorMessage = 'HTTP ${response.statusCode}';
       }
+    }
+
+    // Unwrap common API envelope: {success: true, data: <payload>}
+    if (isSuccess && data is Map && data.containsKey('data')) {
+      data = data['data'];
     }
 
     return ApiResponse(
@@ -96,7 +148,7 @@ class ApiHelper {
   }
 
   ApiResponse _networkError(String method, Uri uri, String error) {
-    debugPrint('❌ API ERROR [$method $uri]: $error');
+    if (kDebugMode) debugPrint('❌ API ERROR [$method $uri]: $error');
     return ApiResponse(
       statusCode: 0,
       data: null,
@@ -107,6 +159,7 @@ class ApiHelper {
   }
 
   void _logRequest(String method, Uri uri, {Map<String, dynamic>? body}) {
+    if (!kDebugMode) return;
     debugPrint('🌐 API REQUEST: $method $uri');
     if (body != null) {
       debugPrint('   Body: ${json.encode(body)}');
@@ -114,6 +167,7 @@ class ApiHelper {
   }
 
   void _logResponse(String method, Uri uri, http.Response response) {
+    if (!kDebugMode) return;
     final status = response.statusCode;
     final icon = (status >= 200 && status < 300) ? '✅' : '⚠️';
     debugPrint('$icon API RESPONSE: $method $uri → $status');
@@ -145,7 +199,10 @@ class ApiResponse {
   List<dynamic> get dataList {
     if (data is List) return data as List;
     if (data is Map) {
-      return (data['users'] ?? data['results'] ?? data['data'] ?? []) as List;
+      for (final key in ['users', 'results', 'codes', 'payments', 'data']) {
+        final val = data[key];
+        if (val is List) return val;
+      }
     }
     return [];
   }

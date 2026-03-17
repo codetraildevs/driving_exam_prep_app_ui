@@ -87,19 +87,25 @@ if ($path === '' || $path === '/index.php') {
 
 // Check if this is a protected route and validate token
 $routeKey = "$method:$path";
-$isPublicRoute = false;
-foreach ($publicRoutes as $pubRoute) {
-    if ($pubRoute === $routeKey || (strpos($pubRoute, ':') && strpos($path, substr($pubRoute, strpos($pubRoute, ':') + 1)) === 0)) {
-        $isPublicRoute = true;
-        break;
-    }
-}
+$isPublicRoute = in_array($routeKey, $publicRoutes, true);
 
 $tokenData = null;
 if (!$isPublicRoute) {
     $authToken = SecurityUtils::getTokenFromHeaders();
     if (!$authToken) {
-        Logger::security('Unauthorized access attempt to protected route', ['path' => $path, 'method' => $method]);
+        // Log available headers to help diagnose Authorization stripping
+        $debugHeaders = [];
+        if (function_exists('getallheaders')) {
+            $debugHeaders['getallheaders'] = array_keys(array_change_key_case(getallheaders(), CASE_LOWER));
+        }
+        foreach (['HTTP_AUTHORIZATION', 'REDIRECT_HTTP_AUTHORIZATION', 'REDIRECT_REDIRECT_HTTP_AUTHORIZATION'] as $k) {
+            if (isset($_SERVER[$k])) $debugHeaders[$k] = 'present';
+        }
+        Logger::security('Unauthorized access attempt to protected route', [
+            'path' => $path,
+            'method' => $method,
+            'headers_debug' => $debugHeaders,
+        ]);
         ErrorHandler::unauthorized('Missing or invalid authorization token');
     }
     
@@ -156,6 +162,8 @@ $routes = [
     
     // Exam Results
     ['POST', '/api/exam-results', 'submitExamResult'],
+    ['POST', '/api/practice-results', 'submitPracticeResult'],
+    ['POST', '/api/practice-results/reset', 'resetPracticeResults'],
     ['GET', '/api/exam-results/:userId', 'getUserResults'],
     ['GET', '/api/exam-results', 'getAllResults'],
     
@@ -318,6 +326,11 @@ function authRegister($conn, $params) {
     if (!SecurityUtils::isValidRole($role)) {
         $role = 'USER';
     }
+
+    $preferredLanguage = 'en';
+    if (!empty($input['preferredLanguage']) && in_array($input['preferredLanguage'], ['en', 'fr', 'rw'])) {
+        $preferredLanguage = $input['preferredLanguage'];
+    }
     
     // Check existing phone
     $existing = Database::fetchOne($conn, 'SELECT id, deviceId FROM users WHERE phoneNumber = ? LIMIT 1', 's', [&$phone]);
@@ -342,9 +355,9 @@ function authRegister($conn, $params) {
     $now = date('Y-m-d H:i:s');
     
     $result = Database::insert($conn, 
-        'INSERT INTO users (id, fullName, phoneNumber, deviceId, role, isActive, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, 1, ?, ?)',
-        'sssssss',
-        [&$id, &$name, &$phone, &$device, &$role, &$now, &$now]
+        'INSERT INTO users (id, fullName, phoneNumber, deviceId, role, isActive, preferredLanguage, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?)',
+        'ssssssss',
+        [&$id, &$name, &$phone, &$device, &$role, &$preferredLanguage, &$now, &$now]
     );
     
     if ($result !== null) {
@@ -393,7 +406,7 @@ function authLogin($conn, $params) {
     
     if (!$user) {
         Logger::warning('Login attempt with non-existent user', ['phone' => substr($phone, -4)]);
-        ErrorHandler::unauthorized('Invalid phone or password');
+        ErrorHandler::unauthorized('Phone number not registered. Please register first.');
     }
     
     // Check if account is active
@@ -1071,6 +1084,85 @@ function submitExamResult($conn, $params) {
     respond(['id' => $id, 'score' => $score, 'passed' => (bool)$passed], 201, 'Exam submitted');
 }
 
+function submitPracticeResult($conn, $params) {
+    global $tokenData;
+    
+    $input = getInput();
+    
+    $validation = SecurityUtils::validateRequired($input, ['userId', 'examId', 'score', 'totalQuestions', 'correctAnswers']);
+    if ($validation) {
+        ErrorHandler::badRequest($validation);
+    }
+    
+    $userId = SecurityUtils::sanitizeString($input['userId']);
+    $examId = SecurityUtils::sanitizeString($input['examId']);
+    
+    // Only allow users to submit their own results
+    if ($tokenData['userId'] !== $userId && $tokenData['role'] !== 'ADMIN') {
+        ErrorHandler::forbidden('You can only submit your own practice results');
+    }
+    
+    $score = intval($input['score']);
+    $totalQuestions = intval($input['totalQuestions']);
+    $correctAnswers = intval($input['correctAnswers']);
+    $timeSpent = intval($input['timeSpent'] ?? 0);
+    $passed = ($score >= 60) ? 1 : 0;
+    
+    if ($totalQuestions <= 0 || $correctAnswers < 0 || $correctAnswers > $totalQuestions) {
+        ErrorHandler::badRequest('Invalid question/answer counts');
+    }
+    if ($score < 0 || $score > 100) {
+        ErrorHandler::badRequest('Score must be between 0 and 100');
+    }
+    
+    $id = generateUUID();
+    $now = date('Y-m-d H:i:s');
+    $answersJson = json_encode([]);
+    $qresJson = json_encode([]);
+    $isFreeExam = 1;
+    
+    $result = Database::insert($conn,
+        'INSERT INTO exam_results (id, userId, examId, score, totalQuestions, correctAnswers, timeSpent, answers, passed, completedAt, isFreeExam, createdAt, updatedAt, questionResults) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        'sssiiiisisiiss',
+        [&$id, &$userId, &$examId, &$score, &$totalQuestions, &$correctAnswers, &$timeSpent, &$answersJson, &$passed, &$now, &$isFreeExam, &$now, &$now, &$qresJson]
+    );
+    
+    if (!$result) {
+        Logger::error('Failed to save practice result', ['userId' => $userId, 'examId' => $examId]);
+        ErrorHandler::serverError('Failed to save practice result');
+    }
+    
+    Logger::info('Practice result submitted', ['resultId' => $id, 'userId' => $userId, 'examId' => $examId, 'score' => $score]);
+    respond(['id' => $id, 'score' => $score, 'passed' => (bool)$passed], 201, 'Practice result saved');
+}
+
+function resetPracticeResults($conn, $params) {
+    global $tokenData;
+    
+    $input = getInput();
+    
+    $validation = SecurityUtils::validateRequired($input, ['userId']);
+    if ($validation) {
+        ErrorHandler::badRequest($validation);
+    }
+    
+    $userId = SecurityUtils::sanitizeString($input['userId']);
+    
+    // Only allow users to reset their own results, or ADMIN for any user
+    if ($tokenData['userId'] !== $userId && $tokenData['role'] !== 'ADMIN') {
+        ErrorHandler::forbidden('You can only reset your own practice results');
+    }
+    
+    $stmt = $conn->prepare('DELETE FROM exam_results WHERE userId = ?');
+    $stmt->bind_param('s', $userId);
+    $stmt->execute();
+    $deleted = $stmt->affected_rows;
+    $stmt->close();
+    
+    Logger::info('Practice results reset', ['userId' => $userId, 'deleted' => $deleted]);
+    respond(['deleted' => $deleted], 200, 'Practice results reset successfully');
+}
+
 function getUserResults($conn, $params) {
     global $tokenData;
     
@@ -1246,11 +1338,15 @@ function updateUser($conn, $params) {
 
 function deleteUser($conn, $params) {
     global $tokenData;
-    requireRole($tokenData, ['ADMIN', 'MANAGER']);
-    
     $id = SecurityUtils::sanitizeString($params['id']);
     if (!$id) {
         ErrorHandler::badRequest('Invalid user ID');
+    }
+    
+    // Allow admins/managers to delete any user, or users to delete themselves
+    $isSelf = isset($tokenData['userId']) && $tokenData['userId'] === $id;
+    if (!$isSelf) {
+        requireRole($tokenData, ['ADMIN', 'MANAGER']);
     }
     
     $affected = Database::query($conn, 'DELETE FROM users WHERE id = ?', 's', [&$id]);
@@ -1552,7 +1648,7 @@ function requestPayment($conn, $params) {
         http_response_code(409);
         echo json_encode([
             'success' => false,
-            'message' => 'A payment request is already pending for your account. Please wait for activation or pay manually: MoMo Pay 323294 / Mobile Money 0788657595 / Help: 0788657595',
+            'message' => 'A payment request is already pending for your account. Please wait for activation or pay manually: MoMo Pay 323294 / Mobile Money 0788659575 / Help: 0788659575',
             'code'    => 'DUPLICATE_REQUEST',
         ]);
         exit;
@@ -1570,7 +1666,7 @@ function requestPayment($conn, $params) {
             http_response_code(409);
             echo json_encode([
                 'success' => false,
-                'message' => 'A payment request for this plan is already pending. Please wait for confirmation or contact support: MoMo Pay 323294 / Mobile Money 0788657595 / Help: 0788657595',
+                'message' => 'A payment request for this plan is already pending. Please wait for confirmation or contact support: MoMo Pay 323294 / Mobile Money 0788659575 / Help: 0788659575',
                 'code'    => 'DUPLICATE_TIER_REQUEST',
                 'id'      => $existing['id'],
             ]);
@@ -1578,18 +1674,27 @@ function requestPayment($conn, $params) {
         }
     }
     
-    $id = 'pay_' . generateUUID();
+    $id = generateUUID();
     $now = date('Y-m-d H:i:s');
     $status = 'PENDING';
     
     // Store paymentTier in paymentMethod field for tracking
     $methodWithTier = !empty($paymentTier) ? $paymentTier : $method;
     
-    $result = Database::insert($conn,
-        'INSERT INTO payment_requests (id, userId, examId, amount, paymentMethod, status, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        'sssdssss',
-        [&$id, &$userId, &$examId, &$amount, &$methodWithTier, &$status, &$now, &$now]
-    );
+    // Omit examId when empty to avoid strict-mode issues with char(36)
+    if (!empty($examId)) {
+        $result = Database::insert($conn,
+            'INSERT INTO payment_requests (id, userId, examId, amount, paymentMethod, status, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            'sssdssss',
+            [&$id, &$userId, &$examId, &$amount, &$methodWithTier, &$status, &$now, &$now]
+        );
+    } else {
+        $result = Database::insert($conn,
+            'INSERT INTO payment_requests (id, userId, amount, paymentMethod, status, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            'ssdssss',
+            [&$id, &$userId, &$amount, &$methodWithTier, &$status, &$now, &$now]
+        );
+    }
     
     if ($result) {
         Logger::info('Payment request created', ['paymentId' => $id, 'userId' => $userId, 'amount' => $amount, 'tier' => $paymentTier]);

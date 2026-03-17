@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
@@ -13,9 +14,16 @@ class LandingPage extends StatelessWidget {
     final isMobile = width < 768;
     final l10n = AppLocalizations.of(context);
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.black,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+      ),
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        body: SingleChildScrollView(
           child: Column(
             children: [
               _buildHeroSection(context, isMobile, l10n),
@@ -32,16 +40,20 @@ class LandingPage extends StatelessWidget {
   // ================= HERO SECTION =================
 
   Widget _buildHeroSection(BuildContext context, bool isMobile, AppLocalizations l10n) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 24 : 80,
-        vertical: isMobile ? 48 : 100,
-      ),
-      decoration: BoxDecoration(
-        gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
-      ),
-      child: isMobile
+    return ClipPath(
+      clipper: _CurvedHeaderClipper(),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.only(
+          left: isMobile ? 24 : 80,
+          right: isMobile ? 24 : 80,
+          top: isMobile ? 48 : 100,
+          bottom: isMobile ? 88 : 140,
+        ),
+        decoration: BoxDecoration(
+          gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
+        ),
+        child: isMobile
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -67,6 +79,7 @@ class LandingPage extends StatelessWidget {
                 ),
               ],
             ),
+      ),
     );
   }
 
@@ -310,4 +323,20 @@ class _StepItem extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Clips the bottom edge of a container into a smooth downward curve.
+class _CurvedHeaderClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path()
+      ..lineTo(0, size.height - 40)
+      ..quadraticBezierTo(size.width / 2, size.height + 20, size.width, size.height - 40)
+      ..lineTo(size.width, 0)
+      ..close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }

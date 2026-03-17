@@ -14,6 +14,7 @@ class AuthRepository {
   Future<UserModel?> signUp({
     required String fullName,
     required String phoneNumber,
+    String preferredLanguage = 'en',
   }) async {
     try {
       final deviceId = await _deviceId.getOrCreate();
@@ -27,6 +28,7 @@ class AuthRepository {
           'fullName': fullName,
           'phoneNumber': phoneNumber,
           'deviceId': deviceId,
+          'preferredLanguage': preferredLanguage,
         },
       );
       if (kDebugMode) {
@@ -106,17 +108,33 @@ class AuthRepository {
   Future<void> signOut() async {
     try {
       final token = await _session.getToken();
+      // Clear local session FIRST so UI updates immediately.
+      await _session.clear();
       if (token != null && token.isNotEmpty) {
-        // Best-effort; ignore errors to ensure local session is cleared.
-        try {
-          await _api.post(
-            ApiEndpoints.authLogout,
-            headers: {'Authorization': 'Bearer $token'},
-          );
-        } catch (_) {}
+        // Fire-and-forget server logout; don't block UI.
+        _api.post(
+          ApiEndpoints.authLogout,
+          headers: {'Authorization': 'Bearer $token'},
+        ).catchError((_) {});
       }
+    } catch (e) {
+      // Ensure session is cleared even if getToken() throws.
+      await _session.clear();
+      rethrow;
+    }
+  }
+
+  Future<void> deleteAccount(String userId) async {
+    try {
+      final token = await _session.getToken();
+      await _api.delete(
+        ApiEndpoints.user(userId),
+        headers: token == null ? null : {'Authorization': 'Bearer $token'},
+      );
       await _session.clear();
     } catch (e) {
+      // Ensure session is cleared even if the server call fails.
+      await _session.clear();
       rethrow;
     }
   }

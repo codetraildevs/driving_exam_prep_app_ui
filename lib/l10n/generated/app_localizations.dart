@@ -103,7 +103,7 @@ abstract class AppLocalizations {
   /// The title of the application
   ///
   /// In en, this message translates to:
-  /// **'Traffic Rules Learning App'**
+  /// **'DrivePrep Rwanda'**
   String get appTitle;
 
   /// Title on the first-run language selector screen
@@ -277,7 +277,7 @@ abstract class AppLocalizations {
   /// About app title
   ///
   /// In en, this message translates to:
-  /// **'About Traffic Rules App'**
+  /// **'About DrivePrep Rwanda'**
   String get settingsAboutApp;
 
   /// App version with interpolation
@@ -487,13 +487,13 @@ abstract class AppLocalizations {
   /// App brand name on auth pages
   ///
   /// In en, this message translates to:
-  /// **'RWANDA TRAFFIC RULES'**
+  /// **'DRIVEPREP RWANDA'**
   String get authAppName;
 
   /// Subtitle on auth pages
   ///
   /// In en, this message translates to:
-  /// **'Official Driving License Learning Platform'**
+  /// **'Prepare for Your Provisional Driving Licence'**
   String get authSubtitle;
 
   /// Login page title
@@ -529,7 +529,7 @@ abstract class AppLocalizations {
   /// Phone number placeholder
   ///
   /// In en, this message translates to:
-  /// **'0788 000 000'**
+  /// **'07** *** ***'**
   String get authPhoneHint;
 
   /// Continue button text
@@ -553,7 +553,7 @@ abstract class AppLocalizations {
   /// Brand tagline on auth pages
   ///
   /// In en, this message translates to:
-  /// **'Secure • Fast • Official Road App'**
+  /// **'Secure • Fast • DrivePrep Rwanda'**
   String get authSecureTag;
 
   /// Phone validation error
@@ -561,6 +561,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter your phone number'**
   String get loginPhoneRequired;
+
+  /// Login phone format validation error
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number (e.g. 078... or +250 78...)'**
+  String get loginInvalidPhone;
 
   /// Registration page title
   ///
@@ -673,7 +679,7 @@ abstract class AppLocalizations {
   /// Practice page title
   ///
   /// In en, this message translates to:
-  /// **'Practice Quiz'**
+  /// **'Practice '**
   String get practiceTitle;
 
   /// Practice category
@@ -976,10 +982,10 @@ abstract class AppLocalizations {
   /// **'Mock Exam {number}'**
   String progressMockExam(int number);
 
-  /// Practice quiz name
+  /// Practice Exams name
   ///
   /// In en, this message translates to:
-  /// **'Practice Quiz'**
+  /// **'Practice Exams'**
   String get progressPracticeQuiz;
 
   /// Profile page title
@@ -1243,25 +1249,31 @@ abstract class AppLocalizations {
   /// MoMo pay number
   ///
   /// In en, this message translates to:
-  /// **'MoMo Pay: 323294'**
+  /// **'MoMo Pay: 329494'**
   String get subscriptionPaymentMomo;
 
   /// Mobile money number
   ///
   /// In en, this message translates to:
-  /// **'Mobile Money: 0788657595'**
+  /// **'Mobile Money: 0788659575'**
   String get subscriptionPaymentMobile;
+
+  /// No description provided for @subscriptionPaymentTigoCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Tigo Cash: 0728877442'**
+  String get subscriptionPaymentTigoCash;
 
   /// Help call number
   ///
   /// In en, this message translates to:
-  /// **'Call: 0788657595'**
+  /// **'Call: 0788659575'**
   String get subscriptionHelpCall;
 
   /// Help WhatsApp number
   ///
   /// In en, this message translates to:
-  /// **'WhatsApp: 0788657595'**
+  /// **'WhatsApp: 0788659575'**
   String get subscriptionHelpWhatsapp;
 
   /// Choose plan label
@@ -1711,37 +1723,49 @@ abstract class AppLocalizations {
   /// MoMo pay number
   ///
   /// In en, this message translates to:
-  /// **'MoMo Pay: 323294'**
+  /// **'MoMo Pay: 329494'**
   String get paymentMomoPayNumber;
 
   /// MoMo Pay dial instruction
   ///
   /// In en, this message translates to:
-  /// **'To pay with MoMo Pay, dial: *182*1*1*323294*amount#'**
+  /// **'To pay with MoMo Pay, dial: *182*1*1*329494*amount#'**
   String get paymentMomoPayDial;
 
   /// Mobile money number
   ///
   /// In en, this message translates to:
-  /// **'Mobile Money: 0788657595'**
+  /// **'Mobile Money: 0788659575'**
   String get paymentMobileMoneyNumber;
+
+  /// No description provided for @paymentTigoCashNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Tigo Cash: 0728877442'**
+  String get paymentTigoCashNumber;
 
   /// Mobile Money dial instruction
   ///
   /// In en, this message translates to:
-  /// **'To pay with Mobile Money, dial: *182*8*1*0788657595*amount#'**
+  /// **'To pay with Mobile Money, dial: *182*8*1*0788659575*amount#'**
   String get paymentMobileMoneyDial;
+
+  /// No description provided for @paymentTigoCashDial.
+  ///
+  /// In en, this message translates to:
+  /// **'To pay with Tigo Cash, dial *182*1*2*0728877442*amount#'**
+  String get paymentTigoCashDial;
 
   /// Payment help text
   ///
   /// In en, this message translates to:
-  /// **'Need help? Call or WhatsApp: 0788657595'**
+  /// **'Need help? Call or WhatsApp: 0788659575'**
   String get paymentHelpText;
 
   /// Payment help contact line
   ///
   /// In en, this message translates to:
-  /// **'You can copy or call: 0788657595 or WhatsApp: 0788657595 for help.'**
+  /// **'You can copy or call: 0788659575 or WhatsApp: 0788659575 for help.'**
   String get paymentHelpContact;
 
   /// Payment error message
@@ -1759,13 +1783,19 @@ abstract class AppLocalizations {
   /// Call phone number button
   ///
   /// In en, this message translates to:
-  /// **'Call 0788657595'**
+  /// **'Call 0788659575'**
   String get paymentCallNumber;
+
+  /// No description provided for @paymentCallTigoNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Call 0728877442'**
+  String get paymentCallTigoNumber;
 
   /// WhatsApp button label
   ///
   /// In en, this message translates to:
-  /// **'WhatsApp: Send Message'**
+  /// **'Send Message on WhatsApp'**
   String get paymentWhatsApp;
 
   /// WhatsApp message text for payment request
@@ -2320,14 +2350,395 @@ abstract class AppLocalizations {
   /// **'10 meters'**
   String get examSampleQ3A4;
 
-  /// No description provided for @examShareResult.
+  /// Share result button on exam result page
+  ///
+  /// In en, this message translates to:
+  /// **'Share Result'**
   String get examShareResult;
 
-  /// No description provided for @examCopiedToClipboard.
+  /// Snackbar after copying result to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'Result copied to clipboard'**
   String get examCopiedToClipboard;
 
-  /// No description provided for @examGradeLabel.
+  /// Grade label on exam result page
+  ///
+  /// In en, this message translates to:
+  /// **'Grade'**
   String get examGradeLabel;
+
+  /// Popular badge on subscription plan card
+  ///
+  /// In en, this message translates to:
+  /// **'★ Popular'**
+  String get subscriptionPopular;
+
+  /// Label for time spent on quiz results
+  ///
+  /// In en, this message translates to:
+  /// **'Time Taken'**
+  String get quizTimeTaken;
+
+  /// Label for total questions stat
+  ///
+  /// In en, this message translates to:
+  /// **'Total Questions'**
+  String get progressTotalQuestions;
+
+  /// Label for correct answers stat
+  ///
+  /// In en, this message translates to:
+  /// **'Correct'**
+  String get progressCorrectAnswers;
+
+  /// Label for incorrect answers stat
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect'**
+  String get progressIncorrect;
+
+  /// Network error message shown when device is offline
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to connect. Please check your internet connection and try again.'**
+  String get errorNetwork;
+
+  /// Title for payment method modal
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Payment Method'**
+  String get paymentChooseMethod;
+
+  /// About page title
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get aboutTitle;
+
+  /// App name on about page
+  ///
+  /// In en, this message translates to:
+  /// **'DrivePrep Rwanda'**
+  String get aboutAppName;
+
+  /// About app description
+  ///
+  /// In en, this message translates to:
+  /// **'DrivePrep Rwanda is your companion for learning Rwanda traffic rules, road signs, and practicing theory questions to prepare for the provisional driving licence test. This is an independent educational app and is not affiliated with any government authority.'**
+  String get aboutDescription;
+
+  /// Features section title
+  ///
+  /// In en, this message translates to:
+  /// **'Key Features'**
+  String get aboutFeatures;
+
+  /// Practice feature
+  ///
+  /// In en, this message translates to:
+  /// **'Practice Exams'**
+  String get aboutFeaturePractice;
+
+  /// Progress feature
+  ///
+  /// In en, this message translates to:
+  /// **'Track Progress'**
+  String get aboutFeatureProgress;
+
+  /// Multilingual feature
+  ///
+  /// In en, this message translates to:
+  /// **'3 Languages'**
+  String get aboutFeatureMultilingual;
+
+  /// Certificate feature
+  ///
+  /// In en, this message translates to:
+  /// **'Certificates'**
+  String get aboutFeatureCertificate;
+
+  /// Contact section title
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get aboutContact;
+
+  /// Contact info
+  ///
+  /// In en, this message translates to:
+  /// **'Phone/WhatsApp: 0788659575 / 0728877442\nEmail: info@driveprep.rw'**
+  String get aboutContactInfo;
+
+  /// Copyright section title
+  ///
+  /// In en, this message translates to:
+  /// **'Copyright'**
+  String get aboutCopyright;
+
+  /// Copyright text
+  ///
+  /// In en, this message translates to:
+  /// **'© 2026 DrivePrep Rwanda. All rights reserved.'**
+  String get aboutCopyrightText;
+
+  /// Privacy policy last updated
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: March 2026'**
+  String get privacyLastUpdated;
+
+  /// Privacy policy intro
+  ///
+  /// In en, this message translates to:
+  /// **'DrivePrep Rwanda is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you use our educational application. We are an independent educational service and are not affiliated with any government authority.'**
+  String get privacyIntro;
+
+  /// Data collection section
+  ///
+  /// In en, this message translates to:
+  /// **'Data Collection'**
+  String get privacyDataCollection;
+
+  /// Data collection body
+  ///
+  /// In en, this message translates to:
+  /// **'We collect your phone number and full name when you register. We also collect your practice quiz results and progress data to provide personalized learning insights. A unique device identifier is generated to secure your account.'**
+  String get privacyDataCollectionBody;
+
+  /// Data usage section
+  ///
+  /// In en, this message translates to:
+  /// **'How We Use Your Data'**
+  String get privacyDataUsage;
+
+  /// Data usage body
+  ///
+  /// In en, this message translates to:
+  /// **'Your data is used to provide and improve our services, track your learning progress, manage your subscription, and communicate important updates about the application.'**
+  String get privacyDataUsageBody;
+
+  /// Data protection section
+  ///
+  /// In en, this message translates to:
+  /// **'Data Protection'**
+  String get privacyDataProtection;
+
+  /// Data protection body
+  ///
+  /// In en, this message translates to:
+  /// **'We use industry-standard security measures including encrypted data transmission and secure server storage. Your personal data is never shared with third parties without your consent.'**
+  String get privacyDataProtectionBody;
+
+  /// Data sharing section
+  ///
+  /// In en, this message translates to:
+  /// **'Data Sharing'**
+  String get privacyDataSharing;
+
+  /// Data sharing body
+  ///
+  /// In en, this message translates to:
+  /// **'We do not sell, trade, or rent your personal data. We may share anonymous aggregated data for statistical purposes only.'**
+  String get privacyDataSharingBody;
+
+  /// User rights section
+  ///
+  /// In en, this message translates to:
+  /// **'Your Rights'**
+  String get privacyUserRights;
+
+  /// User rights body
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to access, update, or delete your personal data at any time. You can request data deletion by contacting our support team or using the Delete Account option in Settings.'**
+  String get privacyUserRightsBody;
+
+  /// Terms last updated
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: March 2026'**
+  String get termsLastUpdated;
+
+  /// Terms intro
+  ///
+  /// In en, this message translates to:
+  /// **'By using DrivePrep Rwanda, you agree to the following terms and conditions. Please read them carefully before using the application. DrivePrep Rwanda is an independent educational app designed to help you prepare for the driving theory test. We are not affiliated with any government body or the official exam provider.'**
+  String get termsIntro;
+
+  /// Acceptance section
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptance of Terms'**
+  String get termsAcceptance;
+
+  /// Acceptance body
+  ///
+  /// In en, this message translates to:
+  /// **'By creating an account and using this application, you agree to be bound by these terms. If you do not agree, please discontinue use immediately.'**
+  String get termsAcceptanceBody;
+
+  /// User account section
+  ///
+  /// In en, this message translates to:
+  /// **'User Account'**
+  String get termsUserAccount;
+
+  /// User account body
+  ///
+  /// In en, this message translates to:
+  /// **'You are responsible for maintaining the security of your account. Each account is linked to a single phone number and device. Sharing account credentials is not permitted.'**
+  String get termsUserAccountBody;
+
+  /// Content section
+  ///
+  /// In en, this message translates to:
+  /// **'Content & Exams'**
+  String get termsContent;
+
+  /// Content body
+  ///
+  /// In en, this message translates to:
+  /// **'All content is for educational and practice purposes only. It does not represent the official government exam. We strive for accuracy but make no guarantees about exam outcomes based on practice results. DrivePrep Rwanda is not affiliated with any government authority.'**
+  String get termsContentBody;
+
+  /// Payment section
+  ///
+  /// In en, this message translates to:
+  /// **'Payment & Subscription'**
+  String get termsPayment;
+
+  /// Payment body
+  ///
+  /// In en, this message translates to:
+  /// **'Premium access requires payment via MoMo Pay or Mobile Money. Subscriptions are non-refundable once activated. Access duration begins from the activation date.'**
+  String get termsPaymentBody;
+
+  /// Termination section
+  ///
+  /// In en, this message translates to:
+  /// **'Account Termination'**
+  String get termsTermination;
+
+  /// Termination body
+  ///
+  /// In en, this message translates to:
+  /// **'We reserve the right to suspend or terminate accounts that violate these terms, engage in fraudulent activity, or misuse the platform. You may delete your account at any time from settings.'**
+  String get termsTerminationBody;
+
+  /// Disclaimer section title
+  ///
+  /// In en, this message translates to:
+  /// **'Disclaimer'**
+  String get aboutDisclaimer;
+
+  /// Disclaimer text
+  ///
+  /// In en, this message translates to:
+  /// **'DrivePrep Rwanda is an independent educational app designed to help users learn traffic rules and prepare for the driving theory test. This app is not affiliated with, endorsed by, or connected to any government authority or official exam body. All content is for practice and learning purposes only.'**
+  String get aboutDisclaimerText;
+
+  /// Profile certificates menu title
+  ///
+  /// In en, this message translates to:
+  /// **'Certificates'**
+  String get profileCertificatesTitle;
+
+  /// Profile certificates menu subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Certificates earned and progress towards next one'**
+  String get profileCertificatesSubtitle;
+
+  /// Offline mode banner
+  ///
+  /// In en, this message translates to:
+  /// **'You are offline. Data shown may not be up to date.'**
+  String get offlineBanner;
+
+  /// Syncing data message
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing data...'**
+  String get syncingData;
+
+  /// Data synced success message
+  ///
+  /// In en, this message translates to:
+  /// **'Data synced successfully'**
+  String get dataSynced;
+
+  /// Offline save confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Saved offline. Will sync when connected.'**
+  String get savedOffline;
+
+  /// Unique exams passed out of total
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total} unique exams passed'**
+  String certificateUniqueExamsPassed(int count, int total);
+
+  /// Pass mark info
+  ///
+  /// In en, this message translates to:
+  /// **'Pass mark: {required}/{total} ({percent}%)'**
+  String certificatePassMark(int required, int total, int percent);
+
+  /// Latest attempt label
+  ///
+  /// In en, this message translates to:
+  /// **'Latest attempt'**
+  String get certificateLatestAttempt;
+
+  /// Exam label with index
+  ///
+  /// In en, this message translates to:
+  /// **'Exam {index}'**
+  String certificateExamStatus(int index);
+
+  /// Legend label for exams not yet taken
+  ///
+  /// In en, this message translates to:
+  /// **'Not attempted'**
+  String get certificateNotAttempted;
+
+  /// Title of the data consent dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Your Privacy Matters'**
+  String get consentTitle;
+
+  /// Body text of the data consent dialog
+  ///
+  /// In en, this message translates to:
+  /// **'DrivePrep Rwanda collects and processes the following data to provide you with the best learning experience:\n\n• Phone number & name — for account creation and authentication\n• Device identifier — a hashed fingerprint to secure your account\n• Exam results & progress — to track your learning journey\n• Offline cache — so the app works without internet\n\nYour data is stored securely and is never sold to third parties. You can delete your account and all associated data at any time from your profile.'**
+  String get consentBody;
+
+  /// Accept button on consent dialog
+  ///
+  /// In en, this message translates to:
+  /// **'I Understand & Accept'**
+  String get consentAccept;
+
+  /// Link to privacy policy from consent dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Read Privacy Policy'**
+  String get consentReadPolicy;
+
+  /// Validation error for name field
+  ///
+  /// In en, this message translates to:
+  /// **'Name must contain only letters and spaces'**
+  String get registerInvalidName;
+
+  /// Validation error for phone field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number (e.g. 078... or +250 78...)'**
+  String get registerInvalidPhone;
 }
 
 class _AppLocalizationsDelegate

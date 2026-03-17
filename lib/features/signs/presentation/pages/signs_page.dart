@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -38,7 +39,7 @@ class _SignsPageState extends State<SignsPage> {
         _selectedCategory = 'All';
       });
     } catch (e) {
-      debugPrint('Error loading categories: $e');
+      if (kDebugMode) debugPrint('Error loading categories: $e');
     }
   }
 
@@ -125,10 +126,10 @@ class _SignsPageState extends State<SignsPage> {
               },
               selectedColor: AppColors.primary,
               labelStyle: TextStyle(
-                color: isSelected ? AppColors.textInverse : AppColors.textPrimary,
+                color: isSelected ? AppColors.textInverse : Theme.of(context).colorScheme.onSurface,
               ),
               side: BorderSide(
-                color: isSelected ? AppColors.primary : AppColors.neutral300,
+                color: isSelected ? AppColors.primary : Theme.of(context).colorScheme.outline,
               ),
             ),
           );
@@ -150,10 +151,10 @@ class _SignsPageState extends State<SignsPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
+                Icon(
                   Icons.traffic_outlined,
                   size: 64,
-                  color: AppColors.neutral300,
+                  color: Theme.of(context).colorScheme.outline,
                 ),
                 const SizedBox(height: 16),
                 Text(

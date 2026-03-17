@@ -1,12 +1,12 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../../../shared/network/api_config.dart';
-import '../../../../shared/session/auth_session.dart';
+import '../../../../shared/network/api_helper.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class AdminAccessPage extends StatefulWidget {
   const AdminAccessPage({Key? key}) : super(key: key);
@@ -157,7 +157,6 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
       _error = null;
     });
     try {
-      final token = await AuthSession().getToken();
       final qp = <String, String>{
         'page': '$_page',
         'limit': '$_limit',
@@ -169,44 +168,41 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
           'dateTo': _dateTo!.toIso8601String().split('T')[0],
         if (_blockedFilter != null) 'isBlocked': _blockedFilter!,
       };
-      final uri = Uri.parse('${ApiConfig.baseUrl}/api/access-codes')
-          .replace(queryParameters: qp);
-      final res = await http
-          .get(uri, headers: {
-            if (token != null) 'Authorization': 'Bearer $token',
-          })
-          .timeout(const Duration(seconds: 15));
-      if (res.statusCode == 200) {
-        final data = json.decode(res.body);
+      final result = await ApiHelper().get('/api/access-codes', queryParams: qp);
+      if (!mounted) return;
+      if (result.isSuccess) {
+        final data = result.data;
         setState(() {
-          _codes = (data is List)
-              ? data
-              : (data['codes'] ?? data['data'] ?? []);
+          _codes = result.dataList;
           _total = (data is Map) ? (data['total'] ?? _codes.length) : _codes.length;
         });
+      } else if (result.statusCode == 401) {
+        context.read<AuthBloc>().add(const SignOutEvent());
+        GoRouter.of(context).go('/login');
       } else {
-        setState(() => _error = 'HTTP ${res.statusCode}');
+        setState(() => _error = result.errorMessage);
       }
     } catch (e) {
+      if (!mounted) return;
       setState(() => _error = e.toString());
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
   Future<void> _blockCode(String id, AppLocalizations l10n) async {
     setState(() => _loadingMap[id] = true);
     try {
-      final token = await AuthSession().getToken();
-      final res = await http.patch(
-        Uri.parse('${ApiConfig.baseUrl}/api/access-codes/$id/block'),
-        headers: {if (token != null) 'Authorization': 'Bearer $token'},
-      ).timeout(const Duration(seconds: 15));
-      if (res.statusCode == 200) {
+      final result = await ApiHelper().patch('/api/access-codes/$id/block');
+      if (result.isSuccess) {
         _showSnack(l10n.adminAccessBlocked, AppColors.success);
         _load();
+      } else if (result.statusCode == 401) {
+        if (!mounted) return;
+        context.read<AuthBloc>().add(const SignOutEvent());
+        GoRouter.of(context).go('/login');
       } else {
-        _showSnack('HTTP ${res.statusCode}', AppColors.error);
+        _showSnack(result.errorMessage ?? 'Error', AppColors.error);
       }
     } catch (e) {
       _showSnack(e.toString(), AppColors.error);
@@ -218,16 +214,16 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
   Future<void> _deleteCode(String id, AppLocalizations l10n) async {
     setState(() => _loadingMap[id] = true);
     try {
-      final token = await AuthSession().getToken();
-      final res = await http.delete(
-        Uri.parse('${ApiConfig.baseUrl}/api/access-codes/$id'),
-        headers: {if (token != null) 'Authorization': 'Bearer $token'},
-      ).timeout(const Duration(seconds: 15));
-      if (res.statusCode == 200) {
+      final result = await ApiHelper().delete('/api/access-codes/$id');
+      if (result.isSuccess) {
         _showSnack(l10n.adminAccessDeleted, AppColors.success);
         _load();
+      } else if (result.statusCode == 401) {
+        if (!mounted) return;
+        context.read<AuthBloc>().add(const SignOutEvent());
+        GoRouter.of(context).go('/login');
       } else {
-        _showSnack('HTTP ${res.statusCode}', AppColors.error);
+        _showSnack(result.errorMessage ?? 'Error', AppColors.error);
       }
     } catch (e) {
       _showSnack(e.toString(), AppColors.error);
@@ -248,16 +244,16 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
     final id = (code['id'] ?? '').toString();
     showDialog(
       context: ctx,
-      builder: (_) => AlertDialog(
+      builder: (dialogCtx) => AlertDialog(
         title: Text(l10n.adminBlockAccess),
         content: Text(l10n.adminBlockAccessConfirm),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx),
+              onPressed: () => Navigator.pop(dialogCtx),
               child: Text(l10n.commonCancel)),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(ctx);
+              Navigator.pop(dialogCtx);
               _blockCode(id, l10n);
             },
             style: ElevatedButton.styleFrom(
@@ -275,16 +271,16 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
     final id = (code['id'] ?? '').toString();
     showDialog(
       context: ctx,
-      builder: (_) => AlertDialog(
+      builder: (dialogCtx) => AlertDialog(
         title: Text(l10n.adminDeleteAccess),
         content: Text(l10n.adminDeleteAccessConfirm),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx),
+              onPressed: () => Navigator.pop(dialogCtx),
               child: Text(l10n.commonCancel)),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(ctx);
+              Navigator.pop(dialogCtx);
               _deleteCode(id, l10n);
             },
             style: ElevatedButton.styleFrom(
@@ -893,8 +889,6 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
       _error = null;
     });
     try {
-      final token = await AuthSession().getToken();
-      final headers = {if (token != null) 'Authorization': 'Bearer $token'};
       final qp = <String, String>{
         'page': '$_page',
         'limit': '$_limit',
@@ -902,26 +896,30 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
         if (_accessFilter == 'hasAccess') 'hasAccess': 'true',
         if (_accessFilter == 'noAccess') 'hasAccess': 'false',
       };
-      final usersUri = Uri.parse('${ApiConfig.baseUrl}/api/admin/users')
-          .replace(queryParameters: qp);
 
       final results = await Future.wait([
-        http.get(usersUri, headers: headers).timeout(const Duration(seconds: 15)),
-        http.get(Uri.parse('${ApiConfig.baseUrl}/api/payments'), headers: headers)
-            .timeout(const Duration(seconds: 15)),
+        ApiHelper().get('/api/admin/users', queryParams: qp),
+        ApiHelper().get('/api/payments'),
       ]);
 
-      if (results[0].statusCode == 200) {
-        final data = json.decode(results[0].body);
-        final userList = (data is List)
-            ? List<dynamic>.from(data)
-            : List<dynamic>.from(data['users'] ?? data['data'] ?? []);
+      final usersResult = results[0];
+      final paymentsResult = results[1];
+
+      if (usersResult.statusCode == 401) {
+        if (!mounted) return;
+        context.read<AuthBloc>().add(const SignOutEvent());
+        GoRouter.of(context).go('/login');
+        return;
+      }
+
+      if (usersResult.isSuccess) {
+        final data = usersResult.data;
+        final userList = usersResult.dataList;
         _total = (data is Map) ? (data['total'] ?? userList.length) : userList.length;
 
         _pendingIds.clear();
-        if (results[1].statusCode == 200) {
-          final pData = json.decode(results[1].body);
-          final payments = (pData is List) ? pData : (pData['payments'] ?? pData['data'] ?? []);
+        if (paymentsResult.isSuccess) {
+          final payments = paymentsResult.dataList;
           for (final p in payments) {
             if ((p['status'] ?? '').toString().toUpperCase() == 'PENDING') {
               final uid = (p['userId'] ?? p['user_id'] ?? '').toString();
@@ -936,7 +934,7 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
               .toList();
         });
       } else {
-        setState(() => _error = 'HTTP ${results[0].statusCode}');
+        setState(() => _error = usersResult.errorMessage);
       }
     } catch (e) {
       setState(() => _error = e.toString());
@@ -978,7 +976,10 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
                       groupValue: selectedTier,
                       title: Text(t['label'] as String),
                       subtitle: Text(l10n.priceRwf(t['price'].toString())),
-                      onChanged: (v) => setModal(() => selectedTier = v),
+                      onChanged: (v) {
+                        setModal(() => selectedTier = v);
+                        amtCtrl.text = '${t['price']}';
+                      },
                     )).toList(),
               CheckboxListTile(
                 value: customMode,
@@ -1045,24 +1046,23 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
     }
     setState(() => _loadingMap[userId] = true);
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/api/admin/users/$userId/grant-access'),
-        headers: {
-          'Content-Type': 'application/json',
-          if (token != null) 'Authorization': 'Bearer $token',
-        },
-        body: json.encode(body),
-      ).timeout(const Duration(seconds: 15));
+      final result = await ApiHelper().post(
+        '/api/admin/users/$userId/grant-access',
+        body: body,
+      );
       if (mounted) Navigator.pop(ctx);
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (result.isSuccess) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(l10n.adminAccessGranted),
             backgroundColor: AppColors.success));
         _loadData();
+      } else if (result.statusCode == 401) {
+        if (!mounted) return;
+        context.read<AuthBloc>().add(const SignOutEvent());
+        GoRouter.of(context).go('/login');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(l10n.errorHttpStatus(response.statusCode)),
+            content: Text(result.errorMessage ?? 'Error'),
             backgroundColor: AppColors.error));
       }
     } catch (e) {
@@ -1369,17 +1369,21 @@ class _GrantUserCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 6),
-                      Text(
-                        lang.toUpperCase(),
-                        style: AppTextStyles.labelSmall.copyWith(
-                            color: AppColors.textTertiary),
+                      Expanded(
+                        child: Text(
+                          lang.toUpperCase(),
+                          style: AppTextStyles.labelSmall.copyWith(
+                              color: AppColors.textTertiary),
+                        ),
                       ),
                       if (_hasAccess && expires.isNotEmpty) ...[
                         const SizedBox(width: 6),
-                        Text(
-                          expires,
-                          style: AppTextStyles.labelSmall.copyWith(
-                              color: AppColors.textTertiary),
+                        Expanded(
+                          child: Text(
+                            expires,
+                            style: AppTextStyles.labelSmall.copyWith(
+                                color: AppColors.textTertiary),
+                          ),
                         ),
                       ],
                     ],

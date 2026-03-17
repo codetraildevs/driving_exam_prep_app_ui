@@ -147,8 +147,8 @@ ThemeData buildLightTheme() {
     dialogTheme: DialogThemeData(
       backgroundColor: AppColors.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      titleTextStyle: AppTextStyles.heading5,
-      contentTextStyle: AppTextStyles.bodyMedium,
+      titleTextStyle: AppTextStyles.heading5.copyWith(color: AppColors.textPrimary),
+      contentTextStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
     ),
     listTileTheme: const ListTileThemeData(
       iconColor: AppColors.textSecondary,

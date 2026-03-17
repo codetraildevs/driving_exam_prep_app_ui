@@ -6,18 +6,24 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'config/theme/app_theme.dart';
 import 'config/router/app_router.dart';
-import 'features/auth/presentation/bloc/auth_bloc.dart';
-import 'l10n/generated/app_localizations.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';import 'l10n/generated/app_localizations.dart';
 import 'shared/locale/fallback_localizations.dart';
 import 'shared/locale/locale_provider.dart';
 import 'shared/network/api_config.dart';
+import 'shared/network/sync_service.dart';
 import 'shared/session/app_launch_session.dart';
 import 'shared/session/auth_session.dart';
 import 'shared/subscription/subscription_provider.dart';
 import 'shared/theme/theme_provider.dart';
+import 'shared/widgets/data_consent_dialog.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Prevent google_fonts from downloading fonts at runtime in production.
+  // Fonts are bundled via the app's asset pipeline.
+  GoogleFonts.config.allowRuntimeFetching = false;
 
   final isFirstLaunch = await AppLaunchSession().consumeFirstLaunch();
   final localeProvider = LocaleProvider();
@@ -79,20 +85,39 @@ class _TrafficRulesAppState extends State<TrafficRulesApp> {
     );
     _subscriptionProvider = SubscriptionProvider();
 
+    // Start background connectivity watcher & auto-sync.
+    SyncService().start();
+
+    // Show consent dialog after the first frame has been rendered and
+    // the navigator/localizations are fully available.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showConsentIfNeeded();
+    });
+
     // Listen to auth state changes and refresh subscription status in the
     // background whenever the user signs in. This keeps the app offline-first:
     // cached data is used immediately, and network data updates the UI silently.
     _authSubscription = widget.authBloc.stream.listen((authState) {
       if (authState is AuthAuthenticated) {
         _refreshSubscriptionInBackground(authState.user.id);
+        // Sync any pending results queued while offline.
+        SyncService().syncPendingResults();
       } else if (authState is AuthUnauthenticated) {
         _subscriptionProvider.clearStatus();
       }
     });
   }
 
-  void _refreshSubscriptionInBackground(String userId) {
-    AuthSession().getToken().then((token) {
+  Future<void> _showConsentIfNeeded() async {
+    // Small delay so the navigator and localizations are fully settled.
+    await Future<void>.delayed(const Duration(milliseconds: 600));
+    final ctx = AppRouter.rootNavigatorKey.currentContext;
+    if (ctx != null && ctx.mounted) {
+      await DataConsentDialog.showIfNeeded(ctx);
+    }
+  }
+
+  void _refreshSubscriptionInBackground(String userId) {    AuthSession().getToken().then((token) {
       if (token != null && token.isNotEmpty) {
         _subscriptionProvider.refreshStatus(
           userId,
@@ -106,6 +131,7 @@ class _TrafficRulesAppState extends State<TrafficRulesApp> {
   @override
   void dispose() {
     _authSubscription.cancel();
+    SyncService().dispose();
     widget.authBloc.close();
     super.dispose();
   }
@@ -123,7 +149,7 @@ class _TrafficRulesAppState extends State<TrafficRulesApp> {
         child: Consumer2<LocaleProvider, ThemeProvider>(
           builder: (context, localeProvider, themeProvider, _) {
             return MaterialApp.router(
-              title: 'Traffic Rules Learning App',
+              title: 'DrivePrep Rwanda',
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               // ThemeMode.system = follow device; user can override via settings.

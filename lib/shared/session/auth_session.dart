@@ -10,7 +10,39 @@ class AuthSession {
 
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey);
+    final token = prefs.getString(_tokenKey);
+    if (token == null || token.isEmpty) return null;
+    // Check JWT expiry (payload is the 2nd base64url-encoded segment).
+    if (_isTokenExpired(token)) {
+      await clear();
+      return null;
+    }
+    return token;
+  }
+
+  /// Returns true if the JWT `exp` claim is in the past.
+  bool _isTokenExpired(String token) {
+    try {
+      final parts = token.split('.');
+      if (parts.length != 3) return true;
+      // base64url → base64 with padding
+      String payload = parts[1];
+      payload = payload.replaceAll('-', '+').replaceAll('_', '/');
+      switch (payload.length % 4) {
+        case 2: payload += '=='; break;
+        case 3: payload += '='; break;
+      }
+      final decoded = jsonDecode(utf8.decode(base64Decode(payload)));
+      if (decoded is Map && decoded['exp'] is num) {
+        final exp = DateTime.fromMillisecondsSinceEpoch(
+          (decoded['exp'] as num).toInt() * 1000,
+        );
+        return DateTime.now().isAfter(exp);
+      }
+      return false; // No exp claim → assume valid
+    } catch (_) {
+      return true; // Malformed token → treat as expired
+    }
   }
 
   Future<void> setToken(String? token) async {

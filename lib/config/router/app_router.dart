@@ -23,6 +23,9 @@ import '../../features/exam/presentation/pages/exam_result_page.dart';
 import '../../features/progress/presentation/pages/progress_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
+import '../../features/settings/presentation/pages/about_page.dart';
+import '../../features/settings/presentation/pages/privacy_policy_page.dart';
+import '../../features/settings/presentation/pages/terms_of_service_page.dart';
 import '../../features/profile/presentation/pages/my_certificates_page.dart';
 import '../../features/subscription/presentation/pages/subscription_page.dart';
 import '../../features/admin/presentation/pages/admin_dashboard_page.dart';
@@ -177,8 +180,9 @@ class AppRouter {
                 path: 'quiz/:quizId',
                 pageBuilder: (context, state) {
                   final quizId = state.pathParameters['quizId']!;
+                  final examIndex = int.tryParse(state.uri.queryParameters['examIndex'] ?? '') ?? 0;
                   return MaterialPage(
-                    child: QuizPage(quizId: quizId),
+                    child: QuizPage(quizId: quizId, examIndex: examIndex),
                   );
                 },
               ),
@@ -239,6 +243,24 @@ class AppRouter {
             name: 'settings',
             pageBuilder: (context, state) => const MaterialPage(
               child: SettingsPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/about',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: AboutPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/privacy-policy',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: PrivacyPolicyPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/terms-of-service',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: TermsOfServicePage(),
             ),
           ),
           GoRoute(

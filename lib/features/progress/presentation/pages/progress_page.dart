@@ -1,15 +1,13 @@
-import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
-import '../../../../shared/network/api_config.dart';
-import '../../../../shared/session/auth_session.dart';
+import '../../../../shared/network/api_helper.dart';
+import '../../../../shared/network/offline_cache.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 
 class ProgressPage extends StatefulWidget {
@@ -59,28 +57,52 @@ class _ProgressPageState extends State<ProgressPage>
         setState(() => _error = 'Not authenticated');
         return;
       }
-      final token = await AuthSession().getToken();
-      final response = await http
-          .get(
-            Uri.parse('${ApiConfig.baseUrl}/api/exam-results/$userId'),
-            headers: {
-              if (token != null) 'Authorization': 'Bearer $token',
-            },
-          )
-          .timeout(const Duration(seconds: 15));
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final results = (data is List)
-            ? data
-            : (data['results'] ?? data['data'] ?? []);
-        setState(() => _results = results as List);
+      final cache = OfflineCache();
+      final cacheKey = cache.examResultsKey(userId);
+
+      final result = await ApiHelper().get('/api/exam-results/$userId');
+
+      if (result.isSuccess) {
+        final results = result.dataList;
+        await cache.save(cacheKey, results);
+        setState(() => _results = results);
         _animCtrl.forward(from: 0);
+      } else if (result.statusCode == 401) {
+        if (!mounted) return;
+        context.read<AuthBloc>().add(const SignOutEvent());
+        context.go('/login');
       } else {
-        setState(() => _error = 'HTTP ${response.statusCode}');
+        // Fallback to cache
+        final cached = await cache.load(cacheKey);
+        if (cached is List && cached.isNotEmpty) {
+          setState(() => _results = cached);
+          _animCtrl.forward(from: 0);
+        } else {
+          setState(() => _error = result.errorMessage);
+        }
       }
     } catch (e) {
-      setState(() => _error = e.toString());
+      // Network error → try cache
+      try {
+        final authState = context.read<AuthBloc>().state;
+        final userId =
+            authState is AuthAuthenticated ? authState.user.id : null;
+        if (userId != null) {
+          final cache = OfflineCache();
+          final cached = await cache.load(cache.examResultsKey(userId));
+          if (cached is List && cached.isNotEmpty) {
+            setState(() => _results = cached);
+            _animCtrl.forward(from: 0);
+          } else {
+            setState(() => _error = e.toString());
+          }
+        } else {
+          setState(() => _error = e.toString());
+        }
+      } catch (_) {
+        setState(() => _error = e.toString());
+      }
     } finally {
       setState(() => _isLoading = false);
     }
@@ -105,8 +127,6 @@ class _ProgressPageState extends State<ProgressPage>
       ? 0
       : _results.map((r) => _intVal(r['score'])).reduce((a, b) => a + b) /
           _total;
-
-  double get _passRate => _total == 0 ? 0 : _passed / _total;
 
   static bool _boolVal(dynamic v) =>
       v == true || v == 1 || v == '1' || v == 'true';
@@ -135,7 +155,7 @@ class _ProgressPageState extends State<ProgressPage>
             trailing: IconButton(
               icon: const Icon(Icons.refresh, color: Colors.white),
               onPressed: _loadResults,
-              tooltip: 'Refresh',
+              tooltip: l10n.commonRetry,
             ),
           ),
 
@@ -372,28 +392,50 @@ class _StatCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.08),
+          gradient: LinearGradient(
+            colors: [
+              color.withValues(alpha: 0.12),
+              color.withValues(alpha: 0.04),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           border: Border.all(color: color.withValues(alpha: 0.2)),
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.08),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: color, size: 22),
-            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(icon, color: color, size: 20),
+            ),
+            const SizedBox(height: 12),
             Text(
               value,
               style: TextStyle(
                 color: color,
                 fontWeight: FontWeight.bold,
-                fontSize: 22,
+                fontSize: 26,
               ),
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Text(
               label,
               style: AppTextStyles.labelSmall.copyWith(
                 color: AppColors.textSecondary,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
@@ -427,9 +469,17 @@ class _ExamResultCard extends StatelessWidget {
     final score = _intVal(result['score']);
     final total = _intVal(result['totalQuestions']);
     final correct = _intVal(result['correctAnswers']);
-    final dateStr =
+    final rawDate =
         (result['completedAt'] ?? result['createdAt'] ?? '').toString();
-    final date = dateStr.isNotEmpty ? dateStr.split('T')[0] : '';
+    String date = '';
+    if (rawDate.isNotEmpty) {
+      final dayPart = rawDate.contains('T')
+          ? rawDate.split('T')[0]
+          : rawDate.split(' ')[0];
+      if (dayPart != '0000-00-00' && dayPart.isNotEmpty) {
+        date = dayPart;
+      }
+    }
     final color = passed ? AppColors.success : AppColors.warning;
 
     return Container(

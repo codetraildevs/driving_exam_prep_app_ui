@@ -69,11 +69,6 @@ class _MainLayoutState extends State<MainLayout> {
       onTap: (index) => _onAdminNavTapped(context, index),
       items: [
         BottomNavigationBarItem(
-          icon: const Icon(Icons.home_outlined),
-          activeIcon: const Icon(Icons.home),
-          label: l10n.navHome,
-        ),
-        BottomNavigationBarItem(
           icon: const Icon(Icons.dashboard_outlined),
           activeIcon: const Icon(Icons.dashboard),
           label: l10n.adminDashboard,
@@ -108,11 +103,11 @@ class _MainLayoutState extends State<MainLayout> {
 
   int _getAdminSelectedIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.path;
-    if (location.startsWith('/admin/users')) return 2;
-    if (location.startsWith('/admin/access')) return 3;
-    if (location.startsWith('/admin')) return 1;
-    if (location.startsWith('/profile')) return 4;
-    return 0; // /home
+    if (location.startsWith('/admin/users')) return 1;
+    if (location.startsWith('/admin/access')) return 2;
+    if (location.startsWith('/admin')) return 0;
+    if (location.startsWith('/profile')) return 3;
+    return 0; // /admin
   }
 
   void _onUserNavTapped(BuildContext context, int index) {
@@ -135,18 +130,15 @@ class _MainLayoutState extends State<MainLayout> {
   void _onAdminNavTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        context.go('/home');
-        break;
-      case 1:
         context.go('/admin');
         break;
-      case 2:
+      case 1:
         context.go('/admin/users');
         break;
-      case 3:
+      case 2:
         context.go('/admin/access');
         break;
-      case 4:
+      case 3:
         context.go('/profile');
         break;
     }

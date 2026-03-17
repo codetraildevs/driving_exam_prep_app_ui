@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -63,36 +64,60 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
     final width = MediaQuery.of(context).size.width;
     final isWide = width >= 600;
 
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Column(
-            children: [
-              // Animated header
-              // _buildHeader(context),
-
-              const SizedBox(height: 18),
-
-              // Title & subtitle
-              Text(
-                AppLocalizations.of(context).languageSelectTitle,
-                style: AppTextStyles.heading2.copyWith(
-                  color: AppColors.textPrimary,
-                ),
-                textAlign: TextAlign.center,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.black,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+      ),
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        body: Column(
+        children: [
+          // Curved gradient header
+          ClipPath(
+            clipper: _CurvedHeaderClipper(),
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).padding.top + 32,
+                bottom: 40,
               ),
-              const SizedBox(height: 6),
-              Text(
-                AppLocalizations.of(context).languageSelectDescription,
-                style: AppTextStyles.bodyMedium
-                    .copyWith(color: AppColors.textSecondary),
-                textAlign: TextAlign.center,
+              decoration: BoxDecoration(
+                gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
               ),
+              child: Column(
+                children: [
+                  const Icon(Icons.language, size: 40, color: Colors.white),
+                  const SizedBox(height: 10),
+                  Text(
+                    AppLocalizations.of(context).languageSelectTitle,
+                    style: AppTextStyles.heading3.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    AppLocalizations.of(context).languageSelectDescription,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: Colors.white.withOpacity(0.85),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
 
-              const SizedBox(height: 18),
-
-              // Quick actions row
+          // Body content
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
               Row(
                 children: [
                   Expanded(
@@ -151,10 +176,13 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                       .copyWith(color: AppColors.neutral600),
                 ),
               ),
-            ],
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
+      )
     );
   }
 
@@ -260,34 +288,9 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
     final provider = context.read<LocaleProvider>();
     await provider.setLocale(Locale(_selectedCode));
     // Best-effort sync to backend if authenticated
-    _syncLanguageToBackend(_selectedCode);
+    syncLanguageToBackend(_selectedCode);
     if (!mounted) return;
     context.go('/landing');
-  }
-
-  Future<void> _syncLanguageToBackend(String langCode) async {
-    try {
-      final session = AuthSession();
-      final token = await session.getToken();
-      if (token == null || token.isEmpty) return;
-      final user = await session.getUser();
-      if (user == null) return;
-      await http.put(
-        Uri.parse('${ApiConfig.baseUrl}/api/users/${user.id}'),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({'preferredLanguage': langCode}),
-      ).timeout(const Duration(seconds: 10));
-    } catch (e) {
-      // Ignore errors — language is already saved locally
-      assert(() {
-        // ignore: avoid_print
-        print('[LanguageSelector] syncLanguageToBackend error: $e');
-        return true;
-      }());
-    }
   }
 
   void _useDeviceLanguage() {
@@ -333,6 +336,32 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
         );
       },
     );
+  }
+}
+
+/// Public helper: best-effort sync of preferred language to the backend.
+Future<void> syncLanguageToBackend(String langCode) async {
+  try {
+    final session = AuthSession();
+    final token = await session.getToken();
+    if (token == null || token.isEmpty) return;
+    final user = await session.getUser();
+    if (user == null) return;
+    await http.put(
+      Uri.parse('${ApiConfig.baseUrl}/api/users/${user.id}'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({'preferredLanguage': langCode}),
+    ).timeout(const Duration(seconds: 10));
+  } catch (e) {
+    // Ignore errors — language is already saved locally
+    assert(() {
+      // ignore: avoid_print
+      print('[LanguageSelector] syncLanguageToBackend error: $e');
+      return true;
+    }());
   }
 }
 
@@ -508,4 +537,20 @@ Future<Locale?> showLanguageSelectorDialog(BuildContext context) {
       );
     },
   );
+}
+
+/// Clips the bottom edge of a container into a smooth downward curve.
+class _CurvedHeaderClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path()
+      ..lineTo(0, size.height - 40)
+      ..quadraticBezierTo(size.width / 2, size.height + 20, size.width, size.height - 40)
+      ..lineTo(size.width, 0)
+      ..close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Shield body - main shape -->
+    <path
+        android:fillColor="#00039E"
+        android:pathData="M54,16 C54,16 28,20 28,20 C26,20.4 24.5,22 24.5,24 L24.5,50
+        C24.5,66 36,78 54,88 C72,78 83.5,66 83.5,50 L83.5,24
+        C83.5,22 82,20.4 80,20 L54,16Z" />
+
+    <!-- Shield lighter inner -->
+    <path
+        android:fillColor="#3B82F6"
+        android:fillAlpha="0.3"
+        android:pathData="M54,20 C54,20 31,23.5 31,23.5 C29.5,23.8 28.5,25 28.5,26.5 L28.5,49
+        C28.5,63 38.5,73.5 54,82.5 C69.5,73.5 79.5,63 79.5,49 L79.5,26.5
+        C79.5,25 78.5,23.8 77,23.5 L54,20Z" />
+
+    <!-- Road/highway stripe - center -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M52,36 L56,36 L56,44 L52,44Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M52,48 L56,48 L56,56 L52,56Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M52,60 L56,60 L56,68 L52,68Z" />
+
+    <!-- Steering wheel circle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:pathData="M54,52 m-12,0 a12,12 0 1,1 24,0 a12,12 0 1,1 -24,0"
+        android:fillAlpha="0.0" />
+
+    <!-- Steering wheel inner hub -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,52 m-3.5,0 a3.5,3.5 0 1,1 7,0 a3.5,3.5 0 1,1 -7,0" />
+
+    <!-- Steering wheel spokes -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:pathData="M54,48.5 L54,40" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:pathData="M50.5,53.5 L44,57" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:pathData="M57.5,53.5 L64,57" />
+
+    <!-- Traffic light top accent -->
+    <path
+        android:fillColor="#F97316"
+        android:pathData="M54,24 m-4,0 a4,2.5 0 1,1 8,0 a4,2.5 0 1,1 -8,0" />
+
+    <!-- Checkmark/success at bottom -->
+    <path
+        android:strokeColor="#4ADE80"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M47,72 L52,77 L63,66" />
+</vector>

@@ -1,15 +1,13 @@
+import 'package:driveprep_rwanda/l10n/generated/app_localizations.dart';
+import 'package:driveprep_rwanda/shared/locale/fallback_localizations.dart';
+import 'package:driveprep_rwanda/shared/locale/language_selector_page.dart';
+import 'package:driveprep_rwanda/shared/locale/locale_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:traffic_rules_app/shared/locale/locale_provider.dart';
-import 'package:traffic_rules_app/shared/locale/fallback_localizations.dart';
-import 'package:traffic_rules_app/shared/locale/language_selector_page.dart';
-import 'package:traffic_rules_app/l10n/generated/app_localizations.dart';
-
 /// Helper: wraps a widget with the providers needed for locale tests.
 Widget _buildTestApp({
   required LocaleProvider localeProvider,

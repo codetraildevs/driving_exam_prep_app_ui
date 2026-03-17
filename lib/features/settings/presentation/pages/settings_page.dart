@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_provider.dart';
 import '../../../../shared/locale/language_selector_page.dart';
+import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/theme/theme_provider.dart';
 import '../../../../shared/widgets/app_page_header.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -61,6 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 icon: Icons.info_outline,
                 title: l10n.settingsAboutApp,
                 subtitle: l10n.settingsVersion('1.0.0'),
+                onTap: () => context.push('/about'),
               ),
               _buildTextSetting(
                 surfaceColor: surfaceColor,
@@ -68,7 +73,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 icon: Icons.description_outlined,
                 title: l10n.settingsPrivacyPolicy,
                 subtitle: l10n.settingsPrivacyPolicySubtitle,
-                onTap: () {},
+                onTap: () => context.push('/privacy-policy'),
               ),
               _buildTextSetting(
                 surfaceColor: surfaceColor,
@@ -76,7 +81,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 icon: Icons.description_outlined,
                 title: l10n.settingsTermsOfService,
                 subtitle: l10n.settingsTermsOfServiceSubtitle,
-                onTap: () {},
+                onTap: () => context.push('/terms-of-service'),
               ),
               _buildSectionHeader(l10n.settingsData),
               _buildTextSetting(
@@ -217,30 +222,33 @@ class _SettingsPageState extends State<SettingsPage> {
     final locale = await showLanguageSelectorDialog(context);
     if (locale != null && mounted) {
       context.read<LocaleProvider>().setLocale(locale);
+      syncLanguageToBackend(locale.languageCode);
     }
   }
 
   void _showResetConfirmation() {
     final l10n = AppLocalizations.of(context);
+    final textColor = Theme.of(context).colorScheme.onSurface;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.settingsResetConfirmTitle),
-        content: Text(l10n.settingsResetConfirmMessage),
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          l10n.settingsResetConfirmTitle,
+          style: TextStyle(color: textColor),
+        ),
+        content: Text(
+          l10n.settingsResetConfirmMessage,
+          style: TextStyle(color: textColor),
+        ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(ctx),
             child: Text(l10n.commonCancel),
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(l10n.settingsResetSuccess),
-                  backgroundColor: AppColors.success,
-                ),
-              );
+              Navigator.pop(ctx);
+              _performReset();
             },
             child: Text(
               l10n.commonReset,
@@ -248,6 +256,30 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<void> _performReset() async {
+    final l10n = AppLocalizations.of(context);
+    final authState = context.read<AuthBloc>().state;
+    final userId = authState is AuthAuthenticated ? authState.user.id : null;
+
+    if (userId == null || userId.isEmpty) return;
+
+    try {
+      await ApiHelper().post('/api/practice-results/reset', body: {
+        'userId': userId,
+      });
+    } catch (_) {
+      // Backend may not support this yet; that's okay
+    }
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l10n.settingsResetSuccess),
+        backgroundColor: AppColors.success,
       ),
     );
   }

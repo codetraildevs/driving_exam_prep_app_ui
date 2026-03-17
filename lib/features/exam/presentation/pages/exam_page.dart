@@ -171,7 +171,7 @@ class _ExamPageState extends State<ExamPage> {
                     child: LinearProgressIndicator(
                       value: progress,
                       minHeight: 8,
-                      backgroundColor: AppColors.neutral200,
+                      backgroundColor: Theme.of(context).colorScheme.outlineVariant,
                       valueColor: const AlwaysStoppedAnimation<Color>(
                         AppColors.primary,
                       ),
@@ -198,8 +198,8 @@ class _ExamPageState extends State<ExamPage> {
                       final isCorrect = index == question['correct'];
                       final shouldHighlight = _answered && (isSelected || isCorrect);
 
-                      Color borderColor = AppColors.neutral300;
-                      Color backgroundColor = AppColors.surface;
+                      Color borderColor = Theme.of(context).colorScheme.outline;
+                      Color backgroundColor = Theme.of(context).colorScheme.surface;
 
                       if (shouldHighlight) {
                         if (isCorrect) {

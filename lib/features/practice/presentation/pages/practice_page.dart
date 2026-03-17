@@ -57,10 +57,10 @@ class _PracticePageState extends State<PracticePage> {
     }
   }
 
-  void _onExamTap(BuildContext context, Exam exam) {
+  void _onExamTap(BuildContext context, Exam exam, int index) {
     final subscription = context.read<SubscriptionProvider>();
     if (exam.isFree || subscription.hasActiveAccess) {
-      context.push('/practice/quiz/${exam.quizId}');
+      context.push('/practice/quiz/${exam.quizId}?examIndex=${index + 1}');
     } else {
       context.push('/subscription');
     }
@@ -113,9 +113,10 @@ class _PracticePageState extends State<PracticePage> {
                             final isLocked =
                                 exam.isPaid && !subscription.hasActiveAccess;
                             return _ExamCard(
+                              index: index,
                               exam: exam,
                               isLocked: isLocked,
-                              onTap: () => _onExamTap(context, exam),
+                              onTap: () => _onExamTap(context, exam,index),
                               l10n: l10n,
                             );
                           },
@@ -130,12 +131,14 @@ class _PracticePageState extends State<PracticePage> {
 
 class _ExamCard extends StatelessWidget {
   final Exam exam;
+  final int index;
   final bool isLocked;
   final VoidCallback onTap;
   final AppLocalizations l10n;
 
   const _ExamCard({
     required this.exam,
+    required this.index,
     required this.isLocked,
     required this.onTap,
     required this.l10n,
@@ -177,7 +180,7 @@ class _ExamCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          exam.title,
+                          '${exam.title} ${index + 1}',
                           style: AppTextStyles.heading6,
                         ),
                         const SizedBox(height: 4),
@@ -187,7 +190,8 @@ class _ExamCard extends StatelessWidget {
                             color: AppColors.textSecondary,
                           ),
                         ),
-                      ],
+                      ]
+                      
                     ),
                   ),
                   if (isLocked)
@@ -217,26 +221,26 @@ class _ExamCard extends StatelessWidget {
                   ),
                 ),
               )
-            else if (isLocked)
-              Positioned(
-                top: 8,
-                right: 8,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.8),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    l10n.examPaid,
-                    style: const TextStyle(
-                      color: AppColors.textInverse,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
+            // else if (isLocked)
+            //   Positioned(
+            //     top: 8,
+            //     right: 8,
+            //     child: Container(
+            //       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            //       decoration: BoxDecoration(
+            //         color: AppColors.primary.withValues(alpha: 0.8),
+            //         borderRadius: BorderRadius.circular(8),
+            //       ),
+            //       child: Text(
+            //         l10n.examPaid,
+            //         style: const TextStyle(
+            //           color: AppColors.textInverse,
+            //           fontSize: 10,
+            //           fontWeight: FontWeight.bold,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
           ],
         ),
       ),

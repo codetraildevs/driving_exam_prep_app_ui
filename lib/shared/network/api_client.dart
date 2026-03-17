@@ -34,7 +34,8 @@ class ApiClient {
     Map<String, String>? headers,
   }) async {
     final uri = _uri(path, queryParameters);
-    final res = await _http.get(uri, headers: headers);
+    final res = await _http.get(uri, headers: headers)
+        .timeout(const Duration(seconds: 60));
     _debugResponse('GET', uri, res);
     return _decode(res);
   }
@@ -53,7 +54,7 @@ class ApiClient {
         ...?headers,
       },
       body: body == null ? null : jsonEncode(body),
-    );
+    ).timeout(const Duration(seconds: 60));
     _debugResponse('POST', uri, res);
     return _decode(res);
   }
@@ -72,7 +73,7 @@ class ApiClient {
         ...?headers,
       },
       body: body == null ? null : jsonEncode(body),
-    );
+    ).timeout(const Duration(seconds: 60));
     _debugResponse('PUT', uri, res);
     return _decode(res);
   }
@@ -91,7 +92,7 @@ class ApiClient {
         ...?headers,
       },
       body: body == null ? null : jsonEncode(body),
-    );
+    ).timeout(const Duration(seconds: 60));
     _debugResponse('DELETE', uri, res);
     return _decode(res);
   }

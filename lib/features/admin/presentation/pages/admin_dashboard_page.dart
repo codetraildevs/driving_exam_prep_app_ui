@@ -3,13 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../../../shared/network/api_config.dart';
-import '../../../../shared/session/auth_session.dart';
+import '../../../../shared/network/api_helper.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class AdminDashboardPage extends StatefulWidget {
@@ -58,17 +56,10 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     await _loadFromCache();
 
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.get(
-        Uri.parse('${ApiConfig.baseUrl}/api/admin/users'),
-        headers: {
-          if (token != null) 'Authorization': 'Bearer $token',
-        },
-      ).timeout(const Duration(seconds: 15));
+      final result = await ApiHelper().get('/api/admin/users');
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final users = (data is List) ? data : (data['users'] ?? data['data'] ?? []);
+      if (result.isSuccess) {
+        final users = result.dataList;
         // Cache for offline use
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString(_cacheKey, json.encode({'users': users, 'ts': DateTime.now().toIso8601String()}));
@@ -77,8 +68,12 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
           _totalPractices = _computeTotalPractices(users);
         });
         _animController.forward(from: 0);
+      } else if (result.statusCode == 401) {
+        if (!mounted) return;
+        context.read<AuthBloc>().add(const SignOutEvent());
+        context.go('/login');
       } else {
-        setState(() => _error = 'HTTP ${response.statusCode}');
+        setState(() => _error = result.errorMessage);
       }
     } catch (_) {
       // Network error — already showing cached data
@@ -165,11 +160,12 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     bool innerBoxIsScrolled,
   ) {
     return SliverAppBar(
-      expandedHeight: 180,
+      expandedHeight: 140,
       pinned: true,
       floating: false,
       backgroundColor: AppColors.primary,
       elevation: 0,
+     
       title: Text(
         l10n.adminDashboard,
         style: const TextStyle(color: AppColors.textInverse, fontWeight: FontWeight.bold),
@@ -205,6 +201,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
         ),
         const SizedBox(width: 4),
       ],
+      
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.parallax,
         background: Container(
@@ -322,8 +319,8 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // ── Platform banner card ─────────────────────────────────
-              _buildPlatformCard(context, l10n),
-              const SizedBox(height: 24),
+              // _buildPlatformCard(context, l10n),
+              // const SizedBox(height: 24),
 
               // ── Admin Actions ────────────────────────────────────────
               _sectionHeader(l10n.adminActionsTitle),
@@ -456,7 +453,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                 icon: Icons.key_rounded,
                 title: l10n.adminAccess,
                 description: l10n.adminAccessCodesDesc,
-                gradientColors: const [AppColors.success, Color(0xFF4ADE80)],
+                gradientColors: const [AppColors.primary, Color(0xFF4ADE80)],
                 onTap: () => context.push('/admin/access'),
               ),
             ),
@@ -464,13 +461,13 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
         ),
         const SizedBox(height: 12),
         // Row 2: Manage Exams (full width — primary action)
-        _ActionCardWide(
-          icon: Icons.quiz_rounded,
-          title: l10n.adminManageExams,
-          description: l10n.adminManageExamsDesc,
-          accentColor: AppColors.accent,
-          onTap: () => context.push('/admin/progress'),
-        ),
+        // _ActionCardWide(
+        //   icon: Icons.quiz_rounded,
+        //   title: l10n.adminManageExams,
+        //   description: l10n.adminManageExamsDesc,
+        //   accentColor: AppColors.accent,s
+        //   onTap: () => context.push('/admin/progress'),
+        // ),
       ],
     );
   }

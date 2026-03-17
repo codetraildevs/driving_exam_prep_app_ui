@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
 
-  "appTitle": "Traffic Rules Learning App",
+  "appTitle": "DrivePrep Rwanda",
   "@appTitle": { "description": "The title of the application" },
 
   "languageSelectTitle": "Choose Your Language",
@@ -108,7 +108,7 @@
   "settingsAbout": "About",
   "@settingsAbout": { "description": "About section header" },
 
-  "settingsAboutApp": "About Traffic Rules App",
+  "settingsAboutApp": "About DrivePrep Rwanda",
   "@settingsAboutApp": { "description": "About app title" },
 
   "settingsVersion": "Version {version}",
@@ -218,10 +218,10 @@
   "homeServices": "Services",
   "@homeServices": { "description": "Services section header on home page" },
 
-  "authAppName": "RWANDA TRAFFIC RULES",
+  "authAppName": "DRIVEPREP RWANDA",
   "@authAppName": { "description": "App brand name on auth pages" },
 
-  "authSubtitle": "Official Driving License Learning Platform",
+  "authSubtitle": "Prepare for Your Provisional Driving Licence",
   "@authSubtitle": { "description": "Subtitle on auth pages" },
 
   "loginTitle": "Login to Your Account",
@@ -239,7 +239,7 @@
   "authPhoneNumber": "Phone Number",
   "@authPhoneNumber": { "description": "Phone number field label" },
 
-  "authPhoneHint": "0788 000 000",
+  "authPhoneHint": "07** *** ***",
   "@authPhoneHint": { "description": "Phone number placeholder" },
 
   "authContinue": "Continue",
@@ -251,11 +251,13 @@
   "loginSignUp": "Sign Up",
   "@loginSignUp": { "description": "Sign up link text" },
 
-  "authSecureTag": "Secure • Fast • Official Road App",
+  "authSecureTag": "Secure • Fast • DrivePrep Rwanda",
   "@authSecureTag": { "description": "Brand tagline on auth pages" },
 
   "loginPhoneRequired": "Please enter your phone number",
   "@loginPhoneRequired": { "description": "Phone validation error" },
+  "loginInvalidPhone": "Enter a valid phone number (e.g. 078... or +250 78...)",
+  "@loginInvalidPhone": { "description": "Login phone format validation error" },
 
   "registerTitle": "Create Your Account",
   "@registerTitle": { "description": "Registration page title" },
@@ -311,7 +313,7 @@
   "navProfile": "Profile",
   "@navProfile": { "description": "Bottom nav profile label" },
 
-  "practiceTitle": "Practice Quiz",
+  "practiceTitle": "Practice ",
   "@practiceTitle": { "description": "Practice page title" },
 
   "practiceCategorySpeedLimits": "Speed Limits",
@@ -476,8 +478,8 @@
     "placeholders": { "number": { "type": "int" } }
   },
 
-  "progressPracticeQuiz": "Practice Quiz",
-  "@progressPracticeQuiz": { "description": "Practice quiz name" },
+  "progressPracticeQuiz": "Practice Exams",
+  "@progressPracticeQuiz": { "description": "Practice Exams name" },
 
   "profileTitle": "Profile",
   "@profileTitle": { "description": "Profile page title" },
@@ -616,16 +618,16 @@
   "subscriptionPaymentInstructions": "Payment Instructions",
   "@subscriptionPaymentInstructions": { "description": "Payment instructions section title" },
 
-  "subscriptionPaymentMomo": "MoMo Pay: 323294",
+  "subscriptionPaymentMomo": "MoMo Pay: 329494",
   "@subscriptionPaymentMomo": { "description": "MoMo pay number" },
 
-  "subscriptionPaymentMobile": "Mobile Money: 0788657595",
+  "subscriptionPaymentMobile": "Mobile Money: 0788659575",
   "@subscriptionPaymentMobile": { "description": "Mobile money number" },
-
-  "subscriptionHelpCall": "Call: 0788657595",
+ "subscriptionPaymentTigoCash": "Tigo Cash: 0728877442",
+  "subscriptionHelpCall": "Call: 0788659575",
   "@subscriptionHelpCall": { "description": "Help call number" },
 
-  "subscriptionHelpWhatsapp": "WhatsApp: 0788657595",
+  "subscriptionHelpWhatsapp": "WhatsApp: 0788659575",
   "@subscriptionHelpWhatsapp": { "description": "Help WhatsApp number" },
 
   "subscriptionChoosePlan": "Choose a Plan",
@@ -908,22 +910,23 @@
   "paymentInstructionsTitle": "Payment Instructions",
   "@paymentInstructionsTitle": { "description": "Payment instructions title" },
 
-  "paymentMomoPayNumber": "MoMo Pay: 323294",
+  "paymentMomoPayNumber": "MoMo Pay: 329494",
   "@paymentMomoPayNumber": { "description": "MoMo pay number" },
 
-  "paymentMomoPayDial": "To pay with MoMo Pay, dial: *182*1*1*323294*amount#",
+  "paymentMomoPayDial": "To pay with MoMo Pay, dial: *182*1*1*329494*amount#",
   "@paymentMomoPayDial": { "description": "MoMo Pay dial instruction" },
 
-  "paymentMobileMoneyNumber": "Mobile Money: 0788657595",
+  "paymentMobileMoneyNumber": "Mobile Money: 0788659575",
   "@paymentMobileMoneyNumber": { "description": "Mobile money number" },
+  "paymentTigoCashNumber": "Tigo Cash: 0728877442",
 
-  "paymentMobileMoneyDial": "To pay with Mobile Money, dial: *182*8*1*0788657595*amount#",
+  "paymentMobileMoneyDial": "To pay with Mobile Money, dial: *182*8*1*0788659575*amount#",
   "@paymentMobileMoneyDial": { "description": "Mobile Money dial instruction" },
-
-  "paymentHelpText": "Need help? Call or WhatsApp: 0788657595",
+ "paymentTigoCashDial": "To pay with Tigo Cash, dial *182*1*2*0728877442*amount#",
+  "paymentHelpText": "Need help? Call or WhatsApp: 0788659575",
   "@paymentHelpText": { "description": "Payment help text" },
 
-  "paymentHelpContact": "You can copy or call: 0788657595 or WhatsApp: 0788657595 for help.",
+  "paymentHelpContact": "You can copy or call: 0788659575 or WhatsApp: 0788659575 for help.",
   "@paymentHelpContact": { "description": "Payment help contact line" },
 
   "paymentError": "Payment request failed. Please pay manually using the instructions below.",
@@ -932,10 +935,10 @@
   "paymentCopyNumber": "Copy Number",
   "@paymentCopyNumber": { "description": "Copy phone number button" },
 
-  "paymentCallNumber": "Call 0788657595",
+  "paymentCallNumber": "Call 0788659575",
   "@paymentCallNumber": { "description": "Call phone number button" },
-
-  "paymentWhatsApp": "WhatsApp: Send Message",
+"paymentCallTigoNumber": "Call 0728877442",
+  "paymentWhatsApp": "Send Message on WhatsApp",
   "@paymentWhatsApp": { "description": "WhatsApp button label" },
 
   "paymentWhatsAppMessage": "Request access for driving exam app",
@@ -1213,5 +1216,197 @@
   "examCopiedToClipboard": "Result copied to clipboard",
   "@examCopiedToClipboard": { "description": "Snackbar after copying result to clipboard" },
   "examGradeLabel": "Grade",
-  "@examGradeLabel": { "description": "Grade label on exam result page" }
+  "@examGradeLabel": { "description": "Grade label on exam result page" },
+
+  "subscriptionPopular": "★ Popular",
+  "@subscriptionPopular": { "description": "Popular badge on subscription plan card" },
+
+  "quizTimeTaken": "Time Taken",
+  "@quizTimeTaken": { "description": "Label for time spent on quiz results" },
+
+  "progressTotalQuestions": "Total Questions",
+  "@progressTotalQuestions": { "description": "Label for total questions stat" },
+
+  "progressCorrectAnswers": "Correct",
+  "@progressCorrectAnswers": { "description": "Label for correct answers stat" },
+
+  "progressIncorrect": "Incorrect",
+  "@progressIncorrect": { "description": "Label for incorrect answers stat" },
+
+  "errorNetwork": "Unable to connect. Please check your internet connection and try again.",
+  "@errorNetwork": { "description": "Network error message shown when device is offline" },
+
+  "paymentChooseMethod": "Choose Payment Method",
+  "@paymentChooseMethod": { "description": "Title for payment method modal" },
+
+  "aboutTitle": "About",
+  "@aboutTitle": { "description": "About page title" },
+
+  "aboutAppName": "DrivePrep Rwanda",
+  "@aboutAppName": { "description": "App name on about page" },
+
+  "aboutDescription": "DrivePrep Rwanda is your companion for learning Rwanda traffic rules, road signs, and practicing theory questions to prepare for the provisional driving licence test. This is an independent educational app and is not affiliated with any government authority.",
+  "@aboutDescription": { "description": "About app description" },
+
+  "aboutFeatures": "Key Features",
+  "@aboutFeatures": { "description": "Features section title" },
+
+  "aboutFeaturePractice": "Practice Exams",
+  "@aboutFeaturePractice": { "description": "Practice feature" },
+
+  "aboutFeatureProgress": "Track Progress",
+  "@aboutFeatureProgress": { "description": "Progress feature" },
+
+  "aboutFeatureMultilingual": "3 Languages",
+  "@aboutFeatureMultilingual": { "description": "Multilingual feature" },
+
+  "aboutFeatureCertificate": "Certificates",
+  "@aboutFeatureCertificate": { "description": "Certificate feature" },
+
+  "aboutContact": "Contact Us",
+  "@aboutContact": { "description": "Contact section title" },
+
+  "aboutContactInfo": "Phone/WhatsApp: 0788659575 / 0728877442\nEmail: info@driveprep.rw",
+  "@aboutContactInfo": { "description": "Contact info" },
+
+  "aboutCopyright": "Copyright",
+  "@aboutCopyright": { "description": "Copyright section title" },
+
+  "aboutCopyrightText": "© 2026 DrivePrep Rwanda. All rights reserved.",
+  "@aboutCopyrightText": { "description": "Copyright text" },
+
+  "privacyLastUpdated": "Last updated: March 2026",
+  "@privacyLastUpdated": { "description": "Privacy policy last updated" },
+
+  "privacyIntro": "DrivePrep Rwanda is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you use our educational application. We are an independent educational service and are not affiliated with any government authority.",
+  "@privacyIntro": { "description": "Privacy policy intro" },
+
+  "privacyDataCollection": "Data Collection",
+  "@privacyDataCollection": { "description": "Data collection section" },
+
+  "privacyDataCollectionBody": "We collect your phone number and full name when you register. We also collect your practice quiz results and progress data to provide personalized learning insights. A unique device identifier is generated to secure your account.",
+  "@privacyDataCollectionBody": { "description": "Data collection body" },
+
+  "privacyDataUsage": "How We Use Your Data",
+  "@privacyDataUsage": { "description": "Data usage section" },
+
+  "privacyDataUsageBody": "Your data is used to provide and improve our services, track your learning progress, manage your subscription, and communicate important updates about the application.",
+  "@privacyDataUsageBody": { "description": "Data usage body" },
+
+  "privacyDataProtection": "Data Protection",
+  "@privacyDataProtection": { "description": "Data protection section" },
+
+  "privacyDataProtectionBody": "We use industry-standard security measures including encrypted data transmission and secure server storage. Your personal data is never shared with third parties without your consent.",
+  "@privacyDataProtectionBody": { "description": "Data protection body" },
+
+  "privacyDataSharing": "Data Sharing",
+  "@privacyDataSharing": { "description": "Data sharing section" },
+
+  "privacyDataSharingBody": "We do not sell, trade, or rent your personal data. We may share anonymous aggregated data for statistical purposes only.",
+  "@privacyDataSharingBody": { "description": "Data sharing body" },
+
+  "privacyUserRights": "Your Rights",
+  "@privacyUserRights": { "description": "User rights section" },
+
+  "privacyUserRightsBody": "You have the right to access, update, or delete your personal data at any time. You can request data deletion by contacting our support team or using the Delete Account option in Settings.",
+  "@privacyUserRightsBody": { "description": "User rights body" },
+
+  "termsLastUpdated": "Last updated: March 2026",
+  "@termsLastUpdated": { "description": "Terms last updated" },
+
+  "termsIntro": "By using DrivePrep Rwanda, you agree to the following terms and conditions. Please read them carefully before using the application. DrivePrep Rwanda is an independent educational app designed to help you prepare for the driving theory test. We are not affiliated with any government body or the official exam provider.",
+  "@termsIntro": { "description": "Terms intro" },
+
+  "termsAcceptance": "Acceptance of Terms",
+  "@termsAcceptance": { "description": "Acceptance section" },
+
+  "termsAcceptanceBody": "By creating an account and using this application, you agree to be bound by these terms. If you do not agree, please discontinue use immediately.",
+  "@termsAcceptanceBody": { "description": "Acceptance body" },
+
+  "termsUserAccount": "User Account",
+  "@termsUserAccount": { "description": "User account section" },
+
+  "termsUserAccountBody": "You are responsible for maintaining the security of your account. Each account is linked to a single phone number and device. Sharing account credentials is not permitted.",
+  "@termsUserAccountBody": { "description": "User account body" },
+
+  "termsContent": "Content & Exams",
+  "@termsContent": { "description": "Content section" },
+
+  "termsContentBody": "All content is for educational and practice purposes only. It does not represent the official government exam. We strive for accuracy but make no guarantees about exam outcomes based on practice results. DrivePrep Rwanda is not affiliated with any government authority.",
+  "@termsContentBody": { "description": "Content body" },
+
+  "termsPayment": "Payment & Subscription",
+  "@termsPayment": { "description": "Payment section" },
+
+  "termsPaymentBody": "Premium access requires payment via MoMo Pay or Mobile Money. Subscriptions are non-refundable once activated. Access duration begins from the activation date.",
+  "@termsPaymentBody": { "description": "Payment body" },
+
+  "termsTermination": "Account Termination",
+  "@termsTermination": { "description": "Termination section" },
+
+  "termsTerminationBody": "We reserve the right to suspend or terminate accounts that violate these terms, engage in fraudulent activity, or misuse the platform. You may delete your account at any time from settings.",
+  "@termsTerminationBody": { "description": "Termination body" },
+
+  "aboutDisclaimer": "Disclaimer",
+  "@aboutDisclaimer": { "description": "Disclaimer section title" },
+
+  "aboutDisclaimerText": "DrivePrep Rwanda is an independent educational app designed to help users learn traffic rules and prepare for the driving theory test. This app is not affiliated with, endorsed by, or connected to any government authority or official exam body. All content is for practice and learning purposes only.",
+  "@aboutDisclaimerText": { "description": "Disclaimer text" },
+
+  "profileCertificatesTitle": "Certificates",
+  "@profileCertificatesTitle": { "description": "Profile certificates menu title" },
+  "profileCertificatesSubtitle": "Certificates earned and progress towards next one",
+  "@profileCertificatesSubtitle": { "description": "Profile certificates menu subtitle" },
+
+  "offlineBanner": "You are offline. Data shown may not be up to date.",
+  "@offlineBanner": { "description": "Offline mode banner" },
+  "syncingData": "Syncing data...",
+  "@syncingData": { "description": "Syncing data message" },
+  "dataSynced": "Data synced successfully",
+  "@dataSynced": { "description": "Data synced success message" },
+  "savedOffline": "Saved offline. Will sync when connected.",
+  "@savedOffline": { "description": "Offline save confirmation" },
+
+  "certificateUniqueExamsPassed": "{count} of {total} unique exams passed",
+  "@certificateUniqueExamsPassed": {
+    "description": "Unique exams passed out of total",
+    "placeholders": {
+      "count": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "certificatePassMark": "Pass mark: {required}/{total} ({percent}%)",
+  "@certificatePassMark": {
+    "description": "Pass mark info",
+    "placeholders": {
+      "required": { "type": "int" },
+      "total": { "type": "int" },
+      "percent": { "type": "int" }
+    }
+  },
+  "certificateLatestAttempt": "Latest attempt",
+  "@certificateLatestAttempt": { "description": "Latest attempt label" },
+  "certificateExamStatus": "Exam {index}",
+  "@certificateExamStatus": {
+    "description": "Exam label with index",
+    "placeholders": {
+      "index": { "type": "int" }
+    }
+  },
+  "certificateNotAttempted": "Not attempted",
+  "@certificateNotAttempted": { "description": "Legend label for exams not yet taken" },
+
+  "consentTitle": "Your Privacy Matters",
+  "@consentTitle": { "description": "Title of the data consent dialog" },
+  "consentBody": "DrivePrep Rwanda collects and processes the following data to provide you with the best learning experience:\n\n• Phone number & name — for account creation and authentication\n• Device identifier — a hashed fingerprint to secure your account\n• Exam results & progress — to track your learning journey\n• Offline cache — so the app works without internet\n\nYour data is stored securely and is never sold to third parties. You can delete your account and all associated data at any time from your profile.",
+  "@consentBody": { "description": "Body text of the data consent dialog" },
+  "consentAccept": "I Understand & Accept",
+  "@consentAccept": { "description": "Accept button on consent dialog" },
+  "consentReadPolicy": "Read Privacy Policy",
+  "@consentReadPolicy": { "description": "Link to privacy policy from consent dialog" },
+
+  "registerInvalidName": "Name must contain only letters and spaces",
+  "@registerInvalidName": { "description": "Validation error for name field" },
+  "registerInvalidPhone": "Enter a valid phone number (e.g. 078... or +250 78...)",
+  "@registerInvalidPhone": { "description": "Validation error for phone field" }
 }

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/widgets/app_page_header.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class AdminProgressPage extends StatefulWidget {
   const AdminProgressPage({Key? key}) : super(key: key);
@@ -34,6 +37,10 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
         setState(() {
           _results = result.dataList;
         });
+      } else if (result.statusCode == 401) {
+        if (!mounted) return;
+        context.read<AuthBloc>().add(const SignOutEvent());
+        context.go('/login');
       } else {
         setState(() => _error = result.detailedError);
       }

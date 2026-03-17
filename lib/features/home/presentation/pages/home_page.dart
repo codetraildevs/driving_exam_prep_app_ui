@@ -393,14 +393,11 @@ class _ResponsiveServicesGrid extends StatelessWidget {
         title: l10n.homeCourses,
         subtitle: l10n.homeCoursesSubtitle,
         color: AppColors.accent,
-        onTap: () => context.push('/courses'),
-      ),
-      _ServiceItem(
-        icon: Icons.assignment_rounded,
-        title: l10n.homeMockExams,
-        subtitle: l10n.homeMockExamsSubtitle,
-        color: AppColors.warning,
-        onTap: () => context.push('/practice'),
+        onTap: () {
+          //not yet implemented coming soon add moadal here
+          
+
+        },
       ),
       _ServiceItem(
         icon: Icons.show_chart_rounded,

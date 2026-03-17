@@ -9,14 +9,14 @@ class AppLocalizationsRw extends AppLocalizations {
   AppLocalizationsRw([String locale = 'rw']) : super(locale);
 
   @override
-  String get appTitle => 'Kwiga amategeko y\'umuhanda';
+  String get appTitle => 'DrivePrep Rwanda';
 
   @override
   String get languageSelectTitle => 'Hitamo ururimi rwawe';
 
   @override
   String get languageSelectSubtitle =>
-      'Ushobora guhindura ibi nyuma mu igenamiterere';
+      'Ushobora guhindura ururimi uciiye mw\'igenamiterere';
 
   @override
   String get languageSelectConfirm => 'Komeza';
@@ -38,7 +38,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String homeAccessActive(int daysLeft) {
-    return 'Uburenganzira burahari - hasigaye iminsi $daysLeft';
+    return 'Uburenganzira bwo kwiga - hasigaye iminsi $daysLeft';
   }
 
   @override
@@ -71,10 +71,10 @@ class AppLocalizationsRw extends AppLocalizations {
   String get homeCoursesSubtitle => 'Modire z\'amasomo';
 
   @override
-  String get homeMockExams => 'Ikizamini cy\'imyitozo';
+  String get homeMockExams => 'Ibizamini byo kwitorezaho';
 
   @override
-  String get homeMockExamsSubtitle => 'Suzuma ubumenyi';
+  String get homeMockExamsSubtitle => 'Isuzuma ubumenyi';
 
   @override
   String get homeProgress => 'Iterambere';
@@ -83,7 +83,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get homeProgressSubtitle => 'Kurikirana imikorere';
 
   @override
-  String get homeShareApp => 'Sangira app';
+  String get homeShareApp => 'Sangiza porogaramu';
 
   @override
   String get homeShareAppSubtitle => 'Tumira inshuti';
@@ -106,7 +106,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get settingsNotificationsSubtitle =>
-      'Kwakira ibiwibutso bya buri munsi';
+      'Kwakira amamenyesha ya buri munsi';
 
   @override
   String get settingsLanguage => 'Ururimi';
@@ -115,7 +115,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get settingsAbout => 'Ibyerekeye';
 
   @override
-  String get settingsAboutApp => 'Ibyerekeye app y\'amategeko y\'umuhanda';
+  String get settingsAboutApp => 'Ibyerekeye DrivePrep Rwanda';
 
   @override
   String settingsVersion(String version) {
@@ -129,7 +129,8 @@ class AppLocalizationsRw extends AppLocalizations {
   String get settingsPrivacyPolicySubtitle => 'Soma politiki yacu y\'ibanga';
 
   @override
-  String get settingsTermsOfService => 'Amabwiriza y\'ikoreshwa';
+  String get settingsTermsOfService =>
+      'Amabwiriza  agenga ikoreshwa rya porogaramu';
 
   @override
   String get settingsTermsOfServiceSubtitle => 'Soma amabwiriza yacu';
@@ -138,20 +139,20 @@ class AppLocalizationsRw extends AppLocalizations {
   String get settingsData => 'Amakuru';
 
   @override
-  String get settingsResetProgress => 'Gusubiramo iterambere';
+  String get settingsResetProgress => 'Gusiba iterambere';
 
   @override
   String get settingsResetProgressSubtitle => 'Siba amakuru yawe yose';
 
   @override
-  String get settingsResetConfirmTitle => 'Gusubiramo iterambere';
+  String get settingsResetConfirmTitle => 'Gusiba iterambere';
 
   @override
   String get settingsResetConfirmMessage =>
-      'Uzi neza ko ushaka gusubiramo iterambere ryawe ryose? Iki gikorwa ntigishobora gusubizwaho.';
+      'Uzi neza ko ushaka gusiba iterambere ryawe ryose? Iki gikorwa ntigishobora gusubizwaho.';
 
   @override
-  String get settingsResetSuccess => 'Iterambere ryasubiwemo neza';
+  String get settingsResetSuccess => 'Iterambere ryasibwe neza';
 
   @override
   String get settingsSelectLanguage => 'Hitamo ururimi';
@@ -170,7 +171,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get landingHeroSubtitle =>
-      'Witegure neza. Witozere ku bibazo nyabyo by\'ikizamini. Kurikirana iterambere ryawe kandi utsinde ikizamini cy\'uruhushya rwo gutwara byizewe.';
+      'Witegure neza. Witozere ku bibazo byanyabyo by\'imyitozo. Kurikirana iterambere ryawe kandi utsinde ikizamini cy\'uruhushya rwo gutwara byizewe.';
 
   @override
   String get landingGetStarted => 'Tangira';
@@ -189,7 +190,7 @@ class AppLocalizationsRw extends AppLocalizations {
       'Ibisobanuro bisobanutse by\'amategeko yose y\'umuhanda n\'ibimenyetso.';
 
   @override
-  String get landingPracticeExams => 'Ikizamini cy\'imyitozo';
+  String get landingPracticeExams => 'Ibizamini byo kwitorezaho';
 
   @override
   String get landingPracticeExamsDesc =>
@@ -227,10 +228,11 @@ class AppLocalizationsRw extends AppLocalizations {
   String get homeServices => 'Serivisi';
 
   @override
-  String get authAppName => 'AMATEGEKO Y\'UMUHANDA RWANDA';
+  String get authAppName => 'DRIVEPREP RWANDA';
 
   @override
-  String get authSubtitle => 'Urubuga rwemewe rwo kwiga gutwara';
+  String get authSubtitle =>
+      'Witegure ikizamini cy\'uruhushya rw\'agateganyo rwo gutwara';
 
   @override
   String get loginTitle => 'Injira kuri konti yawe';
@@ -243,17 +245,16 @@ class AppLocalizationsRw extends AppLocalizations {
   String get authNeedHelp => 'Ukeneye ubufasha?';
 
   @override
-  String get loginHelpText =>
-      'Ku bibazo bya konti cyangwa ibibazo, wahamagara:';
+  String get loginHelpText => 'Ku bibazo bya konti yawe, wahamagara:';
 
   @override
-  String get authPhoneNumber => 'Numero ya telefoni';
+  String get authPhoneNumber => 'Andika nimero ya telefone yawe';
 
   @override
-  String get authPhoneHint => '0788 000 000';
+  String get authPhoneHint => '07** *** ***';
 
   @override
-  String get authContinue => 'Komeza';
+  String get authContinue => 'Emeza';
 
   @override
   String get loginNoAccount => 'Nta konti ufite? ';
@@ -262,10 +263,14 @@ class AppLocalizationsRw extends AppLocalizations {
   String get loginSignUp => 'Iyandikishe';
 
   @override
-  String get authSecureTag => 'Umutekano • Byihuse • App yemewe';
+  String get authSecureTag => 'Iga • Witegure • Utsinde';
 
   @override
   String get loginPhoneRequired => 'Nyamuneka andika numero ya telefoni yawe';
+
+  @override
+  String get loginInvalidPhone =>
+      'Andika numero ya telefone ikwiye (urugero: 07... cyangwa +250 7...)';
 
   @override
   String get registerTitle => 'Fungura konti yawe';
@@ -279,17 +284,17 @@ class AppLocalizationsRw extends AppLocalizations {
       'Ku bibazo byo kwiyandikisha cyangwa ibibazo, wahamagara:';
 
   @override
-  String get authFullName => 'Izina ryuzuye';
+  String get authFullName => 'Andika Amazina yawe';
 
   @override
-  String get authFullNameHint => 'Andika izina ryawe ryuzuye';
+  String get authFullNameHint => 'Andika amazina yawe';
 
   @override
   String get registerTerms =>
       'Nemeye amabwiriza y\'ikoreshwa n\'amabwiriza y\'ibanga.';
 
   @override
-  String get registerSignUp => 'Iyandikishe';
+  String get registerSignUp => 'Emeza';
 
   @override
   String get registerHaveAccount => 'Usanzwe ufite konti? ';
@@ -327,7 +332,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get navProfile => 'Umwirondoro';
 
   @override
-  String get practiceTitle => 'Ikizamini cy\'imyitozo';
+  String get practiceTitle => 'Ibizamini byo kwitorezaho';
 
   @override
   String get practiceCategorySpeedLimits => 'Umuvuduko ntarengwa';
@@ -372,7 +377,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get quizNextQuestion => 'Ikibazo gikurikira';
 
   @override
-  String get examMockExam => 'Ikizamini cy\'imyitozo';
+  String get examMockExam => 'Ibizamini byo kwitorezaho';
 
   @override
   String get examInstructions => 'Amabwiriza y\'ikizamini';
@@ -488,7 +493,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String progressMockExam(int number) {
-    return 'Ikizamini cy\'imyitozo $number';
+    return 'Ibizamini byo kwitorezaho $number';
   }
 
   @override
@@ -596,10 +601,10 @@ class AppLocalizationsRw extends AppLocalizations {
       'Ikimenyetso cyashyizwe nk\'icyigishijwe!';
 
   @override
-  String get subscriptionTitle => 'Uburenganzira bw\'ibizamini by\'imyitozo';
+  String get subscriptionTitle => 'Gusaba gufungurirwa imyitozo';
 
   @override
-  String get subscriptionSubtitle => 'Fungura ibizamini byose by\'imyitozo';
+  String get subscriptionSubtitle => 'saba gufungurirwa imyitozo yose';
 
   @override
   String get subscriptionCurrentPlan => 'Gahunda yawe ubu';
@@ -632,16 +637,19 @@ class AppLocalizationsRw extends AppLocalizations {
   String get subscriptionPaymentInstructions => 'Amabwiriza yo kwishyura';
 
   @override
-  String get subscriptionPaymentMomo => 'MoMo Pay: 323294';
+  String get subscriptionPaymentMomo => 'MoMo Pay: 329494';
 
   @override
-  String get subscriptionPaymentMobile => 'Mobile Money: 0788657595';
+  String get subscriptionPaymentMobile => 'Mobile Money: 0788659575';
 
   @override
-  String get subscriptionHelpCall => 'Hamagara: 0788657595';
+  String get subscriptionPaymentTigoCash => 'Tigo Cash: 0728877442';
 
   @override
-  String get subscriptionHelpWhatsapp => 'WhatsApp: 0788657595';
+  String get subscriptionHelpCall => 'Hamagara: 0788659575';
+
+  @override
+  String get subscriptionHelpWhatsapp => 'WhatsApp: 0788659575';
 
   @override
   String get subscriptionChoosePlan => 'Hitamo gahunda';
@@ -806,7 +814,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get examPaid => 'BIRISHYURWA';
 
   @override
-  String get examLocked => 'Bifunze';
+  String get examLocked => 'irafunze';
 
   @override
   String examQuestions(int count) {
@@ -842,7 +850,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get quizPassed => 'Watsinze!';
 
   @override
-  String get quizFailed => 'Komeza witozera';
+  String get quizFailed => 'watsizwe';
 
   @override
   String quizQuestionOf(int current, int total) {
@@ -891,24 +899,33 @@ class AppLocalizationsRw extends AppLocalizations {
   String get paymentInstructionsTitle => 'Amabwiriza yo kwishyura';
 
   @override
-  String get paymentMomoPayNumber => 'MoMo Pay: 323294';
+  String get paymentMomoPayNumber => 'MoMo Pay: 329494';
 
   @override
-  String get paymentMomoPayDial => 'Kwishyura na MoMo Pay, kanda: *182*1*1*323294*amafaranga#';
+  String get paymentMomoPayDial =>
+      'Kwishyura na MoMo Pay, kanda: *182*1*1*329494*amafaranga#';
 
   @override
-  String get paymentMobileMoneyNumber => 'Mobile Money: 0788657595';
+  String get paymentMobileMoneyNumber => 'Mobile Money: 0788659575';
 
   @override
-  String get paymentMobileMoneyDial => 'Kwishyura na Mobile Money, kanda: *182*8*1*0788657595*amafaranga#';
+  String get paymentTigoCashNumber => 'Tigo Cash: 0728877442';
+
+  @override
+  String get paymentMobileMoneyDial =>
+      'Kwishyura na Mobile Money, kanda: *182*8*1*0788659575*amafaranga#';
+
+  @override
+  String get paymentTigoCashDial =>
+      'Kwishyura na Tigo Cash, kanda: *182*1*2*0728877442*amafaranga#';
 
   @override
   String get paymentHelpText =>
-      'Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788657595';
+      'Ukeneye ubufasha? Hamagara cyangwa WhatsApp: 0788659575';
 
   @override
   String get paymentHelpContact =>
-      'Urashobora kopi cyangwa guhamagara: 0788657595 cyangwa WhatsApp: 0788657595 kugira ubufasha.';
+      'Urashobora kopi cyangwa guhamagara: 0788659575 cyangwa WhatsApp: 0788659575 kugira ubufasha.';
 
   @override
   String get paymentError =>
@@ -918,10 +935,13 @@ class AppLocalizationsRw extends AppLocalizations {
   String get paymentCopyNumber => 'Kopi nimero';
 
   @override
-  String get paymentCallNumber => 'Hamagara 0788657595';
+  String get paymentCallNumber => 'Hamagara 0788659575';
 
   @override
-  String get paymentWhatsApp => 'WhatsApp: Ohereza ubutumwa';
+  String get paymentCallTigoNumber => 'Hamagara 0728877442';
+
+  @override
+  String get paymentWhatsApp => 'Ohereza ubutumwa kuri WhatsApp';
 
   @override
   String get paymentWhatsAppMessage =>
@@ -1243,4 +1263,219 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get examGradeLabel => 'Amanota';
+
+  @override
+  String get subscriptionPopular => '★ Bikunzwe';
+
+  @override
+  String get quizTimeTaken => 'Igihe byatwaye';
+
+  @override
+  String get progressTotalQuestions => 'Ibibazo byose';
+
+  @override
+  String get progressCorrectAnswers => 'Byiza';
+
+  @override
+  String get progressIncorrect => 'Bitabaye neza';
+
+  @override
+  String get errorNetwork =>
+      'Ntushobora guhuza. Reba interineti yawe ugerageze nanone.';
+
+  @override
+  String get paymentChooseMethod => 'Hitamo uburyo bwo kwishyura';
+
+  @override
+  String get aboutTitle => 'Ibyerekeye';
+
+  @override
+  String get aboutAppName => 'DrivePrep Rwanda';
+
+  @override
+  String get aboutDescription =>
+      'DrivePrep Rwanda ni inshuti yawe yo kwiga amategeko y\'umuhanda mu Rwanda, ibimenyetso by\'umuhanda, no kwitozera ibibazo by\'amategeko kugira ngo witegure ikizamini cy\'uruhushya rwo gutwara. Iyi ni app y\'uburezi yigenga kandi ntabwo ifitanye isano n\'ubutegetsi.';
+
+  @override
+  String get aboutFeatures => 'Ibintu by\'ingenzi';
+
+  @override
+  String get aboutFeaturePractice => 'Ibizamini by\'imyitozo';
+
+  @override
+  String get aboutFeatureProgress => 'Kurikirana iterambere';
+
+  @override
+  String get aboutFeatureMultilingual => 'Indimi 3';
+
+  @override
+  String get aboutFeatureCertificate => 'Impamyabumenyi';
+
+  @override
+  String get aboutContact => 'Twandikire';
+
+  @override
+  String get aboutContactInfo =>
+      'Tel/WhatsApp: 0788659575 / 0728877442\nEmail: info@driveprep.rw';
+
+  @override
+  String get aboutCopyright => 'Uburenganzira bw\'umwanditsi';
+
+  @override
+  String get aboutCopyrightText =>
+      '© 2026 DrivePrep Rwanda. Uburenganzira bwose burarinzwe.';
+
+  @override
+  String get privacyLastUpdated => 'Igihe gishya: Werurwe 2026';
+
+  @override
+  String get privacyIntro =>
+      'DrivePrep Rwanda yitangiye kurinda ibanga ryawe. Aya mabwiriza asobanura uko dukusanya, dukoresha, kandi turinda amakuru yawe bwite. Turi serivisi y\'uburezi yigenga ntabwo dufitanye isano n\'ubutegetsi.';
+
+  @override
+  String get privacyDataCollection => 'Gukusanya amakuru';
+
+  @override
+  String get privacyDataCollectionBody =>
+      'Dukusanya nimero ya telefoni n\'izina ryawe ryuzuye igihe wiyandikisha. Nanone dukusanya ibisubizo by\'imyitozo n\'amakuru y\'iterambere ryawe. Indangamuntu y\'igikoresho yihariye ikorwa kugira ngo konti yawe irinzwe.';
+
+  @override
+  String get privacyDataUsage => 'Uko dukoresha amakuru yawe';
+
+  @override
+  String get privacyDataUsageBody =>
+      'Amakuru yawe akoreshwa mu gutanga no kunoza serivisi zacu, gukurikirana iterambere ryawe, gucunga abonement yawe, no kugeza amakuru y\'ingenzi.';
+
+  @override
+  String get privacyDataProtection => 'Kurinda amakuru';
+
+  @override
+  String get privacyDataProtectionBody =>
+      'Dukoresha ingamba z\'umutekano z\'urwego rwo hejuru harimo kohereza amakuru mu bwiru no kubika mu buryo bwizewe. Amakuru yawe bwite ntabwo asangirwa utabyemeje.';
+
+  @override
+  String get privacyDataSharing => 'Gusangira amakuru';
+
+  @override
+  String get privacyDataSharingBody =>
+      'Ntidugurisha cyangwa tugura abantu amakuru yawe bwite. Dushobora gusangira amakuru adafite amazina y\'abantu ku mpamvu z\'imibare gusa.';
+
+  @override
+  String get privacyUserRights => 'Uburenganzira bwawe';
+
+  @override
+  String get privacyUserRightsBody =>
+      'Ufite uburenganzira bwo kubona, guhindura, cyangwa gusiba amakuru yawe bwite igihe icyo ari cyo cyose binyuze mu guhitamo Siba Konti mu igenamiterere.';
+
+  @override
+  String get termsLastUpdated => 'Igihe gishya: Werurwe 2026';
+
+  @override
+  String get termsIntro =>
+      'Mu gukoresha DrivePrep Rwanda, wemeye amabwiriza akurikira. DrivePrep Rwanda ni app y\'uburezi yigenga igufasha kwitegura ikizamini cy\'amategeko. Ntabwo dufitanye isano n\'ubutegetsi cyangwa ikigo cy\'ibizamini.';
+
+  @override
+  String get termsAcceptance => 'Kwemera amabwiriza';
+
+  @override
+  String get termsAcceptanceBody =>
+      'Mu gufungura konti no gukoresha iyi porogaramu, wemeye gukurikiza aya mabwiriza. Niba udabyemeye, nyamuneka hagarika gukoresha.';
+
+  @override
+  String get termsUserAccount => 'Konti y\'umukoresha';
+
+  @override
+  String get termsUserAccountBody =>
+      'Ni wowe ubifitiye inshingano zo kurinda umutekano wa konti yawe. Buri konti ihuza na nimero imwe ya telefoni n\'igikoresho kimwe. Gusangira amakuru ya konti ntibibujijwe.';
+
+  @override
+  String get termsContent => 'Ibiri mu bizamini';
+
+  @override
+  String get termsContentBody =>
+      'Ibiri mu bizamini byose ni iby\'uburezi n\'imyitozo gusa. Ntabwo bigereranywa n\'ikizamini cy\'ukuri cy\'ubutegetsi. Ntidushobora kwemeza ibisubizo by\'ikizamini. DrivePrep Rwanda ntabwo ifitanye isano n\'ubutegetsi.';
+
+  @override
+  String get termsPayment => 'Kwishyura n\'abonement';
+
+  @override
+  String get termsPaymentBody =>
+      'Uburenganzira bwo hejuru busaba kwishyura binyuze muri MoMo Pay cyangwa Mobile Money. Abonement ntizishobora gusubizwa iyo zikerejwe. Igihe gitangira ku itariki yo kwemeza.';
+
+  @override
+  String get termsTermination => 'Gufunga konti';
+
+  @override
+  String get termsTerminationBody =>
+      'Dufite uburenganzira bwo guhagarika konti zica aya mabwiriza. Ushobora gusiba konti yawe igihe icyo ari cyo cyose mu igenamiterere.';
+
+  @override
+  String get aboutDisclaimer => 'Icyitonderwa';
+
+  @override
+  String get aboutDisclaimerText =>
+      'DrivePrep Rwanda ni app y\'uburezi yigenga igufasha kwiga amategeko y\'umuhanda no kwitegura ikizamini cy\'amategeko. Iyi app ntabwo ifitanye isano, yemejwe, cyangwa ihuzwa n\'ubutegetsi cyangwa ikigo cy\'ibizamini. Ibiri muri iyi app ni iby\'imyitozo n\'uburezi gusa.';
+
+  @override
+  String get profileCertificatesTitle => 'Impamyabumenyi';
+
+  @override
+  String get profileCertificatesSubtitle =>
+      'Impamyabumenyi wabonye n\'iterambere ku ikurikira';
+
+  @override
+  String get offlineBanner =>
+      'Uri hanze y\'interineti. Amakuru agaragara ashobora kuba atari mashya.';
+
+  @override
+  String get syncingData => 'Guhuza amakuru...';
+
+  @override
+  String get dataSynced => 'Amakuru yahujwe neza';
+
+  @override
+  String get savedOffline =>
+      'Byabitswe hanze y\'interineti. Bizahuzwa mugihe usubiye kuri interineti.';
+
+  @override
+  String certificateUniqueExamsPassed(int count, int total) {
+    return '$count kuri $total ibizamini bidasubirwamo byatsinzwe';
+  }
+
+  @override
+  String certificatePassMark(int required, int total, int percent) {
+    return 'Amanota yo gutsinda: $required/$total ($percent%)';
+  }
+
+  @override
+  String get certificateLatestAttempt => 'Iheruka';
+
+  @override
+  String certificateExamStatus(int index) {
+    return 'Ikizamini $index';
+  }
+
+  @override
+  String get certificateNotAttempted => 'Ntirikoze';
+
+  @override
+  String get consentTitle => 'Ubuzima bwite bwawe ni ingenzi';
+
+  @override
+  String get consentBody =>
+      'DrivePrep Rwanda ikusanya kandi ikorana n\'amakuru akurikira kugira ngo iguhe uburambe bwiza bwo kwiga:\n\n• Numero ya telefone n\'izina — kugira ngo ufungure konti kandi wemeze\n• Igenzura ry\'igikoresho — igikoresho cyihariye gifashwe na hashi kugira ngo konti yawe irindwe\n• Ibisubizo by\'ibizamini n\'iterambere — kugira ngo dukurikirane urugendo rwawe rwo kwiga\n• Cache ya offline — kugira ngo app ikore nta interineti\n\nAmakuru yawe abitswe mu buryo bwizewe kandi ntayegurishwa ku bandi. Ushobora gusiba konti yawe n\'amakuru yose ajyanye nayo igihe icyo ari cyo cyose ukoresheje profil yawe.';
+
+  @override
+  String get consentAccept => 'Ndabyumva kandi ndabyemera';
+
+  @override
+  String get consentReadPolicy => 'Soma politiki y\'ibanga';
+
+  @override
+  String get registerInvalidName =>
+      'Izina rigomba kuba rigizwe n\'inyuguti n\'umwanya gusa';
+
+  @override
+  String get registerInvalidPhone =>
+      'Andika numero ya telefone ikwiye (urugero: 078... cyangwa +250 78...)';
 }

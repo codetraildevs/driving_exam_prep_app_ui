@@ -27,7 +27,7 @@ This is a complete, production-ready Flutter application for a Traffic Rules Lea
 3. **Core Features**
    - User profiles with statistics
    - Traffic signs database with search and filters
-   - Practice quiz system with immediate feedback
+   - Practice Exams system with immediate feedback
    - Mock exam with timer
    - Progress tracking with visualizations
    - Settings and preferences

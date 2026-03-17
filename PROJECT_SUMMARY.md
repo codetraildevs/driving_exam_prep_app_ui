@@ -113,7 +113,7 @@ feature/
 ✅ Real-life scenario examples
 ✅ Mark as learned tracking
 
-### Practice Quiz (2 screens)
+### Practice Exams (2 screens)
 ✅ Category-based practice
 ✅ Multiple choice questions (4 options)
 ✅ Immediate feedback

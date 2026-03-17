@@ -70,7 +70,7 @@
 - [x] Quick action buttons:
   - [x] Start Mock Test
   - [x] Learn Traffic Signs
-  - [x] Practice Quiz
+  - [x] Practice Exams
 - [x] Pull-to-refresh functionality
 - [x] Loading states
 - [x] Responsive layout
@@ -114,7 +114,7 @@
 - [x] Search functionality
 - [x] RLS policies for user data
 
-### 5️⃣ Practice Quiz System
+### 5️⃣ Practice Exams System
 
 #### Quiz Page
 - [x] Top progress bar

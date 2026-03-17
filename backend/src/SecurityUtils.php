@@ -96,12 +96,17 @@ class SecurityUtils
         }
 
         // 2. $_SERVER fallbacks (CGI / FastCGI / mod_rewrite pass-through)
-        foreach (['HTTP_AUTHORIZATION', 'REDIRECT_HTTP_AUTHORIZATION'] as $key) {
+        foreach (['HTTP_AUTHORIZATION', 'REDIRECT_HTTP_AUTHORIZATION', 'REDIRECT_REDIRECT_HTTP_AUTHORIZATION'] as $key) {
             if (!empty($_SERVER[$key])) {
                 if (preg_match('/Bearer\s+(\S+)/i', $_SERVER[$key], $m)) {
                     return $m[1];
                 }
             }
+        }
+
+        // 3. Apache mod_cgi with CGIPassAuth — token arrives via PHP_AUTH_DIGEST
+        if (!empty($_SERVER['PHP_AUTH_DIGEST'])) {
+            return $_SERVER['PHP_AUTH_DIGEST'];
         }
 
         return null;

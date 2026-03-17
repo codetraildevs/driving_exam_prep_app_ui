@@ -131,7 +131,7 @@ static const Color accent = Color(0xFFF97316);  // Traffic Orange
 
 ### Modify Questions
 Edit quiz data in respective page files:
-- Practice quiz: `lib/features/practice/presentation/pages/quiz_page.dart`
+- Practice Exams: `lib/features/practice/presentation/pages/quiz_page.dart`
 - Mock exam: `lib/features/exam/presentation/pages/exam_page.dart`
 
 ### Add Traffic Signs

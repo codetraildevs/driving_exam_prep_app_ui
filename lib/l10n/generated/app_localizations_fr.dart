@@ -9,7 +9,7 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get appTitle => 'Application d\'apprentissage du code de la route';
+  String get appTitle => 'DrivePrep Rwanda';
 
   @override
   String get languageSelectTitle => 'Choisissez votre langue';
@@ -113,7 +113,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsAbout => 'À propos';
 
   @override
-  String get settingsAboutApp => 'À propos de l\'application';
+  String get settingsAboutApp => 'À propos de DrivePrep Rwanda';
 
   @override
   String settingsVersion(String version) {
@@ -227,11 +227,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeServices => 'Services';
 
   @override
-  String get authAppName => 'CODE DE LA ROUTE RWANDA';
+  String get authAppName => 'DRIVEPREP RWANDA';
 
   @override
-  String get authSubtitle =>
-      'Plateforme officielle d\'apprentissage du permis de conduire';
+  String get authSubtitle => 'Préparez le permis de conduire provisoire';
 
   @override
   String get loginTitle => 'Connectez-vous à votre compte';
@@ -251,7 +250,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get authPhoneNumber => 'Numéro de téléphone';
 
   @override
-  String get authPhoneHint => '0788 000 000';
+  String get authPhoneHint => '07** *** ***';
 
   @override
   String get authContinue => 'Continuer';
@@ -263,10 +262,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get loginSignUp => 'S\'inscrire';
 
   @override
-  String get authSecureTag => 'Sécurisé • Rapide • Application officielle';
+  String get authSecureTag => 'Sécurisé • Rapide • DrivePrep Rwanda';
 
   @override
   String get loginPhoneRequired => 'Veuillez entrer votre numéro de téléphone';
+
+  @override
+  String get loginInvalidPhone =>
+      'Entrez un numéro de téléphone valide (ex: 078... ou +250 78...)';
 
   @override
   String get registerTitle => 'Créez votre compte';
@@ -635,16 +638,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get subscriptionPaymentInstructions => 'Instructions de paiement';
 
   @override
-  String get subscriptionPaymentMomo => 'MoMo Pay: 323294';
+  String get subscriptionPaymentMomo => 'MoMo Pay: 329494';
 
   @override
-  String get subscriptionPaymentMobile => 'Mobile Money: 0788657595';
+  String get subscriptionPaymentMobile => 'Mobile Money: 0788659575';
 
   @override
-  String get subscriptionHelpCall => 'Appel: 0788657595';
+  String get subscriptionPaymentTigoCash => 'Tigo Cash: 0728877442';
 
   @override
-  String get subscriptionHelpWhatsapp => 'WhatsApp: 0788657595';
+  String get subscriptionHelpCall => 'Appel: 0788659575';
+
+  @override
+  String get subscriptionHelpWhatsapp => 'WhatsApp: 0788659575';
 
   @override
   String get subscriptionChoosePlan => 'Choisir un forfait';
@@ -893,24 +899,33 @@ class AppLocalizationsFr extends AppLocalizations {
   String get paymentInstructionsTitle => 'Instructions de paiement';
 
   @override
-  String get paymentMomoPayNumber => 'MoMo Pay: 323294';
+  String get paymentMomoPayNumber => 'MoMo Pay: 329494';
 
   @override
-  String get paymentMomoPayDial => 'Pour payer avec MoMo Pay, composez: *182*1*1*323294*montant#';
+  String get paymentMomoPayDial =>
+      'Pour payer avec MoMo Pay, composez: *182*1*1*329494*montant#';
 
   @override
-  String get paymentMobileMoneyNumber => 'Mobile Money: 0788657595';
+  String get paymentMobileMoneyNumber => 'Mobile Money: 0788659575';
 
   @override
-  String get paymentMobileMoneyDial => 'Pour payer avec Mobile Money, composez: *182*8*1*0788657595*montant#';
+  String get paymentTigoCashNumber => 'Tigo Cash: 0728877442';
+
+  @override
+  String get paymentMobileMoneyDial =>
+      'Pour payer avec Mobile Money, composez: *182*8*1*0788659575*montant#';
+
+  @override
+  String get paymentTigoCashDial =>
+      'Pour payer avec  Tigo Cash, composez: *182*1*2*0728877442*montant#';
 
   @override
   String get paymentHelpText =>
-      'Besoin d\'aide ? Appelez ou WhatsApp: 0788657595';
+      'Besoin d\'aide ? Appelez ou WhatsApp: 0788659575';
 
   @override
   String get paymentHelpContact =>
-      'Vous pouvez copier ou appeler: 0788657595 ou WhatsApp: 0788657595 pour de l\'aide.';
+      'Vous pouvez copier ou appeler: 0788659575 ou WhatsApp: 0788659575 pour de l\'aide.';
 
   @override
   String get paymentError =>
@@ -920,10 +935,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get paymentCopyNumber => 'Copier le numéro';
 
   @override
-  String get paymentCallNumber => 'Appeler le 0788657595';
+  String get paymentCallNumber => 'Appeler le 0788659575';
 
   @override
-  String get paymentWhatsApp => 'WhatsApp: Envoyer un message';
+  String get paymentCallTigoNumber => 'Appeler le 0728877442';
+
+  @override
+  String get paymentWhatsApp => 'Envoyer un message sur WhatsApp';
 
   @override
   String get paymentWhatsAppMessage =>
@@ -1248,4 +1266,219 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get examGradeLabel => 'Note';
+
+  @override
+  String get subscriptionPopular => '★ Populaire';
+
+  @override
+  String get quizTimeTaken => 'Temps passé';
+
+  @override
+  String get progressTotalQuestions => 'Total des questions';
+
+  @override
+  String get progressCorrectAnswers => 'Correctes';
+
+  @override
+  String get progressIncorrect => 'Incorrectes';
+
+  @override
+  String get errorNetwork =>
+      'Connexion impossible. Vérifiez votre connexion internet et réessayez.';
+
+  @override
+  String get paymentChooseMethod => 'Choisir le mode de paiement';
+
+  @override
+  String get aboutTitle => 'À propos';
+
+  @override
+  String get aboutAppName => 'DrivePrep Rwanda';
+
+  @override
+  String get aboutDescription =>
+      'DrivePrep Rwanda est votre compagnon pour apprendre le code de la route rwandais, les panneaux routiers et pratiquer les questions théoriques pour préparer l\'examen du permis provisoire. Cette application éducative indépendante n\'est affiliée à aucune autorité gouvernementale.';
+
+  @override
+  String get aboutFeatures => 'Fonctionnalités clés';
+
+  @override
+  String get aboutFeaturePractice => 'Examens blancs';
+
+  @override
+  String get aboutFeatureProgress => 'Suivi des progrès';
+
+  @override
+  String get aboutFeatureMultilingual => '3 Langues';
+
+  @override
+  String get aboutFeatureCertificate => 'Certificats';
+
+  @override
+  String get aboutContact => 'Contactez-nous';
+
+  @override
+  String get aboutContactInfo =>
+      'Tél/WhatsApp : 0788659575 / 0728877442\nEmail : info@driveprep.rw';
+
+  @override
+  String get aboutCopyright => 'Droits d\'auteur';
+
+  @override
+  String get aboutCopyrightText =>
+      '© 2026 DrivePrep Rwanda. Tous droits réservés.';
+
+  @override
+  String get privacyLastUpdated => 'Dernière mise à jour : mars 2026';
+
+  @override
+  String get privacyIntro =>
+      'DrivePrep Rwanda s\'engage à protéger votre vie privée. Cette politique explique comment nous collectons, utilisons et protégeons vos informations personnelles. Nous sommes un service éducatif indépendant non affilié à aucune autorité gouvernementale.';
+
+  @override
+  String get privacyDataCollection => 'Collecte des données';
+
+  @override
+  String get privacyDataCollectionBody =>
+      'Nous collectons votre numéro de téléphone et votre nom complet lors de l\'inscription. Nous collectons également vos résultats de quiz et données de progression. Un identifiant d\'appareil unique est généré pour sécuriser votre compte.';
+
+  @override
+  String get privacyDataUsage => 'Utilisation des données';
+
+  @override
+  String get privacyDataUsageBody =>
+      'Vos données sont utilisées pour fournir et améliorer nos services, suivre vos progrès, gérer votre abonnement et communiquer les mises à jour importantes.';
+
+  @override
+  String get privacyDataProtection => 'Protection des données';
+
+  @override
+  String get privacyDataProtectionBody =>
+      'Nous utilisons des mesures de sécurité standards, notamment la transmission chiffrée et le stockage sécurisé. Vos données ne sont jamais partagées sans votre consentement.';
+
+  @override
+  String get privacyDataSharing => 'Partage des données';
+
+  @override
+  String get privacyDataSharingBody =>
+      'Nous ne vendons ni ne louons vos données personnelles. Nous pouvons partager des données anonymes agrégées à des fins statistiques uniquement.';
+
+  @override
+  String get privacyUserRights => 'Vos droits';
+
+  @override
+  String get privacyUserRightsBody =>
+      'Vous avez le droit d\'accéder, de mettre à jour ou de supprimer vos données personnelles à tout moment via l\'option Supprimer le compte dans les Paramètres.';
+
+  @override
+  String get termsLastUpdated => 'Dernière mise à jour : mars 2026';
+
+  @override
+  String get termsIntro =>
+      'En utilisant DrivePrep Rwanda, vous acceptez les conditions suivantes. DrivePrep Rwanda est une application éducative indépendante conçue pour vous aider à préparer l\'examen théorique. Nous ne sommes affiliés à aucune autorité gouvernementale.';
+
+  @override
+  String get termsAcceptance => 'Acceptation des conditions';
+
+  @override
+  String get termsAcceptanceBody =>
+      'En créant un compte et en utilisant cette application, vous acceptez d\'être lié par ces conditions. Si vous n\'êtes pas d\'accord, veuillez cesser d\'utiliser l\'application.';
+
+  @override
+  String get termsUserAccount => 'Compte utilisateur';
+
+  @override
+  String get termsUserAccountBody =>
+      'Vous êtes responsable de la sécurité de votre compte. Chaque compte est lié à un seul numéro de téléphone et appareil. Le partage des identifiants n\'est pas autorisé.';
+
+  @override
+  String get termsContent => 'Contenu et examens';
+
+  @override
+  String get termsContentBody =>
+      'Tout le contenu est à des fins éducatives et de pratique uniquement. Il ne représente pas l\'examen officiel du gouvernement. Nous ne garantissons pas les résultats d\'examen. DrivePrep Rwanda n\'est affilié à aucune autorité gouvernementale.';
+
+  @override
+  String get termsPayment => 'Paiement et abonnement';
+
+  @override
+  String get termsPaymentBody =>
+      'L\'accès premium nécessite un paiement via MoMo Pay ou Mobile Money. Les abonnements ne sont pas remboursables une fois activés. La durée commence à la date d\'activation.';
+
+  @override
+  String get termsTermination => 'Résiliation du compte';
+
+  @override
+  String get termsTerminationBody =>
+      'Nous nous réservons le droit de suspendre les comptes qui violent ces conditions. Vous pouvez supprimer votre compte à tout moment depuis les paramètres.';
+
+  @override
+  String get aboutDisclaimer => 'Avertissement';
+
+  @override
+  String get aboutDisclaimerText =>
+      'DrivePrep Rwanda est une application éducative indépendante conçue pour aider les utilisateurs à apprendre le code de la route et à se préparer à l\'examen théorique. Cette application n\'est pas affiliée, approuvée ou liée à une autorité gouvernementale ou un organisme d\'examen officiel. Tout le contenu est à des fins de pratique et d\'apprentissage uniquement.';
+
+  @override
+  String get profileCertificatesTitle => 'Certificats';
+
+  @override
+  String get profileCertificatesSubtitle =>
+      'Certificats obtenus et progression vers le prochain';
+
+  @override
+  String get offlineBanner =>
+      'Vous êtes hors ligne. Les données affichées peuvent ne pas être à jour.';
+
+  @override
+  String get syncingData => 'Synchronisation des données...';
+
+  @override
+  String get dataSynced => 'Données synchronisées avec succès';
+
+  @override
+  String get savedOffline =>
+      'Enregistré hors ligne. Sera synchronisé une fois connecté.';
+
+  @override
+  String certificateUniqueExamsPassed(int count, int total) {
+    return '$count sur $total examens uniques réussis';
+  }
+
+  @override
+  String certificatePassMark(int required, int total, int percent) {
+    return 'Note de passage : $required/$total ($percent%)';
+  }
+
+  @override
+  String get certificateLatestAttempt => 'Dernière tentative';
+
+  @override
+  String certificateExamStatus(int index) {
+    return 'Examen $index';
+  }
+
+  @override
+  String get certificateNotAttempted => 'Non tenté';
+
+  @override
+  String get consentTitle => 'Votre vie privée compte';
+
+  @override
+  String get consentBody =>
+      'DrivePrep Rwanda collecte et traite les données suivantes pour vous offrir la meilleure expérience d\'apprentissage :\n\n• Numéro de téléphone et nom — pour la création de compte et l\'authentification\n• Identifiant de l\'appareil — une empreinte numérique chiffrée pour sécuriser votre compte\n• Résultats d\'examens et progression — pour suivre votre parcours d\'apprentissage\n• Cache hors ligne — pour que l\'application fonctionne sans internet\n\nVos données sont stockées de manière sécurisée et ne sont jamais vendues à des tiers. Vous pouvez supprimer votre compte et toutes les données associées à tout moment depuis votre profil.';
+
+  @override
+  String get consentAccept => 'Je comprends et j\'accepte';
+
+  @override
+  String get consentReadPolicy => 'Lire la politique de confidentialité';
+
+  @override
+  String get registerInvalidName =>
+      'Le nom doit contenir uniquement des lettres et des espaces';
+
+  @override
+  String get registerInvalidPhone =>
+      'Entrez un numéro de téléphone valide (ex: 078... ou +250 78...)';
 }

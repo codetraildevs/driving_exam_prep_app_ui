@@ -14,3 +14,8 @@ build/
 .flutter-plugins-dependencies
 *.iml
 
+# Release signing
+android/key.properties
+*.jks
+*.keystore
+

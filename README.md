@@ -4,7 +4,7 @@ A professional, modern Flutter application for learning traffic rules and prepar
 
 ## Overview
 
-Master Traffic Rules is a comprehensive mobile and web application designed to help aspiring drivers prepare for their driving license exams. The app combines interactive learning, practice quizzes, and practice exams with engaging gamification elements to make exam preparation rewarding and effective.
+Master Traffic Rules is a comprehensive mobile and web application designed to help aspiring drivers prepare for their driving license exams. The app combines interactive learning, Practice Examszes, and practice exams with engaging gamification elements to make exam preparation rewarding and effective.
 
 ## Features
 
@@ -25,7 +25,7 @@ Master Traffic Rules is a comprehensive mobile and web application designed to h
   - Quick action buttons for:
     - Start Mock Test
     - Learn Traffic Signs
-    - Practice Quiz
+    - Practice Exams
 
 - **Traffic Signs Module**:
   - Browse comprehensive traffic sign database
@@ -34,7 +34,7 @@ Master Traffic Rules is a comprehensive mobile and web application designed to h
   - Detailed sign information with real-life scenarios
   - Mark signs as learned to track progress
 
-- **Practice Quiz System**:
+- **Practice Exams System**:
   - Category-based practice questions
   - Multiple choice format (4 options)
   - Immediate feedback (correct/incorrect)

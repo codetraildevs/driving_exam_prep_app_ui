@@ -9,10 +9,12 @@ class CheckAuthStatusEvent extends AuthEvent {
 class SignUpEvent extends AuthEvent {
   final String fullName;
   final String phoneNumber;
+  final String preferredLanguage;
 
   const SignUpEvent({
     required this.fullName,
     required this.phoneNumber,
+    this.preferredLanguage = 'en',
   });
 }
 
@@ -26,4 +28,9 @@ class SignInEvent extends AuthEvent {
 
 class SignOutEvent extends AuthEvent {
   const SignOutEvent();
+}
+
+class DeleteAccountEvent extends AuthEvent {
+  final String userId;
+  const DeleteAccountEvent({required this.userId});
 }

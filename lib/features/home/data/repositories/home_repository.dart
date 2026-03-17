@@ -1,5 +1,6 @@
 import '../../../../shared/network/api_client.dart';
 import '../../../../shared/network/api_endpoints.dart';
+import '../../../../shared/network/offline_cache.dart';
 import '../../../../shared/session/auth_session.dart';
 
 class HomeRepository {
@@ -7,6 +8,9 @@ class HomeRepository {
   final AuthSession _session = AuthSession();
 
   Future<Map<String, dynamic>?> getUserStats(String userId) async {
+    final cache = OfflineCache();
+    final cacheKey = cache.userStatsKey(userId);
+
     try {
       // Backend available endpoint: GET /api/exam-results/:userId
       final token = await _session.getToken();
@@ -16,12 +20,14 @@ class HomeRepository {
       );
 
       if (data is! List) {
-        return {
+        final fallback = {
           'last_score': 0,
           'best_score': 0,
           'total_attempts': 0,
           'signs_learned': 0,
         };
+        await cache.save(cacheKey, fallback);
+        return fallback;
       }
 
       final scores = <int>[];
@@ -38,13 +44,18 @@ class HomeRepository {
       final bestScore = scores.isEmpty ? 0 : scores.reduce((a, b) => a > b ? a : b);
       final totalAttempts = scores.length;
 
-      return {
+      final stats = {
         'last_score': lastScore ?? 0,
         'best_score': bestScore,
         'total_attempts': totalAttempts,
         'signs_learned': 0,
       };
+      await cache.save(cacheKey, stats);
+      return stats;
     } catch (e) {
+      // Fallback to cache
+      final cached = await cache.load(cacheKey);
+      if (cached is Map<String, dynamic>) return cached;
       rethrow;
     }
   }
@@ -57,8 +68,26 @@ class HomeRepository {
         ApiEndpoints.examResultsForUser(userId),
         headers: token == null ? null : {'Authorization': 'Bearer $token'},
       );
-      if (data is! List) return 0;
+      if (data is! List) return _streakFromCache(userId);
 
+      // Cache for offline use
+      final cache = OfflineCache();
+      await cache.save(cache.examResultsKey(userId), data);
+
+      return _computeStreak(data);
+    } catch (e) {
+      return _streakFromCache(userId);
+    }
+  }
+
+  Future<int> _streakFromCache(String userId) async {
+    final cache = OfflineCache();
+    final cached = await cache.load(cache.examResultsKey(userId));
+    if (cached is List) return _computeStreak(cached);
+    return 0;
+  }
+
+  int _computeStreak(List<dynamic> data) {
       final daysWithActivity = <DateTime>{};
       for (final item in data) {
         if (item is Map) {
@@ -78,9 +107,6 @@ class HomeRepository {
         day = day.subtract(const Duration(days: 1));
       }
       return streak;
-    } catch (e) {
-      rethrow;
-    }
   }
 
   Future<void> updateLastLogin(String userId) async {

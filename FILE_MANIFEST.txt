@@ -86,7 +86,7 @@ lib/features/signs/presentation/pages/sign_detail_page.dart
                                             # Detailed traffic sign information
 
 =============================================================================
-PRACTICE QUIZ FEATURE
+Practice Exams FEATURE
 =============================================================================
 
 lib/features/practice/presentation/pages/practice_page.dart
@@ -255,7 +255,7 @@ GETTING STARTED
 
 4. Start Learning:
    - Browse traffic signs
-   - Take practice quizzes
+   - Take Practice Examszes
    - Complete mock exam
    - Track progress
 

@@ -1,13 +1,13 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../../../shared/network/api_config.dart';
-import '../../../../shared/session/auth_session.dart';
+import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/widgets/app_page_header.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class AdminUsersPage extends StatefulWidget {
   const AdminUsersPage({Key? key}) : super(key: key);
@@ -56,7 +56,6 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       _error = null;
     });
     try {
-      final token = await AuthSession().getToken();
       final qp = <String, String>{
         'page': '$_page',
         'limit': '$_limit',
@@ -71,25 +70,21 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
         if (!_todayOnly && _dateTo != null)
           'dateTo': _dateTo!.toIso8601String().split('T')[0],
       };
-      final uri = Uri.parse('${ApiConfig.baseUrl}/api/admin/users')
-          .replace(queryParameters: qp);
-      final response = await http
-          .get(uri, headers: {
-            if (token != null) 'Authorization': 'Bearer $token',
-          })
-          .timeout(const Duration(seconds: 15));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
+      final result = await ApiHelper().get('/api/admin/users', queryParams: qp);
+      if (result.isSuccess) {
+        final data = result.data;
         setState(() {
-          _users = (data is List)
-              ? data
-              : (data['users'] ?? data['data'] ?? []);
+          _users = result.dataList;
           _totalUsers = (data is Map)
               ? (data['total'] ?? _users.length)
               : _users.length;
         });
+      } else if (result.statusCode == 401) {
+        if (!mounted) return;
+        context.read<AuthBloc>().add(const SignOutEvent());
+        context.go('/login');
       } else {
-        setState(() => _error = 'HTTP ${response.statusCode}: ${response.body}');
+        setState(() => _error = result.errorMessage);
       }
     } catch (e) {
       setState(() => _error = e.toString());
@@ -105,24 +100,23 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     final newStatus = currentlyBlocked ? 1 : 0;
     setState(() => _loadingMap[userId] = true);
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.patch(
-        Uri.parse('${ApiConfig.baseUrl}/api/admin/users/$userId/block'),
-        headers: {
-          'Content-Type': 'application/json',
-          if (token != null) 'Authorization': 'Bearer $token',
-        },
-        body: json.encode({'isActive': newStatus}),
-      ).timeout(const Duration(seconds: 15));
-      if (response.statusCode == 200) {
+      final result = await ApiHelper().patch(
+        '/api/admin/users/$userId/block',
+        body: {'isActive': newStatus},
+      );
+      if (result.isSuccess) {
         _showSnack(
           context,
           currentlyBlocked ? l10n.adminUserUnblocked : l10n.adminUserBlocked,
           AppColors.success,
         );
         _loadUsers();
+      } else if (result.statusCode == 401) {
+        if (!mounted) return;
+        context.read<AuthBloc>().add(const SignOutEvent());
+        context.go('/login');
       } else {
-        _showSnack(context, 'HTTP ${response.statusCode}', AppColors.error);
+        _showSnack(context, result.errorMessage ?? 'Error', AppColors.error);
       }
     } catch (e) {
       _showSnack(context, e.toString(), AppColors.error);
@@ -135,25 +129,21 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       String userId, String name, AppLocalizations l10n) async {
     setState(() => _loadingMap[userId] = true);
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.delete(
-        Uri.parse('${ApiConfig.baseUrl}/api/admin/users/$userId'),
-        headers: {if (token != null) 'Authorization': 'Bearer $token'},
-      ).timeout(const Duration(seconds: 15));
-      if (response.statusCode == 200) {
+      final result = await ApiHelper().delete('/api/admin/users/$userId');
+      if (result.isSuccess) {
         _showSnack(context, l10n.adminUserDeleted, AppColors.success);
         _loadUsers();
+      } else if (result.statusCode == 401) {
+        if (!mounted) return;
+        context.read<AuthBloc>().add(const SignOutEvent());
+        context.go('/login');
       } else {
-        final body = json.decode(response.body);
-        final code = body['code'] ?? '';
+        final data = result.data;
+        final code = (data is Map) ? (data['code'] ?? '') : '';
         if (code == 'BLOCK_FIRST') {
           _showSnack(context, l10n.adminMustBlockFirst, AppColors.warning);
         } else {
-          _showSnack(
-            context,
-            body['error'] ?? 'HTTP ${response.statusCode}',
-            AppColors.error,
-          );
+          _showSnack(context, result.errorMessage ?? 'Error', AppColors.error);
         }
       }
     } catch (e) {
@@ -167,20 +157,19 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       String userId, String notes, AppLocalizations l10n) async {
     setState(() => _loadingMap[userId] = true);
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/api/admin/users/$userId/mark-called'),
-        headers: {
-          'Content-Type': 'application/json',
-          if (token != null) 'Authorization': 'Bearer $token',
-        },
-        body: json.encode({'notes': notes}),
-      ).timeout(const Duration(seconds: 15));
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      final result = await ApiHelper().post(
+        '/api/admin/users/$userId/mark-called',
+        body: {'notes': notes},
+      );
+      if (result.isSuccess) {
         _showSnack(context, l10n.adminCallLogged, AppColors.success);
         _loadUsers();
+      } else if (result.statusCode == 401) {
+        if (!mounted) return;
+        context.read<AuthBloc>().add(const SignOutEvent());
+        context.go('/login');
       } else {
-        _showSnack(context, 'HTTP ${response.statusCode}', AppColors.error);
+        _showSnack(context, result.errorMessage ?? 'Error', AppColors.error);
       }
     } catch (e) {
       _showSnack(context, e.toString(), AppColors.error);
@@ -205,19 +194,19 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     final isActive = _isActiveUser(user);
     showDialog(
       context: ctx,
-      builder: (_) => AlertDialog(
+      builder: (dialogCtx) => AlertDialog(
         title: Text(isActive ? l10n.adminBlockUser : l10n.adminUnblockUser),
         content: Text(isActive
             ? l10n.adminBlockUserConfirm(name)
             : '${l10n.adminUnblockUser} $name?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(ctx),
+            onPressed: () => Navigator.pop(dialogCtx),
             child: Text(l10n.commonCancel),
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(ctx);
+              Navigator.pop(dialogCtx);
               _blockUser(id, !isActive, l10n);
             },
             style: ElevatedButton.styleFrom(
@@ -238,7 +227,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
 
     showDialog(
       context: ctx,
-      builder: (_) => AlertDialog(
+      builder: (dialogCtx) => AlertDialog(
         title: Row(
           children: [
             const Icon(Icons.warning_amber_rounded,
@@ -275,13 +264,13 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(ctx),
+            onPressed: () => Navigator.pop(dialogCtx),
             child: Text(l10n.commonCancel),
           ),
           if (!isActive)
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(ctx);
+                Navigator.pop(dialogCtx);
                 _deleteUser(id, name, l10n);
               },
               style: ElevatedButton.styleFrom(
@@ -295,34 +284,19 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     );
   }
 
-  void _showCallDialog(BuildContext ctx, Map user, AppLocalizations l10n) {
+  Future<void> _callUser(BuildContext ctx, Map user, AppLocalizations l10n) async {
     final id = (user['id'] ?? '').toString();
-    final notesCtrl = TextEditingController();
-    showDialog(
-      context: ctx,
-      builder: (_) => AlertDialog(
-        title: Text(l10n.adminCallUser),
-        content: TextField(
-          controller: notesCtrl,
-          decoration:
-              InputDecoration(hintText: l10n.adminEnterCallNotes),
-          maxLines: 3,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(l10n.commonCancel),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              _markCalled(id, notesCtrl.text, l10n);
-            },
-            child: Text(l10n.adminSubmitCall),
-          ),
-        ],
-      ),
-    );
+    final phone = (user['phoneNumber'] ?? user['phone_number'] ?? '').toString();
+    if (phone.isEmpty) {
+      _showSnack(ctx, 'No phone number', AppColors.error);
+      return;
+    }
+    final uri = Uri(scheme: 'tel', path: phone);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    }
+    // Mark as called in backend regardless (admin tapped call)
+    _markCalled(id, '', l10n);
   }
 
   void _showGrantSheet(Map user, AppLocalizations l10n) {
@@ -362,8 +336,11 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                         title: Text(t['label'] as String),
                         subtitle: Text(
                             '${t['price']} RWF'),
-                        onChanged: (v) =>
-                            setModal(() => selectedTier = v),
+                        onChanged: (v) {
+                          setModal(() => selectedTier = v);
+                          final price = t['price'];
+                          amtCtrl.text = '$price';
+                        },
                         selected: isSelected,
                       );
                     }).toList(),
@@ -449,22 +426,20 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     }
     setState(() => _loadingMap[userId] = true);
     try {
-      final token = await AuthSession().getToken();
-      final response = await http.post(
-        Uri.parse(
-            '${ApiConfig.baseUrl}/api/admin/users/$userId/grant-access'),
-        headers: {
-          'Content-Type': 'application/json',
-          if (token != null) 'Authorization': 'Bearer $token',
-        },
-        body: json.encode(body),
-      ).timeout(const Duration(seconds: 15));
+      final result = await ApiHelper().post(
+        '/api/admin/users/$userId/grant-access',
+        body: body,
+      );
       if (mounted) Navigator.pop(ctx);
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (result.isSuccess) {
         _showSnack(context, l10n.adminAccessGranted, AppColors.success);
         _loadUsers();
+      } else if (result.statusCode == 401) {
+        if (!mounted) return;
+        context.read<AuthBloc>().add(const SignOutEvent());
+        context.go('/login');
       } else {
-        _showSnack(context, 'HTTP ${response.statusCode}', AppColors.error);
+        _showSnack(context, result.errorMessage ?? 'Error', AppColors.error);
       }
     } catch (e) {
       _showSnack(context, e.toString(), AppColors.error);
@@ -711,7 +686,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                                   isLoading: _loadingMap[
                                           (_users[i] as Map)['id']?.toString() ?? ''] ??
                                       false,
-                                  onCall: () => _showCallDialog(
+                                  onCall: () => _callUser(
                                       ctx, _users[i] as Map, l10n),
                                   onGrant: () =>
                                       _showGrantSheet(_users[i] as Map, l10n),
