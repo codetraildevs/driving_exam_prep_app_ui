@@ -55,9 +55,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   ) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final momoCode = '*182*1*1*$_kMomoPayCode*$price#';
-    final mobileCode = '*182*8*1*$_kHelpNumber*$price#';
-    final tigoCashCode = '*182*1*2*$_kTigoCashNumber*$price#';
+    final momoCode = '*182*8*1*$_kMomoPayCode*$price#';
+    final mobileCode = '*182*1*1*$_kHelpNumber*$price#';
+    final tigoCashCode = '*182*1*1*$_kTigoCashNumber*$price#';
 
     showModalBottomSheet(
       context: context,
@@ -248,8 +248,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     final plans = _getPlans(langCode, l10n);
     final theme = Theme.of(context);
     final selectedPrice = _getSelectedPrice(plans);
-    final momoCode = '*182*1*1*$_kMomoPayCode*$selectedPrice#';
-    final mobileCode = '*182*8*1*$_kHelpNumber*$selectedPrice#';
+    final momoCode = '*182*8*1*$_kMomoPayCode*$selectedPrice#';
+    final mobileCode = '*182*1*1*$_kHelpNumber*$selectedPrice#';
+    final tigoCashCode = '*182*1*1*$_kTigoCashNumber*$selectedPrice#';
 
     return Scaffold(
       body: Column(
@@ -328,7 +329,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   ),
                   const SizedBox(height: 10),
 
-                  // Step 2 – Mobile Money
+                  // Step 2 – Mobile Money.
                   _UssdCodeCard(
                     stepNumber: 2,
                     title: l10n.subscriptionPaymentMobile,
@@ -343,9 +344,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     stepNumber: 3,
                     title: l10n.subscriptionPaymentTigoCash,
                     description: l10n.paymentTigoCashDial,
-                    ussdCode: _kTigoCashNumber,
-                    onCopy: () => _copyToClipboard(context, _kTigoCashNumber),
-                    onDial: () => _dialUssd(_kTigoCashNumber),
+                    ussdCode: tigoCashCode,
+                    onCopy: () => _copyToClipboard(context, tigoCashCode),
+                    onDial: () => _dialUssd(tigoCashCode),
                     theme: theme,
                   ),
                   const SizedBox(height: 20),

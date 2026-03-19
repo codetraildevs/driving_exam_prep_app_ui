@@ -178,9 +178,11 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          '${l10n.authNeedHelp} ',
-                          style: AppTextStyles.bodySmall.copyWith(color: AppColors.neutral500),
+                        Expanded(
+                          child: Text(
+                            '${l10n.authNeedHelp} ',
+                            style: AppTextStyles.bodySmall.copyWith(color: AppColors.neutral500),
+                          ),
                         ),
                         GestureDetector(
                           onTap: () => _callNumber(supportNumber1),

@@ -1729,7 +1729,7 @@ abstract class AppLocalizations {
   /// MoMo Pay dial instruction
   ///
   /// In en, this message translates to:
-  /// **'To pay with MoMo Pay, dial: *182*1*1*329494*amount#'**
+  /// **'To pay with MoMo Pay, dial: *182*8*1*329494*amount#'**
   String get paymentMomoPayDial;
 
   /// Mobile money number
@@ -1747,13 +1747,13 @@ abstract class AppLocalizations {
   /// Mobile Money dial instruction
   ///
   /// In en, this message translates to:
-  /// **'To pay with Mobile Money, dial: *182*8*1*0788659575*amount#'**
+  /// **'To pay with Mobile Money, dial: *182*1*1*0788659575*amount#'**
   String get paymentMobileMoneyDial;
 
   /// No description provided for @paymentTigoCashDial.
   ///
   /// In en, this message translates to:
-  /// **'To pay with Tigo Cash, dial *182*1*2*0728877442*amount#'**
+  /// **'To pay with Tigo Cash, dial *182*1*1*0728877442*amount#'**
   String get paymentTigoCashDial;
 
   /// Payment help text

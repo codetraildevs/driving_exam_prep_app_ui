@@ -62,13 +62,13 @@ class AppLocalizationsRw extends AppLocalizations {
   String get homePractices => 'Imyitozo';
 
   @override
-  String get homePracticesSubtitle => 'Ibibazo by\'imyitozo';
+  String get homePracticesSubtitle => 'Ibizamini byakozwe';
 
   @override
   String get homeCourses => 'Amasomo';
 
   @override
-  String get homeCoursesSubtitle => 'Modire z\'amasomo';
+  String get homeCoursesSubtitle => 'Amasomo ku mategeko y\'umuhanda';
 
   @override
   String get homeMockExams => 'Ibizamini byo kwitorezaho';
@@ -631,7 +631,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get subscriptionRequestSent =>
-      'Ubusabe bwawe bwoherejwe. Uzakezwa umara kwemeza kwishyura.';
+      'Ubusabe bwawe bwoherejwe neza.Tegereza akanya gato bareba ko wishyuye bagufungurire.';
 
   @override
   String get subscriptionPaymentInstructions => 'Amabwiriza yo kwishyura';
@@ -833,10 +833,10 @@ class AppLocalizationsRw extends AppLocalizations {
   String get quizSubmitPractice => 'Ohereza imyitozo';
 
   @override
-  String get quizPrevious => 'Inyuma';
+  String get quizPrevious => 'ikibanza';
 
   @override
-  String get quizNext => 'Imbere';
+  String get quizNext => 'igikurikira';
 
   @override
   String quizTimeRemaining(String time) {
@@ -903,7 +903,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get paymentMomoPayDial =>
-      'Kwishyura na MoMo Pay, kanda: *182*1*1*329494*amafaranga#';
+      'Kwishyura na MoMo Pay, kanda: *182*8*1*329494*amafaranga#';
 
   @override
   String get paymentMobileMoneyNumber => 'Mobile Money: 0788659575';
@@ -913,11 +913,11 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get paymentMobileMoneyDial =>
-      'Kwishyura na Mobile Money, kanda: *182*8*1*0788659575*amafaranga#';
+      'Kwishyura na Mobile Money, kanda: *182*1*1*0788659575*amafaranga#';
 
   @override
   String get paymentTigoCashDial =>
-      'Kwishyura na Tigo Cash, kanda: *182*1*2*0728877442*amafaranga#';
+      'Kwishyura na Tigo Cash, kanda: *182*1*1*0728877442*amafaranga#';
 
   @override
   String get paymentHelpText =>
@@ -949,7 +949,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get paymentRequestExists =>
-      'Ubusabe bwo kwishyura kuri iyi gahato buriho. Tegereza ko ubuzima bwawe buremwa cyangwa vugana na serivisi.';
+      'Ubusabe bwo kwishyura bwoherejwe. Tegereza akanya gato bagufashe cg uhamagare nimero z\'ubufasha cg wohereze ubutumwa kuri WhatsApp bigaragara hasi kuri paji';
 
   @override
   String get commonError => 'Hari ikibazo cyabaye. Ongera ugerageze.';
@@ -1265,7 +1265,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get examGradeLabel => 'Amanota';
 
   @override
-  String get subscriptionPopular => '★ Bikunzwe';
+  String get subscriptionPopular => '★ Bukunzwe';
 
   @override
   String get quizTimeTaken => 'Igihe byatwaye';

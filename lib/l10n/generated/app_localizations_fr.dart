@@ -903,7 +903,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get paymentMomoPayDial =>
-      'Pour payer avec MoMo Pay, composez: *182*1*1*329494*montant#';
+      'Pour payer avec MoMo Pay, composez: *182*8*1*329494*montant#';
 
   @override
   String get paymentMobileMoneyNumber => 'Mobile Money: 0788659575';
@@ -913,11 +913,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get paymentMobileMoneyDial =>
-      'Pour payer avec Mobile Money, composez: *182*8*1*0788659575*montant#';
+      'Pour payer avec Mobile Money, composez: *182*1*1*0788659575*montant#';
 
   @override
   String get paymentTigoCashDial =>
-      'Pour payer avec  Tigo Cash, composez: *182*1*2*0728877442*montant#';
+      'Pour payer avec  Tigo Cash, composez: *182*1*1*0728877442*montant#';
 
   @override
   String get paymentHelpText =>

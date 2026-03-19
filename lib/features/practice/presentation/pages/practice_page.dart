@@ -221,26 +221,7 @@ class _ExamCard extends StatelessWidget {
                   ),
                 ),
               )
-            // else if (isLocked)
-            //   Positioned(
-            //     top: 8,
-            //     right: 8,
-            //     child: Container(
-            //       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-            //       decoration: BoxDecoration(
-            //         color: AppColors.primary.withValues(alpha: 0.8),
-            //         borderRadius: BorderRadius.circular(8),
-            //       ),
-            //       child: Text(
-            //         l10n.examPaid,
-            //         style: const TextStyle(
-            //           color: AppColors.textInverse,
-            //           fontSize: 10,
-            //           fontWeight: FontWeight.bold,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
+          
           ],
         ),
       ),
