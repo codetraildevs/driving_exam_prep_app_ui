@@ -359,11 +359,11 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String quizResult(int correct, int total) {
-    return 'Wasubije neza $correct mu $total';
+    return 'Wasubije neza $correct muri $total';
   }
 
   @override
-  String get quizBackToPractice => 'Subira mu myitozo';
+  String get quizBackToPractice => 'Kora ikindi kizamini';
 
   @override
   String quizQuestion(int current, int total) {
@@ -844,7 +844,7 @@ class AppLocalizationsRw extends AppLocalizations {
   }
 
   @override
-  String get quizResults => 'Ibisubizo by\'ikizamini';
+  String get quizResults => 'Amanota y\'ikizamini';
 
   @override
   String get quizPassed => 'Watsinze!';
@@ -1268,16 +1268,16 @@ class AppLocalizationsRw extends AppLocalizations {
   String get subscriptionPopular => '★ Bukunzwe';
 
   @override
-  String get quizTimeTaken => 'Igihe byatwaye';
+  String get quizTimeTaken => 'Igihe Nakoresheje';
 
   @override
-  String get progressTotalQuestions => 'Ibibazo byose';
+  String get progressTotalQuestions => 'Ibibazo';
 
   @override
-  String get progressCorrectAnswers => 'Byiza';
+  String get progressCorrectAnswers => 'Ibibazo Nakoze';
 
   @override
-  String get progressIncorrect => 'Bitabaye neza';
+  String get progressIncorrect => 'Ibibazo Nishe';
 
   @override
   String get errorNetwork =>
