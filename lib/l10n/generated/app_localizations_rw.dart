@@ -506,11 +506,11 @@ class AppLocalizationsRw extends AppLocalizations {
   String get profileLocation => 'Kigali, Rwanda';
 
   @override
-  String get profileOverallProgress => 'Iterambere rusange ry\'amasomo';
+  String get profileOverallProgress => 'Iterambere rusange';
 
   @override
   String profileModulesCompleted(int completed, int total) {
-    return '$completed/$total Modire zarangiye';
+    return '$completed/$total ibizamini byakozwe';
   }
 
   @override
@@ -945,7 +945,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get paymentWhatsAppMessage =>
-      'Saba uburenganzira bwo gukoresha porogaramu y\'ikizamini cyo gutwara';
+      'Saba uburenganzira bwo gukoresha porogaramu y\'ikizamini cy\'uruhushya agateganyo rwo  gutwara ibinyabiziga';
 
   @override
   String get paymentRequestExists =>
@@ -1032,20 +1032,19 @@ class AppLocalizationsRw extends AppLocalizations {
       'Mbere yo gusiba konti yawe:\n• Ibisubizo byawe byose bizasibwa burundu\n• Abonement yawe izakurwa\n• Iyi ntambwe ntigira ingaruka\n• Uzakenera kwiyandikisha nanone kugirango ukoreshe porogaramu';
 
   @override
-  String get progressExamsTaken => 'Ibizamini byakozwe';
+  String get progressExamsTaken => 'Ibizamini wakozwe';
 
   @override
-  String get progressPassedCount => 'Byakunze';
+  String get progressPassedCount => 'Ibizamini Watsinze';
 
   @override
-  String get progressFailedCount => 'Byanze';
+  String get progressFailedCount => 'Ibizamini Watsinzwe';
 
   @override
   String get progressPassRate => 'Ijanisha ry\'imenyekana';
 
   @override
-  String get progressNoExams =>
-      'Nta bizamini birakozwe. Tangira gukora ibibazo!';
+  String get progressNoExams => 'Nta bizamini wakozwe. Tangira gukora ibibazo!';
 
   @override
   String get certificateReadyTitle => 'Witeguye ikizamini cy\'ukuri!';
@@ -1070,7 +1069,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String certificateProgressLabel(int passed, int total) {
-    return '$passed mu $total ibizamini bisabwa byashize';
+    return '$passed muri $total ibizamini bisabwa';
   }
 
   @override
@@ -1294,7 +1293,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get aboutDescription =>
-      'DrivePrep Rwanda ni inshuti yawe yo kwiga amategeko y\'umuhanda mu Rwanda, ibimenyetso by\'umuhanda, no kwitozera ibibazo by\'amategeko kugira ngo witegure ikizamini cy\'uruhushya rwo gutwara. Iyi ni app y\'uburezi yigenga kandi ntabwo ifitanye isano n\'ubutegetsi.';
+      'DrivePrep Rwanda ni inshuti yawe yo kwiga amategeko y\'umuhanda mu Rwanda, ibimenyetso by\'umuhanda, no kwitoreza ku ibibazo by\'amategeko kugira ngo witegure ikizamini cy\'uruhushya rwo gutwara rwagateganyo. Iyi ni app y\'uburezi yigenga kandi ntabwo ifitanye isano n\'ubutegetsi.';
 
   @override
   String get aboutFeatures => 'Ibintu by\'ingenzi';
@@ -1456,7 +1455,7 @@ class AppLocalizationsRw extends AppLocalizations {
   }
 
   @override
-  String get certificateNotAttempted => 'Ntirikoze';
+  String get certificateNotAttempted => 'Ibyo utasubije';
 
   @override
   String get consentTitle => 'Ubuzima bwite bwawe ni ingenzi';
