@@ -14,7 +14,7 @@ import '../../../../shared/subscription/subscription_provider.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 
 const _kHelpNumber = '0788659575';
-const _kMomoPayCode = '323294';
+const _kMomoPayCode = '329494';
 const _kTigoCashNumber='0728877442';
 
 class SubscriptionPage extends StatefulWidget {

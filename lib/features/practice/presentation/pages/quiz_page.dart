@@ -473,29 +473,8 @@ class _QuizPageState extends State<QuizPage> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  // Pass mark info
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.06),
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.primary.withValues(alpha: 0.12)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.info_outline_rounded, color: AppColors.primary, size: 18),
-                        const SizedBox(width: 8),
-                        Text(
-                          '${l10n.quizScore(70)} ${l10n.progressPassedCount}',
-                          style: AppTextStyles.bodySmall.copyWith(color: AppColors.primary),
-                        ),
-                      ],
-                    ),
-                  ),
+                
 
-                  const SizedBox(height: 32),
 
                   // Actions
                   SizedBox(
@@ -631,30 +610,8 @@ class _QuizPageState extends State<QuizPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: AppColors.warning,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                'Q${_currentQuestion + 1}',
-                                style: const TextStyle(
-                                  color: AppColors.textInverse,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(question.question, style: AppTextStyles.bodyMedium),
-                            ),
-                          ],
-                        ),
+                        const SizedBox(width: 12),
+                        Text(question.question, style: AppTextStyles.bodyMedium),
                         if (question.questionImgUrl.isNotEmpty) ...[
                           const SizedBox(height: 12),
                           ClipRRect(
@@ -698,7 +655,7 @@ class _QuizPageState extends State<QuizPage> {
                 Expanded(
                   child: isLastQuestion
                       ? ElevatedButton.icon(
-                          onPressed: _submitted ? null : _confirmSubmit,
+                          onPressed: _doSubmit,
                           icon: const Icon(Icons.check_circle_outline),
                           label: Text(l10n.quizSubmitPractice),
                           style: ElevatedButton.styleFrom(

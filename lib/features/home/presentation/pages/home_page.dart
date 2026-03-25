@@ -24,6 +24,16 @@ class HomePage extends StatelessWidget {
       }
       return 'Driver';
     });
+    final phoneNumber = context.select<AuthBloc, String>((bloc) {
+      final state = bloc.state;
+      if (state is AuthAuthenticated && state.user.phoneNumber.trim().isNotEmpty) {
+        return state.user.phoneNumber.trim();
+      }
+      return '0788 123 456';
+    });
+    
+
+
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
@@ -34,7 +44,7 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         body: Column(
           children: [
-            _CompactHeader(l10n: l10n, userName: userName),
+            _CompactHeader(l10n: l10n, userName: userName, phoneNumber: phoneNumber),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 32),
@@ -79,7 +89,7 @@ enum CompactHeaderIconType {
 class _CompactHeader extends StatelessWidget {
   final AppLocalizations l10n;
   final String userName;
-
+  final String phoneNumber;
   /// Type of icon to show on the right. Defaults to [CompactHeaderIconType.notification].
   final CompactHeaderIconType iconType;
 
@@ -92,6 +102,7 @@ class _CompactHeader extends StatelessWidget {
   const _CompactHeader({
     required this.l10n,
     required this.userName,
+    required this.phoneNumber,
     this.iconType = CompactHeaderIconType.notification,
     this.onIconTap,
     this.showBadge = false,
@@ -142,6 +153,13 @@ class _CompactHeader extends StatelessWidget {
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  phoneNumber,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textInverse.withValues(alpha: 0.75),
+                    fontSize: 12,
+                  ),
                 ),
               ],
             ),
