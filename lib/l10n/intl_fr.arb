@@ -500,5 +500,8 @@
   "consentReadPolicy": "Lire la politique de confidentialité",
 
   "registerInvalidName": "Le nom doit contenir uniquement des lettres et des espaces",
-  "registerInvalidPhone": "Entrez un numéro de téléphone valide (ex: 078... ou +250 78...)"
+  "registerInvalidPhone": "Entrez un numéro de téléphone valide (ex: 078... ou +250 78...)",
+
+  "joinGroup": "Groupe WhatsApp",
+  "joinGroupSubtitle": "Rejoindre un groupe WhatsApp"
 }

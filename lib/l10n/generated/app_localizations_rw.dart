@@ -1477,4 +1477,10 @@ class AppLocalizationsRw extends AppLocalizations {
   @override
   String get registerInvalidPhone =>
       'Andika numero ya telefone ikwiye (urugero: 078... cyangwa +250 78...)';
+
+  @override
+  String get joinGroup => 'WhatsApp Group';
+
+  @override
+  String get joinGroupSubtitle => 'Kwinjira mu itsinda rya WhatsApp';
 }

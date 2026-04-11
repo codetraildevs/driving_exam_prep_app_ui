@@ -10,7 +10,7 @@ import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../shared/subscription/subscription_provider.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -407,14 +407,19 @@ class _ResponsiveServicesGrid extends StatelessWidget {
         onTap: () => context.push('/practice'),
       ),
       _ServiceItem(
-        icon: Icons.menu_book_rounded,
-        title: l10n.homeCourses,
-        subtitle: l10n.homeCoursesSubtitle,
+        icon: Icons.group_rounded,
+        title: l10n.joinGroup,
+        subtitle: l10n.joinGroupSubtitle,
         color: AppColors.accent,
         onTap: () {
-          //not yet implemented coming soon add moadal here
-          
+        //i have link for group whatsapp  use url_launcher to open it
+        //https://chat.whatsapp.com/JHfdbKSYVFz1s5jlTKfpcm?mode=gi_t
+        //implement it here
+          launchUrl(
+            Uri.parse(
+                'https://chat.whatsapp.com/JHfdbKSYVFz1s5jlTKfpcm?mode=gi_t'),
 
+          );
         },
       ),
       _ServiceItem(

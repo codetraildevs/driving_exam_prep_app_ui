@@ -500,5 +500,8 @@
   "consentReadPolicy": "Soma politiki y'ibanga",
 
   "registerInvalidName": "Izina rigomba kuba rigizwe n'inyuguti n'umwanya gusa",
-  "registerInvalidPhone": "Andika numero ya telefone ikwiye (urugero: 078... cyangwa +250 78...)"
+  "registerInvalidPhone": "Andika numero ya telefone ikwiye (urugero: 078... cyangwa +250 78...)",
+
+  "joinGroup": "WhatsApp Group",
+  "joinGroupSubtitle": "Kwinjira mu itsinda rya WhatsApp"
 }

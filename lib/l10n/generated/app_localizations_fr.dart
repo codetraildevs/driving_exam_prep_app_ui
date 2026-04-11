@@ -1481,4 +1481,10 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get registerInvalidPhone =>
       'Entrez un numéro de téléphone valide (ex: 078... ou +250 78...)';
+
+  @override
+  String get joinGroup => 'Groupe WhatsApp';
+
+  @override
+  String get joinGroupSubtitle => 'Rejoindre un groupe WhatsApp';
 }

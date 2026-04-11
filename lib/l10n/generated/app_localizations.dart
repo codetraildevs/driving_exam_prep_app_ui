@@ -2739,6 +2739,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter a valid phone number (e.g. 078... or +250 78...)'**
   String get registerInvalidPhone;
+
+  /// No description provided for @joinGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp Group'**
+  String get joinGroup;
+
+  /// No description provided for @joinGroupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a WhatsApp group'**
+  String get joinGroupSubtitle;
 }
 
 class _AppLocalizationsDelegate

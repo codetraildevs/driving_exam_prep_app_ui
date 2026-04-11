@@ -1408,5 +1408,8 @@
   "registerInvalidName": "Name must contain only letters and spaces",
   "@registerInvalidName": { "description": "Validation error for name field" },
   "registerInvalidPhone": "Enter a valid phone number (e.g. 078... or +250 78...)",
-  "@registerInvalidPhone": { "description": "Validation error for phone field" }
+  "@registerInvalidPhone": { "description": "Validation error for phone field" },
+
+  "joinGroup": "WhatsApp Group",
+  "joinGroupSubtitle": "Join a WhatsApp group"
 }
