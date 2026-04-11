@@ -1279,13 +1279,13 @@ abstract class AppLocalizations {
   /// Choose plan label
   ///
   /// In en, this message translates to:
-  /// **'Choose a Plan'**
+  /// **'Choose a Plan to'**
   String get subscriptionChoosePlan;
 
   /// Currency label
   ///
   /// In en, this message translates to:
-  /// **'Currency: RWF'**
+  /// **'Months to learn'**
   String get subscriptionCurrency;
 
   /// Access active label
@@ -1603,7 +1603,7 @@ abstract class AppLocalizations {
   /// Submit practice button
   ///
   /// In en, this message translates to:
-  /// **'Submit Practice'**
+  /// **'Submit exam'**
   String get quizSubmitPractice;
 
   /// Previous question button

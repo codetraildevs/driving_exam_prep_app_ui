@@ -630,10 +630,10 @@
   "subscriptionHelpWhatsapp": "WhatsApp: 0788659575",
   "@subscriptionHelpWhatsapp": { "description": "Help WhatsApp number" },
 
-  "subscriptionChoosePlan": "Choose a Plan",
+  "subscriptionChoosePlan": "Choose a Plan to",
   "@subscriptionChoosePlan": { "description": "Choose plan label" },
 
-  "subscriptionCurrency": "Currency: RWF",
+  "subscriptionCurrency": "Months to learn",
   "@subscriptionCurrency": { "description": "Currency label" },
 
   "subscriptionAccessActive": "Access Active",
@@ -828,7 +828,7 @@
     }
   },
 
-  "quizSubmitPractice": "Submit Practice",
+  "quizSubmitPractice": "Submit exam",
   "@quizSubmitPractice": { "description": "Submit practice button" },
 
   "quizPrevious": "Previous",

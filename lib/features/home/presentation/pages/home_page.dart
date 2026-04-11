@@ -166,34 +166,34 @@ class _CompactHeader extends StatelessWidget {
           ),
 
           // Right: optional icon
-          if (iconType != CompactHeaderIconType.none)
-            Stack(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    iconType == CompactHeaderIconType.refresh
-                        ? Icons.refresh_rounded
-                        : Icons.notifications_outlined,
-                    color: AppColors.textInverse,
-                    size: 26,
-                  ),
-                  onPressed: onIconTap,
-                ),
-                if (showBadge && iconType == CompactHeaderIconType.notification)
-                  Positioned(
-                    right: 10,
-                    top: 10,
-                    child: Container(
-                      width: 8,
-                      height: 8,
-                      decoration: const BoxDecoration(
-                        color: AppColors.error,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
+          // if (iconType != CompactHeaderIconType.none)
+          //   Stack(
+          //     children: [
+          //       IconButton(
+          //         icon: Icon(
+          //           iconType == CompactHeaderIconType.refresh
+          //               ? Icons.refresh_rounded
+          //               : Icons.notifications_outlined,
+          //           color: AppColors.textInverse,
+          //           size: 26,
+          //         ),
+          //         onPressed: onIconTap,
+          //       ),
+          //       if (showBadge && iconType == CompactHeaderIconType.notification)
+          //         Positioned(
+          //           right: 10,
+          //           top: 10,
+          //           child: Container(
+          //             width: 8,
+          //             height: 8,
+          //             decoration: const BoxDecoration(
+          //               color: AppColors.error,
+          //               shape: BoxShape.circle,
+          //             ),
+          //           ),
+          //         ),
+          //     ],
+          //   ),
         ],
       ),
     );

@@ -652,10 +652,10 @@ class AppLocalizationsRw extends AppLocalizations {
   String get subscriptionHelpWhatsapp => 'WhatsApp: 0788659575';
 
   @override
-  String get subscriptionChoosePlan => 'Hitamo gahunda';
+  String get subscriptionChoosePlan => 'Hitamo gahunda yo kwiga';
 
   @override
-  String get subscriptionCurrency => 'Ifaranga: RWF';
+  String get subscriptionCurrency => 'Amezi ushaka kwiga';
 
   @override
   String get subscriptionAccessActive => 'Uburenganzira burahari';
@@ -830,7 +830,7 @@ class AppLocalizationsRw extends AppLocalizations {
   }
 
   @override
-  String get quizSubmitPractice => 'Ohereza imyitozo';
+  String get quizSubmitPractice => 'Soza ikizamini';
 
   @override
   String get quizPrevious => 'ikibanza';
@@ -1064,7 +1064,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String certificateExamsNeeded(int needed) {
-    return 'Shira $needed ibizamini byindi kugirango ubone icyangombwa cyawe';
+    return 'Tsinda ibizamini $needed kugirango ubone icyangombwa cy\'uko witeguye gukora ikizamini cy\'uruhushya rwo gutwara rwagateganyo';
   }
 
   @override

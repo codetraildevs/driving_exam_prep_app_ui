@@ -628,19 +628,20 @@ class _QuizPageState extends State<QuizPage> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   ..._buildOptions(question),
                 ],
               ),
             ),
           ),
 
-          // Bottom navigation
+          // Bottom navigation: Previous, Next/Submit, and Submit Practice always visible
           Container(
             color: Theme.of(context).colorScheme.surface,
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
             child: Row(
               children: [
+                // Previous button
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: _currentQuestion > 0 ? _goToPrevious : null,
@@ -651,13 +652,25 @@ class _QuizPageState extends State<QuizPage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 3),
+                // Submit Practice button (always visible, but disabled if already submitted)
+                FloatingActionButton.extended(
+                  heroTag: 'submitPracticeFAB',
+                  onPressed: _submitted ? null : _doSubmit,
+                  backgroundColor: AppColors.success,
+                  foregroundColor: AppColors.textInverse,
+                  label: Text(l10n.quizSubmitPractice, style: const TextStyle(fontSize: 10)),
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                ),
+                const SizedBox(width: 4),
+                // Next or Submit button
                 Expanded(
                   child: isLastQuestion
                       ? ElevatedButton.icon(
-                          onPressed: _doSubmit,
+                          onPressed: _submitted ? null : _doSubmit,
                           icon: const Icon(Icons.check_circle_outline),
-                          label: Text(l10n.quizSubmitPractice),
+                          label: Text(l10n.quizSubmitPractice, style: const TextStyle(fontSize: 12)),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.success,
                             foregroundColor: AppColors.textInverse,
@@ -667,7 +680,7 @@ class _QuizPageState extends State<QuizPage> {
                       : ElevatedButton.icon(
                           onPressed: _goToNext,
                           icon: const Icon(Icons.chevron_right),
-                          label: Text(l10n.quizNext),
+                          label: Text(l10n.quizNext, style: const TextStyle(fontSize: 12)),
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
@@ -715,13 +728,13 @@ class _QuizPageState extends State<QuizPage> {
       }
 
       return Padding(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.only(bottom: 1),
         child: Container(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(7),
           decoration: BoxDecoration(
             color: backgroundColor,
-            border: Border.all(color: borderColor, width: 2),
-            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: borderColor, width: 0.5),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
             children: [
@@ -731,12 +744,12 @@ class _QuizPageState extends State<QuizPage> {
                   width: 22,
                   height: 22,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+                    shape: BoxShape.rectangle,
                     border: Border.all(
                       color: isSelected
                           ? (isCorrect ? AppColors.success : AppColors.error)
                           : Theme.of(context).colorScheme.outline,
-                      width: 2,
+                      width: 1,
                     ),
                     color: isSelected
                         ? (isCorrect ? AppColors.success : AppColors.error).withValues(alpha: 0.2)

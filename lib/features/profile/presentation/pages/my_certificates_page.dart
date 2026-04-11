@@ -11,16 +11,16 @@ import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/network/offline_cache.dart';
 
 /// Total unique exams available in the app.
-const _kTotalExams = 20;
+const _kTotalExams = 21;
 
-/// Pass percentage (18/20 = 90%).
-const _kPassPercent = 90;
+/// Pass percentage (16/20 = 80%).
+const _kPassPercent = 80;
 
 /// Number of unique exams the user must pass to earn the certificate.
-const _kRequiredPassed = 18;
+const _kRequiredPassed = 21;
 
 /// Minimum correct answers out of 20 to pass.
-const _kPassCorrect = 18;
+const _kPassCorrect = 16;
 
 const _kIremboUrl =
     'https://irembo.gov.rw/user/citizen/service/rnp/registration_for_driving_license_test_provisional_computer_based';
@@ -158,10 +158,10 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
     }
   }
 
-  // ── Ordered list of all 20 exam IDs ──────────────────────────────────
+  // ── Ordered list of all 21 exam IDs ──────────────────────────────────
   static const _allExamIds = [
     '177', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-    '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',
+    '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
   ];
 
   @override
@@ -298,23 +298,23 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
     );
   }
 
-  // ── Exam status grid (20 tiles) ───────────────────────────────────
+  // ── Exam status grid (21 tiles) ───────────────────────────────────
   Widget _examGrid(BuildContext context, AppLocalizations l10n) {
     final cs = Theme.of(context).colorScheme;
     final screenW = MediaQuery.of(context).size.width;
-    // Responsive: 5 cols on wide, 4 on normal
-    final crossCount = screenW >= 600 ? 5 : 4;
+    // Responsive: 7 cols on wide, 6 on normal
+    final crossCount = screenW >= 600 ? 7 : 6;
     final availableW = screenW - 32 - 32; // page padding + container padding
     final spacing = 10.0;
     final tileSize =
         ((availableW - spacing * (crossCount - 1)) / crossCount)
-            .clamp(44.0, 64.0);
+            .clamp(44.0, 54.0);
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: cs.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
@@ -470,13 +470,15 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
           ),
           const SizedBox(height: 16),
           // Legend
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _legendDot(AppColors.success, l10n.progressPassedCount),
+              const SizedBox(height: 4),
               _legendDot(cs.error, l10n.progressFailedCount),
+              const SizedBox(height: 4),
               _legendDot(
-                  cs.surfaceContainerHighest, l10n.certificateNotAttempted),
+                  cs.outlineVariant, l10n.certificateNotAttempted),
             ],
           ),
         ],
@@ -497,7 +499,9 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
           ),
         ),
         const SizedBox(width: 4),
-        Text(label, style: AppTextStyles.labelSmall),
+          Flexible(
+          child: Text(label, style: AppTextStyles.labelSmall),
+        ),
       ],
     );
   }

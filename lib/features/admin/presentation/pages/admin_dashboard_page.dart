@@ -194,11 +194,11 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
           onPressed: _loadData,
           tooltip: 'Refresh',
         ),
-        IconButton(
-          icon: const Icon(Icons.notifications_none, color: AppColors.textInverse),
-          onPressed: () {},
-          tooltip: 'Notifications',
-        ),
+        // IconButton(
+        //   icon: const Icon(Icons.notifications_none, color: AppColors.textInverse),
+        //   onPressed: () {},
+        //   tooltip: 'Notifications',
+        // ),
         const SizedBox(width: 4),
       ],
       

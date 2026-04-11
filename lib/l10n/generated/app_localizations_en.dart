@@ -641,10 +641,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionHelpWhatsapp => 'WhatsApp: 0788659575';
 
   @override
-  String get subscriptionChoosePlan => 'Choose a Plan';
+  String get subscriptionChoosePlan => 'Choose a Plan to';
 
   @override
-  String get subscriptionCurrency => 'Currency: RWF';
+  String get subscriptionCurrency => 'Months to learn';
 
   @override
   String get subscriptionAccessActive => 'Access Active';
@@ -818,7 +818,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get quizSubmitPractice => 'Submit Practice';
+  String get quizSubmitPractice => 'Submit exam';
 
   @override
   String get quizPrevious => 'Previous';

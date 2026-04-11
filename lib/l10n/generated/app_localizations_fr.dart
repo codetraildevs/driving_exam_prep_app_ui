@@ -656,7 +656,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get subscriptionChoosePlan => 'Choisir un forfait';
 
   @override
-  String get subscriptionCurrency => 'Devise: RWF';
+  String get subscriptionCurrency => 'Mois à apprendre';
 
   @override
   String get subscriptionAccessActive => 'Accès actif';
