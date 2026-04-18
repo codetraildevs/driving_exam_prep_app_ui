@@ -26,7 +26,7 @@ class LocaleProvider extends ChangeNotifier {
   bool get hasLocaleSelected => _locale != null;
 
   /// Returns the persisted locale, falling back to English.
-  Locale get effectiveLocale => _locale ?? const Locale('en');
+  Locale get effectiveLocale => _locale ?? const Locale('rw');
 
   /// Reads the saved locale from SharedPreferences.
   /// Call this once at app startup before `runApp`.
@@ -61,6 +61,6 @@ class LocaleProvider extends ChangeNotifier {
         supported.any((l) => l.languageCode == deviceLocale.languageCode)) {
       return Locale(deviceLocale.languageCode);
     }
-    return const Locale('en');
+    return const Locale('rw');
   }
 }

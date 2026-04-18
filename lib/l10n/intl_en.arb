@@ -1411,5 +1411,35 @@
   "@registerInvalidPhone": { "description": "Validation error for phone field" },
 
   "joinGroup": "WhatsApp Group",
-  "joinGroupSubtitle": "Join a WhatsApp group"
+  "joinGroupSubtitle": "Join a WhatsApp group",
+
+  "adminOfflineTooltip": "Offline – showing cached data",
+  "@adminOfflineTooltip": { "description": "Tooltip shown when the dashboard is offline" },
+
+  "adminOfflineBadge": "OFFLINE",
+  "@adminOfflineBadge": { "description": "Badge shown in the app bar when offline" },
+
+  "adminActiveLabel": "{count} active",
+  "@adminActiveLabel": { "description": "Active subscriptions count label", "placeholders": { "count": { "type": "int" } } },
+
+  "adminFallbackName": "Admin",
+  "@adminFallbackName": { "description": "Fallback name for admin user" },
+
+  "adminNoNetworkError": "No network. No cached data available.",
+  "@adminNoNetworkError": { "description": "Error message when both network and cache fail" },
+
+  "commonErrorTitle": "Error",
+  "@commonErrorTitle": { "description": "General error title" },
+
+  "exitAppTitle": "Exit App",
+  "@exitAppTitle": { "description": "Exit app confirmation dialog title" },
+
+  "exitAppMessage": "Are you sure you want to exit the app?",
+  "@exitAppMessage": { "description": "Exit app confirmation dialog message" },
+
+  "exitAppYes": "Exit",
+  "@exitAppYes": { "description": "Exit app confirmation button" },
+
+  "exitAppNo": "Stay",
+  "@exitAppNo": { "description": "Cancel exit button" }
 }

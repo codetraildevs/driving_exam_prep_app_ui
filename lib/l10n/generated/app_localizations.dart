@@ -2751,6 +2751,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Join a WhatsApp group'**
   String get joinGroupSubtitle;
+
+  /// Tooltip shown when the dashboard is offline
+  ///
+  /// In en, this message translates to:
+  /// **'Offline – showing cached data'**
+  String get adminOfflineTooltip;
+
+  /// Badge shown in the app bar when offline
+  ///
+  /// In en, this message translates to:
+  /// **'OFFLINE'**
+  String get adminOfflineBadge;
+
+  /// Active subscriptions count label
+  ///
+  /// In en, this message translates to:
+  /// **'{count} active'**
+  String adminActiveLabel(int count);
+
+  /// Fallback name for admin user
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get adminFallbackName;
+
+  /// Error message when both network and cache fail
+  ///
+  /// In en, this message translates to:
+  /// **'No network. No cached data available.'**
+  String get adminNoNetworkError;
+
+  /// General error title
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get commonErrorTitle;
+
+  /// Exit app confirmation dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Exit App'**
+  String get exitAppTitle;
+
+  /// Exit app confirmation dialog message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to exit the app?'**
+  String get exitAppMessage;
+
+  /// Exit app confirmation button
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get exitAppYes;
+
+  /// Cancel exit button
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get exitAppNo;
 }
 
 class _AppLocalizationsDelegate

@@ -1487,4 +1487,39 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get joinGroupSubtitle => 'Rejoindre un groupe WhatsApp';
+
+  @override
+  String get adminOfflineTooltip =>
+      'Hors ligne – affichage des données mises en cache';
+
+  @override
+  String get adminOfflineBadge => 'HORS LIGNE';
+
+  @override
+  String adminActiveLabel(int count) {
+    return '$count actifs';
+  }
+
+  @override
+  String get adminFallbackName => 'Administrateur';
+
+  @override
+  String get adminNoNetworkError =>
+      'Pas de réseau. Aucune donnée mise en cache disponible.';
+
+  @override
+  String get commonErrorTitle => 'Erreur';
+
+  @override
+  String get exitAppTitle => 'Quitter l\'application';
+
+  @override
+  String get exitAppMessage =>
+      'Êtes-vous sûr de vouloir quitter l\'application ?';
+
+  @override
+  String get exitAppYes => 'Quitter';
+
+  @override
+  String get exitAppNo => 'Rester';
 }

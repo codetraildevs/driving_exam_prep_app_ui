@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../l10n/generated/app_localizations.dart';
@@ -26,11 +27,45 @@ class _MainLayoutState extends State<MainLayout> {
         : 'USER';
     final isAdmin = _isAdminOrManager(userRole);
 
-    return Scaffold(
-      body: widget.child,
-      bottomNavigationBar: isAdmin
-          ? _buildAdminNav(context, l10n)
-          : _buildUserNav(context, l10n),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) async {
+        if (didPop) return;
+        final shouldExit = await _showExitDialog(context, l10n);
+        if (shouldExit == true) {
+          SystemNavigator.pop();
+        }
+      },
+      child: Scaffold(
+        body: widget.child,
+        bottomNavigationBar: isAdmin
+            ? _buildAdminNav(context, l10n)
+            : _buildUserNav(context, l10n),
+      ),
+    );
+  }
+
+  Future<bool?> _showExitDialog(
+      BuildContext context, AppLocalizations l10n) {
+    return showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.exitAppTitle),
+        content: Text(l10n.exitAppMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(l10n.exitAppNo),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(
+              l10n.exitAppYes,
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

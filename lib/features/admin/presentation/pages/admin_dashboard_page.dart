@@ -46,6 +46,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
   }
 
   Future<void> _loadData() async {
+    final l10n = AppLocalizations.of(context);
     setState(() {
       _isLoading = true;
       _error = null;
@@ -78,7 +79,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     } catch (_) {
       // Network error — already showing cached data
       setState(() => _isOffline = true);
-      if (_users.isEmpty) setState(() => _error = 'No network. No cached data available.');
+      if (_users.isEmpty) setState(() => _error = l10n.adminNoNetworkError);
     } finally {
       setState(() => _isLoading = false);
     }
@@ -177,7 +178,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
           Padding(
             padding: const EdgeInsets.only(right: 4),
             child: Tooltip(
-              message: 'Offline – showing cached data',
+              message: l10n.adminOfflineTooltip,
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 14, horizontal: 4),
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -185,7 +186,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                   color: AppColors.warning.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text('OFFLINE', style: TextStyle(color: AppColors.textInverse, fontSize: 10, fontWeight: FontWeight.bold)),
+                child: Text(l10n.adminOfflineBadge, style: const TextStyle(color: AppColors.textInverse, fontSize: 10, fontWeight: FontWeight.bold)),
               ),
             ),
           ),
@@ -243,7 +244,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                           style: TextStyle(color: AppColors.textInverse.withValues(alpha: 0.8), fontSize: 13),
                         ),
                         Text(
-                          userName.isNotEmpty ? userName : 'Admin',
+                          userName.isNotEmpty ? userName : l10n.adminFallbackName,
                           style: const TextStyle(
                             color: AppColors.textInverse,
                             fontSize: 18,
@@ -267,7 +268,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                         const Icon(Icons.verified, color: AppColors.textInverse, size: 14),
                         const SizedBox(width: 4),
                         Text(
-                          '$_activeSubscriptions active',
+                          l10n.adminActiveLabel(_activeSubscriptions),
                           style: const TextStyle(color: AppColors.textInverse, fontSize: 12, fontWeight: FontWeight.w600),
                         ),
                       ],

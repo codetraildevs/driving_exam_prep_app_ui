@@ -14,6 +14,7 @@ import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/home/presentation/pages/main_layout.dart';
 import '../../shared/locale/language_selector_page.dart';
 import '../../shared/subscription/subscription_provider.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 import '../../features/practice/presentation/pages/practice_page.dart';
 import '../../features/practice/presentation/pages/quiz_page.dart';
@@ -67,8 +68,9 @@ class AppRouter {
           ? '/admin'
           : '/home';
     }
-    // No cached session: first-time vs returning visitor.
-    return isFirstLaunch ? '/landing' : '/login';
+    // No cached session: always show landing so the user can choose
+    // to Sign Up or Log In — first-time and returning visitors alike.
+    return '/landing';
   }
 
   late final GoRouter router = GoRouter(
@@ -117,10 +119,6 @@ class AppRouter {
       }
 
       if (!isAuthenticated && isProtectedPage) {
-        return '/login';
-      }
-
-      if (!isFirstLaunch && !isAuthenticated && location == '/landing') {
         return '/login';
       }
 
@@ -314,7 +312,7 @@ class AppRouter {
     ],
     errorPageBuilder: (context, state) => MaterialPage(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Error')),
+        appBar: AppBar(title: Text(AppLocalizations.of(context).commonErrorTitle)),
         body: Center(
           child: Text(state.error.toString()),
         ),

@@ -1462,4 +1462,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get joinGroupSubtitle => 'Join a WhatsApp group';
+
+  @override
+  String get adminOfflineTooltip => 'Offline – showing cached data';
+
+  @override
+  String get adminOfflineBadge => 'OFFLINE';
+
+  @override
+  String adminActiveLabel(int count) {
+    return '$count active';
+  }
+
+  @override
+  String get adminFallbackName => 'Admin';
+
+  @override
+  String get adminNoNetworkError => 'No network. No cached data available.';
+
+  @override
+  String get commonErrorTitle => 'Error';
+
+  @override
+  String get exitAppTitle => 'Exit App';
+
+  @override
+  String get exitAppMessage => 'Are you sure you want to exit the app?';
+
+  @override
+  String get exitAppYes => 'Exit';
+
+  @override
+  String get exitAppNo => 'Stay';
 }

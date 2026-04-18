@@ -503,5 +503,17 @@
   "registerInvalidPhone": "Entrez un numéro de téléphone valide (ex: 078... ou +250 78...)",
 
   "joinGroup": "Groupe WhatsApp",
-  "joinGroupSubtitle": "Rejoindre un groupe WhatsApp"
+  "joinGroupSubtitle": "Rejoindre un groupe WhatsApp",
+
+  "adminOfflineTooltip": "Hors ligne – affichage des données mises en cache",
+  "adminOfflineBadge": "HORS LIGNE",
+  "adminActiveLabel": "{count} actifs",
+  "adminFallbackName": "Administrateur",
+  "adminNoNetworkError": "Pas de réseau. Aucune donnée mise en cache disponible.",
+  "commonErrorTitle": "Erreur",
+
+  "exitAppTitle": "Quitter l'application",
+  "exitAppMessage": "Êtes-vous sûr de vouloir quitter l'application ?",
+  "exitAppYes": "Quitter",
+  "exitAppNo": "Rester"
 }

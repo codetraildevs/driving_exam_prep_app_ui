@@ -44,7 +44,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
         WidgetsBinding.instance.platformDispatcher.locale.languageCode;
     final supported =
         LocaleProvider.supportedLocales.map((l) => l.languageCode);
-    _selectedCode = supported.contains(deviceCode) ? deviceCode : 'en';
+    _selectedCode = supported.contains(deviceCode) ? deviceCode : 'rw';
 
     // Car animation: loops left-to-right slowly to give life to the header.
     _carController =

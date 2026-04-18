@@ -503,5 +503,17 @@
   "registerInvalidPhone": "Andika numero ya telefone ikwiye (urugero: 078... cyangwa +250 78...)",
 
   "joinGroup": "WhatsApp Group",
-  "joinGroupSubtitle": "Kwinjira mu itsinda rya WhatsApp"
+  "joinGroupSubtitle": "Kwinjira mu itsinda rya WhatsApp",
+
+  "adminOfflineTooltip": "Nturi kuri interineti – kwerekana amakuru yabitswe",
+  "adminOfflineBadge": "NTURI KURI INTERINETI",
+  "adminActiveLabel": "{count} bakora",
+  "adminFallbackName": "Admin",
+  "adminNoNetworkError": "Nta mbuga. Nta makuru yabitswe ahari.",
+  "commonErrorTitle": "Ikosa",
+
+  "exitAppTitle": "Sohoka muri porogaramu",
+  "exitAppMessage": "Uzi neza ko ushaka gusohoka muri porogaramu?",
+  "exitAppYes": "Sohoka",
+  "exitAppNo": "Komeza"
 }

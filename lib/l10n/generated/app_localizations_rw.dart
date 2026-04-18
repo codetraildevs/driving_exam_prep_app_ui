@@ -1483,4 +1483,37 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get joinGroupSubtitle => 'Kwinjira mu itsinda rya WhatsApp';
+
+  @override
+  String get adminOfflineTooltip =>
+      'Nturi kuri interineti – kwerekana amakuru yabitswe';
+
+  @override
+  String get adminOfflineBadge => 'NTURI KURI INTERINETI';
+
+  @override
+  String adminActiveLabel(int count) {
+    return '$count bakora';
+  }
+
+  @override
+  String get adminFallbackName => 'Admin';
+
+  @override
+  String get adminNoNetworkError => 'Nta mbuga. Nta makuru yabitswe ahari.';
+
+  @override
+  String get commonErrorTitle => 'Ikosa';
+
+  @override
+  String get exitAppTitle => 'Sohoka muri porogaramu';
+
+  @override
+  String get exitAppMessage => 'Uzi neza ko ushaka gusohoka muri porogaramu?';
+
+  @override
+  String get exitAppYes => 'Sohoka';
+
+  @override
+  String get exitAppNo => 'Komeza';
 }
