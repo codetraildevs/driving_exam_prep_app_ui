@@ -1,4 +1,4 @@
-# Terms & Conditions — DrivePrep Rwanda
+# Terms & Conditions — Rwanda Traffic Rule
 
 **Last updated:** March 2026
 
@@ -6,13 +6,13 @@
 
 ## 1. Acceptance of Terms
 
-By creating an account and using the DrivePrep Rwanda mobile application (the "App"), you agree to be bound by these Terms & Conditions. If you do not agree, please do not use the App.
+By creating an account and using the Rwanda Traffic Rule mobile application (the "App"), you agree to be bound by these Terms & Conditions. If you do not agree, please do not use the App.
 
 ---
 
 ## 2. Description of Service
 
-DrivePrep Rwanda is an **independent educational application** designed to help users study and practise for the Rwandan driving theory exam. The App provides:
+Rwanda Traffic Rule is an **independent educational application** designed to help users study and practise for the Rwandan driving theory exam. The App provides:
 
 - Multiple-choice practice questions inspired by Rwandan driving exam topics, combined with our own prepared questions
 - Timed mock exams simulating test conditions
@@ -68,7 +68,7 @@ You agree **not** to:
 
 ## 6. Intellectual Property
 
-All content in the App — including questions, explanations, UI design, and branding — is the property of DrivePrep Rwanda or used with appropriate rights. Practice questions inspired by official exam topics are presented in our own format with original explanations.
+All content in the App — including questions, explanations, UI design, and branding — is the property of Rwanda Traffic Rule or used with appropriate rights. Practice questions inspired by official exam topics are presented in our own format with original explanations.
 
 ---
 
@@ -107,9 +107,9 @@ These Terms are governed by the laws of the Republic of Rwanda. Any disputes sha
 
 If you have questions about these Terms & Conditions:
 
-- **Email:** info@driveprep.rw
+- **Email:** info@Rwanda Traffic Rule.rw
 - **Phone/WhatsApp:** +250 788 659 575
 
 ---
 
-*DrivePrep Rwanda is an independent educational application. It is NOT affiliated with, endorsed by, or connected to any government authority, examination body, or driving school in Rwanda.*
+*Rwanda Traffic Rule is an independent educational application. It is NOT affiliated with, endorsed by, or connected to any government authority, examination body, or driving school in Rwanda.*

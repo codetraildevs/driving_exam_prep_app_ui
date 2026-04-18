@@ -438,11 +438,11 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  _InfoRow(
-                                    icon: Icons.phone,
-                                    label: l10n.authPhoneNumber,
-                                    value: user.phoneNumber,
-                                  ),
+                                  // _InfoRow(
+                                  //   icon: Icons.phone,
+                                  //   label: l10n,
+                                  //   value: user.phoneNumber,
+                                  // ),
                                   _InfoRow(
                                     icon: Icons.calendar_today,
                                     label: l10n.profileRegistered(user.createdAt.toLocal().toString().split(' ')[0]),
@@ -630,6 +630,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),

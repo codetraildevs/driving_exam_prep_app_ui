@@ -773,7 +773,9 @@ class _AccessCodeCard extends StatelessWidget {
                       width: 24,
                       child: CircularProgressIndicator(strokeWidth: 2)))
             else
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   if (!inactive)
                     _actionBtn(
@@ -782,13 +784,15 @@ class _AccessCodeCard extends StatelessWidget {
                       color: AppColors.warning,
                       onTap: onBlock,
                     ),
-                  if (!inactive) const SizedBox(width: 8),
-                  _actionBtn(
-                    icon: Icons.delete_rounded,
-                    label: l10n.adminDeleteAccess,
-                    color: AppColors.error,
-                    onTap: onDelete,
-                  ),
+                  SizedBox(height: 4),  
+                  if (!inactive) const SizedBox(width: 2),
+                    _actionBtn(
+                      icon: Icons.delete_rounded,
+                      label: l10n.adminDeleteAccess,
+                      color: AppColors.error,
+                      onTap: onDelete,
+                    ),
+                  
                 ],
               ),
           ],

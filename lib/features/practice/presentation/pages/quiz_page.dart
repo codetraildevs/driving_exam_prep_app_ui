@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import 'package:screen_protector/screen_protector.dart';
 import '../../../../shared/locale/locale_provider.dart';
 import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/network/offline_cache.dart';
@@ -42,6 +44,17 @@ class _QuizPageState extends State<QuizPage> {
   static const int _totalSeconds = 1200;
   int _secondsLeft = _totalSeconds;
   Timer? _timer;
+  static const _securityChannel = MethodChannel('com.driveprep.rwanda/security');
+
+  @override
+  void initState() {
+    super.initState();
+    
+    // Protect exam content from screenshots/screen recording
+    ScreenProtector.preventScreenshotOn();
+    // ScreenProtector.protectDataOn(); // Use this if needed for protecting data in background
+    _securityChannel.invokeMethod('secureScreenOn');
+  }
 
   @override
   void didChangeDependencies() {
@@ -95,6 +108,10 @@ class _QuizPageState extends State<QuizPage> {
   @override
   void dispose() {
     _timer?.cancel();
+    // Re-enable screenshots when leaving the quiz
+    ScreenProtector.preventScreenshotOff();
+    // ScreenProtector.protectDataOff();
+    _securityChannel.invokeMethod('secureScreenOff');
     super.dispose();
   }
 
@@ -331,8 +348,8 @@ class _QuizPageState extends State<QuizPage> {
     final resultColor = passed ? AppColors.success : AppColors.error;
     final gradient = LinearGradient(
       colors: passed
-          ? [AppColors.success, AppColors.success.withValues(alpha: 0.7)]
-          : [AppColors.error, AppColors.error.withValues(alpha: 0.7)],
+          ? [AppColors.success, AppColors.success.withValues(alpha: 0.8)]
+          : [AppColors.error, AppColors.error.withValues(alpha: 0.8)],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     );
@@ -343,13 +360,13 @@ class _QuizPageState extends State<QuizPage> {
           AppPageHeader(title: l10n.quizResults, showBack: false),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Column(
                 children: [
                   if (_timedOut) ...[
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
                         color: AppColors.warning.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
@@ -357,7 +374,7 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.timer_off_rounded, color: AppColors.warning, size: 20),
+                          const Icon(Icons.timer_off_rounded, color: AppColors.warning, size: 18),
                           const SizedBox(width: 8),
                           Text(
                             l10n.quizTimeUp,
@@ -366,19 +383,19 @@ class _QuizPageState extends State<QuizPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 12),
                   ],
 
-                  // ── Score hero card ──
+                  // ── Premium Score Header ──
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                     decoration: BoxDecoration(
                       gradient: gradient,
                       borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
-                          color: resultColor.withValues(alpha: 0.3),
+                          color: resultColor.withValues(alpha: 0.25),
                           blurRadius: 20,
                           offset: const Offset(0, 8),
                         ),
@@ -386,122 +403,133 @@ class _QuizPageState extends State<QuizPage> {
                     ),
                     child: Column(
                       children: [
-                        // Score circle
-                        Container(
-                          width: 130,
-                          height: 130,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white.withValues(alpha: 0.2),
-                            border: Border.all(color: Colors.white.withValues(alpha: 0.5), width: 4),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '$accuracy%',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 36,
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SizedBox(
+                              width: 100,
+                              height: 100,
+                              child: CircularProgressIndicator(
+                                value: accuracy / 100,
+                                strokeWidth: 8,
+                                backgroundColor: Colors.white.withValues(alpha: 0.15),
+                                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            ),
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  '$accuracy%',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 28,
+                                  ),
                                 ),
-                              ),
-                              Icon(
-                                passed ? Icons.check_circle_rounded : Icons.cancel_rounded,
-                                color: Colors.white.withValues(alpha: 0.9),
-                                size: 24,
-                              ),
-                            ],
-                          ),
+                                Text(
+                                  l10n.examYourScore.toUpperCase(),
+                                  style: TextStyle(
+                                    color: Colors.white.withValues(alpha: 0.7),
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 20),
                         Text(
                           passed ? l10n.quizPassed : l10n.quizFailed,
                           style: const TextStyle(
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 24,
+                            letterSpacing: -0.5,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           l10n.quizResult(correct, total),
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.85),
+                            color: Colors.white.withValues(alpha: 0.8),
                             fontSize: 14,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
-                  // ── Stats grid ──
-                  Row(
+                  // ── Modern Stats Grid ──
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 2.2,
                     children: [
-                      Expanded(child: _ResultStat(
+                      _ResultStatMini(
+                        icon: Icons.check_circle_rounded,
+                        label: l10n.progressCorrectAnswers,
+                        value: '$correct',
+                        color: AppColors.success,
+                      ),
+                      _ResultStatMini(
+                        icon: Icons.cancel_rounded,
+                        label: l10n.progressIncorrect,
+                        value: '$incorrect',
+                        color: AppColors.error,
+                      ),
+                      _ResultStatMini(
+                        icon: Icons.timer_rounded,
+                        label: l10n.quizTimeTaken,
+                        value: _timeSpentFormatted,
+                        color: AppColors.warning,
+                      ),
+                      _ResultStatMini(
                         icon: Icons.quiz_rounded,
                         label: l10n.progressTotalQuestions,
                         value: '$total',
                         color: AppColors.primary,
-                      )),
-                      const SizedBox(width: 12),
-                      Expanded(child: _ResultStat(
-                        icon: Icons.check_circle_outline,
-                        label: l10n.progressCorrectAnswers,
-                        value: '$correct',
-                        color: AppColors.success,
-                      )),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(child: _ResultStat(
-                        icon: Icons.cancel_outlined,
-                        label: l10n.progressIncorrect,
-                        value: '$incorrect',
-                        color: AppColors.error,
-                      )),
-                      const SizedBox(width: 12),
-                      Expanded(child: _ResultStat(
-                        icon: Icons.timer_outlined,
-                        label: l10n.quizTimeTaken,
-                        value: _timeSpentFormatted,
-                        color: AppColors.warning,
-                      )),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                
-
+                  const SizedBox(height: 20),
 
                   // Actions
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: _retake,
-                      icon: const Icon(Icons.replay_rounded),
+                      icon: const Icon(Icons.replay_rounded, size: 20),
                       label: Text(l10n.quizRetake),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        elevation: 0,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 10),
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
                       onPressed: () => context.pop(),
-                      icon: const Icon(Icons.arrow_back_rounded),
+                      icon: const Icon(Icons.arrow_back_rounded, size: 20),
                       label: Text(l10n.quizBackToPractice),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        side: BorderSide(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5)),
                       ),
                     ),
                   ),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
@@ -798,46 +826,113 @@ class _ResultStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            color.withValues(alpha: 0.12),
-            color.withValues(alpha: 0.04),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: color.withValues(alpha: 0.15)),
         boxShadow: [
           BoxShadow(
-            color: color.withValues(alpha: 0.06),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: color.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, color: color, size: 22),
-          ),
-          const SizedBox(height: 8),
+          Icon(icon, color: color, size: 20),
+          const SizedBox(height: 6),
           Text(
             value,
-            style: AppTextStyles.heading5.copyWith(color: color, fontWeight: FontWeight.bold),
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: color,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 1),
           Text(
             label,
-            style: AppTextStyles.labelSmall.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6)),
+            style: AppTextStyles.labelSmall.copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+              fontSize: 10,
+            ),
             textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ResultStatMini extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color color;
+
+  const _ResultStatMini({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: color.withValues(alpha: 0.1)),
+        boxShadow: [
+          BoxShadow(
+            color: color.withValues(alpha: 0.02),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, color: color, size: 16),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  value,
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+                    fontSize: 8,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
         ],
       ),

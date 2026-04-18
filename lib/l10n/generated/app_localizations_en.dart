@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'DrivePrep Rwanda';
+  String get appTitle => 'Rwanda Traffic Rule';
 
   @override
   String get languageSelectTitle => 'Choose Your Language';
@@ -111,7 +111,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAbout => 'About';
 
   @override
-  String get settingsAboutApp => 'About DrivePrep Rwanda';
+  String get settingsAboutApp => 'About Rwanda Traffic Rule';
 
   @override
   String settingsVersion(String version) {
@@ -223,7 +223,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeServices => 'Services';
 
   @override
-  String get authAppName => 'DRIVEPREP RWANDA';
+  String get authAppName => 'Rwanda Traffic Rule';
 
   @override
   String get authSubtitle => 'Prepare for Your Provisional Driving Licence';
@@ -256,7 +256,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginSignUp => 'Sign Up';
 
   @override
-  String get authSecureTag => 'Secure • Fast • DrivePrep Rwanda';
+  String get authSecureTag => 'Secure • Fast • Pass';
 
   @override
   String get loginPhoneRequired => 'Please enter your phone number';
@@ -594,6 +594,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscriptionSubtitle => 'Unlock All Practice Exams';
+
+  @override
+  String get subscriptionTrafficRulesMsg =>
+      'If you want to learn traffic rules, kindly call, text us on WhatsApp and help to be prepared for official provisional driving license.';
 
   @override
   String get subscriptionCurrentPlan => 'Your Current Plan';
@@ -1270,11 +1274,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutTitle => 'About';
 
   @override
-  String get aboutAppName => 'DrivePrep Rwanda';
+  String get aboutAppName => 'Rwanda Traffic Rule';
 
   @override
   String get aboutDescription =>
-      'DrivePrep Rwanda is your companion for learning Rwanda traffic rules, road signs, and practicing theory questions to prepare for the provisional driving licence test. This is an independent educational app and is not affiliated with any government authority.';
+      'Rwanda Traffic Rule is your companion for learning Rwanda traffic rules, road signs, and practicing theory questions to prepare for the provisional driving licence test. This is an independent educational app and is not affiliated with any government authority.';
 
   @override
   String get aboutFeatures => 'Key Features';
@@ -1296,21 +1300,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutContactInfo =>
-      'Phone/WhatsApp: 0788659575 / 0728877442\nEmail: info@driveprep.rw';
+      'Phone/WhatsApp: 0788659575 / 0728877442\nEmail: info@Rwanda Traffic Rule.rw';
 
   @override
   String get aboutCopyright => 'Copyright';
 
   @override
   String get aboutCopyrightText =>
-      '© 2026 DrivePrep Rwanda. All rights reserved.';
+      '© 2026 Rwanda Traffic Rule. All rights reserved.';
 
   @override
   String get privacyLastUpdated => 'Last updated: March 2026';
 
   @override
   String get privacyIntro =>
-      'DrivePrep Rwanda is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you use our educational application. We are an independent educational service and are not affiliated with any government authority.';
+      'Rwanda Traffic Rule is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you use our educational application. We are an independent educational service and are not affiliated with any government authority.';
 
   @override
   String get privacyDataCollection => 'Data Collection';
@@ -1352,7 +1356,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get termsIntro =>
-      'By using DrivePrep Rwanda, you agree to the following terms and conditions. Please read them carefully before using the application. DrivePrep Rwanda is an independent educational app designed to help you prepare for the driving theory test. We are not affiliated with any government body or the official exam provider.';
+      'By using Rwanda Traffic Rule, you agree to the following terms and conditions. Please read them carefully before using the application. Rwanda Traffic Rule is an independent educational app designed to help you prepare for the driving theory test. We are not affiliated with any government body or the official exam provider.';
 
   @override
   String get termsAcceptance => 'Acceptance of Terms';
@@ -1373,14 +1377,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get termsContentBody =>
-      'All content is for educational and practice purposes only. It does not represent the official government exam. We strive for accuracy but make no guarantees about exam outcomes based on practice results. DrivePrep Rwanda is not affiliated with any government authority.';
+      'All content is for educational and practice purposes only. It does not represent the official government exam. We strive for accuracy but make no guarantees about exam outcomes based on practice results. Rwanda Traffic Rule is not affiliated with any government authority.';
 
   @override
-  String get termsPayment => 'Payment & Subscription';
+  String get termsPayment => 'Requesting to unlock exams';
 
   @override
   String get termsPaymentBody =>
-      'Premium access requires payment via MoMo Pay or Mobile Money. Subscriptions are non-refundable once activated. Access duration begins from the activation date.';
+      'To unlock exams, please contact us at 0788659575 or 0728877442.';
 
   @override
   String get termsTermination => 'Account Termination';
@@ -1394,7 +1398,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutDisclaimerText =>
-      'DrivePrep Rwanda is an independent educational app designed to help users learn traffic rules and prepare for the driving theory test. This app is not affiliated with, endorsed by, or connected to any government authority or official exam body. All content is for practice and learning purposes only.';
+      'Rwanda Traffic Rule is an independent educational app designed to help users learn traffic rules and prepare for the driving theory test. This app is not affiliated with, endorsed by, or connected to any government authority or official exam body. All content is for practice and learning purposes only.';
 
   @override
   String get profileCertificatesTitle => 'Certificates';
@@ -1442,10 +1446,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get consentBody =>
-      'DrivePrep Rwanda collects and processes the following data to provide you with the best learning experience:\n\n• Phone number & name — for account creation and authentication\n• Device identifier — a hashed fingerprint to secure your account\n• Exam results & progress — to track your learning journey\n• Offline cache — so the app works without internet\n\nYour data is stored securely and is never sold to third parties. You can delete your account and all associated data at any time from your profile.';
+      'Rwanda Traffic Rule collects and processes the following data to provide you with the best learning experience:\n\n• Phone number & name — for account creation and authentication\n• Device identifier — a hashed fingerprint to secure your account\n• Exam results & progress — to track your learning journey\n• Offline cache — so the app works without internet\n\nYour data is stored securely and is never sold to third parties. You can delete your account and all associated data at any time from your profile.';
 
   @override
-  String get consentAccept => 'I Understand & Accept';
+  String get consentAccept => 'I understand and agree';
 
   @override
   String get consentReadPolicy => 'Read Privacy Policy';
@@ -1494,4 +1498,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exitAppNo => 'Stay';
+
+  @override
+  String get consentItemPhone => 'Phone number & name';
+
+  @override
+  String get consentItemPhoneDetail => 'Account creation & authentication';
+
+  @override
+  String get consentItemDevice => 'Device identifier';
+
+  @override
+  String get consentItemDeviceDetail =>
+      'Hashed fingerprint to secure your account';
+
+  @override
+  String get consentItemProgress => 'Exam results & progress';
+
+  @override
+  String get consentItemProgressDetail => 'Track your learning journey';
+
+  @override
+  String get consentItemCache => 'Offline cache';
+
+  @override
+  String get consentItemCacheDetail => 'App works without internet';
+
+  @override
+  String get consentSecurityNote =>
+      'Your data is stored securely and never sold to third parties.';
 }

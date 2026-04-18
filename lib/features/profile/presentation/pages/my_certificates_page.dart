@@ -70,6 +70,23 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
       final result = await ApiHelper().get('/api/exam-results/$userId');
       if (result.isSuccess) {
         final list = result.dataList;
+        // Sort by date DESC explicitly (Latest first)
+        list.sort((a, b) {
+          final daStr = (a['createdAt'] ?? a['completedAt'] ?? '').toString();
+          final dbStr = (b['createdAt'] ?? b['completedAt'] ?? '').toString();
+          
+          DateTime? da = DateTime.tryParse(daStr);
+          if (da == null && daStr.length >= 10) {
+            da = DateTime.tryParse(daStr.replaceFirst(' ', 'T'));
+          }
+          
+          DateTime? db = DateTime.tryParse(dbStr);
+          if (db == null && dbStr.length >= 10) {
+            db = DateTime.tryParse(dbStr.replaceFirst(' ', 'T'));
+          }
+          
+          return (db ?? DateTime(1970)).compareTo(da ?? DateTime(1970));
+        });
         await cache.save(cacheKey, list);
         setState(() {
           _rawResults = list;
@@ -130,7 +147,14 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
       if (r is! Map<String, dynamic>) continue;
       final examId = (r['examId'] ?? '').toString();
       if (examId.isEmpty) continue;
-      if (!map.containsKey(examId)) {
+      
+      final currentScore = _intVal(r['score']);
+      final existingScore = map.containsKey(examId) ? _intVal(map[examId]!['score']) : -1;
+      
+      // We want to keep the BEST score for each exam, not necessarily the latest attempt.
+      // This ensures if a user passed with 95% and then retried for practice and got 40%, 
+      // the 95% still counts for their certificate.
+      if (currentScore > existingScore) {
         map[examId] = r;
       }
     }
@@ -444,22 +468,22 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (icon != null)
-                        Icon(icon, color: fg, size: tileSize * 0.3),
+                        Icon(icon, color: fg, size: tileSize * 0.25),
                       Text(
                         '${i + 1}',
                         style: TextStyle(
                           color: fg,
-                          fontSize: tileSize * 0.22,
-                          fontWeight: FontWeight.w700,
+                          fontSize: tileSize * 0.25,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
                       if (attempted)
                         Text(
                           '$score%',
                           style: TextStyle(
-                            color: fg.withValues(alpha: 0.85),
-                            fontSize: tileSize * 0.17,
-                            fontWeight: FontWeight.w500,
+                            color: fg.withValues(alpha: 0.9),
+                            fontSize: tileSize * 0.18,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                     ],

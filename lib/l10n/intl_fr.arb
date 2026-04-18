@@ -1,519 +1,1949 @@
 {
-  "@@locale": "fr",
-
-  "appTitle": "DrivePrep Rwanda",
-
-  "languageSelectTitle": "Choisissez votre langue",
-  "languageSelectSubtitle": "Vous pouvez changer cela plus tard dans les Paramètres",
-  "languageSelectConfirm": "Continuer",
-
-  "homeWelcomeBack": "Bon retour 👋",
-  "homeGreeting": "{userName}",
-  "homeContinueMessage": "Continuez à maîtriser le code de la route aujourd'hui.",
-  "homeContinueLearning": "Continuer à apprendre",
-  "homeAccessActive": "Accès actif - {daysLeft} jours restants",
-  "homePaymentTier": "Forfait : {tier}",
-  "homePracticeSessions": "{count, plural, =0{Aucune session d'entraînement} =1{1 session d'entraînement} other{{count} sessions d'entraînement}}",
-  "homePractices": "Exercices",
-  "homePracticesSubtitle": "Questions pratiques",
-  "homeCourses": "Cours",
-  "homeCoursesSubtitle": "Modules d'apprentissage",
-  "homeMockExams": "Examens blancs",
-  "homeMockExamsSubtitle": "Tester les connaissances",
-  "homeProgress": "Progrès",
-  "homeProgressSubtitle": "Suivre la performance",
-  "homeShareApp": "Partager l'appli",
-  "homeShareAppSubtitle": "Inviter des amis",
-
-  "settingsTitle": "Paramètres",
-  "settingsPreferences": "Préférences",
-  "settingsDarkMode": "Mode sombre",
-  "settingsDarkModeSubtitle": "Utiliser le thème sombre",
-  "settingsNotifications": "Notifications",
-  "settingsNotificationsSubtitle": "Recevoir des rappels quotidiens",
-  "settingsLanguage": "Langue",
-  "settingsAbout": "À propos",
-  "settingsAboutApp": "À propos de DrivePrep Rwanda",
-  "settingsVersion": "Version {version}",
-  "settingsPrivacyPolicy": "Politique de confidentialité",
-  "settingsPrivacyPolicySubtitle": "Lire notre politique de confidentialité",
-  "settingsTermsOfService": "Conditions d'utilisation",
-  "settingsTermsOfServiceSubtitle": "Lire nos conditions",
-  "settingsData": "Données",
-  "settingsResetProgress": "Réinitialiser la progression",
-  "settingsResetProgressSubtitle": "Effacer toutes vos données",
-  "settingsResetConfirmTitle": "Réinitialiser la progression",
-  "settingsResetConfirmMessage": "Êtes-vous sûr de vouloir réinitialiser toute votre progression ? Cette action est irréversible.",
-  "settingsResetSuccess": "Progression réinitialisée avec succès",
-  "settingsSelectLanguage": "Choisir la langue",
-
-  "commonCancel": "Annuler",
-  "commonConfirm": "Confirmer",
-  "commonReset": "Réinitialiser",
-
-  "landingHeroTitle": "Maîtrisez le code de la route facilement",
-  "landingHeroSubtitle": "Préparez-vous intelligemment. Entraînez-vous avec de vraies questions d'examen. Suivez vos progrès et réussissez votre permis de conduire en toute confiance.",
-  "landingGetStarted": "Commencer",
-  "landingAlreadyHaveAccount": "Vous avez déjà un compte ? Connectez-vous",
-  "landingWhyUseApp": "Pourquoi utiliser notre application ?",
-  "landingLearnRules": "Apprendre les règles",
-  "landingLearnRulesDesc": "Explications claires de toutes les lois de la circulation et des panneaux de signalisation.",
-  "landingPracticeExams": "Examens pratiques",
-  "landingPracticeExamsDesc": "Passez des examens blancs similaires au vrai test de conduite.",
-  "landingTrackProgress": "Suivre les progrès",
-  "landingTrackProgressDesc": "Surveillez vos performances et améliorez vos points faibles.",
-  "landingHowItWorks": "Comment ça marche",
-  "landingStep1": "Créez votre compte gratuit",
-  "landingStep2": "Commencez à apprendre le code de la route",
-  "landingStep3": "Passez des examens blancs",
-  "landingStep4": "Réussissez votre vrai examen en toute confiance",
-  "landingReadyTitle": "Prêt à réussir votre examen de conduite ?",
-  "landingStartLearning": "Commencer à apprendre",
-
-  "homeServices": "Services",
-
-  "authAppName": "DRIVEPREP RWANDA",
-  "authSubtitle": "Préparez le permis de conduire provisoire",
-  "loginTitle": "Connectez-vous à votre compte",
-  "loginSubtitle": "Entrez votre numéro de téléphone enregistré pour continuer.",
-  "authNeedHelp": "Besoin d'aide ?",
-  "loginHelpText": "Pour les problèmes de compte ou les questions, contactez :",
-  "authPhoneNumber": "Numéro de téléphone",
-  "authPhoneHint": "07** *** ***",
-  "authContinue": "Continuer",
-  "loginNoAccount": "Vous n'avez pas de compte ? ",
-  "loginSignUp": "S'inscrire",
-  "authSecureTag": "Sécurisé • Rapide • DrivePrep Rwanda",
-  "loginPhoneRequired": "Veuillez entrer votre numéro de téléphone",
-  "loginInvalidPhone": "Entrez un numéro de téléphone valide (ex: 078... ou +250 78...)",
-
-  "registerTitle": "Créez votre compte",
-  "registerSubtitle": "Inscrivez-vous avec votre nom complet et numéro de téléphone pour commencer à apprendre.",
-  "registerHelpText": "Pour les problèmes d'inscription ou les questions, contactez :",
-  "authFullName": "Nom complet",
-  "authFullNameHint": "Entrez votre nom complet",
-  "registerTerms": "J'accepte les Conditions d'utilisation et la Politique de confidentialité.",
-  "registerSignUp": "S'inscrire",
-  "registerHaveAccount": "Vous avez déjà un compte ? ",
-  "registerLogIn": "Se connecter",
-  "registerFillAllFields": "Veuillez remplir tous les champs",
-  "registerAgreeTerms": "Veuillez accepter les conditions générales",
-
-  "forgotPasswordTitle": "Réinitialisation du mot de passe non disponible",
-  "forgotPasswordDescription": "Ce backend utilise le numéro de téléphone et la liaison d'appareil (pas de flux de réinitialisation de mot de passe).",
-  "forgotPasswordBackToLogin": "Retour à la connexion",
-
-  "navHome": "Accueil",
-  "navPractice": "Pratique",
-  "navProgress": "Progrès",
-  "navProfile": "Profil",
-
-  "practiceTitle": "Quiz pratique",
-  "practiceCategorySpeedLimits": "Limites de vitesse",
-  "practiceCategoryRoadSigns": "Panneaux routiers",
-  "practiceCategoryLaneControl": "Gestion des voies",
-  "practiceCategoryParkingRules": "Règles de stationnement",
-  "practiceStart": "Commencer →",
-
-  "quizComplete": "Quiz terminé !",
-  "quizScore": "Score : {score}%",
-  "quizResult": "Vous avez obtenu {correct} sur {total} correctes",
-  "quizBackToPractice": "Retour à la pratique",
-  "quizQuestion": "Question {current}/{total}",
-  "quizFinish": "Terminer le quiz",
-  "quizNextQuestion": "Question suivante",
-
-  "examMockExam": "Examen blanc",
-  "examInstructions": "Instructions de l'examen",
-  "examTimeLimit": "Limite de temps",
-  "examTimeLimitDesc": "30 minutes au total pour 20 questions",
-  "examQuestionCount": "20 Questions",
-  "examQuestionCountDesc": "Format à choix multiples avec 4 options chacune",
-  "examPassingScore": "Score de réussite",
-  "examPassingScoreDesc": "Vous devez obtenir 70% ou plus pour réussir",
-  "examNoGoingBack": "Pas de retour en arrière",
-  "examNoGoingBackDesc": "Vous ne pouvez pas revenir aux questions précédentes",
-  "examWarning": "Assurez-vous d'avoir une connexion internet stable et de ne pas être interrompu",
-  "examStartExam": "Commencer l'examen",
-  "examSubmit": "Soumettre l'examen",
-
-  "examCongratulations": "Félicitations !",
-  "examGoodEffort": "Bon effort",
-  "examPassedMessage": "Vous avez réussi l'examen haut la main !",
-  "examFailedMessage": "Continuez à pratiquer pour améliorer votre score",
-  "examYourScore": "Votre score",
-  "examCorrect": "Correct",
-  "examAccuracy": "Précision",
-  "examNeedMorePractice": "Vous devez obtenir 70% pour réussir. Pratiquez davantage !",
-  "examBadgeEarned": "Vous avez obtenu un badge pour avoir réussi l'examen !",
-  "examRetakeTest": "Repasser le test",
-  "examBackHome": "Retour à l'accueil",
-
-  "progressTitle": "Vos progrès",
-  "progressPerformanceSummary": "Résumé des performances",
-  "progressTotalAttempts": "Tentatives totales",
-  "progressBestScore": "Meilleur score",
-  "progressAverageScore": "Score moyen",
-  "progressSignsLearned": "Panneaux appris",
-  "progressRecentExams": "Examens récents",
-  "progressOverall": "Progression globale",
-  "progressComplete": "Terminé",
-  "progressAvgScore": "Score moy.",
-  "progressSigns": "Panneaux",
-  "progressPassed": "Réussi",
-  "progressExcellent": "Excellent",
-  "progressMockExam": "Examen blanc {number}",
-  "progressPracticeQuiz": "Quiz pratique",
-
-  "profileTitle": "Profil",
-  "profileLocation": "Kigali, Rwanda",
-  "profileOverallProgress": "Progression globale d'apprentissage",
-  "profileModulesCompleted": "{completed}/{total} Modules terminés",
-  "profileAccount": "Compte",
-  "profileSettings": "Paramètres",
-  "profileSettingsSubtitle": "Notifications, langue, confidentialité",
-  "profileDeleteAccount": "Supprimer le compte",
-  "profileSignOut": "Se déconnecter",
-  "profileDeleteConfirmTitle": "Supprimer le compte",
-  "profileDeleteConfirmMessage": "Êtes-vous sûr de vouloir supprimer définitivement votre compte ? Cette action est irréversible.",
-  "profileDelete": "Supprimer",
-
-  "certificatesTitle": "Mes certificats",
-  "certificatesAchievements": "Vos accomplissements",
-  "certificatesEarned": "Obtenu",
-  "certificatesPending": "En attente",
-  "certificatesInProgress": "En cours",
-  "certificateRoadSignsMastery": "Maîtrise des panneaux routiers",
-  "certificateTrafficRulesTest": "Test final du code de la route",
-  "certificateDefensiveDriving": "Conduite défensive",
-
-  "signsTitle": "Panneaux de signalisation",
-  "signsSearchHint": "Rechercher des panneaux...",
-  "signsNotFound": "Aucun panneau de signalisation trouvé",
-  "signsLearned": "Appris",
-  "signsAll": "Tous",
-
-  "signDetailTitle": "Panneau de signalisation",
-  "signDetailNotFound": "Panneau non trouvé",
-  "signDetailDescription": "Description",
-  "signDetailScenario": "Scénario réel",
-  "signDetailLearned": "Vous avez appris ce panneau !",
-  "signDetailMarkAsLearned": "Marquer comme appris",
-  "signDetailMarkedSuccess": "Panneau marqué comme appris !",
-
-  "subscriptionTitle": "Accès aux examens pratiques",
-  "subscriptionSubtitle": "Débloquer tous les examens pratiques",
-  "subscriptionCurrentPlan": "Votre forfait actuel",
-  "subscriptionNoPlan": "Aucun forfait actif",
-  "subscriptionMonth1": "1 Mois",
-  "subscriptionMonth3": "3 Mois",
-  "subscriptionMonth6": "6 Mois",
-  "subscriptionPrice": "{amount} RWF",
-  "subscriptionRequestAccess": "Demander l'accès",
-  "subscriptionRequestSent": "Votre demande a été soumise. Vous serez activé une fois le paiement confirmé.",
-  "subscriptionPaymentInstructions": "Instructions de paiement",
-  "subscriptionPaymentMomo": "MoMo Pay: 329494",
-  "subscriptionPaymentMobile": "Mobile Money: 0788659575",
-   "subscriptionPaymentTigoCash": "Tigo Cash: 0728877442",
-  "subscriptionHelpCall": "Appel: 0788659575",
-  "subscriptionHelpWhatsapp": "WhatsApp: 0788659575",
-  "subscriptionChoosePlan": "Choisir un forfait",
-  "subscriptionCurrency": "Mois à apprendre",
-  "subscriptionAccessActive": "Accès actif",
-  "subscriptionExpires": "Expire: {date}",
-  "subscriptionDays": "{days} jours",
-  "subscriptionNeedHelp": "Besoin d'aide ?",
-  "subscriptionGetAccess": "Accédez à tous les {count}+ examens pratiques premium",
-
-  "adminDashboard": "Tableau de bord administrateur",
-  "adminUsers": "Utilisateurs",
-  "adminAccess": "Gestion des accès",
-  "adminProgress": "Progression des utilisateurs",
-  "adminTotalUsers": "Utilisateurs totaux",
-  "adminActiveSubscriptions": "Abonnements actifs",
-  "adminUsersByLanguage": "Utilisateurs par langue",
-  "adminRecentRegistrations": "Inscriptions récentes",
-  "adminGrantAccess": "Accorder l'accès",
-  "adminCallUser": "Appeler l'utilisateur",
-  "adminCallNotes": "Notes d'appel",
-  "adminLastCalled": "Dernier appel",
-  "adminNoAccess": "Pas d'accès",
-  "adminHasAccess": "A l'accès",
-  "adminAccessExpired": "Accès expiré",
-  "adminAccessExpires": "Expire: {date}",
-  "adminSearchUsers": "Rechercher des utilisateurs...",
-  "adminFilterAll": "Tous",
-  "adminFilterHasAccess": "A l'accès",
-  "adminFilterNoAccess": "Pas d'accès",
-  "adminManageUsers": "Gérer les utilisateurs",
-  "adminManageAccess": "Gérer les accès",
-  "adminViewProgress": "Voir la progression",
-  "adminRegistrationDate": "Inscrit: {date}",
-  "adminEnterCallNotes": "Entrez les notes d'appel...",
-  "adminSubmitCall": "Soumettre",
-  "adminCallLogged": "Appel enregistré avec succès",
-  "adminAccessGranted": "Accès accordé avec succès",
-  "adminSelectTier": "Sélectionner le niveau d'accès",
-  "adminCustomDays": "Durée personnalisée (jours)",
-  "adminPaymentAmount": "Montant (RWF)",
-  "adminEnterDays": "Entrez le nombre de jours",
-  "adminEnterAmount": "Entrez le montant en RWF",
-  "adminOrCustom": "Ou définir des jours personnalisés",
-  "adminPendingRequests": "Demandes de paiement en attente",
-  "adminAllUsersList": "Tous les utilisateurs",
-  "adminInvalidAmount": "Veuillez entrer un montant valide supérieur à 0",
-  "adminInvalidDays": "Veuillez entrer un nombre de jours valide supérieur à 0",
-  "adminAccessRevoked": "Accès révoqué",
-  "adminNoUsers": "Aucun utilisateur trouvé",
-
-  "examListTitle": "Examens pratiques",
-  "examFree": "GRATUIT",
-  "examPaid": "PAYANT",
-  "examLocked": "Verrouillé",
-  "examQuestions": "{count} questions",
-
-  "quizProgress": "Progression",
-  "quizAnswered": "Répondu: {answered}/{total}",
-  "quizSubmitPractice": "Soumettre la pratique",
-  "quizPrevious": "Précédent",
-  "quizNext": "Suivant",
-  "quizTimeRemaining": "Temps: {time}",
-  "quizResults": "Résultats du quiz",
-  "quizPassed": "Réussi !",
-  "quizFailed": "Continuez à pratiquer",
-  "quizQuestionOf": "Question {current} sur {total}",
-  "quizSubmitConfirmTitle": "Soumettre le quiz ?",
-  "quizSubmitConfirmMessage": "Vous avez répondu à {answered} questions sur {total}. Êtes-vous sûr de vouloir soumettre ?",
-  "quizTimeUp": "Temps écoulé ! Quiz soumis automatiquement.",
-  "quizReviewAnswers": "Revoir les réponses",
-  "quizRetake": "Repasser le quiz",
-
-  "profileRole": "Rôle",
-  "profileLanguage": "Langue préférée",
-  "profileRegistered": "Inscrit: {date}",
-  "profileAccessStatus": "Statut d'accès",
-  "profileExamHistory": "Historique des examens",
-  "profileCallHistory": "Historique des appels",
-
-  "paymentInstructionsTitle": "Instructions de paiement",
-  "paymentMomoPayNumber": "MoMo Pay: 329494",
-  "paymentMomoPayDial": "Pour payer avec MoMo Pay, composez: *182*8*1*329494*montant#",
-  "paymentMobileMoneyNumber": "Mobile Money: 0788659575",
-   "paymentTigoCashNumber": "Tigo Cash: 0728877442",
-  "paymentMobileMoneyDial": "Pour payer avec Mobile Money, composez: *182*1*1*0788659575*montant#",
-    "paymentTigoCashDial": "Pour payer avec  Tigo Cash, composez: *182*1*1*0728877442*montant#",
-  "paymentHelpText": "Besoin d'aide ? Appelez ou WhatsApp: 0788659575",
-  "paymentHelpContact": "Vous pouvez copier ou appeler: 0788659575 ou WhatsApp: 0788659575 pour de l'aide.",
-
-  "paymentError": "La demande de paiement a échoué. Veuillez payer manuellement en utilisant les instructions ci-dessous.",
-  "paymentCopyNumber": "Copier le numéro",
-  "paymentCallNumber": "Appeler le 0788659575",
-  "paymentCallTigoNumber": "Appeler le 0728877442",
-  "paymentWhatsApp": "Envoyer un message sur WhatsApp",
-  "paymentWhatsAppMessage": "Demander l'accès à l'application d'examen de conduite",
-  "paymentRequestExists": "Une demande de paiement pour ce forfait est déjà en attente. Veuillez attendre l'activation ou contacter le support.",
-
-  "commonError": "Quelque chose s'est mal passé. Veuillez réessayer.",
-  "commonRetry": "Réessayer",
-
-  "adminTierLabel": "Niveau",
-
-  "adminExpiresLabel": "Expire le",
-
-  "adminRenewAccess": "Renouveler / Prolonger l'accès",
-
-  "adminManagePlatform": "Gérer la plateforme",
-
-  "adminManageExams": "Gérer les examens",
-
-  "adminManageExamsDesc": "Voir et gérer tous les examens pratiques",
-
-  "adminManageUsersDesc": "Voir, rechercher et gérer tous les utilisateurs",
-
-  "adminAccessCodesDesc": "Gérer les codes d'accès et les paiements",
-
-  "adminQuickStats": "Statistiques rapides",
-
-  "adminActionsTitle": "Actions Admin",
-
-  "adminTotalPractices": "Total des pratiques",
-
-  "adminManagePlatformDesc": "Gérez votre plateforme d'apprentissage du code de la route",
-
-  "adminNotifications": "Notifications",
-
-  "settingsAppearance": "Apparence",
-
-  "settingsAppearanceDesc": "Choisissez l'apparence de l'application",
-
-  "settingsThemeSystem": "Système",
-
-  "settingsThemeLight": "Clair",
-
-  "settingsThemeDark": "Sombre",
-
-  "examWrong": "Incorrect",
-  "examTimeSpent": "Temps",
-  "profileLogoutConfirmTitle": "Se déconnecter?",
-  "profileLogoutConfirmMessage": "Êtes-vous sûr de vouloir vous déconnecter?",
-  "profileDeleteInstructions": "Avant de supprimer votre compte:\n• Tous vos résultats d'examen seront effacés\n• Votre abonnement sera supprimé\n• Cette action ne peut pas être annulée\n• Vous devrez vous réinscrire pour utiliser l'application",
-  "progressExamsTaken": "Examens passés",
-  "progressPassedCount": "Réussis",
-  "progressFailedCount": "Échoués",
-  "progressPassRate": "Taux de réussite",
-  "progressNoExams": "Aucun examen encore. Commencez à pratiquer!",
-  "certificateReadyTitle": "Prêt pour l'examen officiel!",
-  "certificateReadySubtitle": "Vous avez réussi {count} examens. Vous êtes prêt pour le test officiel.",
-  "certificateIremboLink": "S'inscrire à l'examen officiel sur irembo.gov.rw",
-  "certificateIremboDesc": "Cliquez ci-dessous pour vous inscrire au test informatisé officiel du permis de conduire provisoire",
-  "certificateExamsNeeded": "Réussissez {needed} examens supplémentaires pour obtenir votre certificat",
-  "certificateProgressLabel": "{passed} sur {total} examens requis réussis",
-  "adminSortAsc": "Plus anciens d'abord",
-  "adminSortDesc": "Plus récents d'abord",
-  "adminFilterToday": "Aujourd'hui",
-  "adminDateRange": "Plage de dates",
-  "adminFilterRole": "Rôle",
-  "adminBlockUser": "Bloquer l'utilisateur",
-  "adminUnblockUser": "Débloquer l'utilisateur",
-  "adminDeleteUserAction": "Supprimer l'utilisateur",
-  "adminBlockUserConfirm": "Bloquer {name}? Ils perdront l'accès.",
-  "adminDeleteUserConfirm": "Supprimer définitivement {name}? Toutes leurs données seront effacées.",
-  "adminUserBlocked": "Utilisateur bloqué avec succès",
-  "adminUserUnblocked": "Utilisateur débloqué avec succès",
-  "adminUserDeleted": "Utilisateur supprimé avec succès",
-  "adminMustBlockFirst": "Vous devez bloquer l'utilisateur avant de le supprimer.",
-  "adminBlockAccess": "Bloquer l'accès",
-  "adminDeleteAccess": "Supprimer l'accès",
-  "adminBlockAccessConfirm": "Bloquer ce code d'accès? L'utilisateur perdra l'accès immédiatement.",
-  "adminDeleteAccessConfirm": "Supprimer définitivement ce code d'accès?",
-  "adminAccessBlocked": "Code d'accès bloqué",
-  "adminAccessDeleted": "Code d'accès supprimé",
-  "adminPage": "Page {page} sur {total}",
-  "adminLearningLanguage": "Apprentissage",
-  "adminIsBlocked": "Bloqué",
-  "adminIsActive": "Actif",
-
-  "generalCopied": "Copié !",
-  "@generalCopied": { "description": "Shown in snackbar after copying text to clipboard" },
-
-  "adminRetry": "Réessayer",
-  "@adminRetry": { "description": "Retry button label" },
-
-  "languageSelectDescription": "Vous pouvez changer cela plus tard dans les Paramètres — recevez des alertes trafic et itinéraires localisés.",
-  "languageSelectDeviceLanguage": "Utiliser la langue de l'appareil",
-  "languageSelectHelpTooltip": "Aide sur la langue",
-  "languageSelectMaybeLater": "Peut-être plus tard",
-  "languageSelectHelpTitle": "Pourquoi choisir une langue ?",
-  "languageSelectHelpContent": "Choisir une langue garantit que les alertes, cartes et invites vocales sont affichées dans votre langue préférée. Vous pouvez changer cela plus tard dans les Paramètres.",
-  "commonGotIt": "Compris",
-  "languageSelectDialogTitle": "Sélectionner la langue",
-  "examNotFound": "Examen introuvable",
-  "errorWithDetail": "Erreur : {detail}",
-  "errorUnexpected": "Erreur inattendue : {detail}",
-  "priceRwf": "{amount} RWF",
-  "errorHttpStatus": "HTTP {code}",
-  "examSampleQ1": "Quelle est la limite de vitesse sur l'autoroute ?",
-  "examSampleQ1A1": "90 km/h",
-  "examSampleQ1A2": "100 km/h",
-  "examSampleQ1A3": "110 km/h",
-  "examSampleQ1A4": "120 km/h",
-  "examSampleQ2": "Que signifie un feu jaune ?",
-  "examSampleQ2A1": "Arrêtez-vous immédiatement",
-  "examSampleQ2A2": "Continuez",
-  "examSampleQ2A3": "Préparez-vous à vous arrêter",
-  "examSampleQ2A4": "Faites demi-tour",
-  "examSampleQ3": "À quelle distance d'une bouche d'incendie pouvez-vous stationner ?",
-  "examSampleQ3A1": "1 mètre",
-  "examSampleQ3A2": "3 mètres",
-  "examSampleQ3A3": "5 mètres",
-  "examSampleQ3A4": "10 mètres",
-
-  "examShareResult": "Partager le résultat",
-  "examCopiedToClipboard": "Résultat copié dans le presse-papiers",
-  "examGradeLabel": "Note",
-
-  "subscriptionPopular": "★ Populaire",
-  "quizTimeTaken": "Temps passé",
-  "progressTotalQuestions": "Total des questions",
-  "progressCorrectAnswers": "Correctes",
-  "progressIncorrect": "Incorrectes",
-
-  "errorNetwork": "Connexion impossible. Vérifiez votre connexion internet et réessayez.",
-  "paymentChooseMethod": "Choisir le mode de paiement",
-  "aboutTitle": "À propos",
-  "aboutAppName": "DrivePrep Rwanda",
-  "aboutDescription": "DrivePrep Rwanda est votre compagnon pour apprendre le code de la route rwandais, les panneaux routiers et pratiquer les questions théoriques pour préparer l'examen du permis provisoire. Cette application éducative indépendante n'est affiliée à aucune autorité gouvernementale.",
-  "aboutFeatures": "Fonctionnalités clés",
-  "aboutFeaturePractice": "Examens blancs",
-  "aboutFeatureProgress": "Suivi des progrès",
-  "aboutFeatureMultilingual": "3 Langues",
-  "aboutFeatureCertificate": "Certificats",
-  "aboutContact": "Contactez-nous",
-  "aboutContactInfo": "Tél/WhatsApp : 0788659575 / 0728877442\nEmail : info@driveprep.rw",
-  "aboutCopyright": "Droits d'auteur",
-  "aboutCopyrightText": "© 2026 DrivePrep Rwanda. Tous droits réservés.",
-  "privacyLastUpdated": "Dernière mise à jour : mars 2026",
-  "privacyIntro": "DrivePrep Rwanda s'engage à protéger votre vie privée. Cette politique explique comment nous collectons, utilisons et protégeons vos informations personnelles. Nous sommes un service éducatif indépendant non affilié à aucune autorité gouvernementale.",
-  "privacyDataCollection": "Collecte des données",
-  "privacyDataCollectionBody": "Nous collectons votre numéro de téléphone et votre nom complet lors de l'inscription. Nous collectons également vos résultats de quiz et données de progression. Un identifiant d'appareil unique est généré pour sécuriser votre compte.",
-  "privacyDataUsage": "Utilisation des données",
-  "privacyDataUsageBody": "Vos données sont utilisées pour fournir et améliorer nos services, suivre vos progrès, gérer votre abonnement et communiquer les mises à jour importantes.",
-  "privacyDataProtection": "Protection des données",
-  "privacyDataProtectionBody": "Nous utilisons des mesures de sécurité standards, notamment la transmission chiffrée et le stockage sécurisé. Vos données ne sont jamais partagées sans votre consentement.",
-  "privacyDataSharing": "Partage des données",
-  "privacyDataSharingBody": "Nous ne vendons ni ne louons vos données personnelles. Nous pouvons partager des données anonymes agrégées à des fins statistiques uniquement.",
-  "privacyUserRights": "Vos droits",
-  "privacyUserRightsBody": "Vous avez le droit d'accéder, de mettre à jour ou de supprimer vos données personnelles à tout moment via l'option Supprimer le compte dans les Paramètres.",
-  "termsLastUpdated": "Dernière mise à jour : mars 2026",
-  "termsIntro": "En utilisant DrivePrep Rwanda, vous acceptez les conditions suivantes. DrivePrep Rwanda est une application éducative indépendante conçue pour vous aider à préparer l'examen théorique. Nous ne sommes affiliés à aucune autorité gouvernementale.",
-  "termsAcceptance": "Acceptation des conditions",
-  "termsAcceptanceBody": "En créant un compte et en utilisant cette application, vous acceptez d'être lié par ces conditions. Si vous n'êtes pas d'accord, veuillez cesser d'utiliser l'application.",
-  "termsUserAccount": "Compte utilisateur",
-  "termsUserAccountBody": "Vous êtes responsable de la sécurité de votre compte. Chaque compte est lié à un seul numéro de téléphone et appareil. Le partage des identifiants n'est pas autorisé.",
-  "termsContent": "Contenu et examens",
-  "termsContentBody": "Tout le contenu est à des fins éducatives et de pratique uniquement. Il ne représente pas l'examen officiel du gouvernement. Nous ne garantissons pas les résultats d'examen. DrivePrep Rwanda n'est affilié à aucune autorité gouvernementale.",
-  "termsPayment": "Paiement et abonnement",
-  "termsPaymentBody": "L'accès premium nécessite un paiement via MoMo Pay ou Mobile Money. Les abonnements ne sont pas remboursables une fois activés. La durée commence à la date d'activation.",
-  "termsTermination": "Résiliation du compte",
-  "termsTerminationBody": "Nous nous réservons le droit de suspendre les comptes qui violent ces conditions. Vous pouvez supprimer votre compte à tout moment depuis les paramètres.",
-
-  "aboutDisclaimer": "Avertissement",
-  "aboutDisclaimerText": "DrivePrep Rwanda est une application éducative indépendante conçue pour aider les utilisateurs à apprendre le code de la route et à se préparer à l'examen théorique. Cette application n'est pas affiliée, approuvée ou liée à une autorité gouvernementale ou un organisme d'examen officiel. Tout le contenu est à des fins de pratique et d'apprentissage uniquement.",
-
-  "profileCertificatesTitle": "Certificats",
-  "profileCertificatesSubtitle": "Certificats obtenus et progression vers le prochain",
-
-  "offlineBanner": "Vous êtes hors ligne. Les données affichées peuvent ne pas être à jour.",
-  "syncingData": "Synchronisation des données...",
-  "dataSynced": "Données synchronisées avec succès",
-  "savedOffline": "Enregistré hors ligne. Sera synchronisé une fois connecté.",
-
-  "certificateUniqueExamsPassed": "{count} sur {total} examens uniques réussis",
-  "certificatePassMark": "Note de passage : {required}/{total} ({percent}%)",
-  "certificateLatestAttempt": "Dernière tentative",
-  "certificateExamStatus": "Examen {index}",
-  "certificateNotAttempted": "Non tenté",
-
-  "consentTitle": "Votre vie privée compte",
-  "consentBody": "DrivePrep Rwanda collecte et traite les données suivantes pour vous offrir la meilleure expérience d'apprentissage :\n\n• Numéro de téléphone et nom — pour la création de compte et l'authentification\n• Identifiant de l'appareil — une empreinte numérique chiffrée pour sécuriser votre compte\n• Résultats d'examens et progression — pour suivre votre parcours d'apprentissage\n• Cache hors ligne — pour que l'application fonctionne sans internet\n\nVos données sont stockées de manière sécurisée et ne sont jamais vendues à des tiers. Vous pouvez supprimer votre compte et toutes les données associées à tout moment depuis votre profil.",
-  "consentAccept": "Je comprends et j'accepte",
-  "consentReadPolicy": "Lire la politique de confidentialité",
-
-  "registerInvalidName": "Le nom doit contenir uniquement des lettres et des espaces",
-  "registerInvalidPhone": "Entrez un numéro de téléphone valide (ex: 078... ou +250 78...)",
-
-  "joinGroup": "Groupe WhatsApp",
-  "joinGroupSubtitle": "Rejoindre un groupe WhatsApp",
-
-  "adminOfflineTooltip": "Hors ligne – affichage des données mises en cache",
-  "adminOfflineBadge": "HORS LIGNE",
-  "adminActiveLabel": "{count} actifs",
-  "adminFallbackName": "Administrateur",
-  "adminNoNetworkError": "Pas de réseau. Aucune donnée mise en cache disponible.",
-  "commonErrorTitle": "Erreur",
-
-  "exitAppTitle": "Quitter l'application",
-  "exitAppMessage": "Êtes-vous sûr de vouloir quitter l'application ?",
-  "exitAppYes": "Quitter",
-  "exitAppNo": "Rester"
+    "@@locale":  "fr",
+    "appTitle":  "Rwanda Traffic Rule",
+    "languageSelectTitle":  "Choisissez votre langue",
+    "languageSelectSubtitle":  "Vous pouvez changer cela plus tard dans les Paramètres",
+    "languageSelectConfirm":  "Continuer",
+    "homeWelcomeBack":  "Bon retour 👋",
+    "homeGreeting":  "{userName}",
+    "homeContinueMessage":  "Continuez à maîtriser le code de la route aujourd\u0027hui.",
+    "homeContinueLearning":  "Continuer à apprendre",
+    "homeAccessActive":  "Accès actif - {daysLeft} jours restants",
+    "homePaymentTier":  "Forfait : {tier}",
+    "homePracticeSessions":  "{count, plural, =0{Aucune session d\u0027entraînement} =1{1 session d\u0027entraînement} other{{count} sessions d\u0027entraînement}}",
+    "homePractices":  "Exercices",
+    "homePracticesSubtitle":  "Questions pratiques",
+    "homeCourses":  "Cours",
+    "homeCoursesSubtitle":  "Modules d\u0027apprentissage",
+    "homeMockExams":  "Examens blancs",
+    "homeMockExamsSubtitle":  "Tester les connaissances",
+    "homeProgress":  "Progrès",
+    "homeProgressSubtitle":  "Suivre la performance",
+    "homeShareApp":  "Partager l\u0027appli",
+    "homeShareAppSubtitle":  "Inviter des amis",
+    "settingsTitle":  "Paramètres",
+    "settingsPreferences":  "Préférences",
+    "settingsDarkMode":  "Mode sombre",
+    "settingsDarkModeSubtitle":  "Utiliser le thème sombre",
+    "settingsNotifications":  "Notifications",
+    "settingsNotificationsSubtitle":  "Recevoir des rappels quotidiens",
+    "settingsLanguage":  "Langue",
+    "settingsAbout":  "À propos",
+    "settingsAboutApp":  "À propos de Rwanda Traffic Rule",
+    "settingsVersion":  "Version {version}",
+    "settingsPrivacyPolicy":  "Politique de confidentialité",
+    "settingsPrivacyPolicySubtitle":  "Lire notre politique de confidentialité",
+    "settingsTermsOfService":  "Conditions d\u0027utilisation",
+    "settingsTermsOfServiceSubtitle":  "Lire nos conditions",
+    "settingsData":  "Données",
+    "settingsResetProgress":  "Réinitialiser la progression",
+    "settingsResetProgressSubtitle":  "Effacer toutes vos données",
+    "settingsResetConfirmTitle":  "Réinitialiser la progression",
+    "settingsResetConfirmMessage":  "Êtes-vous sûr de vouloir réinitialiser toute votre progression ? Cette action est irréversible.",
+    "settingsResetSuccess":  "Progression réinitialisée avec succès",
+    "settingsSelectLanguage":  "Choisir la langue",
+    "commonCancel":  "Annuler",
+    "commonConfirm":  "Confirmer",
+    "commonReset":  "Réinitialiser",
+    "landingHeroTitle":  "Maîtrisez le code de la route facilement",
+    "landingHeroSubtitle":  "Préparez-vous intelligemment. Entraînez-vous avec de vraies questions d\u0027examen. Suivez vos progrès et réussissez votre permis de conduire en toute confiance.",
+    "landingGetStarted":  "Commencer",
+    "landingAlreadyHaveAccount":  "Vous avez déjà un compte ? Connectez-vous",
+    "landingWhyUseApp":  "Pourquoi utiliser notre application ?",
+    "landingLearnRules":  "Apprendre les règles",
+    "landingLearnRulesDesc":  "Explications claires de toutes les lois de la circulation et des panneaux de signalisation.",
+    "landingPracticeExams":  "Examens pratiques",
+    "landingPracticeExamsDesc":  "Passez des examens blancs similaires au vrai test de conduite.",
+    "landingTrackProgress":  "Suivre les progrès",
+    "landingTrackProgressDesc":  "Surveillez vos performances et améliorez vos points faibles.",
+    "landingHowItWorks":  "Comment ça marche",
+    "landingStep1":  "Créez votre compte gratuit",
+    "landingStep2":  "Commencez à apprendre le code de la route",
+    "landingStep3":  "Passez des examens blancs",
+    "landingStep4":  "Réussissez votre vrai examen en toute confiance",
+    "landingReadyTitle":  "Prêt à réussir votre examen de conduite ?",
+    "landingStartLearning":  "Commencer à apprendre",
+    "homeServices":  "Services",
+    "authAppName":  "Rwanda Traffic Rule",
+    "authSubtitle":  "Préparez le permis de conduire provisoire",
+    "loginTitle":  "Connectez-vous à votre compte",
+    "loginSubtitle":  "Entrez votre numéro de téléphone enregistré pour continuer.",
+    "authNeedHelp":  "Besoin d\u0027aide ?",
+    "loginHelpText":  "Pour les problèmes de compte ou les questions, contactez :",
+    "authPhoneNumber":  "Numéro de téléphone",
+    "authPhoneHint":  "07** *** ***",
+    "authContinue":  "Continuer",
+    "loginNoAccount":  "Vous n\u0027avez pas de compte ? ",
+    "loginSignUp":  "S\u0027inscrire",
+    "authSecureTag":  "Sécurisé • Rapide • Pass",
+    "loginPhoneRequired":  "Veuillez entrer votre numéro de téléphone",
+    "loginInvalidPhone":  "Entrez un numéro de téléphone valide (ex: 078... ou +250 78...)",
+    "registerTitle":  "Créez votre compte",
+    "registerSubtitle":  "Inscrivez-vous avec votre nom complet et numéro de téléphone pour commencer à apprendre.",
+    "registerHelpText":  "Pour les problèmes d\u0027inscription ou les questions, contactez :",
+    "authFullName":  "Nom complet",
+    "authFullNameHint":  "Entrez votre nom complet",
+    "registerTerms":  "J\u0027accepte les Conditions d\u0027utilisation et la Politique de confidentialité.",
+    "registerSignUp":  "S\u0027inscrire",
+    "registerHaveAccount":  "Vous avez déjà un compte ? ",
+    "registerLogIn":  "Se connecter",
+    "registerFillAllFields":  "Veuillez remplir tous les champs",
+    "registerAgreeTerms":  "Veuillez accepter les conditions générales",
+    "forgotPasswordTitle":  "Réinitialisation du mot de passe non disponible",
+    "forgotPasswordDescription":  "Ce backend utilise le numéro de téléphone et la liaison d\u0027appareil (pas de flux de réinitialisation de mot de passe).",
+    "forgotPasswordBackToLogin":  "Retour à la connexion",
+    "navHome":  "Accueil",
+    "navPractice":  "Pratique",
+    "navProgress":  "Progrès",
+    "navProfile":  "Profil",
+    "practiceTitle":  "Quiz pratique",
+    "practiceCategorySpeedLimits":  "Limites de vitesse",
+    "practiceCategoryRoadSigns":  "Panneaux routiers",
+    "practiceCategoryLaneControl":  "Gestion des voies",
+    "practiceCategoryParkingRules":  "Règles de stationnement",
+    "practiceStart":  "Commencer →",
+    "quizComplete":  "Quiz terminé !",
+    "quizScore":  "Score : {score}%",
+    "quizResult":  "Vous avez obtenu {correct} sur {total} correctes",
+    "quizBackToPractice":  "Retour à la pratique",
+    "quizQuestion":  "Question {current}/{total}",
+    "quizFinish":  "Terminer le quiz",
+    "quizNextQuestion":  "Question suivante",
+    "examMockExam":  "Examen blanc",
+    "examInstructions":  "Instructions de l\u0027examen",
+    "examTimeLimit":  "Limite de temps",
+    "examTimeLimitDesc":  "30 minutes au total pour 20 questions",
+    "examQuestionCount":  "20 Questions",
+    "examQuestionCountDesc":  "Format à choix multiples avec 4 options chacune",
+    "examPassingScore":  "Score de réussite",
+    "examPassingScoreDesc":  "Vous devez obtenir 70% ou plus pour réussir",
+    "examNoGoingBack":  "Pas de retour en arrière",
+    "examNoGoingBackDesc":  "Vous ne pouvez pas revenir aux questions précédentes",
+    "examWarning":  "Assurez-vous d\u0027avoir une connexion internet stable et de ne pas être interrompu",
+    "examStartExam":  "Commencer l\u0027examen",
+    "examSubmit":  "Soumettre l\u0027examen",
+    "examCongratulations":  "Félicitations !",
+    "examGoodEffort":  "Bon effort",
+    "examPassedMessage":  "Vous avez réussi l\u0027examen haut la main !",
+    "examFailedMessage":  "Continuez à pratiquer pour améliorer votre score",
+    "examYourScore":  "Votre score",
+    "examCorrect":  "Correct",
+    "examAccuracy":  "Précision",
+    "examNeedMorePractice":  "Vous devez obtenir 70% pour réussir. Pratiquez davantage !",
+    "examBadgeEarned":  "Vous avez obtenu un badge pour avoir réussi l\u0027examen !",
+    "examRetakeTest":  "Repasser le test",
+    "examBackHome":  "Retour à l\u0027accueil",
+    "progressTitle":  "Vos progrès",
+    "progressPerformanceSummary":  "Résumé des performances",
+    "progressTotalAttempts":  "Tentatives totales",
+    "progressBestScore":  "Meilleur score",
+    "progressAverageScore":  "Score moyen",
+    "progressSignsLearned":  "Panneaux appris",
+    "progressRecentExams":  "Examens récents",
+    "progressOverall":  "Progression globale",
+    "progressComplete":  "Terminé",
+    "progressAvgScore":  "Score moy.",
+    "progressSigns":  "Panneaux",
+    "progressPassed":  "Réussi",
+    "progressExcellent":  "Excellent",
+    "progressMockExam":  "Examen blanc {number}",
+    "progressPracticeQuiz":  "Quiz pratique",
+    "profileTitle":  "Profil",
+    "profileLocation":  "Kigali, Rwanda",
+    "profileOverallProgress":  "Progression globale d\u0027apprentissage",
+    "profileModulesCompleted":  "{completed}/{total} Modules terminés",
+    "profileAccount":  "Compte",
+    "profileSettings":  "Paramètres",
+    "profileSettingsSubtitle":  "Notifications, langue, confidentialité",
+    "profileDeleteAccount":  "Supprimer le compte",
+    "profileSignOut":  "Se déconnecter",
+    "profileDeleteConfirmTitle":  "Supprimer le compte",
+    "profileDeleteConfirmMessage":  "Êtes-vous sûr de vouloir supprimer définitivement votre compte ? Cette action est irréversible.",
+    "profileDelete":  "Supprimer",
+    "certificatesTitle":  "Mes certificats",
+    "certificatesAchievements":  "Vos accomplissements",
+    "certificatesEarned":  "Obtenu",
+    "certificatesPending":  "En attente",
+    "certificatesInProgress":  "En cours",
+    "certificateRoadSignsMastery":  "Maîtrise des panneaux routiers",
+    "certificateTrafficRulesTest":  "Test final du code de la route",
+    "certificateDefensiveDriving":  "Conduite défensive",
+    "signsTitle":  "Panneaux de signalisation",
+    "signsSearchHint":  "Rechercher des panneaux...",
+    "signsNotFound":  "Aucun panneau de signalisation trouvé",
+    "signsLearned":  "Appris",
+    "signsAll":  "Tous",
+    "signDetailTitle":  "Panneau de signalisation",
+    "signDetailNotFound":  "Panneau non trouvé",
+    "signDetailDescription":  "Description",
+    "signDetailScenario":  "Scénario réel",
+    "signDetailLearned":  "Vous avez appris ce panneau !",
+    "signDetailMarkAsLearned":  "Marquer comme appris",
+    "signDetailMarkedSuccess":  "Panneau marqué comme appris !",
+    "subscriptionTitle":  "Accès aux examens pratiques",
+    "subscriptionSubtitle":  "Débloquer tous les examens pratiques",
+    "subscriptionTrafficRulesMsg":  "Si vous souhaitez apprendre le code de la route, veuillez nous appeler ou nous envoyer un message sur WhatsApp pour vous aider à préparer l\u0027examen officiel du permis de conduire provisoire.",
+    "subscriptionCurrentPlan":  "Votre forfait actuel",
+    "subscriptionNoPlan":  "Aucun forfait actif",
+    "subscriptionMonth1":  "1 Mois",
+    "subscriptionMonth3":  "3 Mois",
+    "subscriptionMonth6":  "6 Mois",
+    "subscriptionPrice":  "{amount} RWF",
+    "subscriptionRequestAccess":  "Demander l\u0027accès",
+    "subscriptionRequestSent":  "Votre demande a été soumise. Vous serez activé une fois le paiement confirmé.",
+    "subscriptionPaymentInstructions":  "Instructions de paiement",
+    "subscriptionPaymentMomo":  "MoMo Pay: 329494",
+    "subscriptionPaymentMobile":  "Mobile Money: 0788659575",
+    "subscriptionPaymentTigoCash":  "Tigo Cash: 0728877442",
+    "subscriptionHelpCall":  "Appel: 0788659575",
+    "subscriptionHelpWhatsapp":  "WhatsApp: 0788659575",
+    "subscriptionChoosePlan":  "Choisir un forfait",
+    "subscriptionCurrency":  "Mois à apprendre",
+    "subscriptionAccessActive":  "Accès actif",
+    "subscriptionExpires":  "Expire: {date}",
+    "subscriptionDays":  "{days} jours",
+    "subscriptionNeedHelp":  "Besoin d\u0027aide ?",
+    "subscriptionGetAccess":  "Accédez à tous les {count}+ examens pratiques premium",
+    "adminDashboard":  "Tableau de bord administrateur",
+    "adminUsers":  "Utilisateurs",
+    "adminAccess":  "Gestion des accès",
+    "adminProgress":  "Progression des utilisateurs",
+    "adminTotalUsers":  "Utilisateurs totaux",
+    "adminActiveSubscriptions":  "Abonnements actifs",
+    "adminUsersByLanguage":  "Utilisateurs par langue",
+    "adminRecentRegistrations":  "Inscriptions récentes",
+    "adminGrantAccess":  "Accorder l\u0027accès",
+    "adminCallUser":  "Appeler l\u0027utilisateur",
+    "adminCallNotes":  "Notes d\u0027appel",
+    "adminLastCalled":  "Dernier appel",
+    "adminNoAccess":  "Pas d\u0027accès",
+    "adminHasAccess":  "A l\u0027accès",
+    "adminAccessExpired":  "Accès expiré",
+    "adminAccessExpires":  "Expire: {date}",
+    "adminSearchUsers":  "Rechercher des utilisateurs...",
+    "adminFilterAll":  "Tous",
+    "adminFilterHasAccess":  "A l\u0027accès",
+    "adminFilterNoAccess":  "Pas d\u0027accès",
+    "adminManageUsers":  "Gérer les utilisateurs",
+    "adminManageAccess":  "Gérer les accès",
+    "adminViewProgress":  "Voir la progression",
+    "adminRegistrationDate":  "Inscrit: {date}",
+    "adminEnterCallNotes":  "Entrez les notes d\u0027appel...",
+    "adminSubmitCall":  "Soumettre",
+    "adminCallLogged":  "Appel enregistré avec succès",
+    "adminAccessGranted":  "Accès accordé avec succès",
+    "adminSelectTier":  "Sélectionner le niveau d\u0027accès",
+    "adminCustomDays":  "Durée personnalisée (jours)",
+    "adminPaymentAmount":  "Montant (RWF)",
+    "adminEnterDays":  "Entrez le nombre de jours",
+    "adminEnterAmount":  "Entrez le montant en RWF",
+    "adminOrCustom":  "Ou définir des jours personnalisés",
+    "adminPendingRequests":  "Demandes de paiement en attente",
+    "adminAllUsersList":  "Tous les utilisateurs",
+    "adminInvalidAmount":  "Veuillez entrer un montant valide supérieur à 0",
+    "adminInvalidDays":  "Veuillez entrer un nombre de jours valide supérieur à 0",
+    "adminAccessRevoked":  "Accès révoqué",
+    "adminNoUsers":  "Aucun utilisateur trouvé",
+    "examListTitle":  "Examens pratiques",
+    "examFree":  "GRATUIT",
+    "examPaid":  "PAYANT",
+    "examLocked":  "Verrouillé",
+    "examQuestions":  "{count} questions",
+    "quizProgress":  "Progression",
+    "quizAnswered":  "Répondu: {answered}/{total}",
+    "quizSubmitPractice":  "Soumettre la pratique",
+    "quizPrevious":  "Précédent",
+    "quizNext":  "Suivant",
+    "quizTimeRemaining":  "Temps: {time}",
+    "quizResults":  "Résultats du quiz",
+    "quizPassed":  "Réussi !",
+    "quizFailed":  "Continuez à pratiquer",
+    "quizQuestionOf":  "Question {current} sur {total}",
+    "quizSubmitConfirmTitle":  "Soumettre le quiz ?",
+    "quizSubmitConfirmMessage":  "Vous avez répondu à {answered} questions sur {total}. Êtes-vous sûr de vouloir soumettre ?",
+    "quizTimeUp":  "Temps écoulé ! Quiz soumis automatiquement.",
+    "quizReviewAnswers":  "Revoir les réponses",
+    "quizRetake":  "Repasser le quiz",
+    "profileRole":  "Rôle",
+    "profileLanguage":  "Langue préférée",
+    "profileRegistered":  "Inscrit: {date}",
+    "profileAccessStatus":  "Statut d\u0027accès",
+    "profileExamHistory":  "Historique des examens",
+    "profileCallHistory":  "Historique des appels",
+    "paymentInstructionsTitle":  "Instructions de paiement",
+    "paymentMomoPayNumber":  "MoMo Pay: 329494",
+    "paymentMomoPayDial":  "Pour payer avec MoMo Pay, composez: *182*8*1*329494*montant#",
+    "paymentMobileMoneyNumber":  "Mobile Money: 0788659575",
+    "paymentTigoCashNumber":  "Tigo Cash: 0728877442",
+    "paymentMobileMoneyDial":  "Pour payer avec Mobile Money, composez: *182*1*1*0788659575*montant#",
+    "paymentTigoCashDial":  "Pour payer avec  Tigo Cash, composez: *182*1*1*0728877442*montant#",
+    "paymentHelpText":  "Besoin d\u0027aide ? Appelez ou WhatsApp: 0788659575",
+    "paymentHelpContact":  "Vous pouvez copier ou appeler: 0788659575 ou WhatsApp: 0788659575 pour de l\u0027aide.",
+    "paymentError":  "La demande de paiement a échoué. Veuillez payer manuellement en utilisant les instructions ci-dessous.",
+    "paymentCopyNumber":  "Copier le numéro",
+    "paymentCallNumber":  "Appeler le 0788659575",
+    "paymentCallTigoNumber":  "Appeler le 0728877442",
+    "paymentWhatsApp":  "Envoyer un message sur WhatsApp",
+    "paymentWhatsAppMessage":  "Demander l\u0027accès à l\u0027application d\u0027examen de conduite",
+    "paymentRequestExists":  "Une demande de paiement pour ce forfait est déjà en attente. Veuillez attendre l\u0027activation ou contacter le support.",
+    "commonError":  "Quelque chose s\u0027est mal passé. Veuillez réessayer.",
+    "commonRetry":  "Réessayer",
+    "adminTierLabel":  "Niveau",
+    "adminExpiresLabel":  "Expire le",
+    "adminRenewAccess":  "Renouveler / Prolonger l\u0027accès",
+    "adminManagePlatform":  "Gérer la plateforme",
+    "adminManageExams":  "Gérer les examens",
+    "adminManageExamsDesc":  "Voir et gérer tous les examens pratiques",
+    "adminManageUsersDesc":  "Voir, rechercher et gérer tous les utilisateurs",
+    "adminAccessCodesDesc":  "Gérer les codes d\u0027accès et les paiements",
+    "adminQuickStats":  "Statistiques rapides",
+    "adminActionsTitle":  "Actions Admin",
+    "adminTotalPractices":  "Total des pratiques",
+    "adminManagePlatformDesc":  "Gérez votre plateforme d\u0027apprentissage du code de la route",
+    "adminNotifications":  "Notifications",
+    "settingsAppearance":  "Apparence",
+    "settingsAppearanceDesc":  "Choisissez l\u0027apparence de l\u0027application",
+    "settingsThemeSystem":  "Système",
+    "settingsThemeLight":  "Clair",
+    "settingsThemeDark":  "Sombre",
+    "examWrong":  "Incorrect",
+    "examTimeSpent":  "Temps",
+    "profileLogoutConfirmTitle":  "Se déconnecter?",
+    "profileLogoutConfirmMessage":  "Êtes-vous sûr de vouloir vous déconnecter?",
+    "profileDeleteInstructions":  "Avant de supprimer votre compte:\n• Tous vos résultats d\u0027examen seront effacés\n• Votre abonnement sera supprimé\n• Cette action ne peut pas être annulée\n• Vous devrez vous réinscrire pour utiliser l\u0027application",
+    "progressExamsTaken":  "Examens passés",
+    "progressPassedCount":  "Réussis",
+    "progressFailedCount":  "Échoués",
+    "progressPassRate":  "Taux de réussite",
+    "progressNoExams":  "Aucun examen encore. Commencez à pratiquer!",
+    "certificateReadyTitle":  "Prêt pour l\u0027examen officiel!",
+    "certificateReadySubtitle":  "Vous avez réussi {count} examens. Vous êtes prêt pour le test officiel.",
+    "certificateIremboLink":  "S\u0027inscrire à l\u0027examen officiel sur irembo.gov.rw",
+    "certificateIremboDesc":  "Cliquez ci-dessous pour vous inscrire au test informatisé officiel du permis de conduire provisoire",
+    "certificateExamsNeeded":  "Réussissez {needed} examens supplémentaires pour obtenir votre certificat",
+    "certificateProgressLabel":  "{passed} sur {total} examens requis réussis",
+    "adminSortAsc":  "Plus anciens d\u0027abord",
+    "adminSortDesc":  "Plus récents d\u0027abord",
+    "adminFilterToday":  "Aujourd\u0027hui",
+    "adminDateRange":  "Plage de dates",
+    "adminFilterRole":  "Rôle",
+    "adminBlockUser":  "Bloquer l\u0027utilisateur",
+    "adminUnblockUser":  "Débloquer l\u0027utilisateur",
+    "adminDeleteUserAction":  "Supprimer l\u0027utilisateur",
+    "adminBlockUserConfirm":  "Bloquer {name}? Ils perdront l\u0027accès.",
+    "adminDeleteUserConfirm":  "Supprimer définitivement {name}? Toutes leurs données seront effacées.",
+    "adminUserBlocked":  "Utilisateur bloqué avec succès",
+    "adminUserUnblocked":  "Utilisateur débloqué avec succès",
+    "adminUserDeleted":  "Utilisateur supprimé avec succès",
+    "adminMustBlockFirst":  "Vous devez bloquer l\u0027utilisateur avant de le supprimer.",
+    "adminBlockAccess":  "Bloquer l\u0027accès",
+    "adminDeleteAccess":  "Supprimer l\u0027accès",
+    "adminBlockAccessConfirm":  "Bloquer ce code d\u0027accès? L\u0027utilisateur perdra l\u0027accès immédiatement.",
+    "adminDeleteAccessConfirm":  "Supprimer définitivement ce code d\u0027accès?",
+    "adminAccessBlocked":  "Code d\u0027accès bloqué",
+    "adminAccessDeleted":  "Code d\u0027accès supprimé",
+    "adminPage":  "Page {page} sur {total}",
+    "adminLearningLanguage":  "Apprentissage",
+    "adminIsBlocked":  "Bloqué",
+    "adminIsActive":  "Actif",
+    "generalCopied":  "Copié !",
+    "@generalCopied":  {
+                           "description":  "Shown in snackbar after copying text to clipboard"
+                       },
+    "adminRetry":  "Réessayer",
+    "@adminRetry":  {
+                        "description":  "Retry button label"
+                    },
+    "languageSelectDescription":  "Vous pouvez changer cela plus tard dans les Paramètres — recevez des alertes trafic et itinéraires localisés.",
+    "languageSelectDeviceLanguage":  "Utiliser la langue de l\u0027appareil",
+    "languageSelectHelpTooltip":  "Aide sur la langue",
+    "languageSelectMaybeLater":  "Peut-être plus tard",
+    "languageSelectHelpTitle":  "Pourquoi choisir une langue ?",
+    "languageSelectHelpContent":  "Choisir une langue garantit que les alertes, cartes et invites vocales sont affichées dans votre langue préférée. Vous pouvez changer cela plus tard dans les Paramètres.",
+    "commonGotIt":  "Compris",
+    "languageSelectDialogTitle":  "Sélectionner la langue",
+    "examNotFound":  "Examen introuvable",
+    "errorWithDetail":  "Erreur : {detail}",
+    "errorUnexpected":  "Erreur inattendue : {detail}",
+    "priceRwf":  "{amount} RWF",
+    "errorHttpStatus":  "HTTP {code}",
+    "examSampleQ1":  "Quelle est la limite de vitesse sur l\u0027autoroute ?",
+    "examSampleQ1A1":  "90 km/h",
+    "examSampleQ1A2":  "100 km/h",
+    "examSampleQ1A3":  "110 km/h",
+    "examSampleQ1A4":  "120 km/h",
+    "examSampleQ2":  "Que signifie un feu jaune ?",
+    "examSampleQ2A1":  "Arrêtez-vous immédiatement",
+    "examSampleQ2A2":  "Continuez",
+    "examSampleQ2A3":  "Préparez-vous à vous arrêter",
+    "examSampleQ2A4":  "Faites demi-tour",
+    "examSampleQ3":  "À quelle distance d\u0027une bouche d\u0027incendie pouvez-vous stationner ?",
+    "examSampleQ3A1":  "1 mètre",
+    "examSampleQ3A2":  "3 mètres",
+    "examSampleQ3A3":  "5 mètres",
+    "examSampleQ3A4":  "10 mètres",
+    "examShareResult":  "Partager le résultat",
+    "examCopiedToClipboard":  "Résultat copié dans le presse-papiers",
+    "examGradeLabel":  "Note",
+    "subscriptionPopular":  "★ Populaire",
+    "quizTimeTaken":  "Temps passé",
+    "progressTotalQuestions":  "Total des questions",
+    "progressCorrectAnswers":  "Correctes",
+    "progressIncorrect":  "Incorrectes",
+    "errorNetwork":  "Connexion impossible. Vérifiez votre connexion internet et réessayez.",
+    "paymentChooseMethod":  "Choisir le mode de paiement",
+    "aboutTitle":  "À propos",
+    "aboutAppName":  "Rwanda Traffic Rule",
+    "aboutDescription":  "Rwanda Traffic Rule est votre compagnon pour apprendre le code de la route rwandais, les panneaux routiers et pratiquer les questions théoriques pour préparer l\u0027examen du permis provisoire. Cette application éducative indépendante n\u0027est affiliée à aucune autorité gouvernementale.",
+    "aboutFeatures":  "Fonctionnalités clés",
+    "aboutFeaturePractice":  "Examens blancs",
+    "aboutFeatureProgress":  "Suivi des progrès",
+    "aboutFeatureMultilingual":  "3 Langues",
+    "aboutFeatureCertificate":  "Certificats",
+    "aboutContact":  "Contactez-nous",
+    "aboutContactInfo":  "Tél/WhatsApp : 0788659575 / 0728877442\nEmail : info@Rwanda Traffic Rule.rw",
+    "aboutCopyright":  "Droits d\u0027auteur",
+    "aboutCopyrightText":  "© 2026 Rwanda Traffic Rule. Tous droits réservés.",
+    "privacyLastUpdated":  "Dernière mise à jour : mars 2026",
+    "privacyIntro":  "Rwanda Traffic Rule s\u0027engage à protéger votre vie privée. Cette politique explique comment nous collectons, utilisons et protégeons vos informations personnelles. Nous sommes un service éducatif indépendant non affilié à aucune autorité gouvernementale.",
+    "privacyDataCollection":  "Collecte des données",
+    "privacyDataCollectionBody":  "Nous collectons votre numéro de téléphone et votre nom complet lors de l\u0027inscription. Nous collectons également vos résultats de quiz et données de progression. Un identifiant d\u0027appareil unique est généré pour sécuriser votre compte.",
+    "privacyDataUsage":  "Utilisation des données",
+    "privacyDataUsageBody":  "Vos données sont utilisées pour fournir et améliorer nos services, suivre vos progrès, gérer votre abonnement et communiquer les mises à jour importantes.",
+    "privacyDataProtection":  "Protection des données",
+    "privacyDataProtectionBody":  "Nous utilisons des mesures de sécurité standards, notamment la transmission chiffrée et le stockage sécurisé. Vos données ne sont jamais partagées sans votre consentement.",
+    "privacyDataSharing":  "Partage des données",
+    "privacyDataSharingBody":  "Nous ne vendons ni ne louons vos données personnelles. Nous pouvons partager des données anonymes agrégées à des fins statistiques uniquement.",
+    "privacyUserRights":  "Vos droits",
+    "privacyUserRightsBody":  "Vous avez le droit d\u0027accéder, de mettre à jour ou de supprimer vos données personnelles à tout moment via l\u0027option Supprimer le compte dans les Paramètres.",
+    "termsLastUpdated":  "Dernière mise à jour : mars 2026",
+    "termsIntro":  "En utilisant Rwanda Traffic Rule, vous acceptez les conditions suivantes. Rwanda Traffic Rule est une application éducative indépendante conçue pour vous aider à préparer l\u0027examen théorique. Nous ne sommes affiliés à aucune autorité gouvernementale.",
+    "termsAcceptance":  "Acceptation des conditions",
+    "termsAcceptanceBody":  "En créant un compte et en utilisant cette application, vous acceptez d\u0027être lié par ces conditions. Si vous n\u0027êtes pas d\u0027accord, veuillez cesser d\u0027utiliser l\u0027application.",
+    "termsUserAccount":  "Compte utilisateur",
+    "termsUserAccountBody":  "Vous êtes responsable de la sécurité de votre compte. Chaque compte est lié à un seul numéro de téléphone et appareil. Le partage des identifiants n\u0027est pas autorisé.",
+    "termsContent":  "Contenu et examens",
+    "termsContentBody":  "Tout le contenu est à des fins éducatives et de pratique uniquement. Il ne représente pas l\u0027examen officiel du gouvernement. Nous ne garantissons pas les résultats d\u0027examen. Rwanda Traffic Rule n\u0027est affilié à aucune autorité gouvernementale.",
+    "termsPayment":  "Demander à débloquer les examens",
+    "termsPaymentBody":  "Pour débloquer les examens, veuillez nous contacter au 0788659575 ou 0728877442.",
+    "termsTermination":  "Suppression du compte",
+    "termsTerminationBody":  "Vous pouvez supprimer votre compte à tout moment depuis les paramètres.",
+    "aboutDisclaimer":  "Avertissement",
+    "aboutDisclaimerText":  "Rwanda Traffic Rule est une application éducative indépendante conçue pour aider les utilisateurs à apprendre le code de la route et à se préparer à l\u0027examen théorique. Cette application n\u0027est pas affiliée, approuvée ou liée à une autorité gouvernementale ou un organisme d\u0027examen officiel. Tout le contenu est à des fins de pratique et d\u0027apprentissage uniquement.",
+    "profileCertificatesTitle":  "Certificats",
+    "profileCertificatesSubtitle":  "Certificats obtenus et progression vers le prochain",
+    "offlineBanner":  "Vous êtes hors ligne. Les données affichées peuvent ne pas être à jour.",
+    "syncingData":  "Synchronisation des données...",
+    "dataSynced":  "Données synchronisées avec succès",
+    "savedOffline":  "Enregistré hors ligne. Sera synchronisé une fois connecté.",
+    "certificateUniqueExamsPassed":  "{count} sur {total} examens uniques réussis",
+    "certificatePassMark":  "Note de passage : {required}/{total} ({percent}%)",
+    "certificateLatestAttempt":  "Dernière tentative",
+    "certificateExamStatus":  "Examen {index}",
+    "certificateNotAttempted":  "Non tenté",
+    "consentTitle":  "Votre vie privée compte",
+    "consentBody":  "Rwanda Traffic Rule collecte et traite les données suivantes pour vous offrir la meilleure expérience d\u0027apprentissage :\n\n• Numéro de téléphone et nom — pour la création de compte et l\u0027authentification\n• Identifiant de l\u0027appareil — une empreinte numérique chiffrée pour sécuriser votre compte\n• Résultats d\u0027examens et progression — pour suivre votre parcours d\u0027apprentissage\n• Cache hors ligne — pour que l\u0027application fonctionne sans internet\n\nVos données sont stockées de manière sécurisée et ne sont jamais vendues à des tiers. Vous pouvez supprimer votre compte et toutes les données associées à tout moment depuis votre profil.",
+    "consentAccept":  "Je comprends et j\u0027accepte",
+    "consentItemPhone":  "Numéro de téléphone et nom",
+    "consentItemPhoneDetail":  "Création de compte et authentification",
+    "consentItemDevice":  "Identifiant de l\u0027appareil",
+    "consentItemDeviceDetail":  "Empreinte numérique hachée pour sécuriser votre compte",
+    "consentItemProgress":  "Résultats d\u0027examens et progression",
+    "consentItemProgressDetail":  "Suivez votre parcours d\u0027apprentissage",
+    "consentItemCache":  "Cache hors ligne",
+    "consentItemCacheDetail":  "L\u0027application fonctionne sans internet",
+    "consentSecurityNote":  "Vos données sont stockées de manière sécurisée et ne sont jamais vendues à des tiers.",
+    "consentReadPolicy":  "Lire la politique de confidentialité",
+    "registerInvalidName":  "Le nom doit contenir uniquement des lettres et des espaces",
+    "registerInvalidPhone":  "Entrez un numéro de téléphone valide (ex: 078... ou +250 78...)",
+    "joinGroup":  "Groupe WhatsApp",
+    "joinGroupSubtitle":  "Rejoindre un groupe WhatsApp",
+    "adminOfflineTooltip":  "Hors ligne – affichage des données mises en cache",
+    "adminOfflineBadge":  "HORS LIGNE",
+    "adminActiveLabel":  "{count} actifs",
+    "adminFallbackName":  "Administrateur",
+    "adminNoNetworkError":  "Pas de réseau. Aucune donnée mise en cache disponible.",
+    "commonErrorTitle":  "Erreur",
+    "exitAppTitle":  "Quitter l\u0027application",
+    "exitAppMessage":  "Êtes-vous sûr de vouloir quitter l\u0027application ?",
+    "exitAppYes":  "Quitter",
+    "exitAppNo":  "Rester",
+    "@appTitle":  {
+                      "description":  "The title of the application"
+                  },
+    "@languageSelectTitle":  {
+                                 "description":  "Title on the first-run language selector screen"
+                             },
+    "@languageSelectSubtitle":  {
+                                    "description":  "Subtitle on language selector screen"
+                                },
+    "@languageSelectConfirm":  {
+                                   "description":  "Confirm button on language selector"
+                               },
+    "@homeWelcomeBack":  {
+                             "description":  "Greeting label on home page header"
+                         },
+    "@homeGreeting":  {
+                          "description":  "User name displayed in home header",
+                          "placeholders":  {
+                                               "userName":  {
+                                                                "type":  "String",
+                                                                "example":  "Jean"
+                                                            }
+                                           }
+                      },
+    "@homeContinueMessage":  {
+                                 "description":  "Motivational sub-text on home page"
+                             },
+    "@homeContinueLearning":  {
+                                  "description":  "CTA button text on home page"
+                              },
+    "@homeAccessActive":  {
+                              "description":  "Access card status",
+                              "placeholders":  {
+                                                   "daysLeft":  {
+                                                                    "type":  "int",
+                                                                    "example":  "175"
+                                                                }
+                                               }
+                          },
+    "@homePaymentTier":  {
+                             "description":  "Payment tier label",
+                             "placeholders":  {
+                                                  "tier":  {
+                                                               "type":  "String",
+                                                               "example":  "6 MONTHS"
+                                                           }
+                                              }
+                         },
+    "@homePracticeSessions":  {
+                                  "description":  "Plural example: number of practice sessions completed",
+                                  "placeholders":  {
+                                                       "count":  {
+                                                                     "type":  "int",
+                                                                     "example":  "5"
+                                                                 }
+                                                   }
+                              },
+    "@homePractices":  {
+                           "description":  "Service card title"
+                       },
+    "@homePracticesSubtitle":  {
+                                   "description":  "Service card subtitle"
+                               },
+    "@homeCourses":  {
+                         "description":  "Service card title"
+                     },
+    "@homeCoursesSubtitle":  {
+                                 "description":  "Service card subtitle"
+                             },
+    "@homeMockExams":  {
+                           "description":  "Service card title"
+                       },
+    "@homeMockExamsSubtitle":  {
+                                   "description":  "Service card subtitle"
+                               },
+    "@homeProgress":  {
+                          "description":  "Service card title"
+                      },
+    "@homeProgressSubtitle":  {
+                                  "description":  "Service card subtitle"
+                              },
+    "@homeShareApp":  {
+                          "description":  "Service card title"
+                      },
+    "@homeShareAppSubtitle":  {
+                                  "description":  "Service card subtitle"
+                              },
+    "@settingsTitle":  {
+                           "description":  "Settings page app bar title"
+                       },
+    "@settingsPreferences":  {
+                                 "description":  "Settings section header"
+                             },
+    "@settingsDarkMode":  {
+                              "description":  "Dark mode toggle title"
+                          },
+    "@settingsDarkModeSubtitle":  {
+                                      "description":  "Dark mode toggle subtitle"
+                                  },
+    "@settingsNotifications":  {
+                                   "description":  "Notifications toggle title"
+                               },
+    "@settingsNotificationsSubtitle":  {
+                                           "description":  "Notifications toggle subtitle"
+                                       },
+    "@settingsLanguage":  {
+                              "description":  "Language setting title"
+                          },
+    "@settingsAbout":  {
+                           "description":  "About section header"
+                       },
+    "@settingsAboutApp":  {
+                              "description":  "About app title"
+                          },
+    "@settingsVersion":  {
+                             "description":  "App version with interpolation",
+                             "placeholders":  {
+                                                  "version":  {
+                                                                  "type":  "String",
+                                                                  "example":  "1.0.0"
+                                                              }
+                                              }
+                         },
+    "@settingsPrivacyPolicy":  {
+                                   "description":  "Privacy policy link title"
+                               },
+    "@settingsPrivacyPolicySubtitle":  {
+                                           "description":  "Privacy policy subtitle"
+                                       },
+    "@settingsTermsOfService":  {
+                                    "description":  "Terms of service link title"
+                                },
+    "@settingsTermsOfServiceSubtitle":  {
+                                            "description":  "Terms subtitle"
+                                        },
+    "@settingsData":  {
+                          "description":  "Data section header"
+                      },
+    "@settingsResetProgress":  {
+                                   "description":  "Reset progress button title"
+                               },
+    "@settingsResetProgressSubtitle":  {
+                                           "description":  "Reset progress subtitle"
+                                       },
+    "@settingsResetConfirmTitle":  {
+                                       "description":  "Reset confirm dialog title"
+                                   },
+    "@settingsResetConfirmMessage":  {
+                                         "description":  "Reset confirm dialog message"
+                                     },
+    "@settingsResetSuccess":  {
+                                  "description":  "Reset success snackbar message"
+                              },
+    "@settingsSelectLanguage":  {
+                                    "description":  "Language dialog title"
+                                },
+    "@commonCancel":  {
+                          "description":  "Generic cancel button"
+                      },
+    "@commonConfirm":  {
+                           "description":  "Generic confirm button"
+                       },
+    "@commonReset":  {
+                         "description":  "Generic reset button"
+                     },
+    "@landingHeroTitle":  {
+                              "description":  "Landing page hero title"
+                          },
+    "@landingHeroSubtitle":  {
+                                 "description":  "Landing page hero subtitle"
+                             },
+    "@landingGetStarted":  {
+                               "description":  "Landing page CTA button"
+                           },
+    "@landingAlreadyHaveAccount":  {
+                                       "description":  "Landing page login link"
+                                   },
+    "@landingWhyUseApp":  {
+                              "description":  "Features section title"
+                          },
+    "@landingLearnRules":  {
+                               "description":  "Feature card title"
+                           },
+    "@landingLearnRulesDesc":  {
+                                   "description":  "Feature card description"
+                               },
+    "@landingPracticeExams":  {
+                                  "description":  "Feature card title"
+                              },
+    "@landingPracticeExamsDesc":  {
+                                      "description":  "Feature card description"
+                                  },
+    "@landingTrackProgress":  {
+                                  "description":  "Feature card title"
+                              },
+    "@landingTrackProgressDesc":  {
+                                      "description":  "Feature card description"
+                                  },
+    "@landingHowItWorks":  {
+                               "description":  "How it works section title"
+                           },
+    "@landingStep1":  {
+                          "description":  "How it works step 1"
+                      },
+    "@landingStep2":  {
+                          "description":  "How it works step 2"
+                      },
+    "@landingStep3":  {
+                          "description":  "How it works step 3"
+                      },
+    "@landingStep4":  {
+                          "description":  "How it works step 4"
+                      },
+    "@landingReadyTitle":  {
+                               "description":  "Landing CTA section title"
+                           },
+    "@landingStartLearning":  {
+                                  "description":  "Landing CTA button"
+                              },
+    "@homeServices":  {
+                          "description":  "Services section header on home page"
+                      },
+    "@authAppName":  {
+                         "description":  "App brand name on auth pages"
+                     },
+    "@authSubtitle":  {
+                          "description":  "Subtitle on auth pages"
+                      },
+    "@loginTitle":  {
+                        "description":  "Login page title"
+                    },
+    "@loginSubtitle":  {
+                           "description":  "Login page subtitle"
+                       },
+    "@authNeedHelp":  {
+                          "description":  "Help section title on auth pages"
+                      },
+    "@loginHelpText":  {
+                           "description":  "Login help text"
+                       },
+    "@authPhoneNumber":  {
+                             "description":  "Phone number field label"
+                         },
+    "@authPhoneHint":  {
+                           "description":  "Phone number placeholder"
+                       },
+    "@authContinue":  {
+                          "description":  "Continue button text"
+                      },
+    "@loginNoAccount":  {
+                            "description":  "No account prompt"
+                        },
+    "@loginSignUp":  {
+                         "description":  "Sign up link text"
+                     },
+    "@authSecureTag":  {
+                           "description":  "Brand tagline on auth pages"
+                       },
+    "@loginPhoneRequired":  {
+                                "description":  "Phone validation error"
+                            },
+    "@loginInvalidPhone":  {
+                               "description":  "Login phone format validation error"
+                           },
+    "@registerTitle":  {
+                           "description":  "Registration page title"
+                       },
+    "@registerSubtitle":  {
+                              "description":  "Registration page subtitle"
+                          },
+    "@registerHelpText":  {
+                              "description":  "Registration help text"
+                          },
+    "@authFullName":  {
+                          "description":  "Full name field label"
+                      },
+    "@authFullNameHint":  {
+                              "description":  "Full name placeholder"
+                          },
+    "@registerTerms":  {
+                           "description":  "Terms agreement text"
+                       },
+    "@registerSignUp":  {
+                            "description":  "Sign up button text"
+                        },
+    "@registerHaveAccount":  {
+                                 "description":  "Have account prompt"
+                             },
+    "@registerLogIn":  {
+                           "description":  "Log in link text"
+                       },
+    "@registerFillAllFields":  {
+                                   "description":  "Validation error"
+                               },
+    "@registerAgreeTerms":  {
+                                "description":  "Terms validation error"
+                            },
+    "@forgotPasswordTitle":  {
+                                 "description":  "Forgot password page title"
+                             },
+    "@forgotPasswordDescription":  {
+                                       "description":  "Forgot password page description"
+                                   },
+    "@forgotPasswordBackToLogin":  {
+                                       "description":  "Back to login button"
+                                   },
+    "@navHome":  {
+                     "description":  "Bottom nav home label"
+                 },
+    "@navPractice":  {
+                         "description":  "Bottom nav practice label"
+                     },
+    "@navProgress":  {
+                         "description":  "Bottom nav progress label"
+                     },
+    "@navProfile":  {
+                        "description":  "Bottom nav profile label"
+                    },
+    "@practiceTitle":  {
+                           "description":  "Practice page title"
+                       },
+    "@practiceCategorySpeedLimits":  {
+                                         "description":  "Practice category"
+                                     },
+    "@practiceCategoryRoadSigns":  {
+                                       "description":  "Practice category"
+                                   },
+    "@practiceCategoryLaneControl":  {
+                                         "description":  "Practice category"
+                                     },
+    "@practiceCategoryParkingRules":  {
+                                          "description":  "Practice category"
+                                      },
+    "@practiceStart":  {
+                           "description":  "Start quiz prompt"
+                       },
+    "@quizComplete":  {
+                          "description":  "Quiz completion title"
+                      },
+    "@quizScore":  {
+                       "description":  "Quiz score display",
+                       "placeholders":  {
+                                            "score":  {
+                                                          "type":  "int"
+                                                      }
+                                        }
+                   },
+    "@quizResult":  {
+                        "description":  "Quiz result text",
+                        "placeholders":  {
+                                             "correct":  {
+                                                             "type":  "int"
+                                                         },
+                                             "total":  {
+                                                           "type":  "int"
+                                                       }
+                                         }
+                    },
+    "@quizBackToPractice":  {
+                                "description":  "Back button in quiz results"
+                            },
+    "@quizQuestion":  {
+                          "description":  "Question counter",
+                          "placeholders":  {
+                                               "current":  {
+                                                               "type":  "int"
+                                                           },
+                                               "total":  {
+                                                             "type":  "int"
+                                                         }
+                                           }
+                      },
+    "@quizFinish":  {
+                        "description":  "Finish quiz button"
+                    },
+    "@quizNextQuestion":  {
+                              "description":  "Next question button"
+                          },
+    "@examMockExam":  {
+                          "description":  "Mock exam title"
+                      },
+    "@examInstructions":  {
+                              "description":  "Exam instructions title"
+                          },
+    "@examTimeLimit":  {
+                           "description":  "Time limit instruction title"
+                       },
+    "@examTimeLimitDesc":  {
+                               "description":  "Time limit description"
+                           },
+    "@examQuestionCount":  {
+                               "description":  "Question count instruction title"
+                           },
+    "@examQuestionCountDesc":  {
+                                   "description":  "Question count description"
+                               },
+    "@examPassingScore":  {
+                              "description":  "Passing score instruction title"
+                          },
+    "@examPassingScoreDesc":  {
+                                  "description":  "Passing score description"
+                              },
+    "@examNoGoingBack":  {
+                             "description":  "No going back instruction title"
+                         },
+    "@examNoGoingBackDesc":  {
+                                 "description":  "No going back description"
+                             },
+    "@examWarning":  {
+                         "description":  "Exam warning message"
+                     },
+    "@examStartExam":  {
+                           "description":  "Start exam button"
+                       },
+    "@examSubmit":  {
+                        "description":  "Submit exam button"
+                    },
+    "@examCongratulations":  {
+                                 "description":  "Exam passed title"
+                             },
+    "@examGoodEffort":  {
+                            "description":  "Exam failed title"
+                        },
+    "@examPassedMessage":  {
+                               "description":  "Exam passed message"
+                           },
+    "@examFailedMessage":  {
+                               "description":  "Exam failed message"
+                           },
+    "@examYourScore":  {
+                           "description":  "Score label"
+                       },
+    "@examCorrect":  {
+                         "description":  "Correct answers label"
+                     },
+    "@examAccuracy":  {
+                          "description":  "Accuracy label"
+                      },
+    "@examNeedMorePractice":  {
+                                  "description":  "Encouragement for failing"
+                              },
+    "@examBadgeEarned":  {
+                             "description":  "Badge earned message"
+                         },
+    "@examRetakeTest":  {
+                            "description":  "Retake test button"
+                        },
+    "@examBackHome":  {
+                          "description":  "Back home button"
+                      },
+    "@progressTitle":  {
+                           "description":  "Progress page title"
+                       },
+    "@progressPerformanceSummary":  {
+                                        "description":  "Performance section title"
+                                    },
+    "@progressTotalAttempts":  {
+                                   "description":  "Total attempts stat"
+                               },
+    "@progressBestScore":  {
+                               "description":  "Best score stat"
+                           },
+    "@progressAverageScore":  {
+                                  "description":  "Average score stat"
+                              },
+    "@progressSignsLearned":  {
+                                  "description":  "Signs learned stat"
+                              },
+    "@progressRecentExams":  {
+                                 "description":  "Recent exams section title"
+                             },
+    "@progressOverall":  {
+                             "description":  "Overall progress card title"
+                         },
+    "@progressComplete":  {
+                              "description":  "Complete metric label"
+                          },
+    "@progressAvgScore":  {
+                              "description":  "Average score metric label"
+                          },
+    "@progressSigns":  {
+                           "description":  "Signs metric label"
+                       },
+    "@progressPassed":  {
+                            "description":  "Passed status label"
+                        },
+    "@progressExcellent":  {
+                               "description":  "Excellent status label"
+                           },
+    "@progressMockExam":  {
+                              "description":  "Mock exam name",
+                              "placeholders":  {
+                                                   "number":  {
+                                                                  "type":  "int"
+                                                              }
+                                               }
+                          },
+    "@progressPracticeQuiz":  {
+                                  "description":  "Practice Exams name"
+                              },
+    "@profileTitle":  {
+                          "description":  "Profile page title"
+                      },
+    "@profileLocation":  {
+                             "description":  "User location"
+                         },
+    "@profileOverallProgress":  {
+                                    "description":  "Learning progress card title"
+                                },
+    "@profileModulesCompleted":  {
+                                     "description":  "Module completion text",
+                                     "placeholders":  {
+                                                          "completed":  {
+                                                                            "type":  "int"
+                                                                        },
+                                                          "total":  {
+                                                                        "type":  "int"
+                                                                    }
+                                                      }
+                                 },
+    "@profileAccount":  {
+                            "description":  "Account section header"
+                        },
+    "@profileSettings":  {
+                             "description":  "Settings menu item"
+                         },
+    "@profileSettingsSubtitle":  {
+                                     "description":  "Settings menu subtitle"
+                                 },
+    "@profileDeleteAccount":  {
+                                  "description":  "Delete account option"
+                              },
+    "@profileSignOut":  {
+                            "description":  "Sign out option"
+                        },
+    "@profileDeleteConfirmTitle":  {
+                                       "description":  "Delete confirmation dialog title"
+                                   },
+    "@profileDeleteConfirmMessage":  {
+                                         "description":  "Delete confirmation message"
+                                     },
+    "@profileDelete":  {
+                           "description":  "Delete button"
+                       },
+    "@certificatesTitle":  {
+                               "description":  "Certificates page title"
+                           },
+    "@certificatesAchievements":  {
+                                      "description":  "Achievements section title"
+                                  },
+    "@certificatesEarned":  {
+                                "description":  "Earned status"
+                            },
+    "@certificatesPending":  {
+                                 "description":  "Pending status"
+                             },
+    "@certificatesInProgress":  {
+                                    "description":  "In progress date placeholder"
+                                },
+    "@certificateRoadSignsMastery":  {
+                                         "description":  "Certificate name"
+                                     },
+    "@certificateTrafficRulesTest":  {
+                                         "description":  "Certificate name"
+                                     },
+    "@certificateDefensiveDriving":  {
+                                         "description":  "Certificate name"
+                                     },
+    "@signsTitle":  {
+                        "description":  "Signs page title"
+                    },
+    "@signsSearchHint":  {
+                             "description":  "Search hint text"
+                         },
+    "@signsNotFound":  {
+                           "description":  "Empty state text"
+                       },
+    "@signsLearned":  {
+                          "description":  "Learned badge text"
+                      },
+    "@signsAll":  {
+                      "description":  "All category filter"
+                  },
+    "@signDetailTitle":  {
+                             "description":  "Sign detail page title"
+                         },
+    "@signDetailNotFound":  {
+                                "description":  "Sign not found message"
+                            },
+    "@signDetailDescription":  {
+                                   "description":  "Description section header"
+                               },
+    "@signDetailScenario":  {
+                                "description":  "Scenario section header"
+                            },
+    "@signDetailLearned":  {
+                               "description":  "Learned status message"
+                           },
+    "@signDetailMarkAsLearned":  {
+                                     "description":  "Mark as learned button"
+                                 },
+    "@signDetailMarkedSuccess":  {
+                                     "description":  "Success snackbar message"
+                                 },
+    "@subscriptionTitle":  {
+                               "description":  "Subscription page title"
+                           },
+    "@subscriptionSubtitle":  {
+                                  "description":  "Subscription page subtitle"
+                              },
+    "@subscriptionTrafficRulesMsg":  {
+                                         "description":  "Support message for learning traffic rules"
+                                     },
+    "@subscriptionCurrentPlan":  {
+                                     "description":  "Current plan section label"
+                                 },
+    "@subscriptionNoPlan":  {
+                                "description":  "No plan label"
+                            },
+    "@subscriptionMonth1":  {
+                                "description":  "1 month plan label"
+                            },
+    "@subscriptionMonth3":  {
+                                "description":  "3 months plan label"
+                            },
+    "@subscriptionMonth6":  {
+                                "description":  "6 months plan label"
+                            },
+    "@subscriptionPrice":  {
+                               "description":  "Price label with amount",
+                               "placeholders":  {
+                                                    "amount":  {
+                                                                   "type":  "int",
+                                                                   "example":  "3000"
+                                                               }
+                                                }
+                           },
+    "@subscriptionRequestAccess":  {
+                                       "description":  "Request access button"
+                                   },
+    "@subscriptionRequestSent":  {
+                                     "description":  "Request sent success message"
+                                 },
+    "@subscriptionPaymentInstructions":  {
+                                             "description":  "Payment instructions section title"
+                                         },
+    "@subscriptionPaymentMomo":  {
+                                     "description":  "MoMo pay number"
+                                 },
+    "@subscriptionPaymentMobile":  {
+                                       "description":  "Mobile money number"
+                                   },
+    "@subscriptionHelpCall":  {
+                                  "description":  "Help call number"
+                              },
+    "@subscriptionHelpWhatsapp":  {
+                                      "description":  "Help WhatsApp number"
+                                  },
+    "@subscriptionChoosePlan":  {
+                                    "description":  "Choose plan label"
+                                },
+    "@subscriptionCurrency":  {
+                                  "description":  "Currency label"
+                              },
+    "@subscriptionAccessActive":  {
+                                      "description":  "Access active label"
+                                  },
+    "@subscriptionExpires":  {
+                                 "description":  "Expiry date label",
+                                 "placeholders":  {
+                                                      "date":  {
+                                                                   "type":  "String",
+                                                                   "example":  "2025-01-01"
+                                                               }
+                                                  }
+                             },
+    "@subscriptionDays":  {
+                              "description":  "Days label",
+                              "placeholders":  {
+                                                   "days":  {
+                                                                "type":  "int",
+                                                                "example":  "30"
+                                                            }
+                                               }
+                          },
+    "@subscriptionNeedHelp":  {
+                                  "description":  "Need help label"
+                              },
+    "@subscriptionGetAccess":  {
+                                   "description":  "Get access subtitle",
+                                   "placeholders":  {
+                                                        "count":  {
+                                                                      "type":  "int",
+                                                                      "example":  "20"
+                                                                  }
+                                                    }
+                               },
+    "@adminDashboard":  {
+                            "description":  "Admin dashboard page title"
+                        },
+    "@adminUsers":  {
+                        "description":  "Admin users page title"
+                    },
+    "@adminAccess":  {
+                         "description":  "Admin access page title"
+                     },
+    "@adminProgress":  {
+                           "description":  "Admin progress page title"
+                       },
+    "@adminTotalUsers":  {
+                             "description":  "Total users stat label"
+                         },
+    "@adminActiveSubscriptions":  {
+                                      "description":  "Active subscriptions stat label"
+                                  },
+    "@adminUsersByLanguage":  {
+                                  "description":  "Users by language stat label"
+                              },
+    "@adminRecentRegistrations":  {
+                                      "description":  "Recent registrations stat label"
+                                  },
+    "@adminGrantAccess":  {
+                              "description":  "Grant access button"
+                          },
+    "@adminCallUser":  {
+                           "description":  "Call user button"
+                       },
+    "@adminCallNotes":  {
+                            "description":  "Call notes label"
+                        },
+    "@adminLastCalled":  {
+                             "description":  "Last called label"
+                         },
+    "@adminNoAccess":  {
+                           "description":  "No access badge"
+                       },
+    "@adminHasAccess":  {
+                            "description":  "Has access badge"
+                        },
+    "@adminAccessExpired":  {
+                                "description":  "Access expired badge"
+                            },
+    "@adminAccessExpires":  {
+                                "description":  "Access expiry date",
+                                "placeholders":  {
+                                                     "date":  {
+                                                                  "type":  "String",
+                                                                  "example":  "2025-01-01"
+                                                              }
+                                                 }
+                            },
+    "@adminSearchUsers":  {
+                              "description":  "Search users hint"
+                          },
+    "@adminFilterAll":  {
+                            "description":  "Filter all chip"
+                        },
+    "@adminFilterHasAccess":  {
+                                  "description":  "Filter has access chip"
+                              },
+    "@adminFilterNoAccess":  {
+                                 "description":  "Filter no access chip"
+                             },
+    "@adminManageUsers":  {
+                              "description":  "Manage users quick action"
+                          },
+    "@adminManageAccess":  {
+                               "description":  "Manage access quick action"
+                           },
+    "@adminViewProgress":  {
+                               "description":  "View progress quick action"
+                           },
+    "@adminRegistrationDate":  {
+                                   "description":  "Registration date label",
+                                   "placeholders":  {
+                                                        "date":  {
+                                                                     "type":  "String",
+                                                                     "example":  "2025-01-01"
+                                                                 }
+                                                    }
+                               },
+    "@adminEnterCallNotes":  {
+                                 "description":  "Call notes hint text"
+                             },
+    "@adminSubmitCall":  {
+                             "description":  "Submit call notes button"
+                         },
+    "@adminCallLogged":  {
+                             "description":  "Call logged success message"
+                         },
+    "@adminAccessGranted":  {
+                                "description":  "Access granted success message"
+                            },
+    "@adminSelectTier":  {
+                             "description":  "Select tier label"
+                         },
+    "@adminCustomDays":  {
+                             "description":  "Custom days label"
+                         },
+    "@adminPaymentAmount":  {
+                                "description":  "Payment amount label"
+                            },
+    "@adminEnterDays":  {
+                            "description":  "Days input hint"
+                        },
+    "@adminEnterAmount":  {
+                              "description":  "Amount input hint"
+                          },
+    "@adminOrCustom":  {
+                           "description":  "Custom days toggle label"
+                       },
+    "@adminPendingRequests":  {
+                                  "description":  "Pending requests section title"
+                              },
+    "@adminAllUsersList":  {
+                               "description":  "All users section title"
+                           },
+    "@adminInvalidAmount":  {
+                                "description":  "Invalid amount error"
+                            },
+    "@adminInvalidDays":  {
+                              "description":  "Invalid days error"
+                          },
+    "@adminAccessRevoked":  {
+                                "description":  "Access revoked message"
+                            },
+    "@adminNoUsers":  {
+                          "description":  "No users found message"
+                      },
+    "@examListTitle":  {
+                           "description":  "Exam list page title"
+                       },
+    "@examFree":  {
+                      "description":  "Free exam badge"
+                  },
+    "@examPaid":  {
+                      "description":  "Paid exam badge"
+                  },
+    "@examLocked":  {
+                        "description":  "Locked exam label"
+                    },
+    "@examQuestions":  {
+                           "description":  "Question count label",
+                           "placeholders":  {
+                                                "count":  {
+                                                              "type":  "int",
+                                                              "example":  "20"
+                                                          }
+                                            }
+                       },
+    "@quizProgress":  {
+                          "description":  "Quiz progress label"
+                      },
+    "@quizAnswered":  {
+                          "description":  "Answered counter",
+                          "placeholders":  {
+                                               "answered":  {
+                                                                "type":  "int",
+                                                                "example":  "5"
+                                                            },
+                                               "total":  {
+                                                             "type":  "int",
+                                                             "example":  "20"
+                                                         }
+                                           }
+                      },
+    "@quizSubmitPractice":  {
+                                "description":  "Submit practice button"
+                            },
+    "@quizPrevious":  {
+                          "description":  "Previous question button"
+                      },
+    "@quizNext":  {
+                      "description":  "Next question button"
+                  },
+    "@quizTimeRemaining":  {
+                               "description":  "Time remaining label",
+                               "placeholders":  {
+                                                    "time":  {
+                                                                 "type":  "String",
+                                                                 "example":  "19:34"
+                                                             }
+                                                }
+                           },
+    "@quizResults":  {
+                         "description":  "Quiz results title"
+                     },
+    "@quizPassed":  {
+                        "description":  "Quiz passed label"
+                    },
+    "@quizFailed":  {
+                        "description":  "Quiz failed label"
+                    },
+    "@quizQuestionOf":  {
+                            "description":  "Question counter",
+                            "placeholders":  {
+                                                 "current":  {
+                                                                 "type":  "int",
+                                                                 "example":  "1"
+                                                             },
+                                                 "total":  {
+                                                               "type":  "int",
+                                                               "example":  "20"
+                                                           }
+                                             }
+                        },
+    "@quizSubmitConfirmTitle":  {
+                                    "description":  "Submit confirmation dialog title"
+                                },
+    "@quizSubmitConfirmMessage":  {
+                                      "description":  "Submit confirmation dialog message",
+                                      "placeholders":  {
+                                                           "answered":  {
+                                                                            "type":  "int",
+                                                                            "example":  "15"
+                                                                        },
+                                                           "total":  {
+                                                                         "type":  "int",
+                                                                         "example":  "20"
+                                                                     }
+                                                       }
+                                  },
+    "@quizTimeUp":  {
+                        "description":  "Time up message"
+                    },
+    "@quizReviewAnswers":  {
+                               "description":  "Review answers button"
+                           },
+    "@quizRetake":  {
+                        "description":  "Retake quiz button"
+                    },
+    "@profileRole":  {
+                         "description":  "Profile role label"
+                     },
+    "@profileLanguage":  {
+                             "description":  "Profile language label"
+                         },
+    "@profileRegistered":  {
+                               "description":  "Registration date",
+                               "placeholders":  {
+                                                    "date":  {
+                                                                 "type":  "String",
+                                                                 "example":  "2025-01-01"
+                                                             }
+                                                }
+                           },
+    "@profileAccessStatus":  {
+                                 "description":  "Access status label"
+                             },
+    "@profileExamHistory":  {
+                                "description":  "Exam history label"
+                            },
+    "@profileCallHistory":  {
+                                "description":  "Call history label"
+                            },
+    "@paymentInstructionsTitle":  {
+                                      "description":  "Payment instructions title"
+                                  },
+    "@paymentMomoPayNumber":  {
+                                  "description":  "MoMo pay number"
+                              },
+    "@paymentMomoPayDial":  {
+                                "description":  "MoMo Pay dial instruction"
+                            },
+    "@paymentMobileMoneyNumber":  {
+                                      "description":  "Mobile money number"
+                                  },
+    "@paymentMobileMoneyDial":  {
+                                    "description":  "Mobile Money dial instruction"
+                                },
+    "@paymentHelpText":  {
+                             "description":  "Payment help text"
+                         },
+    "@paymentHelpContact":  {
+                                "description":  "Payment help contact line"
+                            },
+    "@paymentError":  {
+                          "description":  "Payment error message"
+                      },
+    "@paymentCopyNumber":  {
+                               "description":  "Copy phone number button"
+                           },
+    "@paymentCallNumber":  {
+                               "description":  "Call phone number button"
+                           },
+    "@paymentWhatsApp":  {
+                             "description":  "WhatsApp button label"
+                         },
+    "@paymentWhatsAppMessage":  {
+                                    "description":  "WhatsApp message text for payment request"
+                                },
+    "@paymentRequestExists":  {
+                                  "description":  "Duplicate payment request error"
+                              },
+    "@commonError":  {
+                         "description":  "Generic error message"
+                     },
+    "@commonRetry":  {
+                         "description":  "Retry button label"
+                     },
+    "@examWrong":  {
+                       "description":  "Wrong answers label in exam result"
+                   },
+    "@examTimeSpent":  {
+                           "description":  "Time spent label in exam result"
+                       },
+    "@profileLogoutConfirmTitle":  {
+                                       "description":  "Logout confirmation title"
+                                   },
+    "@profileLogoutConfirmMessage":  {
+                                         "description":  "Logout confirmation message"
+                                     },
+    "@profileDeleteInstructions":  {
+                                       "description":  "Instructions shown before deleting account"
+                                   },
+    "@progressExamsTaken":  {
+                                "description":  "Total exams taken label"
+                            },
+    "@progressPassedCount":  {
+                                 "description":  "Number of passed exams label"
+                             },
+    "@progressFailedCount":  {
+                                 "description":  "Number of failed exams label"
+                             },
+    "@progressPassRate":  {
+                              "description":  "Pass rate label"
+                          },
+    "@progressNoExams":  {
+                             "description":  "Empty state for progress page"
+                         },
+    "@certificateReadyTitle":  {
+                                   "description":  "Certificate ready title"
+                               },
+    "@certificateReadySubtitle":  {
+                                      "description":  "Certificate subtitle with count",
+                                      "placeholders":  {
+                                                           "count":  {
+                                                                         "type":  "int"
+                                                                     }
+                                                       }
+                                  },
+    "@certificateIremboLink":  {
+                                   "description":  "Irembo link button label"
+                               },
+    "@certificateIremboDesc":  {
+                                   "description":  "Irembo link description"
+                               },
+    "@certificateExamsNeeded":  {
+                                    "description":  "How many more exams needed",
+                                    "placeholders":  {
+                                                         "needed":  {
+                                                                        "type":  "int"
+                                                                    }
+                                                     }
+                                },
+    "@certificateProgressLabel":  {
+                                      "description":  "Certificate progress label",
+                                      "placeholders":  {
+                                                           "passed":  {
+                                                                          "type":  "int"
+                                                                      },
+                                                           "total":  {
+                                                                         "type":  "int"
+                                                                     }
+                                                       }
+                                  },
+    "@adminSortAsc":  {
+                          "description":  "Sort ascending label"
+                      },
+    "@adminSortDesc":  {
+                           "description":  "Sort descending label"
+                       },
+    "@adminFilterToday":  {
+                              "description":  "Filter today label"
+                          },
+    "@adminDateRange":  {
+                            "description":  "Date range filter label"
+                        },
+    "@adminFilterRole":  {
+                             "description":  "Filter by role label"
+                         },
+    "@adminBlockUser":  {
+                            "description":  "Block user action"
+                        },
+    "@adminUnblockUser":  {
+                              "description":  "Unblock user action"
+                          },
+    "@adminDeleteUserAction":  {
+                                   "description":  "Delete user action"
+                               },
+    "@adminBlockUserConfirm":  {
+                                   "description":  "Block user confirmation",
+                                   "placeholders":  {
+                                                        "name":  {
+                                                                     "type":  "String"
+                                                                 }
+                                                    }
+                               },
+    "@adminDeleteUserConfirm":  {
+                                    "description":  "Delete user confirmation",
+                                    "placeholders":  {
+                                                         "name":  {
+                                                                      "type":  "String"
+                                                                  }
+                                                     }
+                                },
+    "@adminUserBlocked":  {
+                              "description":  "User blocked success message"
+                          },
+    "@adminUserUnblocked":  {
+                                "description":  "User unblocked success message"
+                            },
+    "@adminUserDeleted":  {
+                              "description":  "User deleted success message"
+                          },
+    "@adminMustBlockFirst":  {
+                                 "description":  "Must block first error message"
+                             },
+    "@adminBlockAccess":  {
+                              "description":  "Block access action"
+                          },
+    "@adminDeleteAccess":  {
+                               "description":  "Delete access action"
+                           },
+    "@adminBlockAccessConfirm":  {
+                                     "description":  "Block access confirmation"
+                                 },
+    "@adminDeleteAccessConfirm":  {
+                                      "description":  "Delete access confirmation"
+                                  },
+    "@adminAccessBlocked":  {
+                                "description":  "Access blocked success message"
+                            },
+    "@adminAccessDeleted":  {
+                                "description":  "Access deleted success message"
+                            },
+    "@adminPage":  {
+                       "description":  "Pagination label",
+                       "placeholders":  {
+                                            "page":  {
+                                                         "type":  "int"
+                                                     },
+                                            "total":  {
+                                                          "type":  "int"
+                                                      }
+                                        }
+                   },
+    "@adminLearningLanguage":  {
+                                   "description":  "Learning language label"
+                               },
+    "@adminIsBlocked":  {
+                            "description":  "Blocked status label"
+                        },
+    "@adminIsActive":  {
+                           "description":  "Active status label"
+                       },
+    "@languageSelectDescription":  {
+                                       "description":  "Full subtitle on language selector page"
+                                   },
+    "@languageSelectDeviceLanguage":  {
+                                          "description":  "Button to auto-detect device language"
+                                      },
+    "@languageSelectHelpTooltip":  {
+                                       "description":  "Tooltip for help icon on language selector"
+                                   },
+    "@languageSelectMaybeLater":  {
+                                      "description":  "Skip button on language selector"
+                                  },
+    "@languageSelectHelpTitle":  {
+                                     "description":  "Help modal title on language selector"
+                                 },
+    "@languageSelectHelpContent":  {
+                                       "description":  "Help modal content on language selector"
+                                   },
+    "@commonGotIt":  {
+                         "description":  "Acknowledge button"
+                     },
+    "@languageSelectDialogTitle":  {
+                                       "description":  "Dialog title for language picker"
+                                   },
+    "@examNotFound":  {
+                          "description":  "Error when exam cannot be loaded"
+                      },
+    "@errorWithDetail":  {
+                             "description":  "Error message with detail",
+                             "placeholders":  {
+                                                  "detail":  {
+                                                                 "type":  "String"
+                                                             }
+                                              }
+                         },
+    "@errorUnexpected":  {
+                             "description":  "Unexpected error message with detail",
+                             "placeholders":  {
+                                                  "detail":  {
+                                                                 "type":  "String"
+                                                             }
+                                              }
+                         },
+    "@priceRwf":  {
+                      "description":  "Price formatted in RWF",
+                      "placeholders":  {
+                                           "amount":  {
+                                                          "type":  "String"
+                                                      }
+                                       }
+                  },
+    "@errorHttpStatus":  {
+                             "description":  "HTTP error status",
+                             "placeholders":  {
+                                                  "code":  {
+                                                               "type":  "int"
+                                                           }
+                                              }
+                         },
+    "@examSampleQ1":  {
+                          "description":  "Sample exam question 1"
+                      },
+    "@examSampleQ2":  {
+                          "description":  "Sample exam question 2"
+                      },
+    "@examSampleQ3":  {
+                          "description":  "Sample exam question 3"
+                      },
+    "@examShareResult":  {
+                             "description":  "Share result button on exam result page"
+                         },
+    "@examCopiedToClipboard":  {
+                                   "description":  "Snackbar after copying result to clipboard"
+                               },
+    "@examGradeLabel":  {
+                            "description":  "Grade label on exam result page"
+                        },
+    "@subscriptionPopular":  {
+                                 "description":  "Popular badge on subscription plan card"
+                             },
+    "@quizTimeTaken":  {
+                           "description":  "Label for time spent on quiz results"
+                       },
+    "@progressTotalQuestions":  {
+                                    "description":  "Label for total questions stat"
+                                },
+    "@progressCorrectAnswers":  {
+                                    "description":  "Label for correct answers stat"
+                                },
+    "@progressIncorrect":  {
+                               "description":  "Label for incorrect answers stat"
+                           },
+    "@errorNetwork":  {
+                          "description":  "Network error message shown when device is offline"
+                      },
+    "@paymentChooseMethod":  {
+                                 "description":  "Title for payment method modal"
+                             },
+    "@aboutTitle":  {
+                        "description":  "About page title"
+                    },
+    "@aboutAppName":  {
+                          "description":  "App name on about page"
+                      },
+    "@aboutDescription":  {
+                              "description":  "About app description"
+                          },
+    "@aboutFeatures":  {
+                           "description":  "Features section title"
+                       },
+    "@aboutFeaturePractice":  {
+                                  "description":  "Practice feature"
+                              },
+    "@aboutFeatureProgress":  {
+                                  "description":  "Progress feature"
+                              },
+    "@aboutFeatureMultilingual":  {
+                                      "description":  "Multilingual feature"
+                                  },
+    "@aboutFeatureCertificate":  {
+                                     "description":  "Certificate feature"
+                                 },
+    "@aboutContact":  {
+                          "description":  "Contact section title"
+                      },
+    "@aboutContactInfo":  {
+                              "description":  "Contact info"
+                          },
+    "@aboutCopyright":  {
+                            "description":  "Copyright section title"
+                        },
+    "@aboutCopyrightText":  {
+                                "description":  "Copyright text"
+                            },
+    "@privacyLastUpdated":  {
+                                "description":  "Privacy policy last updated"
+                            },
+    "@privacyIntro":  {
+                          "description":  "Privacy policy intro"
+                      },
+    "@privacyDataCollection":  {
+                                   "description":  "Data collection section"
+                               },
+    "@privacyDataCollectionBody":  {
+                                       "description":  "Data collection body"
+                                   },
+    "@privacyDataUsage":  {
+                              "description":  "Data usage section"
+                          },
+    "@privacyDataUsageBody":  {
+                                  "description":  "Data usage body"
+                              },
+    "@privacyDataProtection":  {
+                                   "description":  "Data protection section"
+                               },
+    "@privacyDataProtectionBody":  {
+                                       "description":  "Data protection body"
+                                   },
+    "@privacyDataSharing":  {
+                                "description":  "Data sharing section"
+                            },
+    "@privacyDataSharingBody":  {
+                                    "description":  "Data sharing body"
+                                },
+    "@privacyUserRights":  {
+                               "description":  "User rights section"
+                           },
+    "@privacyUserRightsBody":  {
+                                   "description":  "User rights body"
+                               },
+    "@termsLastUpdated":  {
+                              "description":  "Terms last updated"
+                          },
+    "@termsIntro":  {
+                        "description":  "Terms intro"
+                    },
+    "@termsAcceptance":  {
+                             "description":  "Acceptance section"
+                         },
+    "@termsAcceptanceBody":  {
+                                 "description":  "Acceptance body"
+                             },
+    "@termsUserAccount":  {
+                              "description":  "User account section"
+                          },
+    "@termsUserAccountBody":  {
+                                  "description":  "User account body"
+                              },
+    "@termsContent":  {
+                          "description":  "Content section"
+                      },
+    "@termsContentBody":  {
+                              "description":  "Content body"
+                          },
+    "@termsPayment":  {
+                          "description":  "Payment section"
+                      },
+    "@termsPaymentBody":  {
+                              "description":  "Payment body"
+                          },
+    "@termsTermination":  {
+                              "description":  "Termination section"
+                          },
+    "@termsTerminationBody":  {
+                                  "description":  "Termination body"
+                              },
+    "@aboutDisclaimer":  {
+                             "description":  "Disclaimer section title"
+                         },
+    "@aboutDisclaimerText":  {
+                                 "description":  "Disclaimer text"
+                             },
+    "@profileCertificatesTitle":  {
+                                      "description":  "Profile certificates menu title"
+                                  },
+    "@profileCertificatesSubtitle":  {
+                                         "description":  "Profile certificates menu subtitle"
+                                     },
+    "@offlineBanner":  {
+                           "description":  "Offline mode banner"
+                       },
+    "@syncingData":  {
+                         "description":  "Syncing data message"
+                     },
+    "@dataSynced":  {
+                        "description":  "Data synced success message"
+                    },
+    "@savedOffline":  {
+                          "description":  "Offline save confirmation"
+                      },
+    "@certificateUniqueExamsPassed":  {
+                                          "description":  "Unique exams passed out of total",
+                                          "placeholders":  {
+                                                               "count":  {
+                                                                             "type":  "int"
+                                                                         },
+                                                               "total":  {
+                                                                             "type":  "int"
+                                                                         }
+                                                           }
+                                      },
+    "@certificatePassMark":  {
+                                 "description":  "Pass mark info",
+                                 "placeholders":  {
+                                                      "required":  {
+                                                                       "type":  "int"
+                                                                   },
+                                                      "total":  {
+                                                                    "type":  "int"
+                                                                },
+                                                      "percent":  {
+                                                                      "type":  "int"
+                                                                  }
+                                                  }
+                             },
+    "@certificateLatestAttempt":  {
+                                      "description":  "Latest attempt label"
+                                  },
+    "@certificateExamStatus":  {
+                                   "description":  "Exam label with index",
+                                   "placeholders":  {
+                                                        "index":  {
+                                                                      "type":  "int"
+                                                                  }
+                                                    }
+                               },
+    "@certificateNotAttempted":  {
+                                     "description":  "Legend label for exams not yet taken"
+                                 },
+    "@consentTitle":  {
+                          "description":  "Title of the data consent dialog"
+                      },
+    "@consentBody":  {
+                         "description":  "Body text of the data consent dialog"
+                     },
+    "@consentAccept":  {
+                           "description":  "Accept button on consent dialog"
+                       },
+    "@consentReadPolicy":  {
+                               "description":  "Link to privacy policy from consent dialog"
+                           },
+    "@registerInvalidName":  {
+                                 "description":  "Validation error for name field"
+                             },
+    "@registerInvalidPhone":  {
+                                  "description":  "Validation error for phone field"
+                              },
+    "@adminOfflineTooltip":  {
+                                 "description":  "Tooltip shown when the dashboard is offline"
+                             },
+    "@adminOfflineBadge":  {
+                               "description":  "Badge shown in the app bar when offline"
+                           },
+    "@adminActiveLabel":  {
+                              "description":  "Active subscriptions count label",
+                              "placeholders":  {
+                                                   "count":  {
+                                                                 "type":  "int"
+                                                             }
+                                               }
+                          },
+    "@adminFallbackName":  {
+                               "description":  "Fallback name for admin user"
+                           },
+    "@adminNoNetworkError":  {
+                                 "description":  "Error message when both network and cache fail"
+                             },
+    "@commonErrorTitle":  {
+                              "description":  "General error title"
+                          },
+    "@exitAppTitle":  {
+                          "description":  "Exit app confirmation dialog title"
+                      },
+    "@exitAppMessage":  {
+                            "description":  "Exit app confirmation dialog message"
+                        },
+    "@exitAppYes":  {
+                        "description":  "Exit app confirmation button"
+                    },
+    "@exitAppNo":  {
+                       "description":  "Cancel exit button"
+                   }
 }

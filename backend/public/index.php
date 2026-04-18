@@ -416,7 +416,8 @@ function authLogin($conn, $params) {
     }
     
     // Device binding logic: ADMIN can login from any device, USER must use registered device
-    if ($user['role'] === 'USER') {
+    // BYPASS: Demo account 0787012615 can login from any device
+    if ($user['role'] === 'USER' && $phone !== '0787012615') {
         // USER role: enforce device binding (1 device = 1 phone = 1 account)
         if (!$device) {
             Logger::warning('USER login without deviceId', ['userId' => $user['id']]);

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rwanda Traffic Rule - Pro Asset Designer</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Montserrat:wght@400;700;900&family=Poppins:wght@400;700;900&family=Roboto:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: linear-gradient(135deg, #1a237e 0%, #0d47a1 50%, #01579b 100%);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #f4f7f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c3e50;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .dashboard {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .control-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #7f8c8d;
+            text-transform: uppercase;
+        }
+
+        input,
+        select,
+        button {
+            padding: 10px;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #1a237e;
+            color: white;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            grid-column: span 4;
+            padding: 15px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #0d1a6e;
+            transform: translateY(-1px);
+        }
+
+        /* Preview Display */
+        .preview-outer {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .preview-wrapper {
+            position: relative;
+            background: #ddd;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        /* Layout Modes */
+        .mode-portrait .preview-wrapper {
+            width: 340px;
+            height: 604px;
+        }
+
+        .mode-landscape .preview-wrapper {
+            width: 604px;
+            height: 340px;
+        }
+
+        .mode-feature .preview-wrapper {
+            width: 716px;
+            height: 350px;
+        }
+
+        .mode-icon .preview-wrapper {
+            width: 350px;
+            height: 350px;
+        }
+
+        #virtualCanvas {
+            width: 100%;
+            height: 100%;
+            background: var(--primary-bg);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* Header Previews */
+        .header-preview {
+            color: white;
+            font-weight: 900;
+            text-align: center;
+            line-height: 1.1;
+            z-index: 5;
+        }
+
+        .mode-portrait .header-preview {
+            font-size: 28px;
+            padding: 40px 20px;
+        }
+
+        .mode-landscape .header-preview {
+            font-size: 32px;
+            padding: 20px 40px;
+        }
+
+        .mode-feature .header-preview {
+            font-size: 38px;
+            text-align: left;
+            max-width: 400px;
+            padding: 40px;
+            align-self: center;
+        }
+
+        .mode-icon .header-preview {
+            display: none;
+        }
+
+        /* Icon Specifics */
+        #iconPreview {
+            display: none;
+            width: 220px;
+            height: 220px;
+            border-radius: 45px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            margin-top: 65px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .mode-icon #iconPreview {
+            display: block;
+        }
+
+        .mode-icon .phone-container {
+            display: none;
+        }
+
+        /* Phone Mockups */
+        .phone-container {
+            position: relative;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .mode-portrait .phone-container {
+            width: 220px;
+            height: 440px;
+        }
+
+        .mode-landscape .phone-container {
+            width: 140px;
+            height: 280px;
+            transform: rotateZ(-90deg);
+            margin-top: 20px;
+        }
+
+        .mode-feature .phone-container {
+            width: 200px;
+            height: 400px;
+            transform: rotateY(-25deg) rotateX(10deg);
+            margin-right: 40px;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        .phone-mockup {
+            width: 100%;
+            height: 100%;
+            background: #111;
+            border-radius: 28px;
+            padding: 5px;
+            box-sizing: border-box;
+            border: 3px solid #333;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .screen-mockup {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: 23px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen-mockup img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #iconImg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Angle Overrides */
+        .angle-left .phone-container {
+            transform: rotateY(-20deg) rotateX(10deg);
+        }
+
+        .angle-right .phone-container {
+            transform: rotateY(20deg) rotateX(10deg);
+        }
+
+        .angle-tilted .phone-container {
+            transform: rotateZ(-5deg) translateY(20px);
+        }
+
+        .mode-landscape.angle-tilted .phone-container {
+            transform: rotateZ(-95deg) translateY(0px);
+        }
+
+        #exportCanvas {
+            display: none;
+        }
+
+        .hint {
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 13px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="mode-portrait">
+
+    <h1>Pro Play Store Designer</h1>
+
+    <div class="dashboard">
+        <div class="control-item">
+            <label>Asset Type</label>
+            <select id="typeSelect" onchange="updateMode()">
+                <option value="portrait">Portrait Screen (1080x1920)</option>
+                <option value="landscape">Landscape Screen (1920x1080)</option>
+                <option value="feature">Feature Graphic (1024x500)</option>
+                <option value="icon">App Icon (512x512)</option>
+            </select>
+        </div>
+        <div class="control-item">
+            <label>Promotional Header</label>
+            <input type="text" id="headerInput" value="Master Traffic Rules Like a Pro" oninput="drawPreview()">
+        </div>
+        <div class="control-item">
+            <label>Upload Screenshot/Logo</label>
+            <input type="file" id="fileInput" accept="image/*" onchange="handleImage(event)">
+        </div>
+        <div class="control-item">
+            <label>Marketing Theme</label>
+            <select id="themeSelect" onchange="drawPreview()">
+                <option value="#1a237e,#01579b">Premium Blue</option>
+                <option value="#4a148c,#9c27b0">Creative Purple</option>
+                <option value="#004d40,#009688">Safety Teal</option>
+                <option value="#212121,#424242">Dark Mode Sleek</option>
+                <option value="#b71c1c,#ef5350">Urgent Red</option>
+            </select>
+        </div>
+
+        <div class="control-item">
+            <label>Font Size</label>
+            <input type="range" id="sizeInput" min="10" max="80" value="28" oninput="drawPreview()">
+        </div>
+        <div class="control-item">
+            <label>Font Family</label>
+            <select id="fontSelect" onchange="drawPreview()">
+                <option value="'Inter', sans-serif">Inter (Modern)</option>
+                <option value="'Montserrat', sans-serif">Montserrat (Bold)</option>
+                <option value="'Poppins', sans-serif">Poppins (Best)</option>
+                <option value="'Roboto', sans-serif">Roboto (Clean)</option>
+            </select>
+        </div>
+        <div class="control-item">
+            <label>Perspective Angle</label>
+            <select id="angleSelect" onchange="updatePerspective()">
+                <option value="angle-none">Straight</option>
+                <option value="angle-left">Oblique Left</option>
+                <option value="angle-right">Oblique Right</option>
+                <option value="angle-tilted">Tilted</option>
+            </select>
+        </div>
+        <div class="control-item">
+            <label>Quick Action</label>
+            <button onclick="generateAndDownload()"
+                style="background:#2ecc71; color:white; border:none; font-weight:bold; cursor:pointer;">DOWNLOAD
+                ASSET</button>
+        </div>
+        <button class="btn-primary" onclick="generateAndDownload()">SAVE FINAL ASSET FOR PLAY STORE</button>
+    </div>
+
+    <div class="preview-outer">
+        <div class="preview-wrapper">
+            <div id="virtualCanvas" class="angle-none" style="background: linear-gradient(135deg, #1a237e, #01579b);">
+                <div class="header-preview" id="headerDisplay">Master Traffic Rules Like a Pro</div>
+
+                <div id="iconPreview">
+                    <img id="iconImg" src="" style="display:none;">
+                    <div id="iconPlaceholder"
+                        style="background:#fff; height:100%; display:flex; align-items:center; justify-content:center; color:#333; font-weight:bold; font-size:12px;">
+                        App Logo</div>
+                </div>
+
+                <div class="phone-container">
+                    <div class="phone-mockup">
+                        <div class="screen-mockup">
+                            <img id="screenImg" src="" style="display:none;">
+                            <div id="screenPlaceholder"
+                                style="height:100%; display:flex; align-items:center; justify-content:center; color:#555; text-align:center; padding:20px; font-size:12px;">
+                                Screenshot</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hint">Includes support for <b>Portrait</b>, <b>Landscape</b>, <b>Banner</b>, and <b>App Icons</b>.</div>
+    <canvas id="exportCanvas"></canvas>
+
+    <script>
+        let uploadedImg = null;
+
+        function updateMode() {
+            const mode = document.getElementById('typeSelect').value;
+            document.body.className = `mode-${mode}`;
+            if (mode === 'icon') document.getElementById('headerInput').disabled = true;
+            else document.getElementById('headerInput').disabled = false;
+
+            // Adjust defaults
+            if (mode === 'landscape') document.getElementById('sizeInput').value = 32;
+            else if (mode === 'feature') document.getElementById('sizeInput').value = 42;
+            else document.getElementById('sizeInput').value = 28;
+
+            drawPreview();
+        }
+
+        function handleImage(e) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                uploadedImg = new Image();
+                uploadedImg.onload = function () {
+                    document.getElementById('screenImg').src = uploadedImg.src;
+                    document.getElementById('screenImg').style.display = 'block';
+                    document.getElementById('screenPlaceholder').style.display = 'none';
+                    document.getElementById('iconImg').src = uploadedImg.src;
+                    document.getElementById('iconImg').style.display = 'block';
+                    document.getElementById('iconPlaceholder').style.display = 'none';
+                    drawPreview();
+                };
+                uploadedImg.src = event.target.result;
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        }
+
+        function updatePerspective() {
+            document.getElementById('virtualCanvas').className = document.getElementById('angleSelect').value;
+        }
+
+        function drawPreview() {
+            const text = document.getElementById('headerInput').value;
+            const size = document.getElementById('sizeInput').value;
+            const font = document.getElementById('fontSelect').value;
+            const theme = document.getElementById('themeSelect').value.split(',');
+            const header = document.getElementById('headerDisplay');
+            header.innerText = text;
+            header.style.fontSize = size + 'px';
+            header.style.fontFamily = font;
+            document.getElementById('virtualCanvas').style.background = `linear-gradient(135deg, ${theme[0]}, ${theme[1]})`;
+        }
+
+        function generateAndDownload() {
+            const mode = document.getElementById('typeSelect').value;
+            const canvas = document.getElementById('exportCanvas');
+            const ctx = canvas.getContext('2d');
+            const theme = document.getElementById('themeSelect').value.split(',');
+            const text = document.getElementById('headerInput').value;
+            const size = document.getElementById('sizeInput').value;
+            const font = document.getElementById('fontSelect').value;
+            const angle = document.getElementById('angleSelect').value;
+
+            let W, H;
+            if (mode === 'portrait') { W = 1080; H = 1920; }
+            else if (mode === 'landscape') { W = 1920; H = 1080; }
+            else if (mode === 'feature') { W = 1024; H = 500; }
+            else { W = 512; H = 512; }
+
+            canvas.width = W; canvas.height = H;
+
+            // 1. Background
+            const grad = ctx.createLinearGradient(0, 0, W, H);
+            grad.addColorStop(0, theme[0]); grad.addColorStop(1, theme[1]);
+            ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
+
+            // 2. Content
+            if (mode === 'portrait' || mode === 'landscape') {
+                const fs = Math.round(size / 0.3);
+                ctx.fillStyle = "white"; ctx.font = `900 ${fs}px ${font}`;
+                ctx.textAlign = "center";
+                if (mode === 'portrait') {
+                    wrapText(ctx, text.toUpperCase(), W / 2, H * 0.15, W * 0.9, fs * 1.1);
+                    drawPhone(ctx, W / 2, H * 0.62, 800, 1500, angle, uploadedImg);
+                } else {
+                    wrapText(ctx, text.toUpperCase(), W / 2, H * 0.2, W * 0.9, fs * 1.1);
+                    drawPhone(ctx, W / 2, H * 0.8, 1200, 600, angle, uploadedImg, true);
+                }
+            } else if (mode === 'feature') {
+                const fs = 72;
+                ctx.fillStyle = "white"; ctx.font = `900 ${fs}px ${font}`;
+                ctx.textAlign = "left"; wrapText(ctx, text.toUpperCase(), 80, 250, 500, fs * 1.1);
+                drawPhone(ctx, 780, 250, 400, 800, 'angle-right', uploadedImg);
+            } else if (mode === 'icon') {
+                if (uploadedImg) {
+                    const iconSize = 400;
+                    ctx.save(); ctx.beginPath(); roundRect(ctx, W / 2 - iconSize / 2, H / 2 - iconSize / 2, iconSize, iconSize, 60, false, false);
+                    ctx.clip(); ctx.drawImage(uploadedImg, W / 2 - iconSize / 2, H / 2 - iconSize / 2, iconSize, iconSize); ctx.restore();
+                }
+            }
+
+            const dl = document.createElement('a');
+            dl.download = `traffic_rule_${mode}_${Date.now()}.png`;
+            dl.href = canvas.toDataURL(); dl.click();
+        }
+
+        function drawPhone(ctx, x, y, w, h, angle, img, landscape = false) {
+            ctx.save(); ctx.translate(x, y);
+            if (landscape) ctx.rotate(-90 * Math.PI / 180);
+            if (angle === 'angle-tilted') ctx.rotate(-5 * Math.PI / 180);
+            if (angle === 'angle-left') ctx.transform(1, 0, 0.1, 1, 0, 0);
+            if (angle === 'angle-right') ctx.transform(1, 0, -0.1, 1, 0, 0);
+            ctx.fillStyle = "#111"; roundRect(ctx, -w / 2, -h / 2, w, h, 60, true, true);
+            ctx.strokeStyle = "#444"; ctx.lineWidth = 12; ctx.stroke();
+            if (img) {
+                ctx.save(); ctx.beginPath(); roundRect(ctx, -w / 2 + 15, -h / 2 + 15, w - 30, h - 30, 45, false, false); ctx.clip();
+                const scale = Math.max((w - 30) / img.width, (h - 30) / img.height);
+                ctx.drawImage(img, -(img.width * scale) / 2, -(img.height * scale) / 2, img.width * scale, img.height * scale);
+                ctx.restore();
+            }
+            ctx.restore();
+        }
+
+        function wrapText(ctx, text, x, y, maxW, lineH) {
+            const words = text.split(' '); let line = '';
+            for (let i = 0; i < words.length; i++) {
+                if (ctx.measureText(line + words[i]).width > maxW) { ctx.fillText(line.trim(), x, y); line = words[i] + ' '; y += lineH; }
+                else { line += words[i] + ' '; }
+            }
+            ctx.fillText(line.trim(), x, y);
+        }
+
+        function roundRect(ctx, x, y, w, h, r, f, s) {
+            ctx.beginPath(); ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h); ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r); ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath(); if (f) ctx.fill(); if (s) ctx.stroke();
+        }
+    </script>
+</body>
+
+</html>

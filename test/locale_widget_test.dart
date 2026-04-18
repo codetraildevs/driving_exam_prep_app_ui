@@ -1,7 +1,7 @@
-import 'package:driveprep_rwanda/l10n/generated/app_localizations.dart';
-import 'package:driveprep_rwanda/shared/locale/fallback_localizations.dart';
-import 'package:driveprep_rwanda/shared/locale/language_selector_page.dart';
-import 'package:driveprep_rwanda/shared/locale/locale_provider.dart';
+import 'package:Rwanda Traffic Rule_rwanda/l10n/generated/app_localizations.dart';
+import 'package:Rwanda Traffic Rule_rwanda/shared/locale/fallback_localizations.dart';
+import 'package:Rwanda Traffic Rule_rwanda/shared/locale/language_selector_page.dart';
+import 'package:Rwanda Traffic Rule_rwanda/shared/locale/locale_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';

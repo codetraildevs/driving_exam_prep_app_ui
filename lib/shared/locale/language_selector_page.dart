@@ -71,122 +71,173 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,
       ),
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        body: Column(
-        children: [
-          // Curved gradient header
-          ClipPath(
-            clipper: _CurvedHeaderClipper(),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top + 32,
-                bottom: 40,
-              ),
-              decoration: BoxDecoration(
-                gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
-              ),
-              child: Column(
-                children: [
-                  const Icon(Icons.language, size: 40, color: Colors.white),
-                  const SizedBox(height: 10),
-                  Text(
-                    AppLocalizations.of(context).languageSelectTitle,
-                    style: AppTextStyles.heading3.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+      child: Localizations.override(
+        context: context,
+        locale: Locale(_selectedCode),
+        child: Builder(builder: (context) {
+          final l10n = AppLocalizations.of(context);
+          return Scaffold(
+            extendBodyBehindAppBar: true,
+            body: Column(
+              children: [
+                // Curved gradient header
+                ClipPath(
+                  clipper: _CurvedHeaderClipper(),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top + 32,
+                      bottom: 40,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    AppLocalizations.of(context).languageSelectDescription,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: Colors.white.withOpacity(0.85),
+                    decoration: BoxDecoration(
+                      gradient: AppColors.primaryGradientFor(
+                          Theme.of(context).brightness),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Body content
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: _useDeviceLanguage,
-                      icon: const Icon(Icons.phone_iphone_outlined),
-                      label: Text(AppLocalizations.of(context).languageSelectDeviceLanguage),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.primary,
-                        side: BorderSide(color: AppColors.primary.withValues(alpha: 0.18)),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                    child: Column(
+                      children: [
+                        const Icon(Icons.language,
+                            size: 40, color: Colors.white),
+                        const SizedBox(height: 10),
+                        Text(
+                          l10n.languageSelectTitle,
+                          style: AppTextStyles.heading3.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
+                        const SizedBox(height: 4),
+                        Text(
+                          l10n.languageSelectDescription,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: Colors.white.withOpacity(0.85),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Tooltip(
-                    message: AppLocalizations.of(context).languageSelectHelpTooltip,
-                    child: IconButton(
-                      onPressed: () => _showQuickHelp(context),
-                      icon: const Icon(Icons.help_outline),
-                      color: AppColors.neutral600,
-                    ),
-                  )
-                ],
-              ),
-
-              const SizedBox(height: 18),
-
-              // Language options: responsive layout (grid on wide, list on narrow)
-              Expanded(
-                child: isWide ? _buildGridOptions() : _buildListOptions(),
-              ),
-
-              // CTA area
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildConfirmButton(context),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 8),
-              TextButton(
-                onPressed: () {
-                  // Allow user to skip for now; still navigate to landing but don't persist a selection.
-                  context.go('/landing');
-                },
-                child: Text(
-                  AppLocalizations.of(context).languageSelectMaybeLater,
-                  style: AppTextStyles.bodyMedium
-                      .copyWith(color: AppColors.neutral600),
                 ),
-              ),
-                ],
-              ),
+
+                // Body content
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                onPressed: _useDeviceLanguage,
+                                icon: const Icon(Icons.phone_iphone_outlined),
+                                label: Text(l10n.languageSelectDeviceLanguage),
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: AppColors.primary,
+                                  side: BorderSide(
+                                      color: AppColors.primary
+                                          .withValues(alpha: 0.18)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Tooltip(
+                              message: l10n.languageSelectHelpTooltip,
+                              child: IconButton(
+                                onPressed: () => _showQuickHelp(context),
+                                icon: const Icon(Icons.help_outline),
+                                color: AppColors.neutral600,
+                              ),
+                            )
+                          ],
+                        ),
+
+                        const SizedBox(height: 18),
+
+                        // Language options: responsive layout (grid on wide, list on narrow)
+                        Expanded(
+                          child:
+                              isWide ? _buildGridOptions() : _buildListOptions(),
+                        ),
+
+                        // CTA area
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildConfirmButton(context, l10n),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 8),
+                        TextButton(
+                          onPressed: () {
+                            // Allow user to skip for now; still navigate to landing but don't persist a selection.
+                            context.go('/landing');
+                          },
+                          child: Text(
+                            l10n.languageSelectMaybeLater,
+                            style: AppTextStyles.bodyMedium
+                                .copyWith(color: AppColors.neutral600),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+          );
+        }),
       ),
-      )
     );
   }
 
-  
+  Widget _buildConfirmButton(BuildContext context, AppLocalizations l10n) {
+    return Semantics(
+      button: true,
+      label: 'Confirm language',
+      child: ElevatedButton(
+        onPressed: _onConfirm,
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          elevation: 6,
+          // Gradient via Material's elevation + primary color; emulate gradient with Container
+          backgroundColor: AppColors.primary,
+        ),
+        child: Ink(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppColors.primary,
+                AppColors.primary.withValues(alpha: 0.1)
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Container(
+            height: 48,
+            alignment: Alignment.center,
+            child: Text(
+              l10n.authContinue,
+              style: AppTextStyles.buttonLarge
+                  .copyWith(color: AppColors.textInverse),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildListOptions() {
     return ListView(
@@ -237,53 +288,6 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
     );
   }
 
-  Widget _buildConfirmButton(BuildContext context) {
-    return Semantics(
-      button: true,
-      label: 'Confirm language',
-      child: ElevatedButton(
-        onPressed: _onConfirm,
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-          elevation: 6,
-          // Gradient via Material's elevation + primary color; emulate gradient with Container
-          backgroundColor: AppColors.primary,
-        ),
-        child: Ink(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [AppColors.primary, AppColors.primary.withValues(alpha: 0.1)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Container(
-            height: 48,
-            alignment: Alignment.center,
-            child: Text(
-              _confirmLabel,
-              style: AppTextStyles.buttonLarge.copyWith(color: AppColors.textInverse),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  String get _confirmLabel {
-    switch (_selectedCode) {
-      case 'fr':
-        return 'Continuer';
-      case 'rw':
-        return 'Komeza';
-      default:
-        return 'Continue';
-    }
-  }
-
   Future<void> _onConfirm() async {
     final provider = context.read<LocaleProvider>();
     await provider.setLocale(Locale(_selectedCode));
@@ -303,6 +307,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
   }
 
   void _showQuickHelp(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -314,12 +319,12 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(AppLocalizations.of(context).languageSelectHelpTitle, style: AppTextStyles.heading3),
+              Text(l10n.languageSelectHelpTitle, style: AppTextStyles.heading3),
               const SizedBox(height: 8),
               Text(
-                AppLocalizations.of(context).languageSelectHelpContent,
-                style:
-                    AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                l10n.languageSelectHelpContent,
+                style: AppTextStyles.bodySmall
+                    .copyWith(color: AppColors.textSecondary),
               ),
               const SizedBox(height: 12),
               ElevatedButton(
@@ -329,7 +334,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
                 ),
-                child: Text(AppLocalizations.of(context).commonGotIt),
+                child: Text(l10n.commonGotIt),
               ),
             ],
           ),

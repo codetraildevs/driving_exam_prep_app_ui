@@ -1,4 +1,4 @@
-# Privacy Policy — DrivePrep Rwanda
+# Privacy Policy — Rwanda Traffic Rule
 
 **Last updated:** March 2026
 
@@ -6,9 +6,9 @@
 
 ## 1. Introduction
 
-DrivePrep Rwanda ("we", "us", "our") is committed to protecting your personal data and respecting your privacy. This Privacy Policy explains what data we collect, how we use it, and your rights regarding that data.
+Rwanda Traffic Rule ("we", "us", "our") is committed to protecting your personal data and respecting your privacy. This Privacy Policy explains what data we collect, how we use it, and your rights regarding that data.
 
-This policy applies to the **DrivePrep Rwanda** mobile application (the "App"), available on Android.
+This policy applies to the **Rwanda Traffic Rule** mobile application (the "App"), available on Android.
 
 ---
 
@@ -106,9 +106,9 @@ We may update this Privacy Policy from time to time. The "Last updated" date at 
 
 If you have questions or concerns about this Privacy Policy:
 
-- **Email:** info@driveprep.rw
+- **Email:** info@Rwanda Traffic Rule.rw
 - **Phone/WhatsApp:** +250 788 659 575
 
 ---
 
-*DrivePrep Rwanda is an independent educational application. It is NOT affiliated with, endorsed by, or connected to any government authority, examination body, or driving school in Rwanda.*
+*Rwanda Traffic Rule is an independent educational application. It is NOT affiliated with, endorsed by, or connected to any government authority, examination body, or driving school in Rwanda.*

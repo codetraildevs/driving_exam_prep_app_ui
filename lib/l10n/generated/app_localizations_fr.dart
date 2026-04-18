@@ -9,7 +9,7 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get appTitle => 'DrivePrep Rwanda';
+  String get appTitle => 'Rwanda Traffic Rule';
 
   @override
   String get languageSelectTitle => 'Choisissez votre langue';
@@ -113,7 +113,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsAbout => 'À propos';
 
   @override
-  String get settingsAboutApp => 'À propos de DrivePrep Rwanda';
+  String get settingsAboutApp => 'À propos de Rwanda Traffic Rule';
 
   @override
   String settingsVersion(String version) {
@@ -227,7 +227,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeServices => 'Services';
 
   @override
-  String get authAppName => 'DRIVEPREP RWANDA';
+  String get authAppName => 'Rwanda Traffic Rule';
 
   @override
   String get authSubtitle => 'Préparez le permis de conduire provisoire';
@@ -262,7 +262,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get loginSignUp => 'S\'inscrire';
 
   @override
-  String get authSecureTag => 'Sécurisé • Rapide • DrivePrep Rwanda';
+  String get authSecureTag => 'Sécurisé • Rapide • Pass';
 
   @override
   String get loginPhoneRequired => 'Veuillez entrer votre numéro de téléphone';
@@ -606,6 +606,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get subscriptionSubtitle => 'Débloquer tous les examens pratiques';
+
+  @override
+  String get subscriptionTrafficRulesMsg =>
+      'Si vous souhaitez apprendre le code de la route, veuillez nous appeler ou nous envoyer un message sur WhatsApp pour vous aider à préparer l\'examen officiel du permis de conduire provisoire.';
 
   @override
   String get subscriptionCurrentPlan => 'Votre forfait actuel';
@@ -1293,11 +1297,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get aboutTitle => 'À propos';
 
   @override
-  String get aboutAppName => 'DrivePrep Rwanda';
+  String get aboutAppName => 'Rwanda Traffic Rule';
 
   @override
   String get aboutDescription =>
-      'DrivePrep Rwanda est votre compagnon pour apprendre le code de la route rwandais, les panneaux routiers et pratiquer les questions théoriques pour préparer l\'examen du permis provisoire. Cette application éducative indépendante n\'est affiliée à aucune autorité gouvernementale.';
+      'Rwanda Traffic Rule est votre compagnon pour apprendre le code de la route rwandais, les panneaux routiers et pratiquer les questions théoriques pour préparer l\'examen du permis provisoire. Cette application éducative indépendante n\'est affiliée à aucune autorité gouvernementale.';
 
   @override
   String get aboutFeatures => 'Fonctionnalités clés';
@@ -1319,21 +1323,21 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get aboutContactInfo =>
-      'Tél/WhatsApp : 0788659575 / 0728877442\nEmail : info@driveprep.rw';
+      'Tél/WhatsApp : 0788659575 / 0728877442\nEmail : info@Rwanda Traffic Rule.rw';
 
   @override
   String get aboutCopyright => 'Droits d\'auteur';
 
   @override
   String get aboutCopyrightText =>
-      '© 2026 DrivePrep Rwanda. Tous droits réservés.';
+      '© 2026 Rwanda Traffic Rule. Tous droits réservés.';
 
   @override
   String get privacyLastUpdated => 'Dernière mise à jour : mars 2026';
 
   @override
   String get privacyIntro =>
-      'DrivePrep Rwanda s\'engage à protéger votre vie privée. Cette politique explique comment nous collectons, utilisons et protégeons vos informations personnelles. Nous sommes un service éducatif indépendant non affilié à aucune autorité gouvernementale.';
+      'Rwanda Traffic Rule s\'engage à protéger votre vie privée. Cette politique explique comment nous collectons, utilisons et protégeons vos informations personnelles. Nous sommes un service éducatif indépendant non affilié à aucune autorité gouvernementale.';
 
   @override
   String get privacyDataCollection => 'Collecte des données';
@@ -1375,7 +1379,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get termsIntro =>
-      'En utilisant DrivePrep Rwanda, vous acceptez les conditions suivantes. DrivePrep Rwanda est une application éducative indépendante conçue pour vous aider à préparer l\'examen théorique. Nous ne sommes affiliés à aucune autorité gouvernementale.';
+      'En utilisant Rwanda Traffic Rule, vous acceptez les conditions suivantes. Rwanda Traffic Rule est une application éducative indépendante conçue pour vous aider à préparer l\'examen théorique. Nous ne sommes affiliés à aucune autorité gouvernementale.';
 
   @override
   String get termsAcceptance => 'Acceptation des conditions';
@@ -1396,28 +1400,28 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get termsContentBody =>
-      'Tout le contenu est à des fins éducatives et de pratique uniquement. Il ne représente pas l\'examen officiel du gouvernement. Nous ne garantissons pas les résultats d\'examen. DrivePrep Rwanda n\'est affilié à aucune autorité gouvernementale.';
+      'Tout le contenu est à des fins éducatives et de pratique uniquement. Il ne représente pas l\'examen officiel du gouvernement. Nous ne garantissons pas les résultats d\'examen. Rwanda Traffic Rule n\'est affilié à aucune autorité gouvernementale.';
 
   @override
-  String get termsPayment => 'Paiement et abonnement';
+  String get termsPayment => 'Demander à débloquer les examens';
 
   @override
   String get termsPaymentBody =>
-      'L\'accès premium nécessite un paiement via MoMo Pay ou Mobile Money. Les abonnements ne sont pas remboursables une fois activés. La durée commence à la date d\'activation.';
+      'Pour débloquer les examens, veuillez nous contacter au 0788659575 ou 0728877442.';
 
   @override
-  String get termsTermination => 'Résiliation du compte';
+  String get termsTermination => 'Suppression du compte';
 
   @override
   String get termsTerminationBody =>
-      'Nous nous réservons le droit de suspendre les comptes qui violent ces conditions. Vous pouvez supprimer votre compte à tout moment depuis les paramètres.';
+      'Vous pouvez supprimer votre compte à tout moment depuis les paramètres.';
 
   @override
   String get aboutDisclaimer => 'Avertissement';
 
   @override
   String get aboutDisclaimerText =>
-      'DrivePrep Rwanda est une application éducative indépendante conçue pour aider les utilisateurs à apprendre le code de la route et à se préparer à l\'examen théorique. Cette application n\'est pas affiliée, approuvée ou liée à une autorité gouvernementale ou un organisme d\'examen officiel. Tout le contenu est à des fins de pratique et d\'apprentissage uniquement.';
+      'Rwanda Traffic Rule est une application éducative indépendante conçue pour aider les utilisateurs à apprendre le code de la route et à se préparer à l\'examen théorique. Cette application n\'est pas affiliée, approuvée ou liée à une autorité gouvernementale ou un organisme d\'examen officiel. Tout le contenu est à des fins de pratique et d\'apprentissage uniquement.';
 
   @override
   String get profileCertificatesTitle => 'Certificats';
@@ -1466,7 +1470,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get consentBody =>
-      'DrivePrep Rwanda collecte et traite les données suivantes pour vous offrir la meilleure expérience d\'apprentissage :\n\n• Numéro de téléphone et nom — pour la création de compte et l\'authentification\n• Identifiant de l\'appareil — une empreinte numérique chiffrée pour sécuriser votre compte\n• Résultats d\'examens et progression — pour suivre votre parcours d\'apprentissage\n• Cache hors ligne — pour que l\'application fonctionne sans internet\n\nVos données sont stockées de manière sécurisée et ne sont jamais vendues à des tiers. Vous pouvez supprimer votre compte et toutes les données associées à tout moment depuis votre profil.';
+      'Rwanda Traffic Rule collecte et traite les données suivantes pour vous offrir la meilleure expérience d\'apprentissage :\n\n• Numéro de téléphone et nom — pour la création de compte et l\'authentification\n• Identifiant de l\'appareil — une empreinte numérique chiffrée pour sécuriser votre compte\n• Résultats d\'examens et progression — pour suivre votre parcours d\'apprentissage\n• Cache hors ligne — pour que l\'application fonctionne sans internet\n\nVos données sont stockées de manière sécurisée et ne sont jamais vendues à des tiers. Vous pouvez supprimer votre compte et toutes les données associées à tout moment depuis votre profil.';
 
   @override
   String get consentAccept => 'Je comprends et j\'accepte';
@@ -1522,4 +1526,35 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get exitAppNo => 'Rester';
+
+  @override
+  String get consentItemPhone => 'Numéro de téléphone et nom';
+
+  @override
+  String get consentItemPhoneDetail => 'Création de compte et authentification';
+
+  @override
+  String get consentItemDevice => 'Identifiant de l\'appareil';
+
+  @override
+  String get consentItemDeviceDetail =>
+      'Empreinte numérique hachée pour sécuriser votre compte';
+
+  @override
+  String get consentItemProgress => 'Résultats d\'examens et progression';
+
+  @override
+  String get consentItemProgressDetail =>
+      'Suivez votre parcours d\'apprentissage';
+
+  @override
+  String get consentItemCache => 'Cache hors ligne';
+
+  @override
+  String get consentItemCacheDetail =>
+      'L\'application fonctionne sans internet';
+
+  @override
+  String get consentSecurityNote =>
+      'Vos données sont stockées de manière sécurisée et ne sont jamais vendues à des tiers.';
 }

@@ -65,6 +65,24 @@ class _ProgressPageState extends State<ProgressPage>
 
       if (result.isSuccess) {
         final results = result.dataList;
+        // Sort by date DESC explicitly (Latest first)
+        results.sort((a, b) {
+          final daStr = (a['createdAt'] ?? a['completedAt'] ?? '').toString();
+          final dbStr = (b['createdAt'] ?? b['completedAt'] ?? '').toString();
+          
+          // Try parsing ISO first, then fallback to MySQL format (replacing space with T)
+          DateTime? da = DateTime.tryParse(daStr);
+          if (da == null && daStr.length >= 10) {
+            da = DateTime.tryParse(daStr.replaceFirst(' ', 'T'));
+          }
+          
+          DateTime? db = DateTime.tryParse(dbStr);
+          if (db == null && dbStr.length >= 10) {
+            db = DateTime.tryParse(dbStr.replaceFirst(' ', 'T'));
+          }
+          
+          return (db ?? DateTime(1970)).compareTo(da ?? DateTime(1970));
+        });
         await cache.save(cacheKey, results);
         setState(() => _results = results);
         _animCtrl.forward(from: 0);
@@ -287,6 +305,7 @@ class _SummaryGrid extends StatelessWidget {
                 label: l10n.progressBestScore,
                 color: AppColors.primary,
                 anim: anim,
+                delay: 0.2,
               ),
             ),
             const SizedBox(width: 12),
@@ -297,6 +316,7 @@ class _SummaryGrid extends StatelessWidget {
                 label: l10n.progressAverageScore,
                 color: AppColors.accent,
                 anim: anim,
+                delay: 0.3,
               ),
             ),
           ],
@@ -372,6 +392,7 @@ class _StatCard extends StatelessWidget {
   final String label;
   final Color color;
   final Animation<double> anim;
+  final double delay;
 
   const _StatCard({
     required this.icon,
@@ -379,64 +400,71 @@ class _StatCard extends StatelessWidget {
     required this.label,
     required this.color,
     required this.anim,
+    this.delay = 0,
   });
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: anim,
-      builder: (ctx, child) => Transform.scale(
-        scale: 0.85 + 0.15 * anim.value,
-        child: child,
-      ),
+      builder: (ctx, child) {
+        final start = delay;
+        final end = (delay + 0.5).clamp(0.0, 1.0);
+        final curvedValue = CurvedAnimation(
+          parent: anim,
+          curve: Interval(start, end, curve: Curves.easeOutBack),
+        ).value;
+        return Transform.scale(
+          scale: 0.8 + 0.2 * curvedValue,
+          child: Opacity(opacity: curvedValue.clamp(0.0, 1.0), child: child),
+        );
+      },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              color.withValues(alpha: 0.12),
-              color.withValues(alpha: 0.04),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          border: Border.all(color: color.withValues(alpha: 0.2)),
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: color.withValues(alpha: 0.1)),
           boxShadow: [
             BoxShadow(
-              color: color.withValues(alpha: 0.08),
-              blurRadius: 12,
+              color: color.withValues(alpha: 0.04),
+              blurRadius: 10,
               offset: const Offset(0, 4),
             ),
           ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.15),
+                color: color.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: color, size: 20),
+              child: Icon(icon, color: color, size: 18),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Text(
               value,
               style: TextStyle(
                 color: color,
-                fontWeight: FontWeight.bold,
-                fontSize: 26,
+                fontWeight: FontWeight.w900,
+                fontSize: 22,
+                letterSpacing: -0.5,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               label,
               style: AppTextStyles.labelSmall.copyWith(
                 color: AppColors.textSecondary,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
+                fontSize: 10,
               ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
@@ -483,26 +511,27 @@ class _ExamResultCard extends StatelessWidget {
     final color = passed ? AppColors.success : AppColors.warning;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.1)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Row(
         children: [
           Container(
-            width: 52,
-            height: 52,
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
+              color: color.withValues(alpha: 0.08),
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -510,42 +539,51 @@ class _ExamResultCard extends StatelessWidget {
                 '$score%',
                 style: TextStyle(
                   color: color,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 12,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  passed ? l10n.progressPassed : l10n.quizFailed,
-                  style: AppTextStyles.labelLarge.copyWith(color: color),
+                Row(
+                  children: [
+                    Text(
+                      passed ? l10n.progressPassed : l10n.quizFailed,
+                      style: AppTextStyles.labelMedium.copyWith(
+                        color: color,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    if (date.isNotEmpty)
+                      Text(
+                        '• $date',
+                        style: AppTextStyles.labelSmall
+                            .copyWith(color: AppColors.textTertiary, fontSize: 9),
+                      ),
+                  ],
                 ),
                 if (total > 0)
                   Text(
                     '$correct/$total ${l10n.examCorrect.toLowerCase()}',
                     style: AppTextStyles.bodySmall
-                        .copyWith(color: AppColors.textSecondary),
-                  ),
-                if (date.isNotEmpty)
-                  Text(
-                    date,
-                    style: AppTextStyles.labelSmall
-                        .copyWith(color: AppColors.textTertiary),
+                        .copyWith(color: AppColors.textSecondary, fontSize: 10),
                   ),
               ],
             ),
           ),
           Icon(
             passed
-                ? Icons.check_circle_rounded
-                : Icons.info_rounded,
-            color: color,
-            size: 22,
+                ? Icons.check_circle_outline_rounded
+                : Icons.error_outline_rounded,
+            color: color.withValues(alpha: 0.4),
+            size: 18,
           ),
         ],
       ),

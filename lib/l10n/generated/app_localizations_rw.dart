@@ -9,7 +9,7 @@ class AppLocalizationsRw extends AppLocalizations {
   AppLocalizationsRw([String locale = 'rw']) : super(locale);
 
   @override
-  String get appTitle => 'DrivePrep Rwanda';
+  String get appTitle => 'Rwanda Traffic Rule';
 
   @override
   String get languageSelectTitle => 'Hitamo ururimi rwawe';
@@ -115,7 +115,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get settingsAbout => 'Ibyerekeye';
 
   @override
-  String get settingsAboutApp => 'Ibyerekeye DrivePrep Rwanda';
+  String get settingsAboutApp => 'Ibyerekeye Rwanda Traffic Rule';
 
   @override
   String settingsVersion(String version) {
@@ -228,7 +228,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get homeServices => 'Serivisi';
 
   @override
-  String get authAppName => 'DRIVEPREP RWANDA';
+  String get authAppName => 'Rwanda Traffic Rule';
 
   @override
   String get authSubtitle =>
@@ -239,16 +239,16 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get loginSubtitle =>
-      'Andika numero ya telefoni yawe yanditswe kugira ngo ukomeze.';
+      'Andika nimero (wakoresheje wiyandikisha) yawe ya telefoni kugira ngo ukomeze.';
 
   @override
   String get authNeedHelp => 'Ukeneye ubufasha?';
 
   @override
-  String get loginHelpText => 'Ku bibazo bya konti yawe, wahamagara:';
+  String get loginHelpText => 'Ku bibazo bya konti yawe, hamagara:';
 
   @override
-  String get authPhoneNumber => 'Andika nimero ya telefone yawe';
+  String get authPhoneNumber => 'Andika nimero yawe ya telefoni';
 
   @override
   String get authPhoneHint => '07** *** ***';
@@ -266,22 +266,22 @@ class AppLocalizationsRw extends AppLocalizations {
   String get authSecureTag => 'Iga • Witegure • Utsinde';
 
   @override
-  String get loginPhoneRequired => 'Nyamuneka andika numero ya telefoni yawe';
+  String get loginPhoneRequired => 'Nyamuneka andika numero yawe ya telefoni';
 
   @override
   String get loginInvalidPhone =>
-      'Andika numero ya telefone ikwiye (urugero: 07... cyangwa +250 7...)';
+      'Andika numero yawe ya telefoni ikwiye (urugero: 07... cyangwa +250 7...)';
 
   @override
   String get registerTitle => 'Fungura konti yawe';
 
   @override
   String get registerSubtitle =>
-      'Iyandikishe ukoresheje izina ryawe ryuzuye na numero ya telefoni kugira ngo utangire kwiga.';
+      'Iyandikishe ukoresheje amazina yawe yombi na nimero yawe ya telefoni kugira ngo utangire kwiga.';
 
   @override
   String get registerHelpText =>
-      'Ku bibazo byo kwiyandikisha cyangwa ibibazo, wahamagara:';
+      'Ku bibazo byo kwiyandikisha cyangwa ibindi bibazo, wahamagara:';
 
   @override
   String get authFullName => 'Andika Amazina yawe';
@@ -465,7 +465,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get progressBestScore => 'Amanota meza';
 
   @override
-  String get progressAverageScore => 'Amanota y\'umumaro';
+  String get progressAverageScore => 'Amanota muri muwayene';
 
   @override
   String get progressSignsLearned => 'Ibimenyetso byigishijwe';
@@ -605,6 +605,10 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get subscriptionSubtitle => 'saba gufungurirwa imyitozo yose';
+
+  @override
+  String get subscriptionTrafficRulesMsg =>
+      'Niba ushaka kwiga amategeko y\'umuhanda, wahamagara cyangwa ukatwandikira kuri WhatsApp tukagufasha kwitegura neza ikizamini cy\'uruhushya rw\'agateganyo rwo gutwara ibinyabiziga.';
 
   @override
   String get subscriptionCurrentPlan => 'Gahunda yawe ubu';
@@ -1029,7 +1033,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get profileDeleteInstructions =>
-      'Mbere yo gusiba konti yawe:\n• Ibisubizo byawe byose bizasibwa burundu\n• Abonement yawe izakurwa\n• Iyi ntambwe ntigira ingaruka\n• Uzakenera kwiyandikisha nanone kugirango ukoreshe porogaramu';
+      'Mbere yo gusiba konti yawe:\n• Ibisubizo byawe byose bizasibwa burundu\n• Abonement yawe izasibwa\n• Uzakenera kwiyandikisha nanone kugirango ukoreshe porogaramu';
 
   @override
   String get progressExamsTaken => 'Ibizamini wakozwe';
@@ -1041,10 +1045,11 @@ class AppLocalizationsRw extends AppLocalizations {
   String get progressFailedCount => 'Ibizamini Watsinzwe';
 
   @override
-  String get progressPassRate => 'Ijanisha ry\'imenyekana';
+  String get progressPassRate => 'Ijanisha ryo gutsinda';
 
   @override
-  String get progressNoExams => 'Nta bizamini wakozwe. Tangira gukora ibibazo!';
+  String get progressNoExams =>
+      'Nta bizamini wakozwe. Tangira gukora ibizamini!';
 
   @override
   String get certificateReadyTitle => 'Witeguye ikizamini cy\'ukuri!';
@@ -1088,7 +1093,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get adminFilterRole => 'Uruhare';
 
   @override
-  String get adminBlockUser => 'Ziba Umukoreshwa';
+  String get adminBlockUser => 'guhagarika umukoresha';
 
   @override
   String get adminUnblockUser => 'Fungura Umukoreshwa';
@@ -1098,7 +1103,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String adminBlockUserConfirm(String name) {
-    return 'Ziba $name? Bazatakaza uburenganzira bwo kwinjira.';
+    return 'Urashaka guhagarika $name? arahita atakaza uburenganzira bwo kwinjira.';
   }
 
   @override
@@ -1117,23 +1122,24 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get adminMustBlockFirst =>
-      'Ugomba kubanza guziba umukoreshwa mbere yo kumusiба.';
+      'Ugomba kubanza guhagarika umukoresha mbere yo kumusiba.';
 
   @override
-  String get adminBlockAccess => 'Ziba Uburenganzira';
+  String get adminBlockAccess => 'Guhagarika Uburenganzira';
 
   @override
-  String get adminDeleteAccess => 'Siba Uburenganzira';
+  String get adminDeleteAccess => 'Gusiba Uburenganzira';
 
   @override
   String get adminBlockAccessConfirm =>
-      'Ziba kode y\'uburenganzira? Umukoreshwa azatakaza uburenganzira vuba.';
+      'Guhagarika kode y\'uburenganzira? Umukoreshwa azatakaza uburenganzira bwo gukoresha porogaramu.';
 
   @override
-  String get adminDeleteAccessConfirm => 'Siba kode y\'uburenganzira burundu?';
+  String get adminDeleteAccessConfirm =>
+      'Gusiba kode y\'uburenganzira burundu?';
 
   @override
-  String get adminAccessBlocked => 'Kode y\'uburenganzira yazibwe';
+  String get adminAccessBlocked => 'Kode y\'uburenganzira yahagaritswe';
 
   @override
   String get adminAccessDeleted => 'Kode y\'uburenganzira yasibwe';
@@ -1147,20 +1153,20 @@ class AppLocalizationsRw extends AppLocalizations {
   String get adminLearningLanguage => 'Ururimi rwigwa';
 
   @override
-  String get adminIsBlocked => 'Yazibwe';
+  String get adminIsBlocked => 'Yahagaritswe';
 
   @override
-  String get adminIsActive => 'Birakora';
+  String get adminIsActive => 'Irakora';
 
   @override
-  String get generalCopied => 'Byakopeshejwe!';
+  String get generalCopied => 'Byandukuwe!';
 
   @override
   String get adminRetry => 'Ongera ugerageze';
 
   @override
   String get languageSelectDescription =>
-      'Ushobora guhindura ibi nyuma mu igenamiterere — kubona amakuru y\'umuhanda n\'inzira mu rurimi rwawe.';
+      'Ushobora guhindura ururimi nyuma mu igenamiterere.';
 
   @override
   String get languageSelectDeviceLanguage => 'Koresha ururimi rw\'igikoresho';
@@ -1176,7 +1182,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get languageSelectHelpContent =>
-      'Guhitamo ururimi bituma amakuru, amakarita, n\'amajwi bigaragazwa mu rurimi rwawe. Ushobora guhindura ibi nyuma mu igenamiterere.';
+      'Guhitamo ururimi bituma amakuru, amakarita, n\'amajwi bigaragazwa mu rurimi rwawe. Ushobora guhindura ururimi nyuma mu igenamiterere.';
 
   @override
   String get commonGotIt => 'Nabyumvise';
@@ -1185,7 +1191,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get languageSelectDialogTitle => 'Hitamo ururimi';
 
   @override
-  String get examNotFound => 'Ikizamini ntigibonetse';
+  String get examNotFound => 'Ikizamini ntikibonetse';
 
   @override
   String errorWithDetail(String detail) {
@@ -1289,17 +1295,17 @@ class AppLocalizationsRw extends AppLocalizations {
   String get aboutTitle => 'Ibyerekeye';
 
   @override
-  String get aboutAppName => 'DrivePrep Rwanda';
+  String get aboutAppName => 'Rwanda Traffic Rule';
 
   @override
   String get aboutDescription =>
-      'DrivePrep Rwanda ni inshuti yawe yo kwiga amategeko y\'umuhanda mu Rwanda, ibimenyetso by\'umuhanda, no kwitoreza ku ibibazo by\'amategeko kugira ngo witegure ikizamini cy\'uruhushya rwo gutwara rwagateganyo. Iyi ni app y\'uburezi yigenga kandi ntabwo ifitanye isano n\'ubutegetsi.';
+      'Rwanda Traffic Rule ni inshuti yawe yo kwiga amategeko y\'umuhanda mu Rwanda, ibimenyetso by\'umuhanda, no kwitoreza ku ibibazo by\'amategeko kugira ngo witegure ikizamini cy\'uruhushya rwo gutwara rwagateganyo. Iyi ni porogaramu y\'uburezi yigenga kandi ntabwo ifitanye isano n\'ubutegetsi cyangwa ikigo cy\'ibizamini.';
 
   @override
   String get aboutFeatures => 'Ibintu by\'ingenzi';
 
   @override
-  String get aboutFeaturePractice => 'Ibizamini by\'imyitozo';
+  String get aboutFeaturePractice => 'Ibizamini byo kwitoreza';
 
   @override
   String get aboutFeatureProgress => 'Kurikirana iterambere';
@@ -1314,50 +1320,49 @@ class AppLocalizationsRw extends AppLocalizations {
   String get aboutContact => 'Twandikire';
 
   @override
-  String get aboutContactInfo =>
-      'Tel/WhatsApp: 0788659575 / 0728877442\nEmail: info@driveprep.rw';
+  String get aboutContactInfo => 'Tel/WhatsApp: 0788659575 / 0728877442';
 
   @override
-  String get aboutCopyright => 'Uburenganzira bw\'umwanditsi';
+  String get aboutCopyright => 'Uburenganzira bw\'uwakoze porogaramu';
 
   @override
   String get aboutCopyrightText =>
-      '© 2026 DrivePrep Rwanda. Uburenganzira bwose burarinzwe.';
+      '© 2026 Rwanda Traffic Rule. Uburenganzira butangwa n\'uwakoze porogaramu  .';
 
   @override
   String get privacyLastUpdated => 'Igihe gishya: Werurwe 2026';
 
   @override
   String get privacyIntro =>
-      'DrivePrep Rwanda yitangiye kurinda ibanga ryawe. Aya mabwiriza asobanura uko dukusanya, dukoresha, kandi turinda amakuru yawe bwite. Turi serivisi y\'uburezi yigenga ntabwo dufitanye isano n\'ubutegetsi.';
+      'Rwanda Traffic Rule yitangiye kurinda ibanga ryawe. Aya mabwiriza asobanura uko dukusanya, dukoresha, kandi turinda amakuru yawe bwite. Turi serivisi y\'uburezi yigenga ntabwo dufitanye isano n\'ubutegetsi.';
 
   @override
   String get privacyDataCollection => 'Gukusanya amakuru';
 
   @override
   String get privacyDataCollectionBody =>
-      'Dukusanya nimero ya telefoni n\'izina ryawe ryuzuye igihe wiyandikisha. Nanone dukusanya ibisubizo by\'imyitozo n\'amakuru y\'iterambere ryawe. Indangamuntu y\'igikoresho yihariye ikorwa kugira ngo konti yawe irinzwe.';
+      'Dukusanya nimero ya telefoni n\'izina ryawe ryuzuye igihe wiyandikisha. Nanone dukusanya ibisubizo by\'imyitozo n\'amakuru y\'iterambere ryawe. ID y\'igikoresho yihariye ikorwa kugira ngo konti yawe ibe irinzwe.';
 
   @override
   String get privacyDataUsage => 'Uko dukoresha amakuru yawe';
 
   @override
   String get privacyDataUsageBody =>
-      'Amakuru yawe akoreshwa mu gutanga no kunoza serivisi zacu, gukurikirana iterambere ryawe, gucunga abonement yawe, no kugeza amakuru y\'ingenzi.';
+      'Amakuru yawe akoreshwa mu gutanga no kunoza serivisi zacu, gukurikirana iterambere ryawe, gucunga abonement yawe, no kukugezaho amakuru y\'ingenzi.';
 
   @override
   String get privacyDataProtection => 'Kurinda amakuru';
 
   @override
   String get privacyDataProtectionBody =>
-      'Dukoresha ingamba z\'umutekano z\'urwego rwo hejuru harimo kohereza amakuru mu bwiru no kubika mu buryo bwizewe. Amakuru yawe bwite ntabwo asangirwa utabyemeje.';
+      'Dukoresha ingamba z\'umutekano z\'urwego rwo hejuru harimo kohereza amakuru mu bwiru no kubika mu buryo bwizewe. Amakuru yawe bwite ntabwo asangizwa  n\'abandi utabyemeje.';
 
   @override
   String get privacyDataSharing => 'Gusangira amakuru';
 
   @override
   String get privacyDataSharingBody =>
-      'Ntidugurisha cyangwa tugura abantu amakuru yawe bwite. Dushobora gusangira amakuru adafite amazina y\'abantu ku mpamvu z\'imibare gusa.';
+      'Ntitugurisha amakuru yawe bwite kubandi bantu. Dushobora gusangira amakuru adafite amazina y\'abantu ku mpamvu z\'imibare gusa.';
 
   @override
   String get privacyUserRights => 'Uburenganzira bwawe';
@@ -1371,14 +1376,14 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get termsIntro =>
-      'Mu gukoresha DrivePrep Rwanda, wemeye amabwiriza akurikira. DrivePrep Rwanda ni app y\'uburezi yigenga igufasha kwitegura ikizamini cy\'amategeko. Ntabwo dufitanye isano n\'ubutegetsi cyangwa ikigo cy\'ibizamini.';
+      'Mu gukoresha Rwanda Traffic Rule, wemeye amabwiriza akurikira. Rwanda Traffic Rule ni porogaramu y\'uburezi yigenga igufasha kwitegura ikizamini cy\'amategeko. Ntabwo dufitanye isano n\'ubutegetsi cyangwa ikigo cy\'ibizamini.';
 
   @override
   String get termsAcceptance => 'Kwemera amabwiriza';
 
   @override
   String get termsAcceptanceBody =>
-      'Mu gufungura konti no gukoresha iyi porogaramu, wemeye gukurikiza aya mabwiriza. Niba udabyemeye, nyamuneka hagarika gukoresha.';
+      'Mu gufungura konti no gukoresha iyi porogaramu, wemeye gukurikiza aya mabwiriza. Niba udabyemeye, nyamuneka hagarika gukoresha iyi porogaramu.';
 
   @override
   String get termsUserAccount => 'Konti y\'umukoresha';
@@ -1392,28 +1397,28 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get termsContentBody =>
-      'Ibiri mu bizamini byose ni iby\'uburezi n\'imyitozo gusa. Ntabwo bigereranywa n\'ikizamini cy\'ukuri cy\'ubutegetsi. Ntidushobora kwemeza ibisubizo by\'ikizamini. DrivePrep Rwanda ntabwo ifitanye isano n\'ubutegetsi.';
+      'Ibiri mu bizamini byose ni iby\'uburezi n\'imyitozo gusa. Ntabwo bigereranywa n\'ikizamini cy\'ukuri cy\'ubutegetsi. Ntidushobora kwemeza ibisubizo by\'ikizamini. Rwanda Traffic Rule ntabwo ifitanye isano n\'ubutegetsi.';
 
   @override
-  String get termsPayment => 'Kwishyura n\'abonement';
+  String get termsPayment => 'Gusaba gufungurirwa ibizamini';
 
   @override
   String get termsPaymentBody =>
-      'Uburenganzira bwo hejuru busaba kwishyura binyuze muri MoMo Pay cyangwa Mobile Money. Abonement ntizishobora gusubizwa iyo zikerejwe. Igihe gitangira ku itariki yo kwemeza.';
+      'Uburenganzira bwo gukoresha porogaramu uhamagara ubufasha kuri 0788659575 cyangwa 0728877442.';
 
   @override
   String get termsTermination => 'Gufunga konti';
 
   @override
   String get termsTerminationBody =>
-      'Dufite uburenganzira bwo guhagarika konti zica aya mabwiriza. Ushobora gusiba konti yawe igihe icyo ari cyo cyose mu igenamiterere.';
+      'Dufite uburenganzira bwo guhagarika konti zica aya mabwiriza. Ushobora gusiba konti yawe igihe icyo ari cyo cyose unyeze mu igenamiterere.';
 
   @override
   String get aboutDisclaimer => 'Icyitonderwa';
 
   @override
   String get aboutDisclaimerText =>
-      'DrivePrep Rwanda ni app y\'uburezi yigenga igufasha kwiga amategeko y\'umuhanda no kwitegura ikizamini cy\'amategeko. Iyi app ntabwo ifitanye isano, yemejwe, cyangwa ihuzwa n\'ubutegetsi cyangwa ikigo cy\'ibizamini. Ibiri muri iyi app ni iby\'imyitozo n\'uburezi gusa.';
+      'Rwanda Traffic Rule ni porogaramu y\'uburezi yigenga igufasha kwiga amategeko y\'umuhanda no kwitegura ikizamini cy\'amategeko. Iyi porogaramu ntabwo ifitanye isano, yemejwe, cyangwa ihuzwe n\'ubutegetsi cyangwa ikigo cy\'ibizamini. Ibiri muri iyi porogaramu ni iby\'imyitozo n\'uburezi gusa.';
 
   @override
   String get profileCertificatesTitle => 'Impamyabumenyi';
@@ -1458,17 +1463,17 @@ class AppLocalizationsRw extends AppLocalizations {
   String get certificateNotAttempted => 'Ibyo utasubije';
 
   @override
-  String get consentTitle => 'Ubuzima bwite bwawe ni ingenzi';
+  String get consentTitle => 'Umushakashatsi wawe ni ingenzi';
 
   @override
   String get consentBody =>
-      'DrivePrep Rwanda ikusanya kandi ikorana n\'amakuru akurikira kugira ngo iguhe uburambe bwiza bwo kwiga:\n\n• Numero ya telefone n\'izina — kugira ngo ufungure konti kandi wemeze\n• Igenzura ry\'igikoresho — igikoresho cyihariye gifashwe na hashi kugira ngo konti yawe irindwe\n• Ibisubizo by\'ibizamini n\'iterambere — kugira ngo dukurikirane urugendo rwawe rwo kwiga\n• Cache ya offline — kugira ngo app ikore nta interineti\n\nAmakuru yawe abitswe mu buryo bwizewe kandi ntayegurishwa ku bandi. Ushobora gusiba konti yawe n\'amakuru yose ajyanye nayo igihe icyo ari cyo cyose ukoresheje profil yawe.';
+      'Rwanda Traffic Rule ikusanya kandi ikorana n\'amakuru akurikira kugira ngo iguhe uburambe bwiza bwo kwiga:\n\n• Numero ya telefone n\'izina — kugira ngo ufungure konti kandi wemeze\n• Igenzura ry\'igikoresho — igikoresho cyihariye gifashwe na hashi kugira ngo konti yawe irindwe\n• Ibisubizo by\'ibizamini n\'iterambere — kugira ngo dukurikirane urugendo rwawe rwo kwiga\n• Cache ya offline — kugira ngo porogaramu ikore nta interineti\n\nAmakuru yawe abitswe mu buryo bwizewe kandi ntayegurishwa ku bandi. Ushobora gusiba konti yawe n\'amakuru yose ajyanye nayo igihe icyo ari cyo cyose ukoresheje profil yawe.';
 
   @override
-  String get consentAccept => 'Ndabyumva kandi ndabyemera';
+  String get consentAccept => 'Ndabyumva kandi ndabyemeye';
 
   @override
-  String get consentReadPolicy => 'Soma politiki y\'ibanga';
+  String get consentReadPolicy => 'Soma Politiki y\'ubuzima bwite';
 
   @override
   String get registerInvalidName =>
@@ -1515,5 +1520,36 @@ class AppLocalizationsRw extends AppLocalizations {
   String get exitAppYes => 'Sohoka';
 
   @override
-  String get exitAppNo => 'Komeza';
+  String get exitAppNo => 'Guma muri porogaramu';
+
+  @override
+  String get consentItemPhone => 'Nimero ya terefone n\'izina';
+
+  @override
+  String get consentItemPhoneDetail => 'Gufungura konti no kwiyerekana';
+
+  @override
+  String get consentItemDevice => 'Ikiranga gikoresho';
+
+  @override
+  String get consentItemDeviceDetail =>
+      'Ikiranga gikoresho gihishe mu rwego rwo kurinda konti yawe';
+
+  @override
+  String get consentItemProgress => 'Ibyavuye mu bizamini n\'amajyambere';
+
+  @override
+  String get consentItemProgressDetail =>
+      'Gukurikirana urugendo rwawe rwo kwiga';
+
+  @override
+  String get consentItemCache => 'Ububiko bwa \'Offline\'';
+
+  @override
+  String get consentItemCacheDetail =>
+      'Porogaramu ikora nta murongo wa interineti';
+
+  @override
+  String get consentSecurityNote =>
+      'Amakuru yawe abitswe neza kandi ntazigera agurishwa ku bandi.';
 }

@@ -103,7 +103,7 @@ abstract class AppLocalizations {
   /// The title of the application
   ///
   /// In en, this message translates to:
-  /// **'DrivePrep Rwanda'**
+  /// **'Rwanda Traffic Rule'**
   String get appTitle;
 
   /// Title on the first-run language selector screen
@@ -277,7 +277,7 @@ abstract class AppLocalizations {
   /// About app title
   ///
   /// In en, this message translates to:
-  /// **'About DrivePrep Rwanda'**
+  /// **'About Rwanda Traffic Rule'**
   String get settingsAboutApp;
 
   /// App version with interpolation
@@ -487,7 +487,7 @@ abstract class AppLocalizations {
   /// App brand name on auth pages
   ///
   /// In en, this message translates to:
-  /// **'DRIVEPREP RWANDA'**
+  /// **'Rwanda Traffic Rule'**
   String get authAppName;
 
   /// Subtitle on auth pages
@@ -553,7 +553,7 @@ abstract class AppLocalizations {
   /// Brand tagline on auth pages
   ///
   /// In en, this message translates to:
-  /// **'Secure • Fast • DrivePrep Rwanda'**
+  /// **'Secure • Fast • Pass'**
   String get authSecureTag;
 
   /// Phone validation error
@@ -1191,6 +1191,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unlock All Practice Exams'**
   String get subscriptionSubtitle;
+
+  /// Support message for learning traffic rules
+  ///
+  /// In en, this message translates to:
+  /// **'If you want to learn traffic rules, kindly call, text us on WhatsApp and help to be prepared for official provisional driving license.'**
+  String get subscriptionTrafficRulesMsg;
 
   /// Current plan section label
   ///
@@ -2419,13 +2425,13 @@ abstract class AppLocalizations {
   /// App name on about page
   ///
   /// In en, this message translates to:
-  /// **'DrivePrep Rwanda'**
+  /// **'Rwanda Traffic Rule'**
   String get aboutAppName;
 
   /// About app description
   ///
   /// In en, this message translates to:
-  /// **'DrivePrep Rwanda is your companion for learning Rwanda traffic rules, road signs, and practicing theory questions to prepare for the provisional driving licence test. This is an independent educational app and is not affiliated with any government authority.'**
+  /// **'Rwanda Traffic Rule is your companion for learning Rwanda traffic rules, road signs, and practicing theory questions to prepare for the provisional driving licence test. This is an independent educational app and is not affiliated with any government authority.'**
   String get aboutDescription;
 
   /// Features section title
@@ -2467,7 +2473,7 @@ abstract class AppLocalizations {
   /// Contact info
   ///
   /// In en, this message translates to:
-  /// **'Phone/WhatsApp: 0788659575 / 0728877442\nEmail: info@driveprep.rw'**
+  /// **'Phone/WhatsApp: 0788659575 / 0728877442\nEmail: info@Rwanda Traffic Rule.rw'**
   String get aboutContactInfo;
 
   /// Copyright section title
@@ -2479,7 +2485,7 @@ abstract class AppLocalizations {
   /// Copyright text
   ///
   /// In en, this message translates to:
-  /// **'© 2026 DrivePrep Rwanda. All rights reserved.'**
+  /// **'© 2026 Rwanda Traffic Rule. All rights reserved.'**
   String get aboutCopyrightText;
 
   /// Privacy policy last updated
@@ -2491,7 +2497,7 @@ abstract class AppLocalizations {
   /// Privacy policy intro
   ///
   /// In en, this message translates to:
-  /// **'DrivePrep Rwanda is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you use our educational application. We are an independent educational service and are not affiliated with any government authority.'**
+  /// **'Rwanda Traffic Rule is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you use our educational application. We are an independent educational service and are not affiliated with any government authority.'**
   String get privacyIntro;
 
   /// Data collection section
@@ -2563,7 +2569,7 @@ abstract class AppLocalizations {
   /// Terms intro
   ///
   /// In en, this message translates to:
-  /// **'By using DrivePrep Rwanda, you agree to the following terms and conditions. Please read them carefully before using the application. DrivePrep Rwanda is an independent educational app designed to help you prepare for the driving theory test. We are not affiliated with any government body or the official exam provider.'**
+  /// **'By using Rwanda Traffic Rule, you agree to the following terms and conditions. Please read them carefully before using the application. Rwanda Traffic Rule is an independent educational app designed to help you prepare for the driving theory test. We are not affiliated with any government body or the official exam provider.'**
   String get termsIntro;
 
   /// Acceptance section
@@ -2599,19 +2605,19 @@ abstract class AppLocalizations {
   /// Content body
   ///
   /// In en, this message translates to:
-  /// **'All content is for educational and practice purposes only. It does not represent the official government exam. We strive for accuracy but make no guarantees about exam outcomes based on practice results. DrivePrep Rwanda is not affiliated with any government authority.'**
+  /// **'All content is for educational and practice purposes only. It does not represent the official government exam. We strive for accuracy but make no guarantees about exam outcomes based on practice results. Rwanda Traffic Rule is not affiliated with any government authority.'**
   String get termsContentBody;
 
   /// Payment section
   ///
   /// In en, this message translates to:
-  /// **'Payment & Subscription'**
+  /// **'Requesting to unlock exams'**
   String get termsPayment;
 
   /// Payment body
   ///
   /// In en, this message translates to:
-  /// **'Premium access requires payment via MoMo Pay or Mobile Money. Subscriptions are non-refundable once activated. Access duration begins from the activation date.'**
+  /// **'To unlock exams, please contact us at 0788659575 or 0728877442.'**
   String get termsPaymentBody;
 
   /// Termination section
@@ -2635,7 +2641,7 @@ abstract class AppLocalizations {
   /// Disclaimer text
   ///
   /// In en, this message translates to:
-  /// **'DrivePrep Rwanda is an independent educational app designed to help users learn traffic rules and prepare for the driving theory test. This app is not affiliated with, endorsed by, or connected to any government authority or official exam body. All content is for practice and learning purposes only.'**
+  /// **'Rwanda Traffic Rule is an independent educational app designed to help users learn traffic rules and prepare for the driving theory test. This app is not affiliated with, endorsed by, or connected to any government authority or official exam body. All content is for practice and learning purposes only.'**
   String get aboutDisclaimerText;
 
   /// Profile certificates menu title
@@ -2713,13 +2719,13 @@ abstract class AppLocalizations {
   /// Body text of the data consent dialog
   ///
   /// In en, this message translates to:
-  /// **'DrivePrep Rwanda collects and processes the following data to provide you with the best learning experience:\n\n• Phone number & name — for account creation and authentication\n• Device identifier — a hashed fingerprint to secure your account\n• Exam results & progress — to track your learning journey\n• Offline cache — so the app works without internet\n\nYour data is stored securely and is never sold to third parties. You can delete your account and all associated data at any time from your profile.'**
+  /// **'Rwanda Traffic Rule collects and processes the following data to provide you with the best learning experience:\n\n• Phone number & name — for account creation and authentication\n• Device identifier — a hashed fingerprint to secure your account\n• Exam results & progress — to track your learning journey\n• Offline cache — so the app works without internet\n\nYour data is stored securely and is never sold to third parties. You can delete your account and all associated data at any time from your profile.'**
   String get consentBody;
 
   /// Accept button on consent dialog
   ///
   /// In en, this message translates to:
-  /// **'I Understand & Accept'**
+  /// **'I understand and agree'**
   String get consentAccept;
 
   /// Link to privacy policy from consent dialog
@@ -2811,6 +2817,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stay'**
   String get exitAppNo;
+
+  /// No description provided for @consentItemPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number & name'**
+  String get consentItemPhone;
+
+  /// No description provided for @consentItemPhoneDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Account creation & authentication'**
+  String get consentItemPhoneDetail;
+
+  /// No description provided for @consentItemDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Device identifier'**
+  String get consentItemDevice;
+
+  /// No description provided for @consentItemDeviceDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Hashed fingerprint to secure your account'**
+  String get consentItemDeviceDetail;
+
+  /// No description provided for @consentItemProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam results & progress'**
+  String get consentItemProgress;
+
+  /// No description provided for @consentItemProgressDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your learning journey'**
+  String get consentItemProgressDetail;
+
+  /// No description provided for @consentItemCache.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline cache'**
+  String get consentItemCache;
+
+  /// No description provided for @consentItemCacheDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'App works without internet'**
+  String get consentItemCacheDetail;
+
+  /// No description provided for @consentSecurityNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data is stored securely and never sold to third parties.'**
+  String get consentSecurityNote;
 }
 
 class _AppLocalizationsDelegate

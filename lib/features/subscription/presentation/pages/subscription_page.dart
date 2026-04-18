@@ -10,12 +10,14 @@ import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_provider.dart';
 import '../../../../shared/network/api_helper.dart';
+import '../../../../shared/network/api_config.dart';
+import '../../../../shared/session/auth_session.dart';
 import '../../../../shared/subscription/subscription_provider.dart';
 import '../../../../shared/widgets/app_page_header.dart';
+import '../../../../features/auth/presentation/bloc/auth_state.dart';
 
 const _kHelpNumber = '0788659575';
-const _kMomoPayCode = '329494';
-const _kTigoCashNumber='0728877442';
+const _kTigoCashNumber = '0728877442';
 
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({Key? key}) : super(key: key);
@@ -32,164 +34,13 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   String _selectedTier = '3_MONTHS'; // Default to popular plan
 
   List<Map<String, dynamic>> _getPlans(String langCode, AppLocalizations l10n) {
-    if (langCode == 'rw') {
-      return [
-        {'tier': '1_MONTH', 'durationDays': 30, 'price': 1500, 'label': l10n.subscriptionMonth1, 'popular': false},
-        {'tier': '3_MONTHS', 'durationDays': 90, 'price': 3000, 'label': l10n.subscriptionMonth3, 'popular': true},
-        {'tier': '6_MONTHS', 'durationDays': 180, 'price': 5000, 'label': l10n.subscriptionMonth6, 'popular': false},
-      ];
-    } else {
-      return [
-        {'tier': '1_MONTH', 'durationDays': 30, 'price': 3000, 'label': l10n.subscriptionMonth1, 'popular': false},
-        {'tier': '3_MONTHS', 'durationDays': 90, 'price': 5000, 'label': l10n.subscriptionMonth3, 'popular': true},
-        {'tier': '6_MONTHS', 'durationDays': 180, 'price': 10000, 'label': l10n.subscriptionMonth6, 'popular': false},
-      ];
-    }
+    return [
+      {'tier': '1_MONTH', 'durationDays': 30, 'label': l10n.subscriptionMonth1, 'popular': false},
+      {'tier': '3_MONTHS', 'durationDays': 90, 'label': l10n.subscriptionMonth3, 'popular': true},
+      {'tier': '6_MONTHS', 'durationDays': 180, 'label': l10n.subscriptionMonth6, 'popular': false},
+    ];
   }
 
-  void _showPaymentModal(
-    BuildContext context,
-    String tier,
-    int price,
-    String langCode,
-  ) {
-    final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-    final momoCode = '*182*8*1*$_kMomoPayCode*$price#';
-    final mobileCode = '*182*1*1*$_kHelpNumber*$price#';
-    final tigoCashCode = '*182*1*1*$_kTigoCashNumber*$price#';
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (ctx) => Container(
-        padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Drag handle
-            Container(
-              width: 40,
-              height: 4,
-              margin: const EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.outline.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            // Title
-            Text(
-              l10n.paymentChooseMethod,
-              style: AppTextStyles.heading5,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              l10n.subscriptionPrice(price),
-              style: AppTextStyles.heading4.copyWith(color: AppColors.primary),
-            ),
-            const SizedBox(height: 20),
-            // MoMo Pay option
-            _PaymentOptionTile(
-              icon: Icons.phone_android_rounded,
-              title: l10n.paymentMomoPayNumber,
-              subtitle: momoCode,
-              color: AppColors.warning,
-              onTap: () {
-                Navigator.of(ctx).pop();
-                _dialUssd(momoCode);
-                _submitPaymentRequest(context, tier, price, langCode);
-              },
-              theme: theme,
-            ),
-            const SizedBox(height: 12),
-            // Mobile Money option
-            _PaymentOptionTile(
-              icon: Icons.account_balance_wallet_rounded,
-              title: l10n.paymentMobileMoneyNumber,
-              subtitle: mobileCode,
-              color: AppColors.primary,
-              onTap: () {
-                Navigator.of(ctx).pop();
-                _dialUssd(mobileCode);
-                _submitPaymentRequest(context, tier, price, langCode);
-              },
-              theme: theme,
-            ),
-            const SizedBox(height: 12),
-            // Tigo Cash option
-            _PaymentOptionTile(
-              icon: Icons.account_balance_wallet_rounded,
-              title: l10n.paymentTigoCashNumber,
-              subtitle: tigoCashCode,
-              color: AppColors.textTertiary,
-              onTap: () {
-                Navigator.of(ctx).pop();
-                _dialUssd(tigoCashCode);
-                _submitPaymentRequest(context, tier, price, langCode);
-              },
-              theme: theme,
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _submitPaymentRequest(
-    BuildContext context,
-    String tier,
-    int price,
-    String langCode,
-  ) async {
-    final l10n = AppLocalizations.of(context);
-    final authState = context.read<AuthBloc>().state;
-    final userId = authState is AuthAuthenticated ? authState.user.id : null;
-    if (userId == null || userId.isEmpty) return;
-
-    try {
-      final result = await ApiHelper().post(
-        '/api/payments/request',
-        body: {
-          'userId': userId,
-          'paymentTier': tier,
-          'amount': price,
-          'currency': 'RWF',
-        },
-      );
-      if (!mounted) return;
-
-      if (result.statusCode == 401) {
-        context.read<AuthBloc>().add(const SignOutEvent());
-        context.go('/login');
-        return;
-      } else if (result.statusCode == 409) {
-        setState(() {
-          _isDuplicateRequest = true;
-          _errorMessage = l10n.paymentRequestExists;
-        });
-      } else if (result.isSuccess) {
-        final data = result.data;
-        if (data is Map && data['duplicate'] == true) {
-          setState(() {
-            _isDuplicateRequest = true;
-            _errorMessage = l10n.paymentRequestExists;
-          });
-        } else {
-          setState(() {
-            _successMessage = l10n.subscriptionRequestSent;
-          });
-        }
-      }
-    } catch (_) {
-      // Fire-and-forget; user already dialled USSD
-    }
-  }
 
   Future<void> _copyToClipboard(BuildContext context, String text) async {
     await Clipboard.setData(ClipboardData(text: text));
@@ -247,10 +98,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     final subscription = context.watch<SubscriptionProvider>();
     final plans = _getPlans(langCode, l10n);
     final theme = Theme.of(context);
-    final selectedPrice = _getSelectedPrice(plans);
-    final momoCode = '*182*8*1*$_kMomoPayCode*$selectedPrice#';
-    final mobileCode = '*182*1*1*$_kHelpNumber*$selectedPrice#';
-    final tigoCashCode = '*182*1*1*$_kTigoCashNumber*$selectedPrice#';
 
     return Scaffold(
       body: Column(
@@ -262,14 +109,16 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           ),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                 
+
                   // ── Active subscription banner ──
                   if (subscription.hasActiveAccess) ...[
                     _ActiveAccessBanner(l10n: l10n, subscription: subscription),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                   ],
 
                   // ── Plan selection ──
@@ -285,72 +134,14 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         loadingTier: _loadingTier,
                         selectedTier: _selectedTier,
                         onSelect: (tier) => setState(() => _selectedTier = tier),
-                        onRequest: (tier, price) =>
-                            _showPaymentModal(context, tier, price, langCode),
                         l10n: l10n,
                       )),
+SizedBox(height: 4),
 
-                  // ── Success / Error messages ──
-                  if (_successMessage != null) ...[
-                    const SizedBox(height: 10),
-                    _StatusBanner(
-                      message: _successMessage!,
-                      icon: Icons.check_circle_rounded,
-                      color: AppColors.success,
-                    ),
-                  ],
-                  if (_errorMessage != null) ...[
-                    const SizedBox(height: 10),
-                    _StatusBanner(
-                      message: _errorMessage!,
-                      icon: _isDuplicateRequest ? Icons.info_outline : Icons.error_outline,
-                      color: _isDuplicateRequest ? AppColors.warning : AppColors.error,
-                    ),
-                  ],
-
+ // ── Learning Support Message ──
+                  _TrafficRulesSupportCard(l10n: l10n),
                   const SizedBox(height: 20),
-
-                  // ── Payment Instructions ──
-                  _SectionHeader(
-                    icon: Icons.receipt_long_rounded,
-                    title: l10n.paymentInstructionsTitle,
-                  ),
-                  const SizedBox(height: 10),
-
-                  // Step 1 – MoMo Pay
-                  _UssdCodeCard(
-                    stepNumber: 1,
-                    title: l10n.subscriptionPaymentMomo,
-                    description: l10n.paymentMomoPayDial,
-                    ussdCode: momoCode,
-                    onCopy: () => _copyToClipboard(context, momoCode),
-                    onDial: () => _dialUssd(momoCode),
-                    theme: theme,
-                  ),
-                  const SizedBox(height: 10),
-
-                  // Step 2 – Mobile Money.
-                  _UssdCodeCard(
-                    stepNumber: 2,
-                    title: l10n.subscriptionPaymentMobile,
-                    description: l10n.paymentMobileMoneyDial,
-                    ussdCode: mobileCode,
-                    onCopy: () => _copyToClipboard(context, mobileCode),
-                    onDial: () => _dialUssd(mobileCode),
-                    theme: theme,
-                  ),
-   // Step 3 – Tigo Cash
-                  _UssdCodeCard(
-                    stepNumber: 3,
-                    title: l10n.subscriptionPaymentTigoCash,
-                    description: l10n.paymentTigoCashDial,
-                    ussdCode: tigoCashCode,
-                    onCopy: () => _copyToClipboard(context, tigoCashCode),
-                    onDial: () => _dialUssd(tigoCashCode),
-                    theme: theme,
-                  ),
-                  const SizedBox(height: 20),
-
+                  
                   // ── Need Help ──
                   _SectionHeader(
                     icon: Icons.headset_mic_rounded,
@@ -457,123 +248,7 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
-class _UssdCodeCard extends StatelessWidget {
-  final int stepNumber;
-  final String title;
-  final String description;
-  final String ussdCode;
-  final VoidCallback onCopy;
-  final VoidCallback onDial;
-  final ThemeData theme;
-
-  const _UssdCodeCard({
-    required this.stepNumber,
-    required this.title,
-    required this.description,
-    required this.ussdCode,
-    required this.onCopy,
-    required this.onDial,
-    required this.theme,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(color: theme.shadowColor.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2)),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
-            child: Row(
-              children: [
-                Container(
-                  width: 28,
-                  height: 28,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    '$stepNumber',
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(title, style: AppTextStyles.heading6),
-                ),
-              ],
-            ),
-          ),
-          // Description
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              description,
-              style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
-            ),
-          ),
-          const SizedBox(height: 10),
-          // USSD Code block
-          Container(
-            margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.06),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.dialpad_rounded, size: 18, color: AppColors.primary),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    ussdCode,
-                    style: const TextStyle(
-                      fontFamily: 'monospace',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                ),
-                InkWell(
-                  onTap: onCopy,
-                  borderRadius: BorderRadius.circular(8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Icon(Icons.copy_rounded, size: 18, color: AppColors.primary.withValues(alpha: 0.7)),
-                  ),
-                ),
-                const SizedBox(width: 4),
-                InkWell(
-                  onTap: onDial,
-                  borderRadius: BorderRadius.circular(8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Icon(Icons.phone_rounded, size: 18, color: AppColors.primary.withValues(alpha: 0.7)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// _UssdCodeCard removed for Play Store compliance.
 
 class _NeedHelpCard extends StatelessWidget {
   final AppLocalizations l10n;
@@ -729,7 +404,6 @@ class _PlanCard extends StatelessWidget {
   final String? loadingTier;
   final String selectedTier;
   final ValueChanged<String> onSelect;
-  final void Function(String tier, int price) onRequest;
   final AppLocalizations l10n;
 
   const _PlanCard({
@@ -737,69 +411,65 @@ class _PlanCard extends StatelessWidget {
     required this.loadingTier,
     required this.selectedTier,
     required this.onSelect,
-    required this.onRequest,
     required this.l10n,
   });
 
   @override
   Widget build(BuildContext context) {
     final tier = plan['tier'] as String;
-    final price = plan['price'] as int;
     final label = plan['label'] as String;
     final days = plan['durationDays'] as int;
     final isPopular = plan['popular'] as bool;
     final isSelected = selectedTier == tier;
-    final isThisTierLoading = loadingTier == tier;
-    final anyLoading = loadingTier != null;
     final theme = Theme.of(context);
 
     return GestureDetector(
       onTap: () => onSelect(tier),
       child: Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        border: Border.all(
-          color: isSelected
-              ? AppColors.primary
-              : theme.colorScheme.outline.withValues(alpha: 0.2),
-          width: isSelected ? 2 : 1,
+        margin: const EdgeInsets.only(bottom: 4),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          border: Border.all(
+            color: isSelected
+                ? AppColors.primary
+                : theme.colorScheme.outline.withValues(alpha: 0.2),
+            width: isSelected ? 2 : 1,
+          ),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(color: theme.shadowColor.withValues(alpha: 0.04), blurRadius: 8),
+          ],
         ),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(color: theme.shadowColor.withValues(alpha: 0.04), blurRadius: 8),
-        ],
-      ),
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                // Radio indicator
-                Container(
-                  width: 22,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isSelected ? AppColors.primary : AppColors.textSecondary.withValues(alpha: 0.4),
-                      width: 2,
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  // Radio indicator
+                  Container(
+                    width: 22,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: isSelected ? AppColors.primary : AppColors.textSecondary.withValues(alpha: 0.4),
+                        width: 2,
+                      ),
                     ),
-                  ),
-                  child: isSelected
-                      ? Center(
-                          child: Container(
-                            width: 12,
-                            height: 12,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.primary,
+                    child: isSelected
+                        ? Center(
+                            child: Container(
+                              width: 12,
+                              height: 12,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.primary,
+                              ),
                             ),
-                          ),
-                        )
-                      : null,
-                ),
+                          )
+                        : null,
+                  ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -814,44 +484,8 @@ class _PlanCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      l10n.subscriptionPrice(price),
-                      style: AppTextStyles.heading5.copyWith(
-                        color: AppColors.primary,
-                        fontSize: 18,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    SizedBox(
-                      height: 34,
-                      child: ElevatedButton(
-                        onPressed: anyLoading ? null : () => onRequest(tier, price),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: isPopular ? AppColors.success : null,
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: isThisTierLoading
-                            ? const SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textInverse),
-                              )
-                            : Text(
-                                l10n.subscriptionRequestAccess,
-                                style: const TextStyle(fontSize: 13),
-                              ),
-                      ),
-                    ),
-                  ],
-                ),
+                if (isSelected)
+                const Icon(Icons.check_circle, color: AppColors.primary),
               ],
             ),
           ),
@@ -946,6 +580,50 @@ class _PaymentOptionTile extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _TrafficRulesSupportCard extends StatelessWidget {
+  final AppLocalizations l10n;
+
+  const _TrafficRulesSupportCard({required this.l10n});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [AppColors.primary, AppColors.primary.withValues(alpha: 0.8)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          const Icon(Icons.school_rounded, color: Colors.white, size: 30),
+          const SizedBox(height: 8),
+          Text(
+            l10n.subscriptionTrafficRulesMsg,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              height: 2.0,
+            ),
+            textAlign: TextAlign.start,
+          ),
+        ],
       ),
     );
   }

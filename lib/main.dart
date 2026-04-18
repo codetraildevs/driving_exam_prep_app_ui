@@ -6,7 +6,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'config/theme/app_theme.dart';
 import 'config/router/app_router.dart';
-import 'features/auth/presentation/bloc/auth_bloc.dart';import 'l10n/generated/app_localizations.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'l10n/generated/app_localizations.dart';
 import 'shared/locale/fallback_localizations.dart';
 import 'shared/locale/locale_provider.dart';
 import 'shared/network/api_config.dart';
@@ -149,7 +150,7 @@ class _TrafficRulesAppState extends State<TrafficRulesApp> {
         child: Consumer2<LocaleProvider, ThemeProvider>(
           builder: (context, localeProvider, themeProvider, _) {
             return MaterialApp.router(
-              title: 'DrivePrep Rwanda',
+              title: 'Rwanda Traffic Rule',
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               // ThemeMode.system = follow device; user can override via settings.

@@ -163,32 +163,32 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                         // Data collection items
                         _DataItem(
                           icon: Icons.person_outline_rounded,
-                          label: 'Phone number & name',
-                          detail: 'Account creation & authentication',
+                          label: l10n.consentItemPhone,
+                          detail: l10n.consentItemPhoneDetail,
                           cardColor: cardColor,
                           textColor: textColor,
                           subtextColor: subtextColor,
                         ),
                         _DataItem(
                           icon: Icons.fingerprint_rounded,
-                          label: 'Device identifier',
-                          detail: 'Hashed fingerprint to secure your account',
+                          label: l10n.consentItemDevice,
+                          detail: l10n.consentItemDeviceDetail,
                           cardColor: cardColor,
                           textColor: textColor,
                           subtextColor: subtextColor,
                         ),
                         _DataItem(
                           icon: Icons.trending_up_rounded,
-                          label: 'Exam results & progress',
-                          detail: 'Track your learning journey',
+                          label: l10n.consentItemProgress,
+                          detail: l10n.consentItemProgressDetail,
                           cardColor: cardColor,
                           textColor: textColor,
                           subtextColor: subtextColor,
                         ),
                         _DataItem(
                           icon: Icons.cloud_off_rounded,
-                          label: 'Offline cache',
-                          detail: 'App works without internet',
+                          label: l10n.consentItemCache,
+                          detail: l10n.consentItemCacheDetail,
                           cardColor: cardColor,
                           textColor: textColor,
                           subtextColor: subtextColor,
@@ -219,7 +219,7 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Text(
-                                  'Your data is stored securely and never sold to third parties.',
+                                  l10n.consentSecurityNote,
                                   style: AppTextStyles.bodySmall.copyWith(
                                     color: subtextColor,
                                     height: 1.4,
@@ -292,6 +292,10 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.transparent,
                                 shadowColor: Colors.transparent,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 10,
+                                ),  
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),
@@ -305,16 +309,18 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                                     size: 20,
                                   ),
                                   const SizedBox(width: 8),
-                                  Text(
+                                  Expanded( child: Text(
                                     l10n.consentAccept,
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 15,
+                                      fontSize: 12,
                                     ),
                                   ),
+                                  )
                                 ],
-                              ),
+                              )
+                              
                             ),
                           ),
                         ),

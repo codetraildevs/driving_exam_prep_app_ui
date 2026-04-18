@@ -338,6 +338,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "screen_protector",
+      "rootUri": "file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/screen_protector-1.5.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "shared_preferences",
       "rootUri": "file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences-2.5.4",
       "packageUri": "lib/",
@@ -512,7 +518,7 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "driveprep_rwanda",
+      "name": "traffic_rule_in_rwanda",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.0"

@@ -1098,8 +1098,6 @@ ALTER TABLE `course_progress`
 --
 ALTER TABLE `exam_results`
   ADD CONSTRAINT `exam_results_ibfk_31` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `exam_results_ibfk_32` FOREIGN KEY (`examId`) REFERENCES `exams` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_exam_results_exam_id` FOREIGN KEY (`examId`) REFERENCES `exams` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_exam_results_user_id` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
