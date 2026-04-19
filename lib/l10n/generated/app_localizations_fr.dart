@@ -1557,4 +1557,11 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get consentSecurityNote =>
       'Vos données sont stockées de manière sécurisée et ne sont jamais vendues à des tiers.';
+
+  @override
+  String get consentIndependentTitle => 'Contenu indépendant';
+
+  @override
+  String get consentIndependentBody =>
+      'Ceci est un outil éducatif indépendant. Il n\'est PAS affilié, approuvé ou représentant d\'une entité gouvernementale ou de la Police Nationale du Rwanda.';
 }

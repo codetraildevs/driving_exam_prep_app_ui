@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rwanda Traffic Rule - Pro Asset Designer</title>
+    <title>Rwanda Traffic Rule - Pro Store Designer</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Montserrat:wght@400;700;900&family=Poppins:wght@400;700;900&family=Roboto:wght@400;700;900&display=swap"
         rel="stylesheet">
@@ -109,8 +109,8 @@
         }
 
         .mode-landscape .preview-wrapper {
-            width: 604px;
-            height: 340px;
+            width: 640px;
+            height: 360px;
         }
 
         .mode-feature .preview-wrapper {
@@ -151,22 +151,149 @@
 
         .mode-landscape .header-preview {
             font-size: 32px;
-            padding: 20px 40px;
+            padding: 25px 40px;
         }
 
         .mode-feature .header-preview {
             font-size: 38px;
             text-align: left;
-            max-width: 400px;
+            max-width: 500px;
             padding: 40px;
-            align-self: center;
+            padding-bottom: 0;
+            align-self: flex-start;
+            margin-top: 40px;
         }
 
-        .mode-icon .header-preview {
+        .subtitle-preview {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+            font-size: 18px;
+            text-align: left;
+            max-width: 450px;
+            padding: 0 40px;
+            z-index: 5;
             display: none;
         }
 
-        /* Icon Specifics */
+        .mode-feature .subtitle-preview {
+            display: block;
+        }
+
+        /* Decorative Blobs */
+        .blob {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: 1;
+        }
+
+        .blob-1 { width: 300px; height: 300px; top: -100px; left: -100px; }
+        .blob-2 { width: 400px; height: 400px; bottom: -150px; right: -50px; }
+
+        /* Branding Badge */
+        .brand-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: #1a237e;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 900;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 10;
+            display: none;
+        }
+
+        .mode-feature .brand-badge {
+            display: block;
+        }
+
+        /* Mockup Containers */
+        .mockup-container {
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        /* Portrait Phone */
+        .mode-portrait .mockup-container {
+            width: 220px;
+            height: 440px;
+        }
+
+        .mode-portrait .mockup-frame {
+            border-radius: 28px;
+            border-width: 3px;
+        }
+
+        /* Landscape Tablet (16:10 standard) */
+        .mode-landscape .mockup-container {
+            width: 448px;
+            height: 280px;
+            margin-top: 10px;
+        }
+
+        .mode-landscape .mockup-frame {
+            border-radius: 12px;
+            border-width: 6px;
+            padding: 4px;
+        }
+
+        /* Feature Graphic Banner */
+        .mode-feature .mockup-container {
+            width: 180px;
+            height: 360px;
+            transform: rotateY(-25deg) rotateX(10deg);
+            margin-right: 40px;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        .mockup-frame {
+            width: 100%;
+            height: 100%;
+            background: #111;
+            box-sizing: border-box;
+            border-style: solid;
+            border-color: #333;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            display: flex;
+        }
+
+        .screen-area {
+            width: 100%;
+            height: 100%;
+            background: #050505;
+            border-radius: inherit;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen-area img {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: none;
+        }
+
+        /* Perspective Angles */
+        .angle-left .mockup-container {
+            transform: rotateY(-20deg) rotateX(10deg);
+        }
+
+        .angle-right .mockup-container {
+            transform: rotateY(20deg) rotateX(10deg);
+        }
+
+        .angle-tilted .mockup-container {
+            transform: rotateZ(-5deg) translateY(20px);
+        }
+
+        /* Icon View */
         #iconPreview {
             display: none;
             width: 220px;
@@ -175,92 +302,14 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             margin-top: 65px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .mode-icon #iconPreview {
             display: block;
         }
 
-        .mode-icon .phone-container {
+        .mode-icon .mockup-container {
             display: none;
-        }
-
-        /* Phone Mockups */
-        .phone-container {
-            position: relative;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-style: preserve-3d;
-        }
-
-        .mode-portrait .phone-container {
-            width: 220px;
-            height: 440px;
-        }
-
-        .mode-landscape .phone-container {
-            width: 140px;
-            height: 280px;
-            transform: rotateZ(-90deg);
-            margin-top: 20px;
-        }
-
-        .mode-feature .phone-container {
-            width: 200px;
-            height: 400px;
-            transform: rotateY(-25deg) rotateX(10deg);
-            margin-right: 40px;
-            margin-top: auto;
-            margin-bottom: auto;
-        }
-
-        .phone-mockup {
-            width: 100%;
-            height: 100%;
-            background: #111;
-            border-radius: 28px;
-            padding: 5px;
-            box-sizing: border-box;
-            border: 3px solid #333;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .screen-mockup {
-            width: 100%;
-            height: 100%;
-            background: #000;
-            border-radius: 23px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .screen-mockup img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        #iconImg {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Angle Overrides */
-        .angle-left .phone-container {
-            transform: rotateY(-20deg) rotateX(10deg);
-        }
-
-        .angle-right .phone-container {
-            transform: rotateY(20deg) rotateX(10deg);
-        }
-
-        .angle-tilted .phone-container {
-            transform: rotateZ(-5deg) translateY(20px);
-        }
-
-        .mode-landscape.angle-tilted .phone-container {
-            transform: rotateZ(-95deg) translateY(0px);
         }
 
         #exportCanvas {
@@ -284,22 +333,39 @@
         <div class="control-item">
             <label>Asset Type</label>
             <select id="typeSelect" onchange="updateMode()">
-                <option value="portrait">Portrait Screen (1080x1920)</option>
-                <option value="landscape">Landscape Screen (1920x1080)</option>
+                <option value="portrait">Phone Screenshot (1080x1920)</option>
+                <option value="landscape">Tablet Screenshot (1920x1080)</option>
                 <option value="feature">Feature Graphic (1024x500)</option>
                 <option value="icon">App Icon (512x512)</option>
             </select>
         </div>
-        <div class="control-item">
-            <label>Promotional Header</label>
-            <input type="text" id="headerInput" value="Master Traffic Rules Like a Pro" oninput="drawPreview()">
+        <div class="control-item" style="grid-column: span 2;">
+            <label>Marketing Text</label>
+            <input type="text" id="headerInput" value="RWANDA'S MOST TRUSTED TRAFFIC APP" oninput="drawPreview()">
+        </div>
+        <div class="control-item" style="grid-column: span 2;">
+            <label>Subtitle Text (Feature Only)</label>
+            <input type="text" id="subtitleInput" value="Master Driving Rules & Pass Your Exams with Confidence" oninput="drawPreview()">
         </div>
         <div class="control-item">
-            <label>Upload Screenshot/Logo</label>
+            <label>Screenshot Upload</label>
             <input type="file" id="fileInput" accept="image/*" onchange="handleImage(event)">
         </div>
+
         <div class="control-item">
-            <label>Marketing Theme</label>
+            <label>Text Size</label>
+            <input type="range" id="sizeInput" min="10" max="80" value="28" oninput="drawPreview()">
+        </div>
+        <div class="control-item">
+            <label>Content Zoom</label>
+            <input type="range" id="zoomInput" min="5" max="200" value="100" oninput="drawPreview()">
+        </div>
+        <div class="control-item">
+            <label>Vertical Position</label>
+            <input type="range" id="offsetYInput" min="-500" max="500" value="0" oninput="drawPreview()">
+        </div>
+        <div class="control-item">
+            <label>Theme Color</label>
             <select id="themeSelect" onchange="drawPreview()">
                 <option value="#1a237e,#01579b">Premium Blue</option>
                 <option value="#4a148c,#9c27b0">Creative Purple</option>
@@ -308,42 +374,35 @@
                 <option value="#b71c1c,#ef5350">Urgent Red</option>
             </select>
         </div>
-
-        <div class="control-item">
-            <label>Font Size</label>
-            <input type="range" id="sizeInput" min="10" max="80" value="28" oninput="drawPreview()">
-        </div>
         <div class="control-item">
             <label>Font Family</label>
             <select id="fontSelect" onchange="drawPreview()">
-                <option value="'Inter', sans-serif">Inter (Modern)</option>
-                <option value="'Montserrat', sans-serif">Montserrat (Bold)</option>
-                <option value="'Poppins', sans-serif">Poppins (Best)</option>
-                <option value="'Roboto', sans-serif">Roboto (Clean)</option>
+                <option value="'Inter', sans-serif">Inter</option>
+                <option value="'Montserrat', sans-serif">Montserrat</option>
+                <option value="'Poppins', sans-serif">Poppins</option>
+                <option value="'Roboto', sans-serif">Roboto</option>
             </select>
         </div>
         <div class="control-item">
-            <label>Perspective Angle</label>
+            <label>Perspective</label>
             <select id="angleSelect" onchange="updatePerspective()">
                 <option value="angle-none">Straight</option>
                 <option value="angle-left">Oblique Left</option>
                 <option value="angle-right">Oblique Right</option>
-                <option value="angle-tilted">Tilted</option>
+                <option value="angle-tilted">Angle Tilt</option>
             </select>
         </div>
-        <div class="control-item">
-            <label>Quick Action</label>
-            <button onclick="generateAndDownload()"
-                style="background:#2ecc71; color:white; border:none; font-weight:bold; cursor:pointer;">DOWNLOAD
-                ASSET</button>
-        </div>
-        <button class="btn-primary" onclick="generateAndDownload()">SAVE FINAL ASSET FOR PLAY STORE</button>
+        <button class="btn-primary" onclick="generateAndDownload()">DOWNLOAD PRODUCTION ASSET (PNG)</button>
     </div>
 
     <div class="preview-outer">
         <div class="preview-wrapper">
             <div id="virtualCanvas" class="angle-none" style="background: linear-gradient(135deg, #1a237e, #01579b);">
-                <div class="header-preview" id="headerDisplay">Master Traffic Rules Like a Pro</div>
+                <div class="blob blob-1"></div>
+                <div class="blob blob-2"></div>
+                <div class="brand-badge">TRAFFIC RULE RWANDA</div>
+                <div class="header-preview" id="headerDisplay">RWANDA'S MOST TRUSTED TRAFFIC APP</div>
+                <div class="subtitle-preview" id="subtitleDisplay">Master Driving Rules & Pass Your Exams with Confidence</div>
 
                 <div id="iconPreview">
                     <img id="iconImg" src="" style="display:none;">
@@ -352,9 +411,9 @@
                         App Logo</div>
                 </div>
 
-                <div class="phone-container">
-                    <div class="phone-mockup">
-                        <div class="screen-mockup">
+                <div class="mockup-container">
+                    <div class="mockup-frame">
+                        <div class="screen-area">
                             <img id="screenImg" src="" style="display:none;">
                             <div id="screenPlaceholder"
                                 style="height:100%; display:flex; align-items:center; justify-content:center; color:#555; text-align:center; padding:20px; font-size:12px;">
@@ -366,7 +425,7 @@
         </div>
     </div>
 
-    <div class="hint">Includes support for <b>Portrait</b>, <b>Landscape</b>, <b>Banner</b>, and <b>App Icons</b>.</div>
+    <div class="hint">Adjust <b>Content Zoom</b> and <b>Vertical Position</b> to fit your screenshot perfectly.</div>
     <canvas id="exportCanvas"></canvas>
 
     <script>
@@ -378,10 +437,9 @@
             if (mode === 'icon') document.getElementById('headerInput').disabled = true;
             else document.getElementById('headerInput').disabled = false;
 
-            // Adjust defaults
-            if (mode === 'landscape') document.getElementById('sizeInput').value = 32;
-            else if (mode === 'feature') document.getElementById('sizeInput').value = 42;
-            else document.getElementById('sizeInput').value = 28;
+            // Default fits
+            document.getElementById('zoomInput').value = 100;
+            document.getElementById('offsetYInput').value = 0;
 
             drawPreview();
         }
@@ -409,14 +467,39 @@
         }
 
         function drawPreview() {
+            const mode = document.getElementById('typeSelect').value;
             const text = document.getElementById('headerInput').value;
             const size = document.getElementById('sizeInput').value;
+            const zoom = document.getElementById('zoomInput').value / 100;
+            const offsetY = document.getElementById('offsetYInput').value;
             const font = document.getElementById('fontSelect').value;
             const theme = document.getElementById('themeSelect').value.split(',');
+
             const header = document.getElementById('headerDisplay');
             header.innerText = text;
             header.style.fontSize = size + 'px';
             header.style.fontFamily = font;
+
+            const subtitle = document.getElementById('subtitleDisplay');
+            subtitle.innerText = document.getElementById('subtitleInput').value;
+            subtitle.style.fontFamily = font;
+
+            const img = document.getElementById('screenImg');
+            if (uploadedImg) {
+                // UI Scale factor
+                const containerW = mode === 'landscape' ? 448 : (mode === 'feature' ? 220 : 220);
+                const containerH = mode === 'landscape' ? 280 : (mode === 'feature' ? 440 : 440);
+
+                // For screenshots, we want to see the WHOLE screen inside the frame by default (Math.min)
+                const baseScale = Math.min(containerW / uploadedImg.width, containerH / uploadedImg.height);
+                img.style.width = (uploadedImg.width * baseScale * zoom) + 'px';
+                img.style.height = 'auto';
+                img.style.top = `calc(50% + ${offsetY / 4}px)`;
+            }
+
+            // Update badge color
+            document.querySelector('.brand-badge').style.color = theme[0];
+
             document.getElementById('virtualCanvas').style.background = `linear-gradient(135deg, ${theme[0]}, ${theme[1]})`;
         }
 
@@ -429,6 +512,8 @@
             const size = document.getElementById('sizeInput').value;
             const font = document.getElementById('fontSelect').value;
             const angle = document.getElementById('angleSelect').value;
+            const zoom = document.getElementById('zoomInput').value / 100;
+            const offsetY = parseInt(document.getElementById('offsetYInput').value);
 
             let W, H;
             if (mode === 'portrait') { W = 1080; H = 1920; }
@@ -444,22 +529,49 @@
             ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
 
             // 2. Content
-            if (mode === 'portrait' || mode === 'landscape') {
-                const fs = Math.round(size / 0.3);
-                ctx.fillStyle = "white"; ctx.font = `900 ${fs}px ${font}`;
-                ctx.textAlign = "center";
-                if (mode === 'portrait') {
-                    wrapText(ctx, text.toUpperCase(), W / 2, H * 0.15, W * 0.9, fs * 1.1);
-                    drawPhone(ctx, W / 2, H * 0.62, 800, 1500, angle, uploadedImg);
-                } else {
-                    wrapText(ctx, text.toUpperCase(), W / 2, H * 0.2, W * 0.9, fs * 1.1);
-                    drawPhone(ctx, W / 2, H * 0.8, 1200, 600, angle, uploadedImg, true);
-                }
+            const fs = Math.round(size / 0.3);
+            ctx.fillStyle = "white"; ctx.font = `900 ${fs}px ${font}`;
+
+            if (mode === 'portrait') {
+                ctx.textAlign = "center"; wrapText(ctx, text.toUpperCase(), W / 2, H * 0.15, W * 0.9, fs * 1.1);
+                drawMockup(ctx, W / 2, H * 0.62, 800, 1500, 80, angle, uploadedImg, zoom, offsetY);
+            } else if (mode === 'landscape') {
+                ctx.textAlign = "center"; wrapText(ctx, text.toUpperCase(), W / 2, H * 0.18, W * 0.9, fs * 1.1);
+                drawMockup(ctx, W / 2, H * 0.62, 1400, 875, 50, angle, uploadedImg, zoom, offsetY);
             } else if (mode === 'feature') {
-                const fs = 72;
-                ctx.fillStyle = "white"; ctx.font = `900 ${fs}px ${font}`;
-                ctx.textAlign = "left"; wrapText(ctx, text.toUpperCase(), 80, 250, 500, fs * 1.1);
-                drawPhone(ctx, 780, 250, 400, 800, 'angle-right', uploadedImg);
+                // 1a. Background Decorative Blobs
+                ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
+                ctx.beginPath(); ctx.arc(0, 0, 300, 0, Math.PI * 2); ctx.fill(); 
+                ctx.beginPath(); ctx.arc(W, H, 400, 0, Math.PI * 2); ctx.fill();
+
+                // 2a. Branding Badge
+                ctx.fillStyle = "white";
+                roundRect(ctx, W - 250, 40, 210, 40, 20, true, false);
+                ctx.fillStyle = theme[0];
+                ctx.font = `bold 16px ${font}`;
+                ctx.textAlign = "center";
+                ctx.fillText("TRAFFIC RULE RWANDA", W - 145, 67);
+
+                // 2b. Main Content
+                ctx.textAlign = "left";
+                ctx.fillStyle = "white";
+                ctx.font = `900 ${fs}px ${font}`;
+                wrapText(ctx, text.toUpperCase(), 60, 160, 550, fs * 1.1);
+                
+                // 2c. Subtitle
+                const subText = document.getElementById('subtitleInput').value;
+                ctx.font = `400 ${fs * 0.45}px ${font}`;
+                ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+                wrapText(ctx, subText, 60, 320, 500, fs * 0.6);
+
+                // 2d. Mockup with Glow & Shadow
+                ctx.save();
+                ctx.shadowColor = "rgba(0,0,0,0.4)";
+                ctx.shadowBlur = 50;
+                ctx.shadowOffsetX = 20;
+                ctx.shadowOffsetY = 20;
+                drawMockup(ctx, 800, 280, 350, 700, 60, 'angle-right', uploadedImg, zoom, offsetY);
+                ctx.restore();
             } else if (mode === 'icon') {
                 if (uploadedImg) {
                     const iconSize = 400;
@@ -470,21 +582,25 @@
 
             const dl = document.createElement('a');
             dl.download = `traffic_rule_${mode}_${Date.now()}.png`;
-            dl.href = canvas.toDataURL(); dl.click();
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                dl.href = url; dl.click();
+            });
         }
 
-        function drawPhone(ctx, x, y, w, h, angle, img, landscape = false) {
+        function drawMockup(ctx, x, y, w, h, r, angle, img, zoom, offset) {
             ctx.save(); ctx.translate(x, y);
-            if (landscape) ctx.rotate(-90 * Math.PI / 180);
             if (angle === 'angle-tilted') ctx.rotate(-5 * Math.PI / 180);
             if (angle === 'angle-left') ctx.transform(1, 0, 0.1, 1, 0, 0);
             if (angle === 'angle-right') ctx.transform(1, 0, -0.1, 1, 0, 0);
-            ctx.fillStyle = "#111"; roundRect(ctx, -w / 2, -h / 2, w, h, 60, true, true);
-            ctx.strokeStyle = "#444"; ctx.lineWidth = 12; ctx.stroke();
+            ctx.fillStyle = "#111"; roundRect(ctx, -w / 2, -h / 2, w, h, r, true, true);
+            ctx.strokeStyle = "#444"; ctx.lineWidth = 14; ctx.stroke();
             if (img) {
-                ctx.save(); ctx.beginPath(); roundRect(ctx, -w / 2 + 15, -h / 2 + 15, w - 30, h - 30, 45, false, false); ctx.clip();
-                const scale = Math.max((w - 30) / img.width, (h - 30) / img.height);
-                ctx.drawImage(img, -(img.width * scale) / 2, -(img.height * scale) / 2, img.width * scale, img.height * scale);
+                ctx.save(); ctx.beginPath(); roundRect(ctx, -w / 2 + 24, -h / 2 + 24, w - 48, h - 48, r - 10, false, false); ctx.clip();
+                // Default fit strategy: Math.min (keep entire screen visible)
+                const baseScale = Math.min((w - 48) / img.width, (h - 48) / img.height);
+                const finalScale = baseScale * zoom;
+                ctx.drawImage(img, -(img.width * finalScale) / 2, -(img.height * finalScale) / 2 + offset, img.width * finalScale, img.height * finalScale);
                 ctx.restore();
             }
             ctx.restore();

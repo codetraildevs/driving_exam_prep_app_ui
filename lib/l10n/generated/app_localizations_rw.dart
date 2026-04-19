@@ -1520,7 +1520,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get exitAppYes => 'Sohoka';
 
   @override
-  String get exitAppNo => 'Guma muri porogaramu';
+  String get exitAppNo => 'Guma hano';
 
   @override
   String get consentItemPhone => 'Nimero ya terefone n\'izina';
@@ -1552,4 +1552,11 @@ class AppLocalizationsRw extends AppLocalizations {
   @override
   String get consentSecurityNote =>
       'Amakuru yawe abitswe neza kandi ntazigera agurishwa ku bandi.';
+
+  @override
+  String get consentIndependentTitle => 'Ibirimo byigenga';
+
+  @override
+  String get consentIndependentBody =>
+      'Iyi ni porogaramu y\'uburezi yigenga. Ntabwo yunganirwa, ishyigikirwa cyangwa ihagarariye urwego rwa leta cyangwa Polisi y\'u Rwanda.';
 }

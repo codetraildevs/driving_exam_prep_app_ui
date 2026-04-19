@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import '../../shared/session/last_route_session.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/data/models/user_model.dart';
 import '../../features/auth/presentation/pages/landing_page.dart';
@@ -43,16 +44,23 @@ class AppRouter {
   final AuthBloc authBloc;
   final bool isFirstLaunch;
   final bool hasLocaleSelected;
-  /// Role from the locally-cached user — sets correct initial route immediately,
-  /// so returning users never flash the login page.
   final String? cachedUserRole;
+  /// Route saved from the previous session to restore on launch.
+  final String? restoredRoute;
 
   AppRouter({
     required this.authBloc,
     required this.isFirstLaunch,
     required this.hasLocaleSelected,
     this.cachedUserRole,
-  });
+    this.restoredRoute,
+  }) {
+    // Save current route to persistent storage whenever navigation occurs.
+    router.routerDelegate.addListener(() {
+      final String location = router.routerDelegate.currentConfiguration.uri.toString();
+      LastRouteSession().saveRoute(location);
+    });
+  }
 
   static final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
@@ -63,7 +71,10 @@ class AppRouter {
   String get _initialLocation {
     if (!hasLocaleSelected) return '/language-select';
     if (cachedUserRole != null) {
-      // User has a cached session — skip landing/login and go straight to their area.
+      // User has a cached session — try to restore their last screen.
+      if (restoredRoute != null && restoredRoute!.startsWith('/')) {
+        return restoredRoute!;
+      }
       return (cachedUserRole == 'ADMIN' || cachedUserRole == 'MANAGER')
           ? '/admin'
           : '/home';

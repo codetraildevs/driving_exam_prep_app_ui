@@ -21,9 +21,6 @@ dependencies:
   # Navigation
   go_router: ^13.2.0
 
-  # Backend
-  # (Supabase removed) Backend is now a REST API (PHP/MySQL)
-
   # UI & Design
   google_fonts: ^6.1.0
 
@@ -69,5 +66,3 @@ flutter:
         - asset: assets/fonts/Poppins-Regular.ttf
         - asset: assets/fonts/Poppins-SemiBold.ttf
         - asset: assets/fonts/Poppins-Bold.ttf
-  # Make sure the above font files exist in assets/fonts/ and are included in your repository.
-  # If you use google_fonts and set allowRuntimeFetching to false, these files must be present.

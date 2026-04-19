@@ -78,59 +78,65 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
           final l10n = AppLocalizations.of(context);
           return Scaffold(
             extendBodyBehindAppBar: true,
-            body: Column(
-              children: [
-                // Curved gradient header
-                ClipPath(
-                  clipper: _CurvedHeaderClipper(),
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).padding.top + 32,
-                      bottom: 40,
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: AppColors.primaryGradientFor(
-                          Theme.of(context).brightness),
-                    ),
-                    child: Column(
-                      children: [
-                        const Icon(Icons.language,
-                            size: 40, color: Colors.white),
-                        const SizedBox(height: 10),
-                        Text(
-                          l10n.languageSelectTitle,
-                          style: AppTextStyles.heading3.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+            body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  // Curved gradient header
+                  ClipPath(
+                    clipper: _CurvedHeaderClipper(),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top + 24,
+                        bottom: 32,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: AppColors.primaryGradientFor(
+                            Theme.of(context).brightness),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.language,
+                              size: 36, color: Colors.white),
+                          const SizedBox(height: 8),
+                          Text(
+                            l10n.languageSelectTitle,
+                            style: AppTextStyles.heading4.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          l10n.languageSelectDescription,
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: Colors.white.withOpacity(0.85),
+                          const SizedBox(height: 4),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Text(
+                              l10n.languageSelectDescription,
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: Colors.white.withOpacity(0.85),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-
-                // Body content
-                Expanded(
-                  child: Padding(
+          
+                  // Body content
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Row(
                           children: [
                             Expanded(
                               child: OutlinedButton.icon(
                                 onPressed: _useDeviceLanguage,
-                                icon: const Icon(Icons.phone_iphone_outlined),
+                                icon: const Icon(Icons.phone_iphone_outlined, size: 18),
                                 label: Text(l10n.languageSelectDeviceLanguage),
                                 style: OutlinedButton.styleFrom(
                                   foregroundColor: AppColors.primary,
@@ -141,7 +147,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 12),
+                                      const EdgeInsets.symmetric(vertical: 10),
                                 ),
                               ),
                             ),
@@ -156,17 +162,14 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                             )
                           ],
                         ),
-
-                        const SizedBox(height: 18),
-
-                        // Language options: responsive layout (grid on wide, list on narrow)
-                        Expanded(
-                          child:
-                              isWide ? _buildGridOptions() : _buildListOptions(),
-                        ),
-
+          
+                        const SizedBox(height: 16),
+          
+                        // Language options: list or grid based on width
+                        isWide ? _buildGridOptions() : _buildListOptions(),
+          
                         // CTA area
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 16),
                         Row(
                           children: [
                             Expanded(
@@ -174,11 +177,10 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                             ),
                           ],
                         ),
-
-                        const SizedBox(height: 8),
+          
+                        const SizedBox(height: 12),
                         TextButton(
                           onPressed: () {
-                            // Allow user to skip for now; still navigate to landing but don't persist a selection.
                             context.go('/landing');
                           },
                           child: Text(
@@ -187,11 +189,12 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                                 .copyWith(color: AppColors.neutral600),
                           ),
                         ),
+                        SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }),
@@ -241,6 +244,8 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
 
   Widget _buildListOptions() {
     return ListView(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(top: 4, bottom: 8),
       children: LocaleProvider.supportedLocales.map((locale) {
         final code = locale.languageCode;
@@ -265,6 +270,8 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
         .map((l) => l.languageCode)
         .toList(growable: false);
     return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,

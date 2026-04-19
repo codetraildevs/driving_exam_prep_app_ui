@@ -35,40 +35,91 @@ class HomePage extends StatelessWidget {
 
 
 
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-      ),
-      child: Scaffold(
-        body: Column(
-          children: [
-            _CompactHeader(l10n: l10n, userName: userName, phoneNumber: phoneNumber),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(16, 14, 16, 32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _CompactAccessCard(l10n: l10n),
-                    const SizedBox(height: 20),
-                    Text(
-                   l10n.homeServices,
-                      style: AppTextStyles.labelLarge.copyWith(
-                        fontWeight: FontWeight.w700,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        final shouldExit = await _showExitDialog(context, l10n);
+        if (shouldExit && context.mounted) {
+          SystemNavigator.pop();
+        }
+      },
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
+        ),
+        child: Scaffold(
+          body: Column(
+            children: [
+              _CompactHeader(l10n: l10n, userName: userName, phoneNumber: phoneNumber),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(16, 14, 16, 32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _CompactAccessCard(l10n: l10n),
+                      const SizedBox(height: 20),
+                      Text(
+                        l10n.homeServices,
+                        style: AppTextStyles.labelLarge.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 12),
-                    _ResponsiveServicesGrid(l10n: l10n),
-                  ],
+                      const SizedBox(height: 12),
+                      _ResponsiveServicesGrid(l10n: l10n),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Future<bool> _showExitDialog(BuildContext context, AppLocalizations l10n) async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            title: Row(
+              children: [
+                const Icon(Icons.exit_to_app_rounded, color: AppColors.error),
+                const SizedBox(width: 12),
+                Text(l10n.exitAppTitle, style: AppTextStyles.heading4),
+              ],
+            ),
+            content: Text(
+              l10n.exitAppMessage,
+              style: AppTextStyles.bodyMedium,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx, false),
+                child: Text(
+                  l10n.exitAppNo,
+                  style: AppTextStyles.labelLarge.copyWith(color: AppColors.neutral600),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(ctx, true),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.error,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  elevation: 0,
+                ),
+                child: Text(l10n.exitAppYes),
+              ),
+            ],
+          ),
+        ) ??
+        false;
   }
 }
 

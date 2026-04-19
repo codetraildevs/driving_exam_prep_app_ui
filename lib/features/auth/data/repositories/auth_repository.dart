@@ -155,7 +155,12 @@ class AuthRepository {
       }
       return await _session.getUser();
     } catch (e) {
-      rethrow;
+      if (kDebugMode) {
+        debugPrint('[AUTH][fetchUserProfile][OFFLINE_FALLBACK] $e');
+      }
+      // On network failure, fall back to the locally cached user session.
+      // This allows returning users to reach the dashboard without internet.
+      return await _session.getUser();
     }
   }
 

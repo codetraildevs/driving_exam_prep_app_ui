@@ -65,6 +65,13 @@
       ]
     },
     {
+      "name": "screen_protector",
+      "version": "1.5.1",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
       "name": "cupertino_icons",
       "version": "1.0.8",
       "dependencies": []
@@ -749,13 +756,6 @@
         "file",
         "path",
         "string_scanner"
-      ]
-    },
-    {
-      "name": "screen_protector",
-      "version": "1.5.1",
-      "dependencies": [
-        "flutter"
       ]
     }
   ],

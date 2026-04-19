@@ -14,6 +14,7 @@ import 'shared/network/api_config.dart';
 import 'shared/network/sync_service.dart';
 import 'shared/session/app_launch_session.dart';
 import 'shared/session/auth_session.dart';
+import 'shared/session/last_route_session.dart';
 import 'shared/subscription/subscription_provider.dart';
 import 'shared/theme/theme_provider.dart';
 import 'shared/widgets/data_consent_dialog.dart';
@@ -40,12 +41,15 @@ void main() async {
 
   final authBloc = AuthBloc()..add(const CheckAuthStatusEvent());
 
+  final lastRoute = await LastRouteSession().getSavedRoute();
+
   runApp(TrafficRulesApp(
     authBloc: authBloc,
     isFirstLaunch: isFirstLaunch,
     localeProvider: localeProvider,
     themeProvider: themeProvider,
     cachedUserRole: cachedUser?.role,
+    restoredRoute: lastRoute,
   ));
 }
 
@@ -56,6 +60,7 @@ class TrafficRulesApp extends StatefulWidget {
   final ThemeProvider themeProvider;
   /// Role from the locally-cached user — used to set the correct initial route.
   final String? cachedUserRole;
+  final String? restoredRoute;
 
   const TrafficRulesApp({
     required this.authBloc,
@@ -63,6 +68,7 @@ class TrafficRulesApp extends StatefulWidget {
     required this.localeProvider,
     required this.themeProvider,
     this.cachedUserRole,
+    this.restoredRoute,
     Key? key,
   }) : super(key: key);
 
@@ -83,6 +89,7 @@ class _TrafficRulesAppState extends State<TrafficRulesApp> {
       isFirstLaunch: widget.isFirstLaunch,
       hasLocaleSelected: widget.localeProvider.hasLocaleSelected,
       cachedUserRole: widget.cachedUserRole,
+      restoredRoute: widget.restoredRoute,
     );
     _subscriptionProvider = SubscriptionProvider();
 
@@ -105,6 +112,7 @@ class _TrafficRulesAppState extends State<TrafficRulesApp> {
         SyncService().syncPendingResults();
       } else if (authState is AuthUnauthenticated) {
         _subscriptionProvider.clearStatus();
+        LastRouteSession().clear();
       }
     });
   }

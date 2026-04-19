@@ -230,6 +230,54 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                           ),
                         ),
 
+                        const SizedBox(height: 12),
+
+                        // Independent Content Disclaimer (Google Play Compliance)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.amber.withValues(alpha: 0.08),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.amber.withValues(alpha: 0.3),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.info_outline_rounded,
+                                    size: 18,
+                                    color: Colors.amber,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    l10n.consentIndependentTitle,
+                                    style: AppTextStyles.bodySmall.copyWith(
+                                      color: textColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                l10n.consentIndependentBody,
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  color: subtextColor,
+                                  fontSize: 11,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
                         const SizedBox(height: 16),
 
                         // Privacy policy link

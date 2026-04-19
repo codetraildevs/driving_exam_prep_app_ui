@@ -2871,6 +2871,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your data is stored securely and never sold to third parties.'**
   String get consentSecurityNote;
+
+  /// No description provided for @consentIndependentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Independent Content'**
+  String get consentIndependentTitle;
+
+  /// No description provided for @consentIndependentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This is an independent educational tool. It is NOT affiliated with, endorsed by, or representing any government entity or the Rwanda National Police.'**
+  String get consentIndependentBody;
 }
 
 class _AppLocalizationsDelegate

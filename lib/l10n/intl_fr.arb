@@ -467,7 +467,9 @@
     "exitAppTitle":  "Quitter l\u0027application",
     "exitAppMessage":  "Êtes-vous sûr de vouloir quitter l\u0027application ?",
     "exitAppYes":  "Quitter",
-    "exitAppNo":  "Rester",
+    "exitAppNo": "Rester",
+    "consentIndependentTitle": "Contenu indépendant",
+    "consentIndependentBody": "Ceci est un outil éducatif indépendant. Il n'est PAS affilié, approuvé ou représentant d'une entité gouvernementale ou de la Police Nationale du Rwanda.",
     "@appTitle":  {
                       "description":  "The title of the application"
                   },
