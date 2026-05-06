@@ -84,6 +84,9 @@
   "homeShareAppSubtitle": "Invite friends",
   "@homeShareAppSubtitle": { "description": "Service card subtitle" },
 
+  "homeShareAppMessage": "Download Rwanda Traffic Rule to learn traffic rules and pass your exam!",
+  "@homeShareAppMessage": { "description": "Sharing message text" },
+
   "settingsTitle": "Settings",
   "@settingsTitle": { "description": "Settings page app bar title" },
 

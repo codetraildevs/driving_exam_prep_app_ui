@@ -11,6 +11,8 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../shared/subscription/subscription_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
+import '../../../../config/app_config.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -485,7 +487,11 @@ class _ResponsiveServicesGrid extends StatelessWidget {
         title: l10n.homeShareApp,
         subtitle: l10n.homeShareAppSubtitle,
         color: AppColors.primaryLight,
-        onTap: () {},
+        onTap: () {
+          Share.share(
+            '${l10n.homeShareAppMessage} ${AppConfig.playStoreUrl}',
+          );
+        },
       ),
     ];
   }

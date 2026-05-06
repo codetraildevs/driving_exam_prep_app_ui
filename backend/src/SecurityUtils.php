@@ -6,7 +6,7 @@ class SecurityUtils
 
     public static function init($secret = null)
     {
-        self::$jwtSecret = $secret ?: getenv('JWT_SECRET') ?: 'your-secret-key-change-in-production';
+        self::$jwtSecret = $secret ?: Env::get('JWT_SECRET') ?: 'your-secret-key-change-in-production';
     }
 
     /**

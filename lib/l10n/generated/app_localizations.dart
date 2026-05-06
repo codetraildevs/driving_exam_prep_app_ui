@@ -226,6 +226,12 @@ abstract class AppLocalizations {
   /// **'Invite friends'**
   String get homeShareAppSubtitle;
 
+  /// Sharing message text
+  ///
+  /// In en, this message translates to:
+  /// **'Download Rwanda Traffic Rule to learn traffic rules and pass your exam!'**
+  String get homeShareAppMessage;
+
   /// Settings page app bar title
   ///
   /// In en, this message translates to:

@@ -26,11 +26,16 @@ class ErrorHandler
         ];
 
         // Only include error details in development mode
-        if ($details && (getenv('APP_ENV') === 'development' || getenv('DEBUG') === 'true')) {
+        if ($details && (Env::get('APP_ENV') === 'development' || Env::get('DEBUG') === 'true')) {
             $response['error'] = $details;
         }
 
-        echo json_encode($response);
+        $json = json_encode($response);
+        if ($json === false) {
+            echo '{"success":false,"message":"Internal Server Error (JSON encoding failed)"}';
+        } else {
+            echo $json;
+        }
         exit();
     }
 
@@ -61,7 +66,14 @@ class ErrorHandler
 
     public static function serverError($message = 'Internal server error', $details = null)
     {
-        Logger::error($message, ['details' => $details]);
+        // Recursion guard for logger
+        static $inError = false;
+        if (!$inError) {
+            $inError = true;
+            Logger::error($message, ['details' => $details]);
+            $inError = false;
+        }
+        
         self::error($message, 500);
     }
 
@@ -69,7 +81,7 @@ class ErrorHandler
     {
         Logger::error('Database error', ['error' => $error]);
         // Don't expose database details in production
-        if (getenv('APP_ENV') === 'production') {
+        if (Env::get('APP_ENV') === 'production') {
             return 'Database error occurred';
         }
         return $error;

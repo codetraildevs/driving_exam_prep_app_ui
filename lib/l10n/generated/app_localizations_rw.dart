@@ -89,6 +89,10 @@ class AppLocalizationsRw extends AppLocalizations {
   String get homeShareAppSubtitle => 'Tumira inshuti';
 
   @override
+  String get homeShareAppMessage =>
+      'Download Rwanda Traffic Rule kugira ngo wige amategeko y\'umuhanda kandi utsinde ikizamini cyawe!';
+
+  @override
   String get settingsTitle => 'Igenamiterere';
 
   @override

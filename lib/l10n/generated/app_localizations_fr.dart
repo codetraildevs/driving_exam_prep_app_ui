@@ -89,6 +89,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeShareAppSubtitle => 'Inviter des amis';
 
   @override
+  String get homeShareAppMessage =>
+      'Téléchargez Rwanda Traffic Rule pour apprendre le code de la route et réussir votre examen !';
+
+  @override
   String get settingsTitle => 'Paramètres';
 
   @override

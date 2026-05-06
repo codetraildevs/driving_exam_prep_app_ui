@@ -1,20 +1,11 @@
 <?php
-
-// Load environment vars from .env file
-$envFile = __DIR__ . '/../.env';
-if (file_exists($envFile)) {
-    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
-            list($key, $value) = explode('=', $line, 2);
-            putenv(trim($key) . '=' . trim($value));
-        }
-    }
-}
+require_once __DIR__ . '/../src/Env.php';
+Env::load(__DIR__ . '/../.env');
 
 // Set application environment
-if (!getenv('APP_ENV')) {
-    putenv('APP_ENV=development');
+if (!Env::get('APP_ENV')) {
+    $_ENV['APP_ENV'] = 'development';
+    $_SERVER['APP_ENV'] = 'development';
 }
 
 // Load utility classes
@@ -25,11 +16,42 @@ require_once __DIR__ . '/../src/Database.php';
 
 // Set error handler
 set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+    // Avoid recursion if logger fails
+    static $inError = false;
+    if ($inError) return false;
+    $inError = true;
+
     Logger::error("PHP Error: $errstr", ['file' => $errfile, 'line' => $errline]);
-    if (getenv('APP_ENV') !== 'production') {
+    
+    $inError = false;
+    if (Env::get('APP_ENV') !== 'production') {
         ErrorHandler::serverError($errstr);
     } else {
         ErrorHandler::serverError('An error occurred');
+    }
+});
+
+// Set exception handler for Fatal Errors and Uncaught Exceptions
+set_exception_handler(function ($exception) {
+    // Avoid recursion
+    static $inException = false;
+    if ($inException) {
+        http_response_code(500);
+        echo '{"success":false,"message":"Fatal error during exception handling"}';
+        exit();
+    }
+    $inException = true;
+
+    Logger::error("Uncaught Exception: " . $exception->getMessage(), [
+        'file' => $exception->getFile(),
+        'line' => $exception->getLine(),
+        'trace' => $exception->getTraceAsString()
+    ]);
+    
+    if (Env::get('APP_ENV') !== 'production') {
+        ErrorHandler::serverError($exception->getMessage(), $exception->getTraceAsString());
+    } else {
+        ErrorHandler::serverError('Internal Server Error');
     }
 });
 
@@ -43,8 +65,8 @@ header('X-XSS-Protection: 1; mode=block');
 header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
 
 // CORS - Allow specific origins in production
-$allowedOrigins = explode(',', getenv('ALLOWED_ORIGINS') ?: '*');
-$origin = $_SERVER['HTTP_ORIGIN'] ?? null;
+$allowedOrigins = explode(',', Env::get('ALLOWED_ORIGINS') ?: '*');
+$origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : null;
 
 if (in_array('*', $allowedOrigins) || in_array($origin, $allowedOrigins)) {
     header('Access-Control-Allow-Origin: ' . ($origin ?: '*'));
@@ -206,7 +228,8 @@ $routes = [
 $matched = false;
 $params = [];
 
-foreach ($routes as [$route_method, $route_path, $handler]) {
+foreach ($routes as $route) {
+    list($route_method, $route_path, $handler) = $route;
     if ($route_method !== $method) continue;
     
     if (matchRoute($route_path, $path, $params)) {
@@ -254,7 +277,7 @@ function fullUrl($path) {
     if (!$path) return null;
     if (preg_match('#^https?://#i', $path)) return $path;
     $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
     if (strpos($path, '/') === 0) {
         return $scheme . '://' . $host . $path;
     }
@@ -270,7 +293,18 @@ function requireRole($tokenData, $allowedRoles = ['ADMIN']) {
 
 function generateUUID() {
     // Generate a v4 UUID
-    $data = random_bytes(16);
+    $data = null;
+    if (function_exists('random_bytes')) {
+        $data = random_bytes(16);
+    } elseif (function_exists('openssl_random_pseudo_bytes')) {
+        $data = openssl_random_pseudo_bytes(16);
+    } else {
+        $data = '';
+        for ($i = 0; $i < 16; $i++) {
+            $data .= chr(mt_rand(0, 255));
+        }
+    }
+    
     $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
     $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
     return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
@@ -618,7 +652,7 @@ function createExam($conn, $params) {
         ErrorHandler::badRequest('Title must be between 3 and 255 characters');
     }
     
-    $desc = SecurityUtils::sanitizeString($input['description'] ?? '');
+    $desc = SecurityUtils::sanitizeString(isset($input['description']) ? $input['description'] : '');
     if (!SecurityUtils::validateLength($desc, 0, 1000)) {
         ErrorHandler::badRequest('Description must not exceed 1000 characters');
     }
@@ -633,14 +667,14 @@ function createExam($conn, $params) {
         ErrorHandler::badRequest('Difficulty must be between 2 and 50 characters');
     }
     
-    $courseType = SecurityUtils::sanitizeString($input['courseType'] ?? 'free');
-    $examType = strtolower(SecurityUtils::sanitizeString($input['examType'] ?? 'english'));
+    $courseType = SecurityUtils::sanitizeString(isset($input['courseType']) ? $input['courseType'] : 'free');
+    $examType = strtolower(SecurityUtils::sanitizeString(isset($input['examType']) ? $input['examType'] : 'english'));
     $validExamTypes = ['kinyarwanda', 'english', 'french'];
     if (!in_array($examType, $validExamTypes)) {
         $examType = 'english';
     }
     
-    $img = SecurityUtils::sanitizeString($input['imageUrl'] ?? '');
+    $img = SecurityUtils::sanitizeString(isset($input['imageUrl']) ? $input['imageUrl'] : '');
     $id = 'exam_' . generateUUID();
     $now = date('Y-m-d H:i:s');
     

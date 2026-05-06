@@ -10,11 +10,11 @@ class Database
             return self::$connection;
         }
 
-        $host = getenv('DB_HOST') ?: '127.0.0.1';
-        $port = getenv('DB_PORT') ?: '3306';
-        $db   = getenv('DB_NAME') ?: 'traffic_rules_db';
-        $user = getenv('DB_USER') ?: 'root';
-        $pass = getenv('DB_PASS') ?: '';
+        $host = Env::get('DB_HOST', '127.0.0.1');
+        $port = Env::get('DB_PORT', '3306');
+        $db   = Env::get('DB_NAME', 'traffic_rules_db');
+        $user = Env::get('DB_USER', 'root');
+        $pass = Env::get('DB_PASS', '');
 
         self::$connection = mysqli_connect($host, $user, $pass, $db, intval($port));
 
@@ -45,8 +45,14 @@ class Database
         }
 
         if (!empty($params)) {
-            if (!mysqli_stmt_bind_param($stmt, $types, ...$params)) {
-                Logger::error('Bind param failed', ['error' => mysqli_error($conn)]);
+            $bind_params = array();
+            $bind_params[] = $stmt;
+            $bind_params[] = $types;
+            foreach ($params as $key => &$val) {
+                $bind_params[] = &$val;
+            }
+            if (!call_user_func_array('mysqli_stmt_bind_param', $bind_params)) {
+                Logger::error('Bind param failed', array('error' => mysqli_error($conn)));
                 return null;
             }
         }
@@ -69,10 +75,18 @@ class Database
             return null;
         }
 
-        $result = mysqli_stmt_get_result($stmt);
-        $row = mysqli_fetch_assoc($result);
-        mysqli_stmt_close($stmt);
+        $row = null;
+        if (function_exists('mysqli_stmt_get_result')) {
+            $result = mysqli_stmt_get_result($stmt);
+            if ($result) {
+                $row = mysqli_fetch_assoc($result);
+            }
+        } else {
+            // Fallback for environments without mysqlnd
+            $row = self::fetchManual($stmt);
+        }
 
+        mysqli_stmt_close($stmt);
         return $row;
     }
 
@@ -86,14 +100,57 @@ class Database
             return [];
         }
 
-        $result = mysqli_stmt_get_result($stmt);
         $rows = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $rows[] = $row;
+        if (function_exists('mysqli_stmt_get_result')) {
+            $result = mysqli_stmt_get_result($stmt);
+            if ($result) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $rows[] = $row;
+                }
+            }
+        } else {
+            // Fallback for environments without mysqlnd
+            while ($row = self::fetchManual($stmt)) {
+                $rows[] = $row;
+            }
         }
-        mysqli_stmt_close($stmt);
 
+        mysqli_stmt_close($stmt);
         return $rows;
+    }
+
+    /**
+     * Fallback for mysqli_stmt_get_result using bind_result
+     * Necessary for servers without mysqlnd driver
+     */
+    private static function fetchManual($stmt)
+    {
+        $meta = mysqli_stmt_result_metadata($stmt);
+        if (!$meta) {
+            return null;
+        }
+
+        $fields = mysqli_fetch_fields($meta);
+        $data = [];
+        $params = [];
+
+        foreach ($fields as $field) {
+            $params[] = &$data[$field->name];
+        }
+
+        if (!call_user_func_array([$stmt, 'bind_result'], $params)) {
+            return null;
+        }
+
+        if (mysqli_stmt_fetch($stmt)) {
+            $row = [];
+            foreach ($data as $key => $val) {
+                $row[$key] = $val;
+            }
+            return $row;
+        }
+
+        return null;
     }
 
     /**

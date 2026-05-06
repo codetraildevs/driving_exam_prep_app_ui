@@ -18,17 +18,38 @@ class Logger
         self::$initialized = true;
     }
 
+    private static $isLogging = false;
+
     public static function log($message, $level = 'INFO', $context = [])
     {
         if (!self::$initialized) {
             self::init();
         }
 
+        // Prevent infinite recursion if logging itself fails
+        if (self::$isLogging) {
+            return;
+        }
+        self::$isLogging = true;
+
         $timestamp = date('Y-m-d H:i:s');
         $contextStr = !empty($context) ? ' | ' . json_encode($context) : '';
         $logMessage = "[$timestamp] [$level] $message$contextStr\n";
 
-        error_log($logMessage, 3, self::$logFile);
+        // Try to write to file, fallback to system error_log if it fails
+        if (self::$logFile) {
+            // Check if directory is writable if we need to create the file
+            $logDir = dirname(self::$logFile);
+            if (is_writable($logDir) || (!file_exists(self::$logFile) && is_writable($logDir))) {
+                @error_log($logMessage, 3, self::$logFile);
+            } else {
+                @error_log("FALLBACK: " . $logMessage);
+            }
+        } else {
+            @error_log($logMessage);
+        }
+
+        self::$isLogging = false;
     }
 
     public static function info($message, $context = [])
@@ -48,7 +69,7 @@ class Logger
 
     public static function debug($message, $context = [])
     {
-        if (getenv('DEBUG') === 'true' || getenv('APP_ENV') === 'development') {
+        if (Env::get('DEBUG') === 'true' || Env::get('APP_ENV') === 'development') {
             self::log($message, 'DEBUG', $context);
         }
     }

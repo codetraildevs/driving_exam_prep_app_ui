@@ -18,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// and the app works even if the native channel is temporarily unavailable.
 class DeviceId {
   static const _key = 'device_id';
-  static const _channel = MethodChannel('com.driveprep.rwanda/device_id');
+  static const _channel = MethodChannel('com.trafficrules.rwanda.app/device_id');
 
   Future<String> getOrCreate() async {
     final prefs = await SharedPreferences.getInstance();

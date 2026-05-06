@@ -87,6 +87,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeShareAppSubtitle => 'Invite friends';
 
   @override
+  String get homeShareAppMessage =>
+      'Download Rwanda Traffic Rule to learn traffic rules and pass your exam!';
+
+  @override
   String get settingsTitle => 'Settings';
 
   @override

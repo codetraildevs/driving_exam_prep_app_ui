@@ -15,8 +15,15 @@ Pass your Rwanda driving exam with expert questions in EN, FR & Kinyarwanda.
 ## Full Description (max 4000 characters)
 
 ```
-⚠️ IMPORTANT INDEPENDENT NOTICE
-Rwanda Traffic Rule is an independent educational application. This app is NOT affiliated with, endorsed by, or connected to any government authority, official examination body, or driving school in Rwanda. All content is developed for educational and practice purposes only and does not guarantee official exam results.
+⚠️ INDEPENDENT EDUCATIONAL DISCLAIMER & GOVERNMENT SOURCES
+Rwanda Traffic Rule is an INDEPENDENT educational application and is NOT affiliated with, endorsed by, or connected to any government entity, the Rwanda National Police, or any official examination body in Rwanda.
+
+The traffic rules and learning materials provided in this app are sourced from public official government information. You can find the original sources here:
+• Rwanda National Police (Traffic Regulations): https://www.police.gov.rw
+• Rwanda Utilities Regulatory Authority (Transport Laws): https://www.rura.rw
+• Irembo Government Portal: https://www.irembo.gov.rw
+
+All content is developed for educational and practice purposes only. This app does not facilitate government services and does not guarantee official exam results.
 
 ---
 

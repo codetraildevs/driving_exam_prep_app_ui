@@ -14,7 +14,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.driveprep.rwanda"
+    namespace = "com.trafficrules.rwanda.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -28,7 +28,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.driveprep.rwanda"
+        applicationId = "com.trafficrules.rwanda.app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
