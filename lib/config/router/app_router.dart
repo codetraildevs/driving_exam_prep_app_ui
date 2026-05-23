@@ -129,7 +129,14 @@ class AppRouter {
         return _isAdmin(user) ? '/admin' : '/home';
       }
 
+      // Don't redirect to login while auth is still being checked (AuthInitial)
+      // or when there's a transient error (AuthError) — the user may have a
+      // valid cached session and should stay on the dashboard offline.
       if (!isAuthenticated && isProtectedPage) {
+        if (authState is AuthInitial || authState is AuthLoading) {
+          // Auth check is still running — don't redirect yet.
+          return null;
+        }
         return '/login';
       }
 

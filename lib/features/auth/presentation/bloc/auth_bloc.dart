@@ -48,7 +48,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           if (user != null) {
             emit(AuthAuthenticated(user));
           } else {
-            emit(const AuthUnauthenticated());
+            // fetchUserProfile returned null but we have a token — try the
+            // locally cached user so offline users still reach the dashboard.
+            final cached = await _authRepository.getCurrentUser();
+            if (cached != null) {
+              emit(AuthAuthenticated(cached));
+            } else {
+              emit(const AuthUnauthenticated());
+            }
           }
         } else {
           emit(const AuthUnauthenticated());
@@ -57,7 +64,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthUnauthenticated());
       }
     } catch (e) {
-      emit(AuthError(_friendlyError(e)));
+      // On network errors, fall back to the cached session so returning
+      // users can reach the dashboard without an internet connection.
+      final cached = await _authRepository.getCurrentUser();
+      if (cached != null) {
+        emit(AuthAuthenticated(cached));
+      } else {
+        emit(AuthError(_friendlyError(e)));
+      }
     }
   }
 

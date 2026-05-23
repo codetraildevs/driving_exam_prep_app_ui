@@ -113,13 +113,16 @@ class _ProgressPageState extends State<ProgressPage>
             setState(() => _results = cached);
             _animCtrl.forward(from: 0);
           } else {
-            setState(() => _error = e.toString());
+            final msg = mounted ? AppLocalizations.of(context).commonNetworkError : null;
+            setState(() => _error = msg ?? 'You are offline and have no cached progress.');
           }
         } else {
-          setState(() => _error = e.toString());
+          final msg = mounted ? AppLocalizations.of(context).commonNetworkError : null;
+          setState(() => _error = msg ?? 'You are offline and have no cached progress.');
         }
       } catch (_) {
-        setState(() => _error = e.toString());
+        final msg = mounted ? AppLocalizations.of(context).commonNetworkError : null;
+        setState(() => _error = msg ?? 'You are offline and have no cached progress.');
       }
     } finally {
       setState(() => _isLoading = false);

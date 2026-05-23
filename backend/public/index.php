@@ -367,22 +367,25 @@ function authRegister($conn, $params) {
     }
     
     // Check existing phone
-    $existing = Database::fetchOne($conn, 'SELECT id, deviceId FROM users WHERE phoneNumber = ? LIMIT 1', 's', [&$phone]);
+    $existing = Database::fetchOne($conn, 'SELECT id, deviceId, role FROM users WHERE phoneNumber = ? LIMIT 1', 's', [&$phone]);
     if ($existing) {
-        if ($existing['deviceId'] === $device) {
-            Logger::info('Registration attempt with existing phone on same device', ['phone' => substr($phone, -4)]);
-            ErrorHandler::conflict('Phone already registered on this device. Please login instead.');
+        if ($existing['deviceId'] === $device || $existing['role'] === 'ADMIN' || $existing['role'] === 'MANAGER') {
+            Logger::info('Registration attempt with existing phone', ['phone' => substr($phone, -4)]);
+            ErrorHandler::conflict('You already have an account with this phone number. Please go back and tap "Log In".');
         } else {
             Logger::warning('Phone registered on different device', ['phone' => substr($phone, -4)]);
-            ErrorHandler::conflict('Phone is registered on a different device. Please use that device or contact support.');
+            ErrorHandler::conflict('This phone number is already registered on a different phone. Please log in on your original phone or contact support.');
         }
     }
 
-    // Check existing device
-    $existingDevice = Database::fetchOne($conn, 'SELECT id, phoneNumber FROM users WHERE deviceId = ? LIMIT 1', 's', [&$device]);
+    // Check existing device (Anti-Fraud: 1 device = 1 account)
+    $existingDevice = Database::fetchOne($conn, 'SELECT id, phoneNumber, role FROM users WHERE deviceId = ? LIMIT 1', 's', [&$device]);
     if ($existingDevice) {
-        Logger::warning('Device already registered', ['device' => substr($device, -4)]);
-        ErrorHandler::conflict('This device is already registered. Please login or use a different device.');
+        // Allow Admins/Managers to test registration without locking the device permanently
+        if ($existingDevice['role'] !== 'ADMIN' && $existingDevice['role'] !== 'MANAGER') {
+            Logger::warning('Device already registered', ['device' => substr($device, -4)]);
+            ErrorHandler::conflict('This phone is already registered to another user. For security, only one account is allowed per device.');
+        }
     }
     
     $id = generateUUID();
