@@ -23,11 +23,11 @@ class ApiHelper {
       ).timeout(const Duration(seconds: 20));
       return _processResponse('GET', uri, response);
     } on SocketException catch (e) {
-      return _networkError('GET', uri, 'No internet connection: $e');
+      return _networkError('GET', uri, 'NETWORK_ERROR', e.toString());
     } on http.ClientException catch (e) {
-      return _networkError('GET', uri, 'Connection failed: $e');
+      return _networkError('GET', uri, 'NETWORK_ERROR', e.toString());
     } catch (e) {
-      return _networkError('GET', uri, '$e');
+      return _networkError('GET', uri, 'An unexpected error occurred', e.toString());
     }
   }
 
@@ -44,11 +44,11 @@ class ApiHelper {
       ).timeout(const Duration(seconds: 20));
       return _processResponse('POST', uri, response);
     } on SocketException catch (e) {
-      return _networkError('POST', uri, 'No internet connection: $e');
+      return _networkError('POST', uri, 'NETWORK_ERROR', e.toString());
     } on http.ClientException catch (e) {
-      return _networkError('POST', uri, 'Connection failed: $e');
+      return _networkError('POST', uri, 'NETWORK_ERROR', e.toString());
     } catch (e) {
-      return _networkError('POST', uri, '$e');
+      return _networkError('POST', uri, 'An unexpected error occurred', e.toString());
     }
   }
 
@@ -65,11 +65,11 @@ class ApiHelper {
       ).timeout(const Duration(seconds: 20));
       return _processResponse('PATCH', uri, response);
     } on SocketException catch (e) {
-      return _networkError('PATCH', uri, 'No internet connection: $e');
+      return _networkError('PATCH', uri, 'NETWORK_ERROR', e.toString());
     } on http.ClientException catch (e) {
-      return _networkError('PATCH', uri, 'Connection failed: $e');
+      return _networkError('PATCH', uri, 'NETWORK_ERROR', e.toString());
     } catch (e) {
-      return _networkError('PATCH', uri, '$e');
+      return _networkError('PATCH', uri, 'An unexpected error occurred', e.toString());
     }
   }
 
@@ -85,11 +85,11 @@ class ApiHelper {
       ).timeout(const Duration(seconds: 20));
       return _processResponse('DELETE', uri, response);
     } on SocketException catch (e) {
-      return _networkError('DELETE', uri, 'No internet connection: $e');
+      return _networkError('DELETE', uri, 'NETWORK_ERROR', e.toString());
     } on http.ClientException catch (e) {
-      return _networkError('DELETE', uri, 'Connection failed: $e');
+      return _networkError('DELETE', uri, 'NETWORK_ERROR', e.toString());
     } catch (e) {
-      return _networkError('DELETE', uri, '$e');
+      return _networkError('DELETE', uri, 'An unexpected error occurred', e.toString());
     }
   }
 
@@ -147,14 +147,14 @@ class ApiHelper {
     );
   }
 
-  ApiResponse _networkError(String method, Uri uri, String error) {
-    if (kDebugMode) debugPrint('❌ API ERROR [$method $uri]: $error');
+  ApiResponse _networkError(String method, Uri uri, String errorMessage, String rawError) {
+    if (kDebugMode) debugPrint('❌ API ERROR [$method $uri]: $rawError');
     return ApiResponse(
       statusCode: 0,
       data: null,
       isSuccess: false,
-      errorMessage: error,
-      debugInfo: '$method $uri → NETWORK ERROR: $error',
+      errorMessage: errorMessage,
+      debugInfo: '$method $uri → NETWORK ERROR: $rawError',
     );
   }
 

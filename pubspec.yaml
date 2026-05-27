@@ -2,7 +2,7 @@ name: traffic_rule_in_rwanda
 description: Learn Rwanda traffic rules and practice theory questions for the driving licence test.
 publish_to: 'none'
 
-version: 1.1.0+5
+version: 1.1.1+8
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

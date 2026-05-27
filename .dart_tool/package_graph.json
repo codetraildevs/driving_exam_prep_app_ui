@@ -5,7 +5,7 @@
   "packages": [
     {
       "name": "traffic_rule_in_rwanda",
-      "version": "1.1.0+5",
+      "version": "1.1.1+8",
       "dependencies": [
         "cupertino_icons",
         "flutter",

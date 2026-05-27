@@ -1312,7 +1312,7 @@ function updateUser($conn, $params) {
     }
 
     // Verify user exists
-    $user = Database::fetchOne($conn, 'SELECT id FROM users WHERE id = ? LIMIT 1', 's', [&$id]);
+    $user = Database::fetchOne($conn, 'SELECT id, role, phoneNumber FROM users WHERE id = ? LIMIT 1', 's', [&$id]);
     if (!$user) {
         ErrorHandler::notFound('User not found');
     }
@@ -1320,6 +1320,16 @@ function updateUser($conn, $params) {
     $input = getInput();
     if (empty($input)) {
         ErrorHandler::badRequest('No fields to update');
+    }
+
+    // Protect Admin and Demo account from being blocked
+    if (isset($input['isActive']) && (int)$input['isActive'] === 0) {
+        if ($user['role'] === 'ADMIN') {
+            ErrorHandler::forbidden('Cannot block an ADMIN account.');
+        }
+        if ($user['phoneNumber'] === '0787012615') {
+            ErrorHandler::forbidden('Cannot block the Demo account.');
+        }
     }
 
     // Fields any authenticated user may update on their own profile.
@@ -1379,6 +1389,17 @@ function deleteUser($conn, $params) {
     $id = SecurityUtils::sanitizeString($params['id']);
     if (!$id) {
         ErrorHandler::badRequest('Invalid user ID');
+    }
+    
+    // Protect Admin and Demo account
+    $targetUser = Database::fetchOne($conn, 'SELECT role, phoneNumber FROM users WHERE id = ? LIMIT 1', 's', [&$id]);
+    if ($targetUser) {
+        if ($targetUser['role'] === 'ADMIN') {
+            ErrorHandler::forbidden('Cannot delete an ADMIN account.');
+        }
+        if ($targetUser['phoneNumber'] === '0787012615') {
+            ErrorHandler::forbidden('Cannot delete the Demo account.');
+        }
     }
     
     // Allow admins/managers to delete any user, or users to delete themselves
