@@ -671,7 +671,7 @@
     }
   },
 
-  "adminDashboard": "Admin Dashboard",
+  "adminDashboard": "Dashboard",
   "@adminDashboard": { "description": "Admin dashboard page title" },
 
   "adminUsers": "Users",

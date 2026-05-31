@@ -73,6 +73,7 @@ class _MainLayoutState extends State<MainLayout> {
     return BottomNavigationBar(
       currentIndex: _getUserSelectedIndex(context),
       onTap: (index) => _onUserNavTapped(context, index),
+      type: BottomNavigationBarType.fixed,
       items: [
         BottomNavigationBarItem(
           icon: const Icon(Icons.home_outlined),
@@ -102,6 +103,7 @@ class _MainLayoutState extends State<MainLayout> {
     return BottomNavigationBar(
       currentIndex: _getAdminSelectedIndex(context),
       onTap: (index) => _onAdminNavTapped(context, index),
+      type: BottomNavigationBarType.fixed,
       items: [
         BottomNavigationBarItem(
           icon: const Icon(Icons.dashboard_outlined),
@@ -117,6 +119,11 @@ class _MainLayoutState extends State<MainLayout> {
           icon: const Icon(Icons.key_outlined),
           activeIcon: const Icon(Icons.key),
           label: l10n.adminAccess,
+        ),
+        const BottomNavigationBarItem(
+          icon: Icon(Icons.analytics_outlined),
+          activeIcon: Icon(Icons.analytics),
+          label: 'Analytics',
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.person_outlined),
@@ -140,8 +147,9 @@ class _MainLayoutState extends State<MainLayout> {
     final location = GoRouterState.of(context).uri.path;
     if (location.startsWith('/admin/users')) return 1;
     if (location.startsWith('/admin/access')) return 2;
+    if (location.startsWith('/admin/analytics')) return 3;
     if (location.startsWith('/admin')) return 0;
-    if (location.startsWith('/profile')) return 3;
+    if (location.startsWith('/profile')) return 4;
     return 0; // /admin
   }
 
@@ -174,6 +182,9 @@ class _MainLayoutState extends State<MainLayout> {
         context.go('/admin/access');
         break;
       case 3:
+        context.go('/admin/analytics');
+        break;
+      case 4:
         context.go('/profile');
         break;
     }

@@ -21,8 +21,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     with SingleTickerProviderStateMixin {
   bool _isLoading = true;
   bool _isOffline = false;
-  List<dynamic> _users = [];
-  int _totalPractices = 0;
+  Map<String, dynamic> _quickStats = {};
   String? _error;
   late AnimationController _animController;
   late Animation<double> _fadeAnim;
@@ -59,31 +58,34 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     await _loadFromCache();
 
     try {
-      final result = await ApiHelper().get('/api/admin/users');
+      final result = await ApiHelper().get('/api/admin/analytics');
 
       if (result.isSuccess) {
-        final users = result.dataList;
-        // Cache for offline use
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString(_cacheKey, json.encode({'users': users, 'ts': DateTime.now().toIso8601String()}));
-        setState(() {
-          _users = users;
-          _totalPractices = _computeTotalPractices(users);
-        });
-        _animController.forward(from: 0);
+        final data = result.data as Map<String, dynamic>?;
+        if (data != null && data.containsKey('quickStats')) {
+          final stats = data['quickStats'] as Map<String, dynamic>;
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString(_cacheKey, json.encode({'stats': stats, 'ts': DateTime.now().toIso8601String()}));
+          setState(() {
+            _quickStats = stats;
+          });
+          _animController.forward(from: 0);
+        }
       } else if (result.statusCode == 401) {
         if (!mounted) return;
         context.read<AuthBloc>().add(const SignOutEvent());
         context.go('/login');
       } else {
-        setState(() => _error = result.errorMessage);
+        if (mounted) setState(() => _error = result.errorMessage);
       }
     } catch (_) {
       // Network error — already showing cached data
-      setState(() => _isOffline = true);
-      if (_users.isEmpty) setState(() => _error = l10n.adminNoNetworkError);
+      if (mounted) {
+        setState(() => _isOffline = true);
+        if (_quickStats.isEmpty) setState(() => _error = l10n.adminNoNetworkError);
+      }
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -93,11 +95,10 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
       final raw = prefs.getString(_cacheKey);
       if (raw != null) {
         final decoded = json.decode(raw);
-        final users = decoded['users'] ?? [];
-        if (mounted) {
+        final stats = decoded['stats'] as Map<String, dynamic>? ?? {};
+        if (mounted && stats.isNotEmpty) {
           setState(() {
-            _users = users;
-            _totalPractices = _computeTotalPractices(users);
+            _quickStats = stats;
           });
           _animController.forward(from: 0);
         }
@@ -105,37 +106,17 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     } catch (_) {}
   }
 
-  int _computeTotalPractices(List users) {
-    // Sum practice attempts across all users if the field exists
-    int total = 0;
-    for (final u in users) {
-      total += (u['practiceCount'] ?? u['practice_count'] ?? 0) as int;
-    }
-    // Return 0 when the backend doesn't expose per-user practice counts yet;
-    // the field will be populated once the API supports it.
-    return total;
-  }
-
-  int get _totalUsers => _users.length;
-
-  int get _activeSubscriptions => _users.where((u) {
-        final access = u['access'] ?? u['subscription'];
-        if (access == null) return false;
-        final exp = access['expires_at'] ?? access['expiresAt'];
-        if (exp == null) return false;
-        return DateTime.tryParse(exp.toString())?.isAfter(DateTime.now()) ?? false;
-      }).length;
+  int get _totalUsers => _quickStats['totalUsers'] as int? ?? 0;
+  int get _totalPractices => _quickStats['totalPractices'] as int? ?? 0;
+  int get _activeSubscriptions => _quickStats['activeSubscriptions'] as int? ?? 0;
 
   Map<String, int> get _usersByLanguage {
-    final Map<String, int> counts = {'rw': 0, 'en': 0, 'fr': 0};
-    for (final u in _users) {
-      final lang = (u['preferredLanguage'] ?? u['preferred_language'] ?? 'en')
-          .toString()
-          .toLowerCase();
-      counts[counts.containsKey(lang) ? lang : 'en'] =
-          (counts[counts.containsKey(lang) ? lang : 'en'] ?? 0) + 1;
-    }
-    return counts;
+    final langData = _quickStats['usersByLanguage'] as Map<String, dynamic>? ?? {};
+    return {
+      'rw': (langData['rw'] ?? 0) as int,
+      'en': (langData['en'] ?? 0) as int,
+      'fr': (langData['fr'] ?? 0) as int,
+    };
   }
 
   @override
@@ -286,10 +267,10 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
   }
 
   Widget _buildBody(BuildContext context, AppLocalizations l10n) {
-    if (_isLoading && _users.isEmpty) {
+    if (_isLoading && _quickStats.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
-    if (_error != null && _users.isEmpty) {
+    if (_error != null && _quickStats.isEmpty) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(24),

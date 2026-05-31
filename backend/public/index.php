@@ -212,6 +212,7 @@ $routes = [
     
     // Admin user management
     ['GET', '/api/admin/users', 'adminListUsers'],
+    ['GET', '/api/admin/analytics', 'adminAnalytics'],
     ['PATCH', '/api/admin/users/:userId/block', 'adminBlockUser'],
     ['DELETE', '/api/admin/users/:userId', 'adminDeleteUser'],
     ['POST', '/api/admin/users/:userId/grant-access', 'adminGrantAccess'],
@@ -2199,5 +2200,102 @@ function adminMarkCalled($conn, $params) {
         'lastCalledBy' => $adminId,
         'callNotes'    => $notes,
         'message'      => 'Call logged successfully',
+    ], 200);
+}
+
+function adminAnalytics($conn, $params) {
+    global $tokenData;
+    requireRole($tokenData, ['ADMIN', 'MANAGER']);
+
+    $dateFrom = SecurityUtils::sanitizeString($_GET['dateFrom'] ?? '');
+    $dateTo   = SecurityUtils::sanitizeString($_GET['dateTo'] ?? '');
+
+    // 1. Overall Quick Stats
+    $totalUsersRow = Database::fetchOne($conn, 'SELECT COUNT(*) as total FROM users');
+    $totalUsers = $totalUsersRow ? intval($totalUsersRow['total']) : 0;
+
+    $totalPracticesRow = Database::fetchOne($conn, 'SELECT COUNT(*) as total FROM exam_results');
+    $totalPractices = $totalPracticesRow ? intval($totalPracticesRow['total']) : 0;
+
+    $activeSubsRow = Database::fetchOne($conn, 'SELECT COUNT(DISTINCT userId) as total FROM access_codes WHERE expiresAt > NOW()');
+    $activeSubscriptions = $activeSubsRow ? intval($activeSubsRow['total']) : 0;
+
+    $usersByLangRaw = Database::fetchAll($conn, 'SELECT preferredLanguage, COUNT(*) as count FROM users GROUP BY preferredLanguage', '', []);
+    $usersByLanguage = ['rw' => 0, 'en' => 0, 'fr' => 0];
+    if ($usersByLangRaw) {
+        foreach ($usersByLangRaw as $row) {
+            $lang = strtolower($row['preferredLanguage'] ?? 'en');
+            if (isset($usersByLanguage[$lang])) {
+                $usersByLanguage[$lang] += intval($row['count']);
+            } else {
+                $usersByLanguage['en'] += intval($row['count']);
+            }
+        }
+    }
+
+    // 2. Filtered Analytics
+    $conditions = [];
+    $bindTypes  = '';
+    $bindValues = [];
+
+    if (!empty($dateFrom) && !empty($dateTo)) {
+        $conditions[] = 'completedAt BETWEEN ? AND ?';
+        $bindTypes  .= 'ss';
+        $bindValues[] = $dateFrom . ' 00:00:00';
+        $bindValues[] = $dateTo   . ' 23:59:59';
+    } elseif (!empty($dateFrom)) {
+        $conditions[] = 'completedAt >= ?';
+        $bindTypes  .= 's';
+        $bindValues[] = $dateFrom . ' 00:00:00';
+    } elseif (!empty($dateTo)) {
+        $conditions[] = 'completedAt <= ?';
+        $bindTypes  .= 's';
+        $bindValues[] = $dateTo . ' 23:59:59';
+    }
+
+    $where = empty($conditions) ? '' : 'WHERE ' . implode(' AND ', $conditions);
+
+    // Prepare references for parameterized queries
+    $bindRefs = [];
+    foreach ($bindValues as $k => &$v) { $bindRefs[] = &$v; }
+    unset($v);
+
+    $filteredTotalExamsRow = empty($bindValues) 
+        ? Database::fetchOne($conn, "SELECT COUNT(*) as total FROM exam_results $where")
+        : Database::fetchOne($conn, "SELECT COUNT(*) as total FROM exam_results $where", $bindTypes, $bindRefs);
+    $filteredTotalExams = $filteredTotalExamsRow ? intval($filteredTotalExamsRow['total']) : 0;
+
+    $filteredUniqueUsersRow = empty($bindValues)
+        ? Database::fetchOne($conn, "SELECT COUNT(DISTINCT userId) as total FROM exam_results $where")
+        : Database::fetchOne($conn, "SELECT COUNT(DISTINCT userId) as total FROM exam_results $where", $bindTypes, $bindRefs);
+    $filteredUniqueUsers = $filteredUniqueUsersRow ? intval($filteredUniqueUsersRow['total']) : 0;
+
+    $dailyStatsSql = "SELECT DATE(completedAt) as date, COUNT(*) as count FROM exam_results $where GROUP BY DATE(completedAt) ORDER BY date ASC";
+    $dailyStatsRaw = empty($bindValues)
+        ? Database::fetchAll($conn, $dailyStatsSql, '', [])
+        : Database::fetchAll($conn, $dailyStatsSql, $bindTypes, $bindRefs);
+        
+    $dailyStats = [];
+    if ($dailyStatsRaw) {
+        foreach ($dailyStatsRaw as $row) {
+            $dailyStats[] = [
+                'date' => $row['date'],
+                'count' => intval($row['count'])
+            ];
+        }
+    }
+
+    respond([
+        'quickStats' => [
+            'totalUsers' => $totalUsers,
+            'totalPractices' => $totalPractices,
+            'activeSubscriptions' => $activeSubscriptions,
+            'usersByLanguage' => $usersByLanguage,
+        ],
+        'analytics' => [
+            'totalExams' => $filteredTotalExams,
+            'uniqueUsers' => $filteredUniqueUsers,
+            'dailyStats' => $dailyStats,
+        ]
     ], 200);
 }

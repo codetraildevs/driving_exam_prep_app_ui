@@ -676,7 +676,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get adminDashboard => 'Admin Dashboard';
+  String get adminDashboard => 'Dashboard';
 
   @override
   String get adminUsers => 'Users';

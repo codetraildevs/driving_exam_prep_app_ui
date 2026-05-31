@@ -1333,7 +1333,7 @@ abstract class AppLocalizations {
   /// Admin dashboard page title
   ///
   /// In en, this message translates to:
-  /// **'Admin Dashboard'**
+  /// **'Dashboard'**
   String get adminDashboard;
 
   /// Admin users page title

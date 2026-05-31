@@ -34,6 +34,7 @@ import '../../features/admin/presentation/pages/admin_dashboard_page.dart';
 import '../../features/admin/presentation/pages/admin_users_page.dart';
 import '../../features/admin/presentation/pages/admin_access_page.dart';
 import '../../features/admin/presentation/pages/admin_progress_page.dart';
+import '../../features/admin/presentation/pages/admin_analytics_page.dart';
 
 bool _isAdmin(UserModel? user) {
   if (user == null) return false;
@@ -314,6 +315,13 @@ class AppRouter {
             name: 'adminProgress',
             pageBuilder: (context, state) => const MaterialPage(
               child: AdminProgressPage(),
+            ),
+          ),
+          GoRoute(
+            path: '/admin/analytics',
+            name: 'adminAnalytics',
+            pageBuilder: (context, state) => const MaterialPage(
+              child: AdminAnalyticsPage(),
             ),
           ),
           GoRoute(
