@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                     Text(
                       l10n.authSubtitle,
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: Colors.white.withOpacity(0.85),
+                        color: Colors.white.withValues(alpha: 0.85),
                       ),
                       textAlign: TextAlign.center,
                     ),

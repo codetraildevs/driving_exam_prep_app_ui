@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import '../../shared/session/last_route_session.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/data/models/user_model.dart';
@@ -14,7 +14,7 @@ import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/home/presentation/pages/main_layout.dart';
 import '../../shared/locale/language_selector_page.dart';
-import '../../shared/subscription/subscription_provider.dart';
+import '../../shared/subscription/subscription_notifier.dart';
 import '../../l10n/generated/app_localizations.dart';
 
 import '../../features/practice/presentation/pages/practice_page.dart';
@@ -115,7 +115,7 @@ class AppRouter {
 
       // Subscription guard: redirect users who already have active access away from /subscription.
       if (isAuthenticated && location.startsWith('/subscription')) {
-        final subscription = context.read<SubscriptionProvider>();
+        final subscription = ProviderScope.containerOf(context, listen: false).read(subscriptionProvider);
         if (subscription.hasActiveAccess) {
           return '/home';
         }

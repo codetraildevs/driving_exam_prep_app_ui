@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
@@ -11,7 +10,7 @@ import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/network/offline_cache.dart';
 import '../../../../shared/session/auth_session.dart';
-import '../../../../shared/subscription/subscription_provider.dart';
+import '../../../../shared/subscription/subscription_notifier.dart';
 
 class ProfilePage extends StatefulWidget {
   /// When [userId] is provided, admin is viewing another user's profile.
@@ -86,15 +85,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }).length;
 
     if (mounted) setState(() => _uniqueExamsPassed = passed);
-  }
-
-  /// Mask phone: show first 2 and last 2 digits, e.g. "07******00"
-  String _maskPhone(String phone) {
-    if (phone.length < 5) return phone;
-    final start = phone.substring(0, 2);
-    final end = phone.substring(phone.length - 2);
-    final masked = '*' * (phone.length - 4);
-    return '$start$masked$end';
   }
 
   Future<void> _loadTargetUser() async {
@@ -457,7 +447,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             // Progress card
                             Builder(builder: (context) {
                               final passed = _uniqueExamsPassed;
-                              final total = _kTotalExams;
+                              const total = _kTotalExams;
                               final pct = total > 0 ? (passed / total).clamp(0.0, 1.0) : 0.0;
                               final pctInt = (pct * 100).toInt();
                               return Container(
@@ -536,8 +526,8 @@ class _ProfilePageState extends State<ProfilePage> {
   const SizedBox(height: 8),
                             // Subscription tile — always visible so users can
                             // view their active access status or request access.
-                            Builder(builder: (context) {
-                              final sub = context.watch<SubscriptionProvider>();
+                            Consumer(builder: (context, ref, _) {
+                              final sub = ref.watch(subscriptionProvider);
                               return _menuTile(
                                 context: context,
                                 icon: sub.hasActiveAccess

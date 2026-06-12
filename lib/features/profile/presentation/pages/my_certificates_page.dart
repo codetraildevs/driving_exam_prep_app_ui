@@ -52,12 +52,12 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
       _isLoading = true;
       _error = null;
     });
+    final authState = context.read<AuthBloc>().state;
+    String? userId;
+    if (authState is AuthAuthenticated) {
+      userId = authState.user.id;
+    }
     try {
-      final authState = context.read<AuthBloc>().state;
-      String? userId;
-      if (authState is AuthAuthenticated) {
-        userId = authState.user.id;
-      }
       if (userId == null) {
         setState(() => _error = 'Not authenticated');
         return;
@@ -66,6 +66,8 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
       final cache = OfflineCache();
       final cacheKey = cache.examResultsKey(userId);
 
+      final authBloc = context.read<AuthBloc>();
+      final router = GoRouter.of(context);
       // Try network first
       final result = await ApiHelper().get('/api/exam-results/$userId');
       if (result.isSuccess) {
@@ -94,8 +96,8 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
         });
       } else if (result.statusCode == 401) {
         if (!mounted) return;
-        context.read<AuthBloc>().add(const SignOutEvent());
-        context.go('/login');
+        authBloc.add(const SignOutEvent());
+        router.go('/login');
         return;
       } else {
         // Fallback to cache
@@ -111,14 +113,12 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
       }
     } catch (e) {
       // Network error → try cache
-      try {
-        final authState = context.read<AuthBloc>().state;
-        final userId =
-            authState is AuthAuthenticated ? authState.user.id : null;
-        if (userId != null) {
+      if (userId != null) {
+        try {
           final cache = OfflineCache();
           final cached = await cache.load(cache.examResultsKey(userId));
           if (cached is List) {
+            if (!context.mounted) return;
             setState(() {
               _rawResults = cached;
               _fromCache = true;
@@ -126,10 +126,10 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
           } else {
             setState(() => _error = e.toString());
           }
-        } else {
+        } catch (_) {
           setState(() => _error = e.toString());
         }
-      } catch (_) {
+      } else {
         setState(() => _error = e.toString());
       }
     } finally {
@@ -329,7 +329,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
     // Responsive: 7 cols on wide, 6 on normal
     final crossCount = screenW >= 600 ? 7 : 6;
     final availableW = screenW - 32 - 32; // page padding + container padding
-    final spacing = 10.0;
+    const spacing = 10.0;
     final tileSize =
         ((availableW - spacing * (crossCount - 1)) / crossCount)
             .clamp(44.0, 54.0);

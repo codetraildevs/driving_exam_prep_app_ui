@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../../../shared/locale/locale_provider.dart';
+import '../../../../shared/locale/locale_notifier.dart';
 import '../bloc/auth_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -76,7 +77,8 @@ class _RegisterPageState extends State<RegisterPage> {
     //   return;
     // }
 
-    final langCode = context.read<LocaleProvider>().effectiveLocale.languageCode;
+    final container = ProviderScope.containerOf(context, listen: false);
+    final langCode = container.read(localeProvider).effectiveLocale.languageCode;
     context.read<AuthBloc>().add(
       SignUpEvent(
         fullName: _nameController.text.trim(),
@@ -151,7 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     Text(
                       l10n.authSubtitle,
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: Colors.white.withOpacity(0.85),
+                        color: Colors.white.withValues(alpha: 0.85),
                       ),
                       textAlign: TextAlign.center,
                     ),

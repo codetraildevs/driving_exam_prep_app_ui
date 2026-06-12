@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../../../shared/locale/locale_provider.dart';
+import '../../../../shared/locale/locale_notifier.dart';
 import '../../../../shared/locale/language_selector_page.dart';
 import '../../../../shared/network/api_helper.dart';
-import '../../../../shared/theme/theme_provider.dart';
+import '../../../../shared/theme/theme_notifier.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
@@ -161,25 +161,29 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _buildLanguageSetting(
       AppLocalizations l10n, Color surfaceColor, Color outlineColor) {
-    final provider = context.watch<LocaleProvider>();
-    final currentName =
-        LocaleProvider.localeNames[provider.effectiveLocale.languageCode] ??
-            'English';
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: surfaceColor,
-        border: Border.all(color: outlineColor.withValues(alpha: 0.5)),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        title: Text(l10n.settingsLanguage,
-            style: Theme.of(context).textTheme.labelLarge),
-        subtitle: Text(currentName,
-            style: Theme.of(context).textTheme.bodySmall),
-        trailing: const Icon(Icons.arrow_forward),
-        onTap: () => _showLanguageDialog(),
-      ),
+    return Consumer(
+      builder: (context, ref, _) {
+        final localeState = ref.watch(localeProvider);
+        final currentName =
+            LocaleNotifier.localeNames[localeState.effectiveLocale.languageCode] ??
+                'English';
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: surfaceColor,
+            border: Border.all(color: outlineColor.withValues(alpha: 0.5)),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ListTile(
+            title: Text(l10n.settingsLanguage,
+                style: Theme.of(context).textTheme.labelLarge),
+            subtitle: Text(currentName,
+                style: Theme.of(context).textTheme.bodySmall),
+            trailing: const Icon(Icons.arrow_forward),
+            onTap: () => _showLanguageDialog(),
+          ),
+        );
+      },
     );
   }
 
@@ -221,7 +225,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void _showLanguageDialog() async {
     final locale = await showLanguageSelectorDialog(context);
     if (locale != null && mounted) {
-      context.read<LocaleProvider>().setLocale(locale);
+      ProviderScope.containerOf(context, listen: false).read(localeProvider.notifier).setLocale(locale);
       syncLanguageToBackend(locale.languageCode);
     }
   }
@@ -289,7 +293,7 @@ class _SettingsPageState extends State<SettingsPage> {
 // Theme Selector Tile — three-segment chip row
 // ═══════════════════════════════════════════════════════════════════════════
 
-class _ThemeSelectorTile extends StatelessWidget {
+class _ThemeSelectorTile extends ConsumerWidget {
   final Color surfaceColor;
   final Color outlineColor;
 
@@ -299,10 +303,13 @@ class _ThemeSelectorTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final themeProvider = context.watch<ThemeProvider>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeNotifier = ref.watch(themeProvider);
     final cs = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context);
+
+    void setTheme(ThemeMode mode) =>
+        ref.read(themeProvider.notifier).setThemeMode(mode);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -336,22 +343,22 @@ class _ThemeSelectorTile extends StatelessWidget {
               _ThemeChip(
                 icon: Icons.brightness_auto,
                 label: l10n.settingsThemeSystem,
-                selected: themeProvider.isSystem,
-                onTap: () => themeProvider.setThemeMode(ThemeMode.system),
+                selected: themeNotifier == ThemeMode.system,
+                onTap: () => setTheme(ThemeMode.system),
               ),
               const SizedBox(width: 8),
               _ThemeChip(
                 icon: Icons.light_mode,
                 label: l10n.settingsThemeLight,
-                selected: themeProvider.isLight,
-                onTap: () => themeProvider.setThemeMode(ThemeMode.light),
+                selected: themeNotifier == ThemeMode.light,
+                onTap: () => setTheme(ThemeMode.light),
               ),
               const SizedBox(width: 8),
               _ThemeChip(
                 icon: Icons.dark_mode,
                 label: l10n.settingsThemeDark,
-                selected: themeProvider.isDark,
-                onTap: () => themeProvider.setThemeMode(ThemeMode.dark),
+                selected: themeNotifier == ThemeMode.dark,
+                onTap: () => setTheme(ThemeMode.dark),
               ),
             ],
           ),

@@ -1,0 +1,215 @@
+# CI Pipeline: Flutter App + PHP Backend
+#
+# Runs on every push / pull request to main and develop branches.
+#
+# Flutter jobs:
+#   analyze   — flutter analyze (static analysis + linting)
+#   test      — flutter test (existing widget/unit tests)
+#   build     — flutter build apk --debug (validate Android compilation)
+#
+# PHP jobs:
+#   lint      — php -l syntax check on all backend PHP files
+#   validate  — composer validate + composer install dry-run
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop, "play-store-compliance"]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ───────────────────────────────────────────────────────
+  # FLUTTER — validate generated files are up to date
+  # ───────────────────────────────────────────────────────
+  flutter-generate:
+    name: Flutter Generate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Quick-check generated files are up to date
+        # dart run build_runner check is a lighter-weight validation that
+        # verifies .g.dart files match source annotations without writing
+        # anything. This gives a fast-fail before the full build.
+        run: dart run build_runner check
+
+      - name: Regenerate .g.dart files
+        run: dart run build_runner build
+
+      - name: Check for stale generated files
+        run: |
+          stale=$(git status --porcelain | grep '\.g\.dart$' || true)
+          if [[ -n "$stale" ]]; then
+            echo '::error::Generated .g.dart files are out of sync.'
+            echo 'Run `dart run build_runner build` locally and commit the changes.'
+            echo "$stale"
+            exit 1
+          fi
+
+  # ───────────────────────────────────────────────────────
+  # FLUTTER — analyze
+  # ───────────────────────────────────────────────────────
+  flutter-analyze:
+    name: Flutter Analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run flutter analyze
+        # --no-fatal-infos and --no-fatal-warnings make flutter analyze exit with
+        # code 0 on info/warning-level issues, failing only on actual errors.
+        #
+        # This project has pre-existing lint warnings and deprecation notices
+        # (e.g., use_build_context_synchronously, deprecated_member_use on
+        # Flutter 3.32+ APIs) that would otherwise block CI. Adding these flags
+        # prevents those pre-existing issues from masking new errors introduced
+        # by a PR.
+        #
+        # If you fix all warnings project-wide, remove these flags so CI enforces
+        # a clean analysis. These can also be removed per-PR by running:
+        #   flutter analyze lib/ --fatal-infos --fatal-warnings
+        # locally to ensure your changes introduce no new warnings.
+        run: flutter analyze lib/ --no-fatal-infos --no-fatal-warnings
+
+  # ───────────────────────────────────────────────────────
+  # FLUTTER — test
+  # ───────────────────────────────────────────────────────
+  flutter-test:
+    name: Flutter Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run flutter test
+        run: flutter test
+
+  # ───────────────────────────────────────────────────────
+  # FLUTTER — build Android debug APK
+  # ───────────────────────────────────────────────────────
+  flutter-build-android:
+    name: Flutter Build Android
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Accept Android SDK licenses
+        run: yes | flutter doctor --android-licenses || true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Android debug APK
+        run: flutter build apk --debug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: build/app/outputs/flutter-apk/*.apk
+          retention-days: 3
+
+  # ───────────────────────────────────────────────────────
+  # PHP — lint (syntax check)
+  # ───────────────────────────────────────────────────────
+  php-lint:
+    name: PHP Syntax Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          tools: composer:v2
+
+      - name: Lint all backend PHP files
+        # xargs exits non-zero if any php -l fails, causing the step to fail
+        run: |
+          find backend/src -name "*.php" -print0 | xargs -0 -n1 php -l
+
+  # ───────────────────────────────────────────────────────
+  # PHP — validate composer
+  # ───────────────────────────────────────────────────────
+  php-validate:
+    name: PHP Composer Validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          tools: composer:v2
+
+      - name: Validate composer.json
+        working-directory: backend
+        run: composer validate --strict
+
+      - name: Install Composer dependencies
+        working-directory: backend
+        run: composer install --no-dev --no-interaction --prefer-dist

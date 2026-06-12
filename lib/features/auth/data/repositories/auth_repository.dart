@@ -44,6 +44,9 @@ class AuthRepository {
           debugPrint('[AUTH][SIGNUP] register returned token; completing auth without extra login');
         }
         await _session.setToken(registerExtracted.token);
+        if (registerExtracted.refreshToken != null) {
+          await _session.setRefreshToken(registerExtracted.refreshToken);
+        }
         await _session.setUser(registerExtracted.user);
         return registerExtracted.user;
       }
@@ -63,6 +66,9 @@ class AuthRepository {
       final extracted = _extractAuthPayload(loginData);
       if (extracted.user == null) return null;
       await _session.setToken(extracted.token);
+      if (extracted.refreshToken != null) {
+        await _session.setRefreshToken(extracted.refreshToken);
+      }
       await _session.setUser(extracted.user);
       return extracted.user;
     } catch (e) {
@@ -95,6 +101,9 @@ class AuthRepository {
       final extracted = _extractAuthPayload(data);
       if (extracted.user == null) return null;
       await _session.setToken(extracted.token);
+      if (extracted.refreshToken != null) {
+        await _session.setRefreshToken(extracted.refreshToken);
+      }
       await _session.setUser(extracted.user);
       return extracted.user;
     } catch (e) {
@@ -108,15 +117,25 @@ class AuthRepository {
   Future<void> signOut() async {
     try {
       final token = await _session.getToken();
+      final refreshToken = await _session.getRefreshToken();
       // Clear local session FIRST so UI updates immediately.
       await _session.clear();
-      if (token != null && token.isNotEmpty) {
-        // Fire-and-forget server logout; don't block UI.
-        _api.post(
-          ApiEndpoints.authLogout,
-          headers: {'Authorization': 'Bearer $token'},
-        ).catchError((_) {});
+
+      // Build body with refresh_token if available
+      final body = <String, dynamic>{};
+      if (refreshToken != null && refreshToken.isNotEmpty) {
+        body['refresh_token'] = refreshToken;
       }
+
+      // Fire-and-forget server logout; always try to send refresh_token
+      // for server-side revocation, even if the access token is expired.
+      _api.post(
+        ApiEndpoints.authLogout,
+        body: body.isNotEmpty ? body : null,
+        headers: token != null && token.isNotEmpty
+            ? {'Authorization': 'Bearer $token'}
+            : null,
+      ).catchError((_) {});
     } catch (e) {
       // Ensure session is cleared even if getToken() throws.
       await _session.clear();
@@ -211,6 +230,8 @@ class AuthRepository {
 
       final token =
           (data['token'] ?? data['access_token'] ?? userMap['token'])?.toString();
+      final refreshToken =
+          (data['refresh_token'] ?? data['refreshToken'])?.toString();
       final id = (userMap['id'] ?? data['userId'])?.toString();
       final phone = (userMap['phoneNumber'] ?? userMap['phone_number'])?.toString();
       final name = (userMap['fullName'] ?? userMap['name'])?.toString();
@@ -219,6 +240,7 @@ class AuthRepository {
       if (id != null && (name?.isNotEmpty ?? false) && (phone?.isNotEmpty ?? false)) {
         return _AuthPayload(
           token: token,
+          refreshToken: refreshToken,
           user: UserModel(
             id: id,
             name: name!,
@@ -236,7 +258,8 @@ class AuthRepository {
 
 class _AuthPayload {
   final String? token;
+  final String? refreshToken;
   final UserModel? user;
 
-  const _AuthPayload({this.token, this.user});
+  const _AuthPayload({this.token, this.refreshToken, this.user});
 }

@@ -1,39 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../../../shared/locale/locale_provider.dart';
-import '../../../../shared/subscription/subscription_provider.dart';
+import '../../../../shared/locale/locale_notifier.dart';
+import '../../../../shared/subscription/subscription_notifier.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 import '../../../exam/data/models/exam_model.dart';
 import '../../../exam/data/repositories/exam_repository.dart';
 
-class PracticePage extends StatefulWidget {
+class PracticePage extends ConsumerStatefulWidget {
   const PracticePage({Key? key}) : super(key: key);
 
   @override
-  State<PracticePage> createState() => _PracticePageState();
+  ConsumerState<PracticePage> createState() => _PracticePageState();
 }
 
-class _PracticePageState extends State<PracticePage> {
+class _PracticePageState extends ConsumerState<PracticePage> {
   final ExamRepository _examRepository = ExamRepository();
   List<Exam> _exams = [];
   bool _isLoading = true;
   String? _error;
   String _lastLangCode = '';
+  /// Ensures the locale listener is attached only once in build().
+  bool _listenerAttached = false;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final langCode =
-        context.watch<LocaleProvider>().effectiveLocale.languageCode;
-    if (langCode != _lastLangCode) {
-      _lastLangCode = langCode;
-      _examRepository.clearCache();
-      _loadExams(langCode);
-    }
+  void initState() {
+    super.initState();
+    // Load exams on first build — read locale inside the callback so it's
+    // safe from late-init issues.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _lastLangCode = ref.read(localeProvider).effectiveLocale.languageCode;
+        _loadExams(_lastLangCode);
+      }
+    });
   }
 
   Future<void> _loadExams(String langCode) async {
@@ -58,7 +61,7 @@ class _PracticePageState extends State<PracticePage> {
   }
 
   void _onExamTap(BuildContext context, Exam exam, int index) {
-    final subscription = context.read<SubscriptionProvider>();
+    final subscription = ref.read(subscriptionProvider);
     if (exam.isFree || subscription.hasActiveAccess) {
       context.push('/practice/quiz/${exam.quizId}?examIndex=${index + 1}');
     } else {
@@ -69,7 +72,22 @@ class _PracticePageState extends State<PracticePage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final subscription = context.watch<SubscriptionProvider>();
+    final subscription = ref.watch(subscriptionProvider);
+
+    // ref.listen can only be called inside build(), so we attach the locale
+    // listener here with a guard to avoid re-registering on every rebuild.
+    if (!_listenerAttached) {
+      _listenerAttached = true;
+      ref.listen(localeProvider, (prev, next) {
+        final newCode = next.effectiveLocale.languageCode;
+        final oldCode = prev?.effectiveLocale.languageCode;
+        if (newCode != oldCode) {
+          _lastLangCode = newCode;
+          _examRepository.clearCache();
+          _loadExams(newCode);
+        }
+      });
+    }
 
     return Scaffold(
       body: Column(
@@ -116,7 +134,7 @@ class _PracticePageState extends State<PracticePage> {
                               index: index,
                               exam: exam,
                               isLocked: isLocked,
-                              onTap: () => _onExamTap(context, exam,index),
+                              onTap: () => _onExamTap(context, exam, index),
                               l10n: l10n,
                             );
                           },
@@ -191,7 +209,6 @@ class _ExamCard extends StatelessWidget {
                           ),
                         ),
                       ]
-                      
                     ),
                   ),
                   if (isLocked)
@@ -221,7 +238,6 @@ class _ExamCard extends StatelessWidget {
                   ),
                 ),
               )
-          
           ],
         ),
       ),

@@ -92,7 +92,7 @@ class LandingPage extends StatelessWidget {
           ),
         ),
         // Decorative elements
-        Positioned(
+        const Positioned(
           top: -20,
           right: -20,
           child: Opacity(
@@ -326,25 +326,6 @@ class LandingPage extends StatelessWidget {
     );
   }
 
-  // ================= LOGO =================
-
-  Widget _buildLogo({double size = 64, bool isLight = false}) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: isLight
-            ? AppColors.textInverse.withValues(alpha: 0.15)
-            : AppColors.primary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Icon(
-        Icons.traffic,
-        size: size * 0.5,
-        color: isLight ? AppColors.textInverse : AppColors.primary,
-      ),
-    );
-  }
 }
 
 class _StepItem extends StatelessWidget {

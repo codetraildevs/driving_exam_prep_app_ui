@@ -16,14 +16,18 @@ class Database
         $user = Env::get('DB_USER', 'root');
         $pass = Env::get('DB_PASS', '');
 
-        self::$connection = mysqli_connect($host, $user, $pass, $db, intval($port));
+        $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
 
-        if (!self::$connection) {
-            Logger::error('Database connection failed', ['error' => mysqli_connect_error()]);
+        try {
+            self::$connection = new PDO($dsn, $user, $pass, [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false,
+            ]);
+        } catch (PDOException $e) {
+            Logger::error('Database connection failed', ['error' => $e->getMessage()]);
             ErrorHandler::serverError('Database connection failed');
         }
-
-        mysqli_set_charset(self::$connection, 'utf8mb4');
 
         return self::$connection;
     }
@@ -34,163 +38,127 @@ class Database
     }
 
     /**
-     * Execute prepared statement with parameters
+     * Execute a prepared statement and return the statement handle.
+     *
+     * @param PDO    $conn   PDO connection
+     * @param string $sql    SQL query with ? placeholders
+     * @param string $types  (Unused — accepted for backward compatibility with PDO)
+     * @param array  $params Parameter values
+     * @return PDOStatement|null
      */
-    public static function execute($conn, $sql, $types, $params)
+    public static function execute($conn, $sql, $types = '', $params = [])
     {
-        $stmt = mysqli_prepare($conn, $sql);
-        if (!$stmt) {
-            Logger::error('Prepare failed', ['sql' => $sql, 'error' => mysqli_error($conn)]);
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+            return $stmt;
+        } catch (PDOException $e) {
+            Logger::error('Query failed', ['sql' => $sql, 'error' => $e->getMessage()]);
             return null;
         }
-
-        if (!empty($params)) {
-            $bind_params = array();
-            $bind_params[] = $stmt;
-            $bind_params[] = $types;
-            foreach ($params as $key => &$val) {
-                $bind_params[] = &$val;
-            }
-            if (!call_user_func_array('mysqli_stmt_bind_param', $bind_params)) {
-                Logger::error('Bind param failed', array('error' => mysqli_error($conn)));
-                return null;
-            }
-        }
-
-        if (!mysqli_stmt_execute($stmt)) {
-            Logger::error('Execute failed', ['sql' => $sql, 'error' => mysqli_error($conn)]);
-            return null;
-        }
-
-        return $stmt;
     }
 
     /**
-     * Fetch a single row
+     * Fetch a single row.
+     *
+     * @param PDO    $conn   PDO connection
+     * @param string $sql    SQL query with ? placeholders
+     * @param string $types  (Unused — accepted for backward compatibility)
+     * @param array  $params Parameter values
+     * @return array|null
      */
     public static function fetchOne($conn, $sql, $types = '', $params = [])
     {
-        $stmt = self::execute($conn, $sql, $types, $params);
-        if (!$stmt) {
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
+            return $row !== false ? $row : null;
+        } catch (PDOException $e) {
+            Logger::error('Query failed', ['sql' => $sql, 'error' => $e->getMessage()]);
             return null;
         }
-
-        $row = null;
-        if (function_exists('mysqli_stmt_get_result')) {
-            $result = mysqli_stmt_get_result($stmt);
-            if ($result) {
-                $row = mysqli_fetch_assoc($result);
-            }
-        } else {
-            // Fallback for environments without mysqlnd
-            $row = self::fetchManual($stmt);
-        }
-
-        mysqli_stmt_close($stmt);
-        return $row;
     }
 
     /**
-     * Fetch all rows
+     * Fetch all rows.
+     *
+     * @param PDO    $conn   PDO connection
+     * @param string $sql    SQL query with ? placeholders
+     * @param string $types  (Unused — accepted for backward compatibility)
+     * @param array  $params Parameter values
+     * @return array
      */
     public static function fetchAll($conn, $sql, $types = '', $params = [])
     {
-        $stmt = self::execute($conn, $sql, $types, $params);
-        if (!$stmt) {
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
+            return $rows;
+        } catch (PDOException $e) {
+            Logger::error('Query failed', ['sql' => $sql, 'error' => $e->getMessage()]);
             return [];
         }
-
-        $rows = [];
-        if (function_exists('mysqli_stmt_get_result')) {
-            $result = mysqli_stmt_get_result($stmt);
-            if ($result) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $rows[] = $row;
-                }
-            }
-        } else {
-            // Fallback for environments without mysqlnd
-            while ($row = self::fetchManual($stmt)) {
-                $rows[] = $row;
-            }
-        }
-
-        mysqli_stmt_close($stmt);
-        return $rows;
     }
 
     /**
-     * Fallback for mysqli_stmt_get_result using bind_result
-     * Necessary for servers without mysqlnd driver
-     */
-    private static function fetchManual($stmt)
-    {
-        $meta = mysqli_stmt_result_metadata($stmt);
-        if (!$meta) {
-            return null;
-        }
-
-        $fields = mysqli_fetch_fields($meta);
-        $data = [];
-        $params = [];
-
-        foreach ($fields as $field) {
-            $params[] = &$data[$field->name];
-        }
-
-        if (!call_user_func_array([$stmt, 'bind_result'], $params)) {
-            return null;
-        }
-
-        if (mysqli_stmt_fetch($stmt)) {
-            $row = [];
-            foreach ($data as $key => $val) {
-                $row[$key] = $val;
-            }
-            return $row;
-        }
-
-        return null;
-    }
-
-    /**
-     * Insert/Update/Delete and return affected rows
+     * Execute an INSERT/UPDATE/DELETE and return the number of affected rows.
+     *
+     * @param PDO    $conn   PDO connection
+     * @param string $sql    SQL query with ? placeholders
+     * @param string $types  (Unused — accepted for backward compatibility)
+     * @param array  $params Parameter values
+     * @return int|false  Number of affected rows, or false on failure
      */
     public static function query($conn, $sql, $types = '', $params = [])
     {
-        $stmt = self::execute($conn, $sql, $types, $params);
-        if (!$stmt) {
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+            $affected = $stmt->rowCount();
+            $stmt->closeCursor();
+            return $affected;
+        } catch (PDOException $e) {
+            Logger::error('Query failed', ['sql' => $sql, 'error' => $e->getMessage()]);
             return false;
         }
-
-        $affected = mysqli_stmt_affected_rows($stmt);
-        mysqli_stmt_close($stmt);
-
-        return $affected;
     }
 
     /**
-     * Insert and return last insert id
+     * Insert a row and return the last insert ID or the number of affected rows.
+     *
+     * For tables with an auto-increment integer primary key, returns the new ID.
+     * For tables with a UUID/string primary key, returns the affected-row count
+     * (truthy on success, null on failure).
+     *
+     * @param PDO    $conn   PDO connection
+     * @param string $sql    SQL query with ? placeholders
+     * @param string $types  (Unused — accepted for backward compatibility)
+     * @param array  $params Parameter values
+     * @return int|string|null
      */
     public static function insert($conn, $sql, $types = '', $params = [])
     {
-        $stmt = self::execute($conn, $sql, $types, $params);
-        if (!$stmt) {
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($params);
+            $lastId = $conn->lastInsertId();
+            $affected = $stmt->rowCount();
+            $stmt->closeCursor();
+
+            // Auto-increment integer PK — return the generated ID
+            if ($lastId && $lastId !== '0') {
+                return $lastId;
+            }
+
+            // UUID/string PK — return affected rows so callers can check success
+            return $affected > 0 ? $affected : null;
+        } catch (PDOException $e) {
+            Logger::error('Query failed', ['sql' => $sql, 'error' => $e->getMessage()]);
             return null;
         }
-
-        $lastId = mysqli_stmt_insert_id($stmt);
-        $affected = mysqli_stmt_affected_rows($stmt);
-        mysqli_stmt_close($stmt);
-
-        // UUID/string primary-key tables return insert_id=0 even on success.
-        // Return a positive affected-row count in that case so callers can
-        // reliably detect successful inserts using truthy checks.
-        if ($lastId > 0) {
-            return $lastId;
-        }
-
-        return $affected > 0 ? $affected : null;
     }
 }
-

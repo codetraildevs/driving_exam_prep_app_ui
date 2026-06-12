@@ -2,14 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
-import '../../../../shared/subscription/subscription_provider.dart';
+import '../../../../shared/subscription/subscription_notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../config/app_config.dart';
@@ -33,9 +33,6 @@ class HomePage extends StatelessWidget {
       }
       return '0788 123 456';
     });
-    
-
-
 
     return PopScope(
       canPop: false,
@@ -62,7 +59,7 @@ class HomePage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _CompactAccessCard(l10n: l10n),
+                      const _CompactAccessCard(),
                       const SizedBox(height: 20),
                       Text(
                         l10n.homeServices,
@@ -257,14 +254,13 @@ class _CompactHeader extends StatelessWidget {
 // COMPACT ACCESS CARD — single row with progress indicator, no wasted space
 // ─────────────────────────────────────────────────────────────────────────────
 
-class _CompactAccessCard extends StatelessWidget {
-  final AppLocalizations l10n;
-
-  const _CompactAccessCard({required this.l10n});
+class _CompactAccessCard extends ConsumerWidget {
+  const _CompactAccessCard();
 
   @override
-  Widget build(BuildContext context) {
-    final sub = context.watch<SubscriptionProvider>();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final sub = ref.watch(subscriptionProvider);
     final hasAccess = sub.hasActiveAccess;
     final expiresAt = sub.expiresAt;
 

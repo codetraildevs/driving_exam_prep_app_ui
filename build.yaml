@@ -1,0 +1,30 @@
+# build.yaml — json_serializable global configuration
+# See: https://pub.dev/packages/json_serializable#build-configuration
+
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          # checked: true wraps fromJson with runtime type assertions
+          # (e.g., matching the as operator). Catches API format mismatches
+          # early during development and testing.
+          checked: true
+
+          # explicit_to_json: true requires explicitly calling .toJson()
+          # on model instances rather than relying on implicit serialization.
+          # Prevents subtle bugs when passing objects to APIs.
+          explicit_to_json: true
+
+          # include_if_null: false omits null-valued fields from the
+          # generated toJson output, producing cleaner, slimmer payloads.
+          # Individual fields can override this via @JsonKey(includeIfNull: true).
+          include_if_null: false
+
+          # field_rename: none — the project uses camelCase mapping for
+          # all fields. Snake_case exceptions (e.g., image_url) are handled
+          # individually via @JsonKey(name: ...).
+          field_rename: none
+
+          # create_factory / create_to_json default to true — keeps the
+          # current explicit fromJson/toJson method generation.

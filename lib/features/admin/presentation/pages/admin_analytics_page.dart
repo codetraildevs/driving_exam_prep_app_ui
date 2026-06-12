@@ -291,7 +291,7 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
             children: [
               _buildDateFilter(),
               const SizedBox(height: 16),
-              if (_isLowEngagement && !_analytics.isEmpty) _buildAlertBanner(),
+              if (_isLowEngagement && _analytics.isNotEmpty) _buildAlertBanner(),
               const SizedBox(height: 16),
               _buildSummaryCards(),
               const SizedBox(height: 28),
@@ -552,7 +552,7 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
 
             final fraction = count / maxCount;
             // final barH = math.max(fraction * chartHeight, count > 0 ? 8.0 : 2.0);
-            final availableBarHeight = chartHeight - countLabelSlot;
+            const availableBarHeight = chartHeight - countLabelSlot;
 
 final barH = math.min(
   math.max(fraction * availableBarHeight, count > 0 ? 8.0 : 2.0),
@@ -561,9 +561,9 @@ final barH = math.min(
 
             final isEmpty = count == 0;
             final barDecoration = isEmpty
-                ? BoxDecoration(
+                ? const BoxDecoration(
                     color: AppColors.neutral200,
-                    borderRadius: const BorderRadius.vertical(
+                    borderRadius: BorderRadius.vertical(
                         top: Radius.circular(4)),
                   )
                 : BoxDecoration(

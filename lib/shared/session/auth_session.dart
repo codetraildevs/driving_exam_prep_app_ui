@@ -6,6 +6,7 @@ import '../../features/auth/data/models/user_model.dart';
 
 class AuthSession {
   static const _tokenKey = 'auth_token';
+  static const _refreshTokenKey = 'auth_refresh_token';
   static const _userKey = 'auth_user_json';
 
   Future<String?> getToken() async {
@@ -14,7 +15,8 @@ class AuthSession {
     if (token == null || token.isEmpty) return null;
     // Check JWT expiry (payload is the 2nd base64url-encoded segment).
     if (_isTokenExpired(token)) {
-      await clear();
+      // Don't clear the session if we have a refresh token —
+      // the ApiHelper interceptor will attempt to refresh.
       return null;
     }
     return token;
@@ -54,6 +56,20 @@ class AuthSession {
     await prefs.setString(_tokenKey, token);
   }
 
+  Future<String?> getRefreshToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_refreshTokenKey);
+  }
+
+  Future<void> setRefreshToken(String? token) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (token == null || token.isEmpty) {
+      await prefs.remove(_refreshTokenKey);
+      return;
+    }
+    await prefs.setString(_refreshTokenKey, token);
+  }
+
   Future<UserModel?> getUser() async {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_userKey);
@@ -75,6 +91,7 @@ class AuthSession {
   Future<void> clear() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_tokenKey);
+    await prefs.remove(_refreshTokenKey);
     await prefs.remove(_userKey);
   }
 }

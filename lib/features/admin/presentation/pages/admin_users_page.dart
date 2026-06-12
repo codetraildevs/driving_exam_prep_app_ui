@@ -70,6 +70,8 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
         if (!_todayOnly && _dateTo != null)
           'dateTo': _dateTo!.toIso8601String().split('T')[0],
       };
+      final authBloc = context.read<AuthBloc>();
+      final router = GoRouter.of(context);
       final result = await ApiHelper().get('/api/admin/users', queryParams: qp);
       if (result.isSuccess) {
         final data = result.data;
@@ -81,8 +83,8 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
         });
       } else if (result.statusCode == 401) {
         if (!mounted) return;
-        context.read<AuthBloc>().add(const SignOutEvent());
-        context.go('/login');
+        authBloc.add(const SignOutEvent());
+        router.go('/login');
       } else {
         setState(() => _error = result.errorMessage);
       }
@@ -99,27 +101,37 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       String userId, bool currentlyBlocked, AppLocalizations l10n) async {
     final newStatus = currentlyBlocked ? 1 : 0;
     setState(() => _loadingMap[userId] = true);
+    final authBloc = context.read<AuthBloc>();
+    final router = GoRouter.of(context);
+    final messenger = ScaffoldMessenger.of(context);
     try {
       final result = await ApiHelper().patch(
         '/api/admin/users/$userId/block',
         body: {'isActive': newStatus},
       );
       if (result.isSuccess) {
-        _showSnack(
-          context,
-          currentlyBlocked ? l10n.adminUserUnblocked : l10n.adminUserBlocked,
-          AppColors.success,
-        );
+        messenger.showSnackBar(SnackBar(
+          content: Text(currentlyBlocked ? l10n.adminUserUnblocked : l10n.adminUserBlocked),
+          backgroundColor: AppColors.success,
+          behavior: SnackBarBehavior.floating,
+        ));
         _loadUsers();
       } else if (result.statusCode == 401) {
-        if (!mounted) return;
-        context.read<AuthBloc>().add(const SignOutEvent());
-        context.go('/login');
+        authBloc.add(const SignOutEvent());
+        router.go('/login');
       } else {
-        _showSnack(context, result.errorMessage ?? 'Error', AppColors.error);
+        messenger.showSnackBar(SnackBar(
+          content: Text(result.errorMessage ?? 'Error'),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+        ));
       }
     } catch (e) {
-      _showSnack(context, e.toString(), AppColors.error);
+      messenger.showSnackBar(SnackBar(
+        content: Text(e.toString()),
+        backgroundColor: AppColors.error,
+        behavior: SnackBarBehavior.floating,
+      ));
     } finally {
       setState(() => _loadingMap.remove(userId));
     }
@@ -128,26 +140,44 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
   Future<void> _deleteUser(
       String userId, String name, AppLocalizations l10n) async {
     setState(() => _loadingMap[userId] = true);
+    final authBloc = context.read<AuthBloc>();
+    final router = GoRouter.of(context);
+    final messenger = ScaffoldMessenger.of(context);
     try {
       final result = await ApiHelper().delete('/api/admin/users/$userId');
       if (result.isSuccess) {
-        _showSnack(context, l10n.adminUserDeleted, AppColors.success);
+        messenger.showSnackBar(SnackBar(
+          content: Text(l10n.adminUserDeleted),
+          backgroundColor: AppColors.success,
+          behavior: SnackBarBehavior.floating,
+        ));
         _loadUsers();
       } else if (result.statusCode == 401) {
-        if (!mounted) return;
-        context.read<AuthBloc>().add(const SignOutEvent());
-        context.go('/login');
+        authBloc.add(const SignOutEvent());
+        router.go('/login');
       } else {
         final data = result.data;
         final code = (data is Map) ? (data['code'] ?? '') : '';
         if (code == 'BLOCK_FIRST') {
-          _showSnack(context, l10n.adminMustBlockFirst, AppColors.warning);
+          messenger.showSnackBar(SnackBar(
+            content: Text(l10n.adminMustBlockFirst),
+            backgroundColor: AppColors.warning,
+            behavior: SnackBarBehavior.floating,
+          ));
         } else {
-          _showSnack(context, result.errorMessage ?? 'Error', AppColors.error);
+          messenger.showSnackBar(SnackBar(
+            content: Text(result.errorMessage ?? 'Error'),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ));
         }
       }
     } catch (e) {
-      _showSnack(context, e.toString(), AppColors.error);
+      messenger.showSnackBar(SnackBar(
+        content: Text(e.toString()),
+        backgroundColor: AppColors.error,
+        behavior: SnackBarBehavior.floating,
+      ));
     } finally {
       setState(() => _loadingMap.remove(userId));
     }
@@ -156,23 +186,37 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
   Future<void> _markCalled(
       String userId, String notes, AppLocalizations l10n) async {
     setState(() => _loadingMap[userId] = true);
+    final authBloc = context.read<AuthBloc>();
+    final router = GoRouter.of(context);
+    final messenger = ScaffoldMessenger.of(context);
     try {
       final result = await ApiHelper().post(
         '/api/admin/users/$userId/mark-called',
         body: {'notes': notes},
       );
       if (result.isSuccess) {
-        _showSnack(context, l10n.adminCallLogged, AppColors.success);
+        messenger.showSnackBar(SnackBar(
+          content: Text(l10n.adminCallLogged),
+          backgroundColor: AppColors.success,
+          behavior: SnackBarBehavior.floating,
+        ));
         _loadUsers();
       } else if (result.statusCode == 401) {
-        if (!mounted) return;
-        context.read<AuthBloc>().add(const SignOutEvent());
-        context.go('/login');
+        authBloc.add(const SignOutEvent());
+        router.go('/login');
       } else {
-        _showSnack(context, result.errorMessage ?? 'Error', AppColors.error);
+        messenger.showSnackBar(SnackBar(
+          content: Text(result.errorMessage ?? 'Error'),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+        ));
       }
     } catch (e) {
-      _showSnack(context, e.toString(), AppColors.error);
+      messenger.showSnackBar(SnackBar(
+        content: Text(e.toString()),
+        backgroundColor: AppColors.error,
+        behavior: SnackBarBehavior.floating,
+      ));
     } finally {
       setState(() => _loadingMap.remove(userId));
     }
@@ -328,22 +372,29 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                       style: AppTextStyles.heading6),
                   const SizedBox(height: 12),
                   if (!customMode)
-                    ...tiers.map((t) {
-                      final isSelected = selectedTier == t['tier'];
-                      return RadioListTile<String>(
-                        value: t['tier'] as String,
-                        groupValue: selectedTier,
-                        title: Text(t['label'] as String),
-                        subtitle: Text(
-                            '${t['price']} RWF'),
-                        onChanged: (v) {
-                          setModal(() => selectedTier = v);
-                          final price = t['price'];
-                          amtCtrl.text = '$price';
-                        },
-                        selected: isSelected,
-                      );
-                    }).toList(),
+                    RadioGroup<String>(
+                      groupValue: selectedTier,
+                      onChanged: (v) {
+                        setModal(() => selectedTier = v);
+                        final found = tiers.firstWhere(
+                          (t) => t['tier'] == v,
+                          orElse: () => <String, dynamic>{'price': 0},
+                        );
+                        amtCtrl.text = '${found['price']}';
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: tiers.map((t) {
+                          final isSelected = selectedTier == t['tier'];
+                          return RadioListTile<String>(
+                            value: t['tier'] as String,
+                            title: Text(t['label'] as String),
+                            subtitle: Text('${t['price']} RWF'),
+                            selected: isSelected,
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   const SizedBox(height: 4),
                   CheckboxListTile(
                     value: customMode,
@@ -425,24 +476,38 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       body['paymentTier'] = tier ?? '';
     }
     setState(() => _loadingMap[userId] = true);
+    final authBloc = context.read<AuthBloc>();
+    final router = GoRouter.of(context);
+    final messenger = ScaffoldMessenger.of(context);
     try {
       final result = await ApiHelper().post(
         '/api/admin/users/$userId/grant-access',
         body: body,
       );
-      if (mounted) Navigator.pop(ctx);
+      if (mounted && ctx.mounted) Navigator.pop(ctx);
       if (result.isSuccess) {
-        _showSnack(context, l10n.adminAccessGranted, AppColors.success);
+        messenger.showSnackBar(SnackBar(
+          content: Text(l10n.adminAccessGranted),
+          backgroundColor: AppColors.success,
+          behavior: SnackBarBehavior.floating,
+        ));
         _loadUsers();
       } else if (result.statusCode == 401) {
-        if (!mounted) return;
-        context.read<AuthBloc>().add(const SignOutEvent());
-        context.go('/login');
+        authBloc.add(const SignOutEvent());
+        router.go('/login');
       } else {
-        _showSnack(context, result.errorMessage ?? 'Error', AppColors.error);
+        messenger.showSnackBar(SnackBar(
+          content: Text(result.errorMessage ?? 'Error'),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+        ));
       }
     } catch (e) {
-      _showSnack(context, e.toString(), AppColors.error);
+      messenger.showSnackBar(SnackBar(
+        content: Text(e.toString()),
+        backgroundColor: AppColors.error,
+        behavior: SnackBarBehavior.floating,
+      ));
     } finally {
       setState(() => _loadingMap.remove(userId));
     }
@@ -948,7 +1013,7 @@ class _UserCard extends StatelessWidget {
                         style: const TextStyle(fontSize: 18)),
                     const SizedBox(height: 2),
                     Text(
-                      '$lang',
+                      lang,
                       style: AppTextStyles.labelSmall.copyWith(
                           color: AppColors.textSecondary),
                     ),

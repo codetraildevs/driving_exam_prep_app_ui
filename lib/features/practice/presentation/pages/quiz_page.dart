@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import 'package:screen_protector/screen_protector.dart';
-import '../../../../shared/locale/locale_provider.dart';
+import '../../../../shared/locale/locale_notifier.dart';
 import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/network/offline_cache.dart';
 import '../../../../shared/widgets/app_page_header.dart';
@@ -61,7 +61,7 @@ class _QuizPageState extends State<QuizPage> {
     super.didChangeDependencies();
     if (_isLoading) {
       final langCode =
-          context.read<LocaleProvider>().effectiveLocale.languageCode;
+          ProviderScope.containerOf(context, listen: false).read(localeProvider).effectiveLocale.languageCode;
       _loadExam(langCode);
     }
   }
@@ -159,80 +159,6 @@ class _QuizPageState extends State<QuizPage> {
       if (_answers[i] == questions[i].correctAnswer) count++;
     }
     return count;
-  }
-
-  void _confirmSubmit() {
-    if (_submitted) return;
-    final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: theme.colorScheme.surface,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        titlePadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-        contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
-        actionsPadding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: AppColors.warning.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(Icons.upload_rounded, color: AppColors.warning, size: 22),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                l10n.quizSubmitConfirmTitle,
-                style: TextStyle(color: theme.colorScheme.onSurface, fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-            ),
-          ],
-        ),
-        content: Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: AppColors.primary.withValues(alpha: 0.06),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            children: [
-              const Icon(Icons.info_outline_rounded, color: AppColors.primary, size: 20),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  l10n.quizSubmitConfirmMessage(_answeredCount, _exam!.questions.length),
-                  style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 14, height: 1.4),
-                ),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(l10n.commonCancel),
-          ),
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              _doSubmit();
-            },
-            icon: const Icon(Icons.check_circle_outline, size: 18),
-            label: Text(l10n.quizSubmitPractice),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.success,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   void _doSubmit({bool autoSubmit = false}) {
@@ -805,66 +731,6 @@ class _QuizPageState extends State<QuizPage> {
         ),
       );
     }).toList();
-  }
-}
-
-// ── Result stat card ──────────────────────────────────────────────────────────
-
-class _ResultStat extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String value;
-  final Color color;
-
-  const _ResultStat({
-    required this.icon,
-    required this.label,
-    required this.value,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withValues(alpha: 0.15)),
-        boxShadow: [
-          BoxShadow(
-            color: color.withValues(alpha: 0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: color, size: 20),
-          const SizedBox(height: 6),
-          Text(
-            value,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: color,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-          const SizedBox(height: 1),
-          Text(
-            label,
-            style: AppTextStyles.labelSmall.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
-              fontSize: 10,
-            ),
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
   }
 }
 

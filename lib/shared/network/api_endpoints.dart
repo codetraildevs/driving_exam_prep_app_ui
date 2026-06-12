@@ -3,6 +3,7 @@ class ApiEndpoints {
   static const String authRegister = '/api/auth/register';
   static const String authLogin = '/api/auth/login';
   static const String authLogout = '/api/auth/logout';
+  static const String authRefresh = '/api/auth/refresh';
 
   // Users
   static String user(String id) => '/api/users/$id';

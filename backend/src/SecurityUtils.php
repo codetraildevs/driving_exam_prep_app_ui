@@ -10,9 +10,18 @@ class SecurityUtils
     }
 
     /**
-     * Generate JWT Token
+     * Generate a cryptographically secure random token string.
+     * Used for refresh tokens (stored in DB, not JWT).
      */
-    public static function generateToken($data, $expiresIn = 86400)
+    public static function generateRandomToken(int $length = 64): string
+    {
+        return bin2hex(random_bytes($length / 2));
+    }
+
+    /**
+     * Generate JWT Access Token (short-lived).
+     */
+    public static function generateToken($data, $expiresIn = 900)
     {
         if (!self::$jwtSecret) {
             self::init();

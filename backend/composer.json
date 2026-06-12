@@ -3,7 +3,8 @@
     "description": "PHP + MySQL backend for the Driving Exam Prep App",
     "type": "project",
     "require": {
-        "php": ">=7.4"
+        "php": ">=7.4",
+        "sentry/sdk": "^3.0"
     },
     "autoload": {
         "psr-4": {

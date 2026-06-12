@@ -47,17 +47,19 @@ class _ProgressPageState extends State<ProgressPage>
       _isLoading = true;
       _error = null;
     });
+    final authState = context.read<AuthBloc>().state;
+    String? userId;
+    if (authState is AuthAuthenticated) {
+      userId = authState.user.id;
+    }
     try {
-      final authState = context.read<AuthBloc>().state;
-      String? userId;
-      if (authState is AuthAuthenticated) {
-        userId = authState.user.id;
-      }
       if (userId == null || userId.isEmpty) {
         setState(() => _error = 'Not authenticated');
         return;
       }
 
+      final authBloc = context.read<AuthBloc>();
+      final router = GoRouter.of(context);
       final cache = OfflineCache();
       final cacheKey = cache.examResultsKey(userId);
 
@@ -88,8 +90,8 @@ class _ProgressPageState extends State<ProgressPage>
         _animCtrl.forward(from: 0);
       } else if (result.statusCode == 401) {
         if (!mounted) return;
-        context.read<AuthBloc>().add(const SignOutEvent());
-        context.go('/login');
+        authBloc.add(const SignOutEvent());
+        router.go('/login');
       } else {
         // Fallback to cache
         final cached = await cache.load(cacheKey);
@@ -102,23 +104,21 @@ class _ProgressPageState extends State<ProgressPage>
       }
     } catch (e) {
       // Network error → try cache
-      try {
-        final authState = context.read<AuthBloc>().state;
-        final userId =
-            authState is AuthAuthenticated ? authState.user.id : null;
-        if (userId != null) {
+      if (userId != null) {
+        try {
           final cache = OfflineCache();
           final cached = await cache.load(cache.examResultsKey(userId));
+          if (!context.mounted) return;
           if (cached is List && cached.isNotEmpty) {
             setState(() => _results = cached);
             _animCtrl.forward(from: 0);
           } else {
             setState(() => _error = 'You are offline. No cached progress found.');
           }
-        } else {
+        } catch (_) {
           setState(() => _error = 'You are offline. No cached progress found.');
         }
-      } catch (_) {
+      } else {
         setState(() => _error = 'You are offline. No cached progress found.');
       }
     } finally {

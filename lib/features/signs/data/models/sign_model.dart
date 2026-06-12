@@ -1,9 +1,24 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'sign_model.g.dart';
+
+@JsonSerializable()
 class TrafficSignModel {
+  @JsonKey(defaultValue: '')
   final String id;
+
+  @JsonKey(defaultValue: '')
   final String title;
+
+  @JsonKey(defaultValue: '')
   final String description;
+
+  @JsonKey(defaultValue: '')
   final String category;
+
+  @JsonKey(name: 'image_url')
   final String? imageUrl;
+
   final String? scenario;
 
   const TrafficSignModel({
@@ -15,23 +30,8 @@ class TrafficSignModel {
     this.scenario,
   });
 
-  factory TrafficSignModel.fromJson(Map<String, dynamic> json) {
-    return TrafficSignModel(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      category: json['category'] as String,
-      imageUrl: json['image_url'] as String?,
-      scenario: json['scenario'] as String?,
-    );
-  }
+  factory TrafficSignModel.fromJson(Map<String, dynamic> json) =>
+      _$TrafficSignModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'title': title,
-    'description': description,
-    'category': category,
-    'image_url': imageUrl,
-    'scenario': scenario,
-  };
+  Map<String, dynamic> toJson() => _$TrafficSignModelToJson(this);
 }

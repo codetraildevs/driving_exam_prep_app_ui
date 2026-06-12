@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
-import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../../../shared/locale/locale_provider.dart';
-import '../../../../shared/network/api_helper.dart';
-import '../../../../shared/network/api_config.dart';
-import '../../../../shared/session/auth_session.dart';
-import '../../../../shared/subscription/subscription_provider.dart';
+import '../../../../shared/locale/locale_notifier.dart';
+import '../../../../shared/subscription/subscription_notifier.dart';
 import '../../../../shared/widgets/app_page_header.dart';
-import '../../../../features/auth/presentation/bloc/auth_state.dart';
 
 const _kHelpNumber = '0788659575';
 const _kTigoCashNumber = '0728877442';
@@ -28,9 +20,6 @@ class SubscriptionPage extends StatefulWidget {
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
   String? _loadingTier;
-  String? _successMessage;
-  String? _errorMessage;
-  bool _isDuplicateRequest = false;
   String _selectedTier = '3_MONTHS'; // Default to popular plan
 
   List<Map<String, dynamic>> _getPlans(String langCode, AppLocalizations l10n) {
@@ -41,19 +30,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     ];
   }
 
-
-  Future<void> _copyToClipboard(BuildContext context, String text) async {
-    await Clipboard.setData(ClipboardData(text: text));
-    if (!context.mounted) return;
-    final l10n = AppLocalizations.of(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l10n.generalCopied),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
 
   Future<void> _callNumber() async {
     final uri = Uri(scheme: 'tel', path: _kHelpNumber);
@@ -76,28 +52,13 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     }
   }
 
-  Future<void> _dialUssd(String ussdCode) async {
-    final uri = Uri(scheme: 'tel', path: ussdCode);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
-  }
-
-  int _getSelectedPrice(List<Map<String, dynamic>> plans) {
-    final plan = plans.firstWhere(
-      (p) => p['tier'] == _selectedTier,
-      orElse: () => plans[1],
-    );
-    return plan['price'] as int;
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final langCode = context.watch<LocaleProvider>().effectiveLocale.languageCode;
-    final subscription = context.watch<SubscriptionProvider>();
+    final container = ProviderScope.containerOf(context, listen: false);
+    final langCode = container.read(localeProvider).effectiveLocale.languageCode;
+    final subscription = container.read(subscriptionProvider);
     final plans = _getPlans(langCode, l10n);
-    final theme = Theme.of(context);
 
     return Scaffold(
       body: Column(
@@ -136,9 +97,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         onSelect: (tier) => setState(() => _selectedTier = tier),
                         l10n: l10n,
                       )),
-SizedBox(height: 4),
+const SizedBox(height: 4),
 
- // ── Learning Support Message ──
+                  // ── Learning Support Message ──
                   _TrafficRulesSupportCard(l10n: l10n),
                   const SizedBox(height: 20),
                   
@@ -172,7 +133,7 @@ SizedBox(height: 4),
 
 class _ActiveAccessBanner extends StatelessWidget {
   final AppLocalizations l10n;
-  final SubscriptionProvider subscription;
+  final SubscriptionState subscription;
 
   const _ActiveAccessBanner({required this.l10n, required this.subscription});
 
@@ -362,43 +323,6 @@ class _ContactButton extends StatelessWidget {
   }
 }
 
-class _StatusBanner extends StatelessWidget {
-  final String message;
-  final IconData icon;
-  final Color color;
-
-  const _StatusBanner({
-    required this.message,
-    required this.icon,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.08),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: color, size: 20),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              message,
-              style: AppTextStyles.bodyMedium.copyWith(color: color),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _PlanCard extends StatelessWidget {
   final Map<String, dynamic> plan;
   final String? loadingTier;
@@ -511,75 +435,6 @@ class _PlanCard extends StatelessWidget {
             ),
         ],
       ),
-      ),
-    );
-  }
-}
-
-class _PaymentOptionTile extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final Color color;
-  final VoidCallback onTap;
-  final ThemeData theme;
-
-  const _PaymentOptionTile({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.color,
-    required this.onTap,
-    required this.theme,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: color.withValues(alpha: 0.06),
-      borderRadius: BorderRadius.circular(16),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            border: Border.all(color: color.withValues(alpha: 0.2)),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, color: color, size: 24),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: AppTextStyles.heading6),
-                    const SizedBox(height: 2),
-                    Text(
-                      subtitle,
-                      style: TextStyle(
-                        fontFamily: 'monospace',
-                        fontSize: 13,
-                        color: color,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(Icons.arrow_forward_ios_rounded, color: color, size: 18),
-            ],
-          ),
-        ),
       ),
     );
   }

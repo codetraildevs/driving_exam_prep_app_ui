@@ -168,6 +168,8 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
           'dateTo': _dateTo!.toIso8601String().split('T')[0],
         if (_blockedFilter != null) 'isBlocked': _blockedFilter!,
       };
+      final authBloc = context.read<AuthBloc>();
+      final router = GoRouter.of(context);
       final result = await ApiHelper().get('/api/access-codes', queryParams: qp);
       if (!mounted) return;
       if (result.isSuccess) {
@@ -177,8 +179,8 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
           _total = (data is Map) ? (data['total'] ?? _codes.length) : _codes.length;
         });
       } else if (result.statusCode == 401) {
-        context.read<AuthBloc>().add(const SignOutEvent());
-        GoRouter.of(context).go('/login');
+        authBloc.add(const SignOutEvent());
+        router.go('/login');
       } else {
         setState(() => _error = result.errorMessage);
       }
@@ -193,14 +195,16 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
   Future<void> _blockCode(String id, AppLocalizations l10n) async {
     setState(() => _loadingMap[id] = true);
     try {
+      final authBloc = context.read<AuthBloc>();
+      final router = GoRouter.of(context);
       final result = await ApiHelper().patch('/api/access-codes/$id/block');
       if (result.isSuccess) {
         _showSnack(l10n.adminAccessBlocked, AppColors.success);
         _load();
       } else if (result.statusCode == 401) {
         if (!mounted) return;
-        context.read<AuthBloc>().add(const SignOutEvent());
-        GoRouter.of(context).go('/login');
+        authBloc.add(const SignOutEvent());
+        router.go('/login');
       } else {
         _showSnack(result.errorMessage ?? 'Error', AppColors.error);
       }
@@ -214,14 +218,16 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
   Future<void> _deleteCode(String id, AppLocalizations l10n) async {
     setState(() => _loadingMap[id] = true);
     try {
+      final authBloc = context.read<AuthBloc>();
+      final router = GoRouter.of(context);
       final result = await ApiHelper().delete('/api/access-codes/$id');
       if (result.isSuccess) {
         _showSnack(l10n.adminAccessDeleted, AppColors.success);
         _load();
       } else if (result.statusCode == 401) {
         if (!mounted) return;
-        context.read<AuthBloc>().add(const SignOutEvent());
-        GoRouter.of(context).go('/login');
+        authBloc.add(const SignOutEvent());
+        router.go('/login');
       } else {
         _showSnack(result.errorMessage ?? 'Error', AppColors.error);
       }
@@ -784,7 +790,7 @@ class _AccessCodeCard extends StatelessWidget {
                       color: AppColors.warning,
                       onTap: onBlock,
                     ),
-                  SizedBox(height: 4),  
+                  const SizedBox(height: 4),  
                   if (!inactive) const SizedBox(width: 2),
                     _actionBtn(
                       icon: Icons.delete_rounded,
@@ -901,6 +907,8 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
         if (_accessFilter == 'noAccess') 'hasAccess': 'false',
       };
 
+      final authBloc = context.read<AuthBloc>();
+      final router = GoRouter.of(context);
       final results = await Future.wait([
         ApiHelper().get('/api/admin/users', queryParams: qp),
         ApiHelper().get('/api/payments'),
@@ -911,8 +919,8 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
 
       if (usersResult.statusCode == 401) {
         if (!mounted) return;
-        context.read<AuthBloc>().add(const SignOutEvent());
-        GoRouter.of(context).go('/login');
+        authBloc.add(const SignOutEvent());
+        router.go('/login');
         return;
       }
 
@@ -975,16 +983,25 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
               Text(l10n.adminSelectTier, style: AppTextStyles.heading6),
               const SizedBox(height: 8),
               if (!customMode)
-                ...tiers.map((t) => RadioListTile<String>(
+                RadioGroup<String>(
+                  groupValue: selectedTier,
+                  onChanged: (v) {
+                    setModal(() => selectedTier = v);
+                    final found = tiers.firstWhere(
+                      (t) => t['tier'] == v,
+                      orElse: () => <String, dynamic>{'price': 0},
+                    );
+                    amtCtrl.text = '${found['price']}';
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: tiers.map((t) => RadioListTile<String>(
                       value: t['tier'] as String,
-                      groupValue: selectedTier,
                       title: Text(t['label'] as String),
                       subtitle: Text(l10n.priceRwf(t['price'].toString())),
-                      onChanged: (v) {
-                        setModal(() => selectedTier = v);
-                        amtCtrl.text = '${t['price']}';
-                      },
                     )).toList(),
+                  ),
+                ),
               CheckboxListTile(
                 value: customMode,
                 title: Text(l10n.adminOrCustom),
@@ -1049,28 +1066,30 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
       body['paymentTier'] = tier ?? '';
     }
     setState(() => _loadingMap[userId] = true);
+    final authBloc = context.read<AuthBloc>();
+    final router = GoRouter.of(context);
+    final messenger = ScaffoldMessenger.of(context);
     try {
       final result = await ApiHelper().post(
         '/api/admin/users/$userId/grant-access',
         body: body,
       );
-      if (mounted) Navigator.pop(ctx);
+      if (mounted && ctx.mounted) Navigator.pop(ctx);
       if (result.isSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        messenger.showSnackBar(SnackBar(
             content: Text(l10n.adminAccessGranted),
             backgroundColor: AppColors.success));
         _loadData();
       } else if (result.statusCode == 401) {
-        if (!mounted) return;
-        context.read<AuthBloc>().add(const SignOutEvent());
-        GoRouter.of(context).go('/login');
+        authBloc.add(const SignOutEvent());
+        router.go('/login');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        messenger.showSnackBar(SnackBar(
             content: Text(result.errorMessage ?? 'Error'),
             backgroundColor: AppColors.error));
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      messenger.showSnackBar(SnackBar(
           content: Text(e.toString()), backgroundColor: AppColors.error));
     } finally {
       setState(() => _loadingMap.remove(userId));

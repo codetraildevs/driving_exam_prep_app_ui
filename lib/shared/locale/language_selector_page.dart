@@ -1,16 +1,14 @@
 
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 import '../../config/theme/app_colors.dart';
 import '../../config/theme/app_text_styles.dart';
 import '../../l10n/generated/app_localizations.dart';
-import '../locale/locale_provider.dart';
-import '../network/api_config.dart';
+import '../locale/locale_notifier.dart';
+import '../network/api_helper.dart';
 import '../session/auth_session.dart';
 
 /// Creative, responsive language selector optimized for a Rwanda traffic app.
@@ -43,7 +41,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
     final deviceCode =
         WidgetsBinding.instance.platformDispatcher.locale.languageCode;
     final supported =
-        LocaleProvider.supportedLocales.map((l) => l.languageCode);
+        LocaleNotifier.supportedLocales.map((l) => l.languageCode);
     _selectedCode = supported.contains(deviceCode) ? deviceCode : 'rw';
 
     // Car animation: loops left-to-right slowly to give life to the header.
@@ -115,7 +113,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                             child: Text(
                               l10n.languageSelectDescription,
                               style: AppTextStyles.bodySmall.copyWith(
-                                color: Colors.white.withOpacity(0.85),
+                                color: Colors.white.withValues(alpha: 0.85),
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -247,9 +245,9 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(top: 4, bottom: 8),
-      children: LocaleProvider.supportedLocales.map((locale) {
+      children: LocaleNotifier.supportedLocales.map((locale) {
         final code = locale.languageCode;
-        final name = LocaleProvider.localeNames[code] ?? code.toUpperCase();
+        final name = LocaleNotifier.localeNames[code] ?? code.toUpperCase();
         final tagline = _nativeTaglines[code] ?? '';
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
@@ -266,7 +264,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
   }
 
   Widget _buildGridOptions() {
-    final items = LocaleProvider.supportedLocales
+    final items = LocaleNotifier.supportedLocales
         .map((l) => l.languageCode)
         .toList(growable: false);
     return GridView.builder(
@@ -282,7 +280,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
       itemCount: items.length,
       itemBuilder: (context, index) {
         final code = items[index];
-        final name = LocaleProvider.localeNames[code] ?? code.toUpperCase();
+        final name = LocaleNotifier.localeNames[code] ?? code.toUpperCase();
         final tagline = _nativeTaglines[code] ?? '';
         return _CreativeLanguageCard(
           name: name,
@@ -296,8 +294,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
   }
 
   Future<void> _onConfirm() async {
-    final provider = context.read<LocaleProvider>();
-    await provider.setLocale(Locale(_selectedCode));
+    ProviderScope.containerOf(context, listen: false).read(localeProvider.notifier).setLocale(Locale(_selectedCode));
     // Best-effort sync to backend if authenticated
     syncLanguageToBackend(_selectedCode);
     if (!mounted) return;
@@ -308,7 +305,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
     final deviceCode =
         WidgetsBinding.instance.platformDispatcher.locale.languageCode;
     final supported =
-        LocaleProvider.supportedLocales.map((l) => l.languageCode);
+        LocaleNotifier.supportedLocales.map((l) => l.languageCode);
     final code = supported.contains(deviceCode) ? deviceCode : 'en';
     setState(() => _selectedCode = code);
   }
@@ -359,14 +356,10 @@ Future<void> syncLanguageToBackend(String langCode) async {
     if (token == null || token.isEmpty) return;
     final user = await session.getUser();
     if (user == null) return;
-    await http.put(
-      Uri.parse('${ApiConfig.baseUrl}/api/users/${user.id}'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({'preferredLanguage': langCode}),
-    ).timeout(const Duration(seconds: 10));
+    await ApiHelper().put(
+      '/api/users/${user.id}',
+      body: {'preferredLanguage': langCode},
+    );
   } catch (e) {
     // Ignore errors — language is already saved locally
     assert(() {
@@ -412,7 +405,7 @@ class _CreativeLanguageCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 220),
-          transform: Matrix4.identity()..scale(scale),
+          transform: Matrix4.diagonal3Values(scale, scale, 1.0),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: bgColor,
@@ -504,8 +497,9 @@ class _CreativeLanguageCard extends StatelessWidget {
 
 /// Reusable dialog-based selector (for Settings). Returns selected Locale or null.
 Future<Locale?> showLanguageSelectorDialog(BuildContext context) {
-  final provider = context.read<LocaleProvider>();
-  String selectedCode = provider.effectiveLocale.languageCode;
+  final container = ProviderScope.containerOf(context, listen: false);
+  final localeState = container.read(localeProvider);
+  String selectedCode = localeState.effectiveLocale.languageCode;
 
   return showDialog<Locale>(
     context: context,
@@ -517,21 +511,25 @@ Future<Locale?> showLanguageSelectorDialog(BuildContext context) {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             content: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: LocaleProvider.supportedLocales.map((locale) {
-                  final code = locale.languageCode;
-                  final name = LocaleProvider.localeNames[code] ?? code.toUpperCase();
-                  return RadioListTile<String>(
-                    title: Text(name),
-                    value: code,
-                    groupValue: selectedCode,
-                    activeColor: AppColors.primary,
-                    onChanged: (value) {
-                      setDialogState(() => selectedCode = value ?? selectedCode);
-                    },
-                  );
-                }).toList(),
+              child: RadioGroup<String>(
+                groupValue: selectedCode,
+                onChanged: (value) {
+                  if (value != null) {
+                    setDialogState(() => selectedCode = value);
+                  }
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: LocaleNotifier.supportedLocales.map((locale) {
+                    final code = locale.languageCode;
+                    final name = LocaleNotifier.localeNames[code] ?? code.toUpperCase();
+                    return RadioListTile<String>(
+                      title: Text(name),
+                      value: code,
+                      activeColor: AppColors.primary,
+                    );
+                  }).toList(),
+                ),
               ),
             ),
             actions: [

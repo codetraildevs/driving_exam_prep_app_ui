@@ -211,7 +211,7 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                           ),
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.lock_rounded,
                                 size: 18,
                                 color: AppColors.success,
@@ -292,7 +292,7 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.policy_rounded,
                                   size: 16,
                                   color: AppColors.primaryLight,
@@ -306,7 +306,7 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                                   ),
                                 ),
                                 const SizedBox(width: 4),
-                                Icon(
+                                const Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   size: 12,
                                   color: AppColors.primaryLight,

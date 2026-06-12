@@ -2,10 +2,10 @@ name: traffic_rule_in_rwanda
 description: Learn Rwanda traffic rules and practice theory questions for the driving licence test.
 publish_to: 'none'
 
-version: 1.1.1+8
+version: 1.1.1+10
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.8.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -15,8 +15,9 @@ dependencies:
 
   # State Management
   flutter_bloc: ^9.0.0
-  provider: ^6.1.0
+  flutter_riverpod: ^2.6.1
   url_launcher: ^6.2.5
+  
   share_plus: ^7.2.1
 
   # Navigation
@@ -29,7 +30,7 @@ dependencies:
   shared_preferences: ^2.2.0
 
   # HTTP
-  http: ^1.1.0
+  dio: ^5.4.0
 
   # Date & Time
   intl: ^0.20.2
@@ -39,12 +40,18 @@ dependencies:
 
   # Security
   screen_protector: ^1.2.0
+  sentry_flutter: ^8.0.0
+
+  # Code Generation
+  json_annotation: ^4.11.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.14.3
+  json_serializable: ^6.8.0
+  build_runner: ^2.4.0
 
 flutter_launcher_icons:
   android: "launcher_icon"

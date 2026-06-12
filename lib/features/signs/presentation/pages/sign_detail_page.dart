@@ -33,6 +33,7 @@ class _SignDetailPageState extends State<SignDetailPage> {
     final state = context.read<AuthBloc>().state;
     if (state is AuthAuthenticated) {
       final isLearned = await signsRepo.isSignLearned(state.user.id, widget.signId);
+      if (!mounted) return;
       setState(() {
         _isLearned = isLearned;
       });
@@ -42,21 +43,25 @@ class _SignDetailPageState extends State<SignDetailPage> {
   void _handleMarkAsLearned() async {
     final state = context.read<AuthBloc>().state;
     if (state is AuthAuthenticated) {
+      final messenger = ScaffoldMessenger.of(context);
+      final l10n = AppLocalizations.of(context);
       try {
         await signsRepo.markSignAsLearned(state.user.id, widget.signId);
+        if (!mounted) return;
         setState(() {
           _isLearned = true;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
+        messenger.showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context).signDetailMarkedSuccess),
+            content: Text(l10n.signDetailMarkedSuccess),
             backgroundColor: AppColors.success,
           ),
         );
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
+        if (!mounted) return;
+        messenger.showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context).errorWithDetail(e.toString())),
+            content: Text(l10n.errorWithDetail(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );

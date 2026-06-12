@@ -1,180 +1,389 @@
 import 'dart:convert';
-import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
+
 import 'api_config.dart';
+import 'api_endpoints.dart';
 import '../session/auth_session.dart';
 
-/// Centralized API helper with debug logging for all HTTP calls.
+/// Centralized API helper with debug logging for all HTTP calls
+/// and auto-refresh token interceptor.
 class ApiHelper {
   static final ApiHelper _instance = ApiHelper._();
   factory ApiHelper() => _instance;
   ApiHelper._();
 
+  /// Mutex to prevent concurrent refresh token calls (token rotation would
+  /// cause the second call to fail since the first already revoked the token).
+  bool _isRefreshing = false;
+
+  late final Dio _dio = Dio(BaseOptions(
+    baseUrl: ApiConfig.baseUrl,
+    connectTimeout: const Duration(seconds: 15),
+    receiveTimeout: const Duration(seconds: 15),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+  ));
+
   /// Performs a GET request with auth token and debug logging.
   Future<ApiResponse> get(String path, {Map<String, String>? queryParams}) async {
-    final uri = _buildUri(path, queryParams);
-    _logRequest('GET', uri);
+    _logRequest('GET', path, queryParams: queryParams);
     try {
+      await _ensureAccessToken();
       final token = await AuthSession().getToken();
-      final response = await http.get(
-        uri,
-        headers: _headers(token),
-      ).timeout(const Duration(seconds: 20));
-      return _processResponse('GET', uri, response);
-    } on SocketException catch (e) {
-      return _networkError('GET', uri, 'NETWORK_ERROR', e.toString());
-    } on http.ClientException catch (e) {
-      return _networkError('GET', uri, 'NETWORK_ERROR', e.toString());
+      final response = await _dio.get(
+        path,
+        queryParameters: queryParams,
+        options: Options(headers: _authHeader(token)),
+      );
+      return _processResponse('GET', path, response);
+    } on DioException catch (e) {
+      final handled = await _tryHandle401('GET', path, e);
+      if (handled != null) return handled;
+      return _networkError('GET', path, _dioErrorMessage(e), e.toString());
     } catch (e) {
-      return _networkError('GET', uri, 'An unexpected error occurred', e.toString());
+      return _networkError('GET', path, 'An unexpected error occurred', e.toString());
     }
   }
 
   /// Performs a POST request with auth token and debug logging.
   Future<ApiResponse> post(String path, {Map<String, dynamic>? body}) async {
-    final uri = _buildUri(path);
-    _logRequest('POST', uri, body: body);
+    _logRequest('POST', path, body: body);
     try {
+      await _ensureAccessToken();
       final token = await AuthSession().getToken();
-      final response = await http.post(
-        uri,
-        headers: _headers(token),
-        body: body != null ? json.encode(body) : null,
-      ).timeout(const Duration(seconds: 20));
-      return _processResponse('POST', uri, response);
-    } on SocketException catch (e) {
-      return _networkError('POST', uri, 'NETWORK_ERROR', e.toString());
-    } on http.ClientException catch (e) {
-      return _networkError('POST', uri, 'NETWORK_ERROR', e.toString());
+      final response = await _dio.post(
+        path,
+        data: body != null ? json.encode(body) : null,
+        options: Options(headers: _authHeader(token)),
+      );
+      return _processResponse('POST', path, response);
+    } on DioException catch (e) {
+      final handled = await _tryHandle401('POST', path, e);
+      if (handled != null) return handled;
+      return _networkError('POST', path, _dioErrorMessage(e), e.toString());
     } catch (e) {
-      return _networkError('POST', uri, 'An unexpected error occurred', e.toString());
+      return _networkError('POST', path, 'An unexpected error occurred', e.toString());
+    }
+  }
+
+  /// Performs a PUT request with auth token and debug logging.
+  Future<ApiResponse> put(String path, {Map<String, dynamic>? body}) async {
+    _logRequest('PUT', path, body: body);
+    try {
+      await _ensureAccessToken();
+      final token = await AuthSession().getToken();
+      final response = await _dio.put(
+        path,
+        data: body != null ? json.encode(body) : null,
+        options: Options(headers: _authHeader(token)),
+      );
+      return _processResponse('PUT', path, response);
+    } on DioException catch (e) {
+      final handled = await _tryHandle401('PUT', path, e);
+      if (handled != null) return handled;
+      return _networkError('PUT', path, _dioErrorMessage(e), e.toString());
+    } catch (e) {
+      return _networkError('PUT', path, 'An unexpected error occurred', e.toString());
     }
   }
 
   /// Performs a PATCH request with auth token and debug logging.
   Future<ApiResponse> patch(String path, {Map<String, dynamic>? body}) async {
-    final uri = _buildUri(path);
-    _logRequest('PATCH', uri, body: body);
+    _logRequest('PATCH', path, body: body);
     try {
+      await _ensureAccessToken();
       final token = await AuthSession().getToken();
-      final response = await http.patch(
-        uri,
-        headers: _headers(token),
-        body: body != null ? json.encode(body) : null,
-      ).timeout(const Duration(seconds: 20));
-      return _processResponse('PATCH', uri, response);
-    } on SocketException catch (e) {
-      return _networkError('PATCH', uri, 'NETWORK_ERROR', e.toString());
-    } on http.ClientException catch (e) {
-      return _networkError('PATCH', uri, 'NETWORK_ERROR', e.toString());
+      final response = await _dio.patch(
+        path,
+        data: body != null ? json.encode(body) : null,
+        options: Options(headers: _authHeader(token)),
+      );
+      return _processResponse('PATCH', path, response);
+    } on DioException catch (e) {
+      final handled = await _tryHandle401('PATCH', path, e);
+      if (handled != null) return handled;
+      return _networkError('PATCH', path, _dioErrorMessage(e), e.toString());
     } catch (e) {
-      return _networkError('PATCH', uri, 'An unexpected error occurred', e.toString());
+      return _networkError('PATCH', path, 'An unexpected error occurred', e.toString());
     }
   }
 
   /// Performs a DELETE request with auth token and debug logging.
   Future<ApiResponse> delete(String path) async {
-    final uri = _buildUri(path);
-    _logRequest('DELETE', uri);
+    _logRequest('DELETE', path);
     try {
+      await _ensureAccessToken();
       final token = await AuthSession().getToken();
-      final response = await http.delete(
-        uri,
-        headers: _headers(token),
-      ).timeout(const Duration(seconds: 20));
-      return _processResponse('DELETE', uri, response);
-    } on SocketException catch (e) {
-      return _networkError('DELETE', uri, 'NETWORK_ERROR', e.toString());
-    } on http.ClientException catch (e) {
-      return _networkError('DELETE', uri, 'NETWORK_ERROR', e.toString());
+      final response = await _dio.delete(
+        path,
+        options: Options(headers: _authHeader(token)),
+      );
+      return _processResponse('DELETE', path, response);
+    } on DioException catch (e) {
+      final handled = await _tryHandle401('DELETE', path, e);
+      if (handled != null) return handled;
+      return _networkError('DELETE', path, _dioErrorMessage(e), e.toString());
     } catch (e) {
-      return _networkError('DELETE', uri, 'An unexpected error occurred', e.toString());
+      return _networkError('DELETE', path, 'An unexpected error occurred', e.toString());
     }
   }
 
-  Uri _buildUri(String path, [Map<String, String>? queryParams]) {
-    final base = Uri.parse(ApiConfig.baseUrl);
-    return base.replace(
-      path: path,
-      queryParameters: queryParams?.isNotEmpty == true ? queryParams : null,
-    );
+  /// Ensures we have a valid (or refreshed) access token before each request.
+  /// If the access token is expired and a refresh token exists, attempts a refresh.
+  Future<void> _ensureAccessToken() async {
+    final session = AuthSession();
+    final token = await session.getToken();
+    if (token != null) return; // Token is still valid
+
+    final refreshToken = await session.getRefreshToken();
+    if (refreshToken == null || refreshToken.isEmpty) return; // Can't refresh
+
+    // Try to refresh
+    final success = await _doRefresh(refreshToken);
+    if (!success) {
+      await session.clear();
+    }
   }
 
-  Map<String, String> _headers(String? token) => {
+  /// Mutex-guarded token refresh.
+  /// Uses a simple bool flag to prevent concurrent refresh calls.
+  Future<bool> _doRefresh(String refreshToken) async {
+    // If another refresh is already in progress, wait for it to complete
+    if (_isRefreshing) {
+      // Brief backoff — the other call should finish quickly
+      await Future.delayed(const Duration(milliseconds: 200));
+      // Check if the refresh succeeded (token is now valid)
+      final token = await AuthSession().getToken();
+      if (token != null) return true;
+      // Other refresh failed — try ourselves
+    }
+
+    _isRefreshing = true;
+    try {
+      if (kDebugMode) {
+        debugPrint('🔄 Attempting token refresh...');
+      }
+      final response = await _dio.post(
+        ApiEndpoints.authRefresh,
+        options: Options(
+          headers: {'Authorization': 'Bearer $refreshToken'},
+        ),
+      );
+      if (response.statusCode == 200 && response.data is Map) {
+        final data = response.data as Map;
+        final newToken = data['token']?.toString();
+        final newRefreshToken = data['refresh_token']?.toString();
+        if (newToken != null && newToken.isNotEmpty) {
+          final session = AuthSession();
+          await session.setToken(newToken);
+          if (newRefreshToken != null && newRefreshToken.isNotEmpty) {
+            await session.setRefreshToken(newRefreshToken);
+          }
+          if (kDebugMode) {
+            debugPrint('✅ Token refreshed successfully');
+          }
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('❌ Token refresh failed: $e');
+      }
+      return false;
+    } finally {
+      _isRefreshing = false;
+    }
+  }
+
+  /// When a 401 error occurs, attempt to refresh the token and retry the request.
+  /// Returns an ApiResponse if the retry succeeded, or null if the error should
+  /// be handled by the normal error path.
+  Future<ApiResponse?> _tryHandle401(
+    String method,
+    String path,
+    DioException e,
+  ) async {
+    if (e.type != DioExceptionType.badResponse ||
+        e.response?.statusCode != 401) {
+      return null;
+    }
+
+    // Don't retry if we were already calling the refresh endpoint
+    if (path == ApiEndpoints.authRefresh) {
+      await AuthSession().clear();
+      return _networkError(method, path,
+          'Session expired. Please log in again.', e.toString());
+    }
+
+    final session = AuthSession();
+    final refreshToken = await session.getRefreshToken();
+    if (refreshToken == null || refreshToken.isEmpty) {
+      await session.clear();
+      return null; // No refresh token — let normal error handling take over
+    }
+
+    final refreshed = await _doRefresh(refreshToken);
+    if (!refreshed) {
+      await session.clear();
+      return _networkError(method, path,
+          'Session expired. Please log in again.', e.toString());
+    }
+
+    // Retry the original request with the new token
+    try {
+      final newToken = await session.getToken();
+      late final Response retryResponse;
+      switch (method) {
+        case 'GET':
+          retryResponse = await _dio.get(
+            path,
+            options: Options(headers: _authHeader(newToken)),
+          );
+          break;
+        case 'POST':
+          retryResponse = await _dio.post(
+            path,
+            data: e.requestOptions.data,
+            options: Options(headers: _authHeader(newToken)),
+          );
+          break;
+        case 'PUT':
+          retryResponse = await _dio.put(
+            path,
+            data: e.requestOptions.data,
+            options: Options(headers: _authHeader(newToken)),
+          );
+          break;
+        case 'PATCH':
+          retryResponse = await _dio.patch(
+            path,
+            data: e.requestOptions.data,
+            options: Options(headers: _authHeader(newToken)),
+          );
+          break;
+        case 'DELETE':
+          retryResponse = await _dio.delete(
+            path,
+            options: Options(headers: _authHeader(newToken)),
+          );
+          break;
+        default:
+          return null;
+      }
+      return _processResponse(method, path, retryResponse);
+    } catch (retryError) {
+      await session.clear();
+      return _networkError(method, path,
+          'Session expired. Please log in again.', retryError.toString());
+    }
+  }
+
+  /// Public: attempt a token refresh. Called by AuthBloc or checkAuthStatus.
+  Future<bool> tryRefreshToken() async {
+    final refreshToken = await AuthSession().getRefreshToken();
+    if (refreshToken == null || refreshToken.isEmpty) return false;
+    return _doRefresh(refreshToken);
+  }
+
+  Map<String, String> _authHeader(String? token) => {
         if (token != null) 'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
       };
 
-  ApiResponse _processResponse(String method, Uri uri, http.Response response) {
-    _logResponse(method, uri, response);
-    dynamic data;
-    try {
-      data = json.decode(response.body);
-    } catch (_) {
-      data = response.body;
+  String _dioErrorMessage(DioException e) {
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.receiveTimeout:
+        return 'Request timed out. Please check your connection.';
+      case DioExceptionType.connectionError:
+        return 'NETWORK_ERROR';
+      case DioExceptionType.badResponse:
+        final statusCode = e.response?.statusCode;
+        if (statusCode == 401) {
+          // Don't clear here — the 401 handler decided not to refresh
+          // or the error fell through. The session may already be cleared.
+          return 'Session expired. Please log in again.';
+        }
+        if (statusCode == 403) return 'Insufficient permissions for this operation.';
+        if (e.response?.data is Map) {
+          final data = e.response!.data as Map;
+          final msg = data['message'] ?? data['error'];
+          if (msg != null && msg.toString().isNotEmpty) return msg.toString();
+        }
+        return 'HTTP $statusCode';
+      default:
+        return 'An unexpected error occurred';
     }
+  }
 
-    final isSuccess = response.statusCode >= 200 && response.statusCode < 300;
+  ApiResponse _processResponse(String method, String path, Response response) {
+    _logResponse(method, path, response);
+    final data = response.data;
+    final statusCode = response.statusCode ?? 0;
+
+    final isSuccess = statusCode >= 200 && statusCode < 300;
     String? errorMessage;
     if (!isSuccess) {
-      if (response.statusCode == 401) {
-        // Token expired or invalid — clear local session so user is forced to re-login.
-        AuthSession().clear();
+      if (statusCode == 401) {
+        // Already attempted refresh in _tryHandle401 — session may be cleared
         errorMessage = 'Session expired. Please log in again.';
-      } else if (response.statusCode == 403) {
+      } else if (statusCode == 403) {
         errorMessage = 'Insufficient permissions for this operation.';
       } else if (data is Map) {
         errorMessage = (data['message'] ?? data['error'] ?? '').toString();
       }
       if (errorMessage == null || errorMessage.isEmpty) {
-        errorMessage = 'HTTP ${response.statusCode}';
+        errorMessage = 'HTTP $statusCode';
       }
     }
 
     // Unwrap common API envelope: {success: true, data: <payload>}
-    if (isSuccess && data is Map && data.containsKey('data')) {
-      data = data['data'];
-    }
+    final unwrappedData = (isSuccess && data is Map && data.containsKey('data'))
+        ? data['data']
+        : data;
 
     return ApiResponse(
-      statusCode: response.statusCode,
-      data: data,
+      statusCode: statusCode,
+      data: unwrappedData,
       isSuccess: isSuccess,
       errorMessage: errorMessage,
-      debugInfo: '$method $uri → ${response.statusCode}',
+      debugInfo: '$method $path → $statusCode',
     );
   }
 
-  ApiResponse _networkError(String method, Uri uri, String errorMessage, String rawError) {
-    if (kDebugMode) debugPrint('❌ API ERROR [$method $uri]: $rawError');
+  ApiResponse _networkError(String method, String path, String errorMessage, String rawError) {
+    if (kDebugMode) debugPrint('❌ API ERROR [$method $path]: $rawError');
     return ApiResponse(
       statusCode: 0,
       data: null,
       isSuccess: false,
       errorMessage: errorMessage,
-      debugInfo: '$method $uri → NETWORK ERROR: $rawError',
+      debugInfo: '$method $path → NETWORK ERROR: $rawError',
     );
   }
 
-  void _logRequest(String method, Uri uri, {Map<String, dynamic>? body}) {
+  void _logRequest(String method, String path, {Map<String, dynamic>? body, Map<String, String>? queryParams}) {
     if (!kDebugMode) return;
-    debugPrint('🌐 API REQUEST: $method $uri');
+    final queryStr = queryParams != null ? '?$queryParams' : '';
+    debugPrint('🌐 API REQUEST: $method $path$queryStr');
     if (body != null) {
       debugPrint('   Body: ${json.encode(body)}');
     }
   }
 
-  void _logResponse(String method, Uri uri, http.Response response) {
+  void _logResponse(String method, String path, Response response) {
     if (!kDebugMode) return;
     final status = response.statusCode;
-    final icon = (status >= 200 && status < 300) ? '✅' : '⚠️';
-    debugPrint('$icon API RESPONSE: $method $uri → $status');
-    // Truncate long bodies
-    final bodySnippet = response.body.length > 500
-        ? '${response.body.substring(0, 500)}...'
-        : response.body;
+    final icon = (status != null && status >= 200 && status < 300) ? '✅' : '⚠️';
+    debugPrint('$icon API RESPONSE: $method $path → $status');
+    final bodyStr = response.data?.toString() ?? '';
+    final bodySnippet = bodyStr.length > 500
+        ? '${bodyStr.substring(0, 500)}...'
+        : bodyStr;
     debugPrint('   Body: $bodySnippet');
   }
 }

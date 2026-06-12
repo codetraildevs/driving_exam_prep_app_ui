@@ -1,0 +1,2 @@
+# Ignore generated rate limiter data files
+rate_limiter/*.json
