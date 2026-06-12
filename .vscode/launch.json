@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter (filtered logs)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "args": [
+                "--android-log-filter-tags",
+                "^flutter$"
+            ]
+        },
+        {
+            "name": "Flutter (all logs)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart"
+        }
+    ]
+}

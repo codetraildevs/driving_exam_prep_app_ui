@@ -33,6 +33,8 @@ Future<void> main() async {
         defaultValue: 'production',
       );
       options.tracesSampleRate = 0.2;
+      // Suppress Sentry's verbose debug logs (ClassNotFoundException probes, etc.).
+      options.debug = false;
     },
     appRunner: () => _runApp(),
   );
