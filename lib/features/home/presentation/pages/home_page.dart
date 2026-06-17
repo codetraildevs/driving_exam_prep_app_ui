@@ -484,8 +484,8 @@ class _ResponsiveServicesGrid extends StatelessWidget {
         subtitle: l10n.homeShareAppSubtitle,
         color: AppColors.primaryLight,
         onTap: () {
-          Share.share(
-            '${l10n.homeShareAppMessage} ${AppConfig.playStoreUrl}',
+          SharePlus.instance.share(
+            ShareParams(text: '${l10n.homeShareAppMessage} ${AppConfig.playStoreUrl}'),
           );
         },
       ),

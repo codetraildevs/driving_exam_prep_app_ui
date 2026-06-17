@@ -4,7 +4,7 @@
             "quizId": "177",
             "examType": "Free",
             "title": "Examen ",
-            "examImgUrl": "assets/images/free.jpg",
+            "examImgUrl": "assets/images/free.webp",
             "questions": [
                 {
                     "question": "1. Tout véhicule ou train de véhicules en mouvement doit avoir:",
@@ -172,7 +172,7 @@
             "quizId": "1",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam10.jpg",
+            "examImgUrl": "assets/images/exam10.webp",
             "questions": [
                 {
                     "question": "1. Les autobus destinés au transport des écoliers peuvent être munis de deux feux oranges clignotants pour signaler l’arrêt et de recommander la prudence. Ces feux sont placés :",
@@ -340,7 +340,7 @@
             "quizId": "2",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam2.jpg",
+            "examImgUrl": "assets/images/exam2.webp",
             "questions": [
                 {
                     "question": "1. À défaut de réglementation restrictive spécifiques, la vitesse maximale des véhicules pour le transport en commun est :",
@@ -516,7 +516,7 @@
             "quizId": "3",
             "examType": "Paid",
             "title": "Free Exam",
-            "examImgUrl": "assets/images/exam3.jpg",
+            "examImgUrl": "assets/images/exam3.webp",
             "questions": [
                 {
                     "question": "1. Si le chargement est constitué de céréale, café perchet, charbon de bois, cotton non égrené, poille, herbe branchages ou fourrage en vrac à l’exclusion de balles comprimées sa largeur peut atteindre des mesures suivantes:",
@@ -684,7 +684,7 @@
             "quizId": "4",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam4.png",
+            "examImgUrl": "assets/images/exam4.webp",
             "questions": [
                 {
                     "question": "1. Les feux indicateurs de direction doivent être constitués par des dispositifs fixés à lumière clignotante disposés sur les faces avant et arrière du véhicule, les ces feux sont en couleurs suivantes:",
@@ -852,7 +852,7 @@
             "quizId": "5",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam5.jpg",
+            "examImgUrl": "assets/images/exam5.webp",
             "questions": [
                 {
                     "question": "1. Un panneau additionnel indiquant le terrain de camping et de caravane est caractérisé par les couleurs suivantes:",
@@ -1020,7 +1020,7 @@
             "quizId": "6",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam6.png",
+            "examImgUrl": "assets/images/exam6.webp",
             "questions": [
                 {
                     "question": "1. Si en raison de la disposition des lieux, la distance qui sépare le signal de l’endroit dangereux est sensiblement inférieure à 150m, cette distance est indiquée par un signal additionnel caractérisé par:",
@@ -1188,7 +1188,7 @@
             "quizId": "7",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam7.png",
+            "examImgUrl": "assets/images/exam7.webp",
             "questions": [
                 {
                     "question": "1. Dans les circonscriptions urbaines ainsi que sur les routes nationales déterminées par le ministre ayant les transports dans ses attributions, le poids maximum autorisé par véhicule ou train des véhicules par essieu triple est:",
@@ -1356,7 +1356,7 @@
             "quizId": "8",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam8.png",
+            "examImgUrl": "assets/images/exam8.webp",
             "questions": [
                 {
                     "question": "1. Est interdite la circulation de véhicules automoteurs et des remorques tirées par ces véhicules, lorsque les roues sont munies soit de bandages rigides, soit de bandages élastiques de moins de 0.04m d’épaisseur. Mais ceci n’est pas appliqué aux véhicules suivants:",
@@ -1524,7 +1524,7 @@
             "quizId": "9",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam9.jpg",
+            "examImgUrl": "assets/images/exam9.webp",
             "questions": [
                 {
                     "question": "1. Votre téléphone portable sonne pendant votre voyage. Que pouvez-vous faire?",
@@ -1564,7 +1564,7 @@
                 },
                 {
                     "question": "5. Que devriez-vous faire lorsque vous vous approchez de feux de signalisation de couleur jaune?",
-                    "questionImgUrl": "assets/images/q214.png",
+                    "questionImgUrl": "assets/images/q214.webp",
                     "option1": "a) Accélérer dur",
                     "option2": "b) Maintenir la vitesse",
                     "option3": "c) Être prêt à s’arrêter",
@@ -1663,7 +1663,7 @@
                 },
                 {
                     "question": "16. Vous êtes sur le point de dépasser un motocycliste lent. Lequel de ces signes vous ferait prendre des précautions particulières?",
-                    "questionImgUrl": "assets/images/q224.png",
+                    "questionImgUrl": "assets/images/q224.webp",
                     "option1": "a)",
                     "option2": "c)",
                     "option3": "d)",
@@ -1690,7 +1690,7 @@
                 },
                 {
                     "question": "19. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q229.png",
+                    "questionImgUrl": "assets/images/q229.webp",
                     "option1": "a) Vitesse minimale 30 km/h",
                     "option2": "b) Fin de vitesse maximale obligatoire",
                     "option3": "c) Fin de vitesse minimale",
@@ -1699,7 +1699,7 @@
                 },
                 {
                     "question": "20. Quelle est la signification de ce signal ?",
-                    "questionImgUrl": "assets/images/q230.png",
+                    "questionImgUrl": "assets/images/q230.webp",
                     "option1": "a) Accès interdit",
                     "option2": "b) Stationnement interdit",
                     "option3": "c) Limite de vitesse nationale",
@@ -1712,11 +1712,11 @@
             "quizId": "10",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam10.jpg",
+            "examImgUrl": "assets/images/exam10.webp",
             "questions": [
                 {
                     "question": "1. Sur une chaussée à deux bandes, à quoi sert la bande de gauche ?",
-                    "questionImgUrl": "assets/images/q231.jpg",
+                    "questionImgUrl": "assets/images/q231.webp",
                     "option1": "a) Dépassement seulement, ne jamais tourner à droite",
                     "option2": "b) Dépassement ou tourner à gauche",
                     "option3": "c) Circulation rapide seulement",
@@ -1743,7 +1743,7 @@
                 },
                 {
                     "question": "4. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q234.png",
+                    "questionImgUrl": "assets/images/q234.webp",
                     "option1": "a) Fin de toutes les interdictions locales imposées aux véhicules en mouvements",
                     "option2": "b) Pas d'attente sur la chaussée",
                     "option3": "c) La limite de vitesse nationale s'applique",
@@ -1752,7 +1752,7 @@
                 },
                 {
                     "question": "5. Les panneaux de signalisation donnant des ordres sont généralement quelle forme ?",
-                    "questionImgUrl": "assets/images/q235.png",
+                    "questionImgUrl": "assets/images/q235.webp",
                     "option1": "a",
                     "option2": "b",
                     "option3": "c",
@@ -1761,7 +1761,7 @@
                 },
                 {
                     "question": "6. Quel signe signifie qu'aucun véhicule à moteur n'est autorisé ?",
-                    "questionImgUrl": "assets/images/q236.png",
+                    "questionImgUrl": "assets/images/q236.webp",
                     "option1": "a",
                     "option2": "b",
                     "option3": "c",
@@ -1770,7 +1770,7 @@
                 },
                 {
                     "question": "7. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q237.png",
+                    "questionImgUrl": "assets/images/q237.webp",
                     "option1": "a) Vous avez la priorité",
                     "option2": "b) Pas de véhicules automoteurs",
                     "option3": "c) Double sens de circulation",
@@ -1779,7 +1779,7 @@
                 },
                 {
                     "question": "8. Vous voyez ce signe devant vous. Qu'est-ce que ça veut dire ?",
-                    "questionImgUrl": "assets/images/q238.png",
+                    "questionImgUrl": "assets/images/q238.webp",
                     "option1": "a) La limite de vitesse nationale s'applique",
                     "option2": "b) Les restrictions en attente s'appliquent",
                     "option3": "c) Stationnement et arrêt interdits",
@@ -1788,7 +1788,7 @@
                 },
                 {
                     "question": "9. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q239.png",
+                    "questionImgUrl": "assets/images/q239.webp",
                     "option1": "a) Route de contournement",
                     "option2": "b) Mini rond-point",
                     "option3": "c) Sens giratoire",
@@ -1797,7 +1797,7 @@
                 },
                 {
                     "question": "10. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q240.png",
+                    "questionImgUrl": "assets/images/q240.webp",
                     "option1": "a) Pont irrégulier",
                     "option2": "b) Profil irrégulier",
                     "option3": "c) Entrée du tunnel",
@@ -1806,7 +1806,7 @@
                 },
                 {
                     "question": "11. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q241.png",
+                    "questionImgUrl": "assets/images/q241.webp",
                     "option1": "a) Vent latéral",
                     "option2": "b) Bruit de la route",
                     "option3": "c) Aéroport",
@@ -1815,7 +1815,7 @@
                 },
                 {
                     "question": "12. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q242.png",
+                    "questionImgUrl": "assets/images/q242.webp",
                     "option1": "a) Fin de la route pour les piétons",
                     "option2": "b) Fin d’autoroute",
                     "option3": "c) A et B sont correctes",
@@ -1824,7 +1824,7 @@
                 },
                 {
                     "question": "13. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q243.png",
+                    "questionImgUrl": "assets/images/q243.webp",
                     "option1": "a) Fin de la route à deux voies",
                     "option2": "b) Grand pont",
                     "option3": "c) Rétrécissement de la chaussée",
@@ -1833,7 +1833,7 @@
                 },
                 {
                     "question": "14. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q244.png",
+                    "questionImgUrl": "assets/images/q244.webp",
                     "option1": "a) T-jonction",
                     "option2": "b) Voie sans issue",
                     "option3": "c) Cabine téléphonique à venir",
@@ -1842,7 +1842,7 @@
                 },
                 {
                     "question": "15. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q245.png",
+                    "questionImgUrl": "assets/images/q245.webp",
                     "option1": "a) Patrouille scolaire",
                     "option2": "b) Pas de piéton autorisé",
                     "option3": "c) Zone piétonne - pas de véhicules",
@@ -1851,7 +1851,7 @@
                 },
                 {
                     "question": "16. Que devez-vous faire quand vous voyez ce signe ?",
-                    "questionImgUrl": "assets/images/q246.png",
+                    "questionImgUrl": "assets/images/q246.webp",
                     "option1": "a) Arrêtez-vous seulement si le trafic approche",
                     "option2": "b) Arrêtez-vous même si la route est dégagée",
                     "option3": "c) Arrêtez-vous seulement si les enfants attendent pour traverser",
@@ -1860,7 +1860,7 @@
                 },
                 {
                     "question": "17. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q247.png",
+                    "questionImgUrl": "assets/images/q247.webp",
                     "option1": "a) Débouché sur un quai où une berge, ou approche d’un bac",
                     "option2": "b) Colline escarpée vers le bas",
                     "option3": "c) Surface de route inégale",
@@ -1869,7 +1869,7 @@
                 },
                 {
                     "question": "18. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q248.png",
+                    "questionImgUrl": "assets/images/q248.webp",
                     "option1": "a) Cyclomoteurs seulement",
                     "option2": "b) Pas de véhicule",
                     "option3": "c) Véhicule seulement",
@@ -1878,7 +1878,7 @@
                 },
                 {
                     "question": "19. Quelle est la forme utilisée pour un panneau « céder le passage » ?",
-                    "questionImgUrl": "assets/images/q249.png",
+                    "questionImgUrl": "assets/images/q249.webp",
                     "option1": "a)",
                     "option2": "b) ",
                     "option3": "c)",
@@ -1887,7 +1887,7 @@
                 },
                 {
                     "question": "20. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q250.png",
+                    "questionImgUrl": "assets/images/q250.webp",
                     "option1": "a) Approche d’un passage à niveau de barrières",
                     "option2": "b) Route barrière devant",
                     "option3": "c) Passage à niveau sans porte ni barrière",
@@ -1900,11 +1900,11 @@
             "quizId": "11",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam11.jpg",
+            "examImgUrl": "assets/images/exam11.webp",
             "questions": [
                 {
                     "question": "1. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q251.png",
+                    "questionImgUrl": "assets/images/q251.webp",
                     "option1": "a) Cambre indésirable",
                     "option2": "b) Descente dangereuse",
                     "option3": "c) Route inégale",
@@ -1913,7 +1913,7 @@
                 },
                 {
                     "question": "2. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q252.png",
+                    "questionImgUrl": "assets/images/q252.webp",
                     "option1": "a) Tourner à gauche pour la zone de stationnement",
                     "option2": "b) Route sans issue",
                     "option3": "c) Entrée interdite pour le traffic tournant à gauche",
@@ -1922,7 +1922,7 @@
                 },
                 {
                     "question": "3. Que signifie un feu rouge ?",
-                    "questionImgUrl": "assets/images/ex12q3.jpg",
+                    "questionImgUrl": "assets/images/ex12q3.webp",
                     "option1": "a) Vous arrêtez à moins de tourner à gauche",
                     "option2": "b) Arrêtez-vous si vous pouvez freiner en toute sécurité",
                     "option3": "c) Interdiction de franchir le signal",
@@ -1931,7 +1931,7 @@
                 },
                 {
                     "question": "4. Que signifie un feu jaune ?",
-                    "questionImgUrl": "assets/images/ex12q4.jpg",
+                    "questionImgUrl": "assets/images/ex12q4.webp",
                     "option1": "a) Préparez-vous à y aller",
                     "option2": "b) Interdiction de franchir la ligne d'arrêt ou, à défaut de ligne d'arrêt, le signal même",
                     "option3": "c) A et B sont de bonne réponse",
@@ -1940,7 +1940,7 @@
                 },
                 {
                     "question": "5. Que signifie un feu vert ?",
-                    "questionImgUrl": "assets/images/ex12q5.jpg",
+                    "questionImgUrl": "assets/images/ex12q5.webp",
                     "option1": "a) Préparez-vous à y aller",
                     "option2": "b) Autorisation de franchir le signal",
                     "option3": "c) Arrêt si votre sortie de l’intersection est bloquée",
@@ -1949,7 +1949,7 @@
                 },
                 {
                     "question": "6. Que signifie cette ligne blanche discontinue ?",
-                    "questionImgUrl": "assets/images/ex12q6.jpg",
+                    "questionImgUrl": "assets/images/ex12q6.webp",
                     "option1": "a) Interdit de franchir cette ligne",
                     "option2": "b) Stationner interdit",
                     "option3": "c) Vous approchez d'un danger",
@@ -1958,7 +1958,7 @@
                 },
                 {
                     "question": "7. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q257.png",
+                    "questionImgUrl": "assets/images/q257.webp",
                     "option1": "a) Circulation dans les deux sens",
                     "option2": "b) Circulation dans les deux sens interdit",
                     "option3": "c) Annonce d’un passage où les cyclistes peuvent déboucher sur la chaussée",
@@ -1967,7 +1967,7 @@
                 },
                 {
                     "question": "8. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q258.png",
+                    "questionImgUrl": "assets/images/q258.webp",
                     "option1": "a) Zone de service 30 miles à venir",
                     "option2": "b) Vitesse maximale 30 km/h",
                     "option3": "c) Vitesse minimale de 30 km/h",
@@ -1976,7 +1976,7 @@
                 },
                 {
                     "question": "9. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q259.png",
+                    "questionImgUrl": "assets/images/q259.webp",
                     "option1": "a) Chaussée glissante à venir",
                     "option2": "b) Pneus susceptibles de crevaisons à venir",
                     "option3": "c) Approche d’un danger non autrement défini",
@@ -1985,7 +1985,7 @@
                 },
                 {
                     "question": "10. Ce signal signifie?",
-                    "questionImgUrl": "assets/images/q260.png",
+                    "questionImgUrl": "assets/images/q260.webp",
                     "option1": "a) Les conducteurs de bestiaux devant",
                     "option2": "b) Chemin de fer à venir",
                     "option3": "c) Approche d’un passage à niveau sans barrière.",
@@ -1994,7 +1994,7 @@
                 },
                 {
                     "question": "11. À cette intersection, il y a un panneau 'Stop' et une ligne blanche continue à la surface de la route. Pourquoi y a-t-il un panneau 'stop' ici ?",
-                    "questionImgUrl": "assets/images/q261.png",
+                    "questionImgUrl": "assets/images/q261.webp",
                     "option1": "a) La vitesse sur la route principale est déréglée",
                     "option2": "b) C'est une intersection très fréquentée",
                     "option3": "c) La visibilité sur la route principale est limitée",
@@ -2039,7 +2039,7 @@
                 },
                 {
                     "question": "16. Un pétrolier est impliqué dans une collision. Quel panneau indique-qu’il transporte des marchandises dangereuses ?",
-                    "questionImgUrl": "assets/images/q266.png",
+                    "questionImgUrl": "assets/images/q266.webp",
                     "option1": "a)",
                     "option2": "b)",
                     "option3": "c)",
@@ -2057,7 +2057,7 @@
                 },
                 {
                     "question": "18. Vous êtes tombé en panne sur une route à double sens. Vous avez un triangle d'avertissement. Au moins à quelle distance de votre véhicule devriez-vous placer le triangle de pré signalisation",
-                    "questionImgUrl": "assets/images/q268.png",
+                    "questionImgUrl": "assets/images/q268.webp",
                     "option1": "a) 5 mètres",
                     "option2": "b) 25 mètres",
                     "option3": "c) 45 mètres",
@@ -2066,7 +2066,7 @@
                 },
                 {
                     "question": "19. Celui qui pousse à la main une moto doit être considéré comme :",
-                    "questionImgUrl": "assets/images/q269.png",
+                    "questionImgUrl": "assets/images/q269.webp",
                     "option1": "a) Piéton",
                     "option2": "b) Conducteur",
                     "option3": "c) Passager",
@@ -2075,7 +2075,7 @@
                 },
                 {
                     "question": "20. Les panneaux de forme triangulaire annoncent :",
-                    "questionImgUrl": "assets/images/q270.png",
+                    "questionImgUrl": "assets/images/q270.webp",
                     "option1": "a) Un danger",
                     "option2": "b) Une interdiction",
                     "option3": "c) Une obligation",
@@ -2088,11 +2088,11 @@
             "quizId": "12",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam13.jpg",
+            "examImgUrl": "assets/images/exam13.webp",
             "questions": [
                 {
                     "question": "1. Ce signal signifie :",
-                    "questionImgUrl": "assets/images/q271.png",
+                    "questionImgUrl": "assets/images/q271.webp",
                     "option1": "a) Voie prioritaire",
                     "option2": "b) Priorité au prochain carrefour",
                     "option3": "c) Danger au prochain carrefour",
@@ -2101,7 +2101,7 @@
                 },
                 {
                     "question": "2. Ce signal signifie :",
-                    "questionImgUrl": "assets/images/q272.png",
+                    "questionImgUrl": "assets/images/q272.webp",
                     "option1": "a) Interdit l’accès aux piétons",
                     "option2": "b) Annonce une rue piétonne",
                     "option3": "c) Annonce un passage pour piétons",
@@ -2110,7 +2110,7 @@
                 },
                 {
                     "question": "3. En dehors d’une agglomération, vous rencontrez d’abord les deux signaux de gauche. Plus loin, on vous annonce la fin des travaux. Au-delà de ce signal à quelle vitesse roulez-vous ?",
-                    "questionImgUrl": "assets/images/q273.png",
+                    "questionImgUrl": "assets/images/q273.webp",
                     "option1": "a) 70 km/h",
                     "option2": "b) 50 km/h",
                     "option3": "c) 40 km/h",
@@ -2119,7 +2119,7 @@
                 },
                 {
                     "question": "4. Ce signal indique :",
-                    "questionImgUrl": "assets/images/q274.png",
+                    "questionImgUrl": "assets/images/q274.webp",
                     "option1": "a) Un hôtel",
                     "option2": "b) Un établissement sanitaire",
                     "option3": "b) Une zone d’atterrissage pour hélicoptère",
@@ -2128,7 +2128,7 @@
                 },
                 {
                     "question": "5. Les deux lignes discontinues parallèles de couleur blanche aux bords de la chaussée délimitent :",
-                    "questionImgUrl": "assets/images/q275.png",
+                    "questionImgUrl": "assets/images/q275.webp",
                     "option1": "a) Une zone réservée à l’arrêt et au stationnement",
                     "option2": "b) Une zone réservée aux piétons",
                     "option3": "c) Une piste cyclable",
@@ -2137,7 +2137,7 @@
                 },
                 {
                     "question": "6. Ce signal interdit à tout conducteur de dépasser une voiture :",
-                    "questionImgUrl": "assets/images/q276.png",
+                    "questionImgUrl": "assets/images/q276.webp",
                     "option1": "a) Par la droite",
                     "option2": "b) Par la gauche",
                     "option3": "c) Par la droite et la gauche",
@@ -2146,7 +2146,7 @@
                 },
                 {
                     "question": "7. Ce signal interdit le dépassement par la gauche pour des vehicules suivantes :",
-                    "questionImgUrl": "assets/images/q277.png",
+                    "questionImgUrl": "assets/images/q277.webp",
                     "option1": "a) De tout véhicule",
                     "option2": "b) De tout véhicule à moteur",
                     "option3": "c) De tous les véhicules à moteur autres que ceux à deux roues sans side-car",
@@ -2155,7 +2155,7 @@
                 },
                 {
                     "question": "8. Cette signalisation m’autorise à m’engager :",
-                    "questionImgUrl": "assets/images/q278.png",
+                    "questionImgUrl": "assets/images/q278.webp",
                     "option1": "a) Oui",
                     "option2": "b) Oui, en cédant le passage aux piétons",
                     "option3": "c) Oui, en cédant le passage aux conducteurs venant en sens inverse",
@@ -2164,7 +2164,7 @@
                 },
                 {
                     "question": "9. Sur une route sinueuse, quand est-ce que je freine ?",
-                    "questionImgUrl": "assets/images/q279.png",
+                    "questionImgUrl": "assets/images/q279.webp",
                     "option1": "a) Avant chaque virage",
                     "option2": "b) Dans chaque virage",
                     "option3": "c) Après chaque virage",
@@ -2173,7 +2173,7 @@
                 },
                 {
                     "question": "10. Quel signal m’oblige à céder le passage :",
-                    "questionImgUrl": "assets/images/q280.png",
+                    "questionImgUrl": "assets/images/q280.webp",
                     "option1": "a) Le signal A19",
                     "option2": "b) Le signal B5",
                     "option3": "c) Le signal B6",
@@ -2182,7 +2182,7 @@
                 },
                 {
                     "question": "11. Ce signal de danger m’annonce :",
-                    "questionImgUrl": "assets/images/q281.png",
+                    "questionImgUrl": "assets/images/q281.webp",
                     "option1": "a) Des projections de gravillons",
                     "option2": "b) Des ornières avec risqué d’aquaplanage",
                     "option3": "c) Une chaussée glissante",
@@ -2191,7 +2191,7 @@
                 },
                 {
                     "question": "12. Circulant à cyclo, vous apercevez une de vos connaissances. Elle vous demande de la déposer quelques rues plus loin. Vous avez 18 ans mais ne disposez pas d’un second casque. Vous pouvez l’embarquer :",
-                    "questionImgUrl": "assets/images/q282.png",
+                    "questionImgUrl": "assets/images/q282.webp",
                     "option1": "a) Oui",
                     "option2": "b) Oui, sauf pour un long trajet",
                     "option3": "c) Oui, sauf pour un court trajet",
@@ -2200,7 +2200,7 @@
                 },
                 {
                     "question": "13. Quel signal vous accorde la priorité aux prochains carrefours :",
-                    "questionImgUrl": "assets/images/q283.png",
+                    "questionImgUrl": "assets/images/q283.webp",
                     "option1": "a) le signal B3",
                     "option2": "b) le signal A22a",
                     "option3": "c) le signal A20",
@@ -2209,7 +2209,7 @@
                 },
                 {
                     "question": "14. Avant de dépasser un cyclomotoriste, je dois mettre mon clignoteur à gauche :",
-                    "questionImgUrl": "assets/images/q284.png",
+                    "questionImgUrl": "assets/images/q284.webp",
                     "option1": "a) oui, toujours",
                     "option2": "b) Oui, lorsque d’autres véhicules me suivent",
                     "option3": "c) Oui, lorsque d’autres véhicule attelé ou a plus de 2 roues me suivent",
@@ -2218,7 +2218,7 @@
                 },
                 {
                     "question": "15. Je peux dépasser un conducteur qui s’arrête devant un passage pour piétons :",
-                    "questionImgUrl": "assets/images/q285.png",
+                    "questionImgUrl": "assets/images/q285.webp",
                     "option1": "a) Oui",
                     "option2": "b) Oui, après un bref coup de klaxon",
                     "option3": "c) Oui, lorsque d’autres véhicules me suivent",
@@ -2227,7 +2227,7 @@
                 },
                 {
                     "question": "16. À hauteur de ce dispositif surélevé :",
-                    "questionImgUrl": "assets/images/q286.png",
+                    "questionImgUrl": "assets/images/q286.webp",
                     "option1": "a) Je peux dépasser n’importe quel véhicule si je modère ma vitesse",
                     "option2": "b) Je peux dépasser que les deux-roues vélo, cyclo…)",
                     "option3": "c) Tout dépassement par la gauche est interdit",
@@ -2236,7 +2236,7 @@
                 },
                 {
                     "question": "17. En cas d’accident, d’agression… quel numéro d’urgence gratuit permet d’appeler les services de secours :",
-                    "questionImgUrl": "assets/images/q287.png",
+                    "questionImgUrl": "assets/images/q287.webp",
                     "option1": "a) 911",
                     "option2": "b) 100",
                     "option3": "c) 112",
@@ -2245,7 +2245,7 @@
                 },
                 {
                     "question": "18. J’arrive le premier sur les lieux d’un accident avec blesses. Mon premier souci est de :",
-                    "questionImgUrl": "assets/images/q288.png",
+                    "questionImgUrl": "assets/images/q288.webp",
                     "option1": "a) sortir les blesses des véhicules",
                     "option2": "b) leur donner à boire",
                     "option3": "c) signaler l’accident et avertir les secours",
@@ -2276,7 +2276,7 @@
             "quizId": "13",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam13.png",
+            "examImgUrl": "assets/images/exam13.webp",
             "questions": [
                 {
                     "question": "1. Avant de dépasser un véhicule, il faut s'assurer que :",
@@ -2388,7 +2388,7 @@
                 },
                 {
                     "question": "13. Quelle est la bonne action à prendre dans cette situation ?",
-                    "questionImgUrl": "assets/images/q303.png",
+                    "questionImgUrl": "assets/images/q303.webp",
                     "option1": "a) Surveillez bien les enfants, donnez si nécessaire un signal d’avertissement et soyez prêt à freiner à temps.",
                     "option2": "b) Accélérez pour passer les enfants rapidement",
                     "option3": "c) Continuez à conduire à une vitesse rapide.",
@@ -2397,7 +2397,7 @@
                 },
                 {
                     "question": "14. Un automobiliste qui s’approche remarque que le jeune garçon à bicyclette a fait ses adieux à son ami. Quelle est la bonne action à prendre par le conducteur ?",
-                    "questionImgUrl": "assets/images/q304.png",
+                    "questionImgUrl": "assets/images/q304.webp",
                     "option1": "a) Continuez comme le garçon est sur le trottoir.",
                     "option2": "b) Préparez-vous à ce que le garçon parte à tout moment sans faire attention à votre véhicule.",
                     "option3": "c) Ralentissez et invitez le garçon à traverser la route.",
@@ -2406,7 +2406,7 @@
                 },
                 {
                     "question": "15. En tant que conducteur de la voiture, quel comportement est correctes ?",
-                    "questionImgUrl": "assets/images/q305.png",
+                    "questionImgUrl": "assets/images/q305.webp",
                     "option1": "a) Un conducteur peut procéder",
                     "option2": "b) Un conducteur doit conduire du côté droit pour permettre le dégagement au motard",
                     "option3": "c) Un chauffeur doit attendre.",
@@ -2415,7 +2415,7 @@
                 },
                 {
                     "question": "16. À l'approche du passage pour piétons, que doit faire le conducteur dans cette situation ?",
-                    "questionImgUrl": "assets/images/q306.png",
+                    "questionImgUrl": "assets/images/q306.webp",
                     "option1": "a) Ralentissez à temps et préparez-vous à arrêter.",
                     "option2": "b) Continuer à rouler vite car les piétons doivent attendre.",
                     "option3": "c) Maintenez votre vitesse car les piétons n'ont pas marché jusqu'au passage.",
@@ -2424,7 +2424,7 @@
                 },
                 {
                     "question": "17. Le conducteur suit ces deux véhicules et souhaite dépasser. Que doit considérer le condicteur avant de dépasser ici?",
-                    "questionImgUrl": "assets/images/q307.png",
+                    "questionImgUrl": "assets/images/q307.webp",
                     "option1": "a) Vous devriez dépasser les deux véhicules ensemble.",
                     "option2": "b) Le champ de vision du conducteur n’est pas suffisant pour permettre un dépassement en toute sécurité.",
                     "option3": "c) Le marquage routier interdit de doubler ici",
@@ -2433,7 +2433,7 @@
                 },
                 {
                     "question": "18. Que doit faire le conducteur de la voiture argentée Avant de tourner à droite ?",
-                    "questionImgUrl": "assets/images/q308.png",
+                    "questionImgUrl": "assets/images/q308.webp",
                     "option1": "a) Sonnez votre klaxon au cycliste que vous avez l'intention de tourner à droite.",
                     "option2": "b) Tourner le virage avant le cycliste",
                     "option3": "c) Permettre au cycliste de passer tout droit.",
@@ -2442,7 +2442,7 @@
                 },
                 {
                     "question": "19. Quelles lumières un conducteur devrait-il utiliser dans un brouillard ?",
-                    "questionImgUrl": "assets/images/q309.png",
+                    "questionImgUrl": "assets/images/q309.webp",
                     "option1": "a) Feux de brouillard avant et arrière avec feux de croisement.",
                     "option2": "b) Feux de brouillard avant et arrière.",
                     "option3": "c) Feux de croisement.",
@@ -2451,7 +2451,7 @@
                 },
                 {
                     "question": "20. Quelle voiture, le cas échéant, est garée de manière incorrecte ?",
-                    "questionImgUrl": "assets/images/q310.png",
+                    "questionImgUrl": "assets/images/q310.webp",
                     "option1": "a) Les deux voitures.",
                     "option2": "b) La voiture verte.",
                     "option3": "c) La voiture rouge.",
@@ -2464,11 +2464,11 @@
             "quizId": "14",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam14.jpg",
+            "examImgUrl": "assets/images/exam14.webp",
             "questions": [
                 {
                     "question": "1. Comment un conducteur devrait-il dépasser le cycliste dans cette situation ?",
-                    "questionImgUrl": "assets/images/q311.png",
+                    "questionImgUrl": "assets/images/q311.webp",
                     "option1": "a) Le conducteur ne devrait pas dépasser ici.",
                     "option2": "b) En ne franchissant pas la ligne blanche brisée.",
                     "option3": "c) En franchissant la ligne blanche brisée.",
@@ -2477,7 +2477,7 @@
                 },
                 {
                     "question": "2. Que doit faire le conducteur s’il est ébloui par les lumières d’un véhicule venant en sens inverse ?",
-                    "questionImgUrl": "assets/images/q312.png",
+                    "questionImgUrl": "assets/images/q312.webp",
                     "option1": "a) Éblouir le véhicule venant en sens inverse avec leur propre faisceau complet.",
                     "option2": "b) Regardez au bord droit de la chaussée et réduisez si nécessaire la vitesse.",
                     "option3": "c) Flasher le véhicule venant en sens inverse.",
@@ -2486,7 +2486,7 @@
                 },
                 {
                     "question": "3. Que devez-vous faire lorsque vous approchez de feux de signalisation qui passent du vert à l’orange ?",
-                    "questionImgUrl": "assets/images/q313.png",
+                    "questionImgUrl": "assets/images/q313.webp",
                     "option1": "a) Accélérer et terminer le virage.",
                     "option2": "b) Continuez, car le feu vert est sur le point de s'allumer.",
                     "option3": "c) Arrêtez, sauf si ce n'est pas sûr.",
@@ -2495,7 +2495,7 @@
                 },
                 {
                     "question": "4. Que doit savoir le conducteur lorsqu'il suit le motocycliste et que la voiture blanche fait demi-tour sur la route ?",
-                    "questionImgUrl": "assets/images/q314.png",
+                    "questionImgUrl": "assets/images/q314.webp",
                     "option1": "a) Le conducteur en marche arrière s'arrête lorsqu'il voit le motocycliste.",
                     "option2": "b) Le motocycliste peut demander au conducteur qui fait marche arrière de s’immobiliser.",
                     "option3": "c) Les feux de freinage peuvent s’éteindre et la voiture continue à faire marche arrière.",
@@ -2504,7 +2504,7 @@
                 },
                 {
                     "question": "5. Que doit faire un conducteur dans cette situation lorsqu'il a l'intention de tourner à droite ?",
-                    "questionImgUrl": "assets/images/q315.png",
+                    "questionImgUrl": "assets/images/q315.webp",
                     "option1": "a) Avancez entre les deux piétons.",
                     "option2": "b) Sonne le klaxon et accélère pour procéder rapidement.",
                     "option3": "c) Attendez et laissez les deux piétons traverser.",
@@ -2513,7 +2513,7 @@
                 },
                 {
                     "question": "6. Cette situation, devriez-vous dépasser les cyclistes ?",
-                    "questionImgUrl": "assets/images/q316.png",
+                    "questionImgUrl": "assets/images/q316.webp",
                     "option1": "a) Non, le conducteur ne peut pas voire clairement devant.",
                     "option2": "b) Oui, à condition que la ligne brisée ne devienne pas continue.",
                     "option3": "c) Oui, les cyclistes entendront votre véhicule et s’écarteront ainsi du chemin.",
@@ -2522,7 +2522,7 @@
                 },
                 {
                     "question": "7. Que doit faire le conducteur dans cette situation ?",
-                    "questionImgUrl": "assets/images/q317.png",
+                    "questionImgUrl": "assets/images/q317.webp",
                     "option1": "a) Permettre au piéton de traverser la route.",
                     "option2": "b) Sonnez votre klaxon et continuez.",
                     "option3": "c) Attendez au passage clouté jusqu'à ce que le fourgon soit éteint.",
@@ -2531,7 +2531,7 @@
                 },
                 {
                     "question": "8. Quel véhicule est dans la bonne position pour effectuer un virage à droite de la route principale dans la route secondaire ?",
-                    "questionImgUrl": "assets/images/q318.png",
+                    "questionImgUrl": "assets/images/q318.webp",
                     "option1": "a) La voiture 1 est dans la bonne position pour effectuer le virage à droite.",
                     "option2": "b) La voiture 2 est dans la bonne position pour effectuer le virage à droite.",
                     "option3": "c) La voiture 3 est dans la bonne position pour effectuer le virage à droite.",
@@ -2585,7 +2585,7 @@
                 },
                 {
                     "question": "14. Que signifie une ligne blanche continue au centre de la route ?",
-                    "questionImgUrl": "assets/images/q324.png",
+                    "questionImgUrl": "assets/images/q324.webp",
                     "option1": "a) Interdit à tout conducteur de la franchir.",
                     "option2": "b) Les motocyclistes peuvent dépasser.",
                     "option3": "c) Parking autorisé.",
@@ -2652,7 +2652,7 @@
             "quizId": "15",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam14.png",
+            "examImgUrl": "assets/images/exam14.webp",
             "questions": [
                 {
                     "question": "1. Quand faut-il donner des signaux avec des indicateurs, par exemple) aux autres usagers de la route ?",
@@ -2737,7 +2737,7 @@
                 },
                 {
                     "question": "10. Où placer un véhicule avant de tourner à gauche ?",
-                    "questionImgUrl": "assets/images/q340.png",
+                    "questionImgUrl": "assets/images/q340.webp",
                     "option1": "a) Le côté droit de la route",
                     "option2": "b) Juste à droite du centre de la route",
                     "option3": "c) De part et d'autre du centre de la route",
@@ -2840,7 +2840,7 @@
             "quizId": "16",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam16.png",
+            "examImgUrl": "assets/images/exam16.webp",
             "questions": [
                 {
                     "question": "1. Lorsque le véhicule à l'arrière a commencé à dépasser notre véhicule :",
@@ -2925,7 +2925,7 @@
                 },
                 {
                     "question": "10. Vous vous approchez d’une intersection où les feux de circulation ne fonctionnent pas. Que devriez-vous faire lorsqu'un policier donne ce signal ?",
-                    "questionImgUrl": "assets/images/q360.png",
+                    "questionImgUrl": "assets/images/q360.webp",
                     "option1": "a) Tourner à gauche seulement",
                     "option2": "b) Tourner à droite seulement continuer devant",
                     "option3": "c) Arrêtez-vous à la ligne d'arrêt",
@@ -2979,7 +2979,7 @@
                 },
                 {
                     "question": "16. Ce signal signifie:",
-                    "questionImgUrl": "assets/images/q366.png",
+                    "questionImgUrl": "assets/images/q366.webp",
                     "option1": "a) carrefour",
                     "option2": "b) intersection avec une route débouchant sur la droite",
                     "option3": "c) a et b sont justes",
@@ -2988,7 +2988,7 @@
                 },
                 {
                     "question": "17. Ce signal signifie:",
-                    "questionImgUrl": "assets/images/q367.png",
+                    "questionImgUrl": "assets/images/q367.webp",
                     "option1": "a) Interdiction de dépasser",
                     "option2": "b) Priorité aux véhicules venant en sens inverse",
                     "option3": "c) a et b sont correctes",
@@ -3006,7 +3006,7 @@
                 },
                 {
                     "question": "19. Ce signal signifie:",
-                    "questionImgUrl": "assets/images/q369.png",
+                    "questionImgUrl": "assets/images/q369.webp",
                     "option1": "a) fin de priorité",
                     "option2": "b) priorité aux véhicules venant en sens inverse",
                     "option3": "c) priorité par rapport aux véhicules venant en sens inverse",
@@ -3015,7 +3015,7 @@
                 },
                 {
                     "question": "20. Ce signal comprend :",
-                    "questionImgUrl": "assets/images/q370.png",
+                    "questionImgUrl": "assets/images/q370.webp",
                     "option1": "a) forme triangulaire, fond bleu",
                     "option2": "b) forme triangulaire, fond noire",
                     "option3": "c) forme triangulaire, fond blanche",
@@ -3028,11 +3028,11 @@
             "quizId": "17",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam17.jpg",
+            "examImgUrl": "assets/images/exam17.webp",
             "questions": [
                 {
                     "question": "1. Ce signal signifie:",
-                    "questionImgUrl": "assets/images/q371.png",
+                    "questionImgUrl": "assets/images/q371.webp",
                     "option1": "a) rétrécissement de la chaussée à droite",
                     "option2": "b) rétrécissement de l’accotement situé à gauche de la chaussée",
                     "option3": "c) un petit sentier",
@@ -3050,7 +3050,7 @@
                 },
                 {
                     "question": "3. Ce signal indique :",
-                    "questionImgUrl": "assets/images/q373.png",
+                    "questionImgUrl": "assets/images/q373.webp",
                     "option1": "a) rétrécissement de la chaussée",
                     "option2": "b) rétrécissement de la chaussée par empiétement de l’accotement situé à gauche de la chaussée)",
                     "option3": "c) profil irrégulier",
@@ -3059,7 +3059,7 @@
                 },
                 {
                     "question": "4. Ce signal désigne :",
-                    "questionImgUrl": "assets/images/q374.png",
+                    "questionImgUrl": "assets/images/q374.webp",
                     "option1": "a) La circulation interdite dans les deux sens",
                     "option2": "b) La circulation interdite sauf circulation locale",
                     "option3": "c) La circulation interdite dans un sens unique",
@@ -3068,7 +3068,7 @@
                 },
                 {
                     "question": "5. Ce signal indique :",
-                    "questionImgUrl": "assets/images/q375.png",
+                    "questionImgUrl": "assets/images/q375.webp",
                     "option1": "a) Rétrécissement de la chaussée",
                     "option2": "b) Chaussée glissante",
                     "option3": "c) Profil irrégulier",
@@ -3077,7 +3077,7 @@
                 },
                 {
                     "question": "6. Ce signal signifie :",
-                    "questionImgUrl": "assets/images/q376.png",
+                    "questionImgUrl": "assets/images/q376.webp",
                     "option1": "a) Virage dangereux à droite",
                     "option2": "b) Montée à forte inclination",
                     "option3": "c) Descente dangereuse",
@@ -3176,7 +3176,7 @@
                 },
                 {
                     "question": "17. Cette injonction de l'agent qualifié implique l'obligation de s'immobiliser:",
-                    "questionImgUrl": "assets/images/q387.png",
+                    "questionImgUrl": "assets/images/q387.webp",
                     "option1": "a) Pour tous les usagers arrivant face à l'agent",
                     "option2": "b) Pour tous les usagers, d'où qu'ils viennent.",
                     "option3": "c) Pour tous les usagers apparaissant derrière l'agent.",
@@ -3185,7 +3185,7 @@
                 },
                 {
                     "question": "18. Ces signaux routiers m'interdisent de dépasser à gauche ?",
-                    "questionImgUrl": "assets/images/q388.png",
+                    "questionImgUrl": "assets/images/q388.webp",
                     "option1": "a) Oui",
                     "option2": "b) Oui, si ma vitesse est supérieure à 90 km/h",
                     "option3": "c) Non.",
@@ -3194,7 +3194,7 @@
                 },
                 {
                     "question": "19. Autoroute. Je veux dépasser ces deux camions en une seule manœuvre, par la gauche et en même temps. C'est autorisé ?",
-                    "questionImgUrl": "assets/images/q390.png",
+                    "questionImgUrl": "assets/images/q390.webp",
                     "option1": "a) Oui.",
                     "option2": "b) Non",
                     "option3": "c) Oui, mais par à gauche",
@@ -3203,7 +3203,7 @@
                 },
                 {
                     "question": "20. Que signifie ce signal?",
-                    "questionImgUrl": "assets/images/q410.png",
+                    "questionImgUrl": "assets/images/q410.webp",
                     "option1": "a) Interdiction de faire demi-tour.",
                     "option2": "b) Marche arrière interdite.",
                     "option3": "c) Route glissante devant.",
@@ -3216,11 +3216,11 @@
             "quizId": "18",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam18.png",
+            "examImgUrl": "assets/images/exam18.webp",
             "questions": [
                 {
                     "question": "1. Le chauffeur d'une voiture Ce signal routier signifie quoi :",
-                    "questionImgUrl": "assets/images/q391.png",
+                    "questionImgUrl": "assets/images/q391.webp",
                     "option1": "a) M'interdit de rouler à une vitesse supérieure à 5 km/h.",
                     "option2": "b) M'interdit l'accès, car il s'applique au véhicule de plus de 5 tonnes.",
                     "option3": "c) Ne me concerne pas, car il ne s'applique qu'aux véhicules de 5 tonnes et plus.",
@@ -3229,7 +3229,7 @@
                 },
                 {
                     "question": "2. Je veux virer à droite. C’est permis.",
-                    "questionImgUrl": "assets/images/q392.png",
+                    "questionImgUrl": "assets/images/q392.webp",
                     "option1": "a) Oui.",
                     "option2": "b) Oui, mais après m’être immobilisé.",
                     "option3": "c) Non.",
@@ -3238,7 +3238,7 @@
                 },
                 {
                     "question": "3. Passage à niveau.",
-                    "questionImgUrl": "assets/images/q393.png",
+                    "questionImgUrl": "assets/images/q393.webp",
                     "option1": "a) Je peux encore traverser ce passage à niveau, car les barrières ne sont pas totalement baissées.",
                     "option2": "b) Je dois m’immobiliser en deçà des feux rouges clignotants.",
                     "option3": "c) Je ne peux plus poursuivre ma route. Je dois m’arrêter maintenant.",
@@ -3247,7 +3247,7 @@
                 },
                 {
                     "question": "4. Au-delà du premier signal routier, il m’est :",
-                    "questionImgUrl": "assets/images/q394.png",
+                    "questionImgUrl": "assets/images/q394.webp",
                     "option1": "a) Conseillé de circuler à plus de 30 km/h.",
                     "option2": "b) Conseillé de ne pas dépasser les 30 km/h.",
                     "option3": "c) Interdit de circuler à plus de 30 km/h.",
@@ -3256,7 +3256,7 @@
                 },
                 {
                     "question": "5. Je m’immobilise à la ligne d’arrêt.",
-                    "questionImgUrl": "assets/images/q395.png",
+                    "questionImgUrl": "assets/images/q395.webp",
                     "option1": "a) Ensuite, je pourrai virer à droite.",
                     "option2": "b) Ensuite, je pourrai virer à gauche.",
                     "option3": "c) Ensuite, je pourrai virer à gauche ou à droite.",
@@ -3265,7 +3265,7 @@
                 },
                 {
                     "question": "6. Je dois:",
-                    "questionImgUrl": "assets/images/q396.png",
+                    "questionImgUrl": "assets/images/q396.webp",
                     "option1": "a) Marquer un temps d'arrêt à hauteur de ce signal routier.",
                     "option2": "b) M'immobiliser et céder le passage à 100 mètres au-delà de ce signal routier.",
                     "option3": "c) Céder le passage et m'immobiliser, si nécessaire, à 100 mètres au-delà de ce signal routier.",
@@ -3274,7 +3274,7 @@
                 },
                 {
                     "question": "7. Je veux virer à gauche. La voiture verte s'est immobilisée. Qui a la priorité ?",
-                    "questionImgUrl": "assets/images/q397.png",
+                    "questionImgUrl": "assets/images/q397.webp",
                     "option1": "a) J'ai la priorité.",
                     "option2": "b) La voiture verte a la priorité.",
                     "option3": "c) Ni l'un ni l'autre: nous devons faire preuve de prudence.",
@@ -3283,7 +3283,7 @@
                 },
                 {
                     "question": "8. J'ai la priorité à ce carrefour ?",
-                    "questionImgUrl": "assets/images/q398.png",
+                    "questionImgUrl": "assets/images/q398.webp",
                     "option1": "a) Oui, à condition de virer à droite.",
                     "option2": "b) Non, l'autre voiture qui poursuit sa route en ligne droite a priorité.",
                     "option3": "c) Oui, quelle que soit ma direction suivie.",
@@ -3292,7 +3292,7 @@
                 },
                 {
                     "question": "9. Je roule à 20 km/h. Je peux encore m'engager dans le carrefour ?",
-                    "questionImgUrl": "assets/images/q399.png",
+                    "questionImgUrl": "assets/images/q399.webp",
                     "option1": "a) Non.",
                     "option2": "b) Oui, et je peux virer à droite.",
                     "option3": "c) Oui, et je peux virer aussi bien à gauche qu'à droite.",
@@ -3301,7 +3301,7 @@
                 },
                 {
                     "question": "10. Le conducteur qui me précède m'a dépassé par la gauche.",
-                    "questionImgUrl": "assets/images/q400.png",
+                    "questionImgUrl": "assets/images/q400.webp",
                     "option1": "a) Je peux, à mon tour, le dépasser à droite.",
                     "option2": "b) Je ne peux pas le dépasser.",
                     "option3": "c) Je peux, à mon tour, le dépasser à gauche, dès que je disposerai d'un espace suffisant.",
@@ -3310,7 +3310,7 @@
                 },
                 {
                     "question": "11. A partir de ces signaux routiers, il est interdit :",
-                    "questionImgUrl": "assets/images/q401.png",
+                    "questionImgUrl": "assets/images/q401.webp",
                     "option1": "a) De dépasser les véhicules attelés et les véhicules à plus de 2 roues par la gauche et de rouler à plus de 70 km/h.",
                     "option2": "b) De dépasser un véhicule attelé ou un véhicule à plus de 2 roues par à gauche.",
                     "option3": "c) De rouler à plus de 70 km/h.",
@@ -3319,7 +3319,7 @@
                 },
                 {
                     "question": "12. Je veux ranger ma voiture en stationnement à droite, sur ce trottoir.",
-                    "questionImgUrl": "assets/images/q402.png",
+                    "questionImgUrl": "assets/images/q402.webp",
                     "option1": "a) C'est autorisé, en deçà du signal.",
                     "option2": "b) C'est autorisé en partie, au-delà du signal.",
                     "option3": "c) C'est interdit, aussi bien en deçà qu'au-delà du signal.",
@@ -3328,7 +3328,7 @@
                 },
                 {
                     "question": "13. Que signifie ce signal?",
-                    "questionImgUrl": "assets/images/q403.png",
+                    "questionImgUrl": "assets/images/q403.webp",
                     "option1": "a) Arrêtez-vous pour le passage de l'école à venir.",
                     "option2": "b) Arrêtez votre véhicule.",
                     "option3": "c) L'autre trafic doit céder le passage à vous.",
@@ -3337,7 +3337,7 @@
                 },
                 {
                     "question": "14. Que signifie ce signal à un croisement?",
-                    "questionImgUrl": "assets/images/q404.png",
+                    "questionImgUrl": "assets/images/q404.webp",
                     "option1": "a) Cédez le passage à tous les poids lourds.",
                     "option2": "b) Ralentissez et arrêtez-vous pour les piétons.",
                     "option3": "c) Céder le passage à la circulation sur la route principale.",
@@ -3346,7 +3346,7 @@
                 },
                 {
                     "question": "15. Qu'est-ce que ce signal signifie à un rond-point?",
-                    "questionImgUrl": "assets/images/q405.png",
+                    "questionImgUrl": "assets/images/q405.webp",
                     "option1": "a) Cédez le passage à la circulation sur la route principale.",
                     "option2": "b) Céder le passage à la circulation venant de la droite.",
                     "option3": "c) Cédez le passage aux camions et aux bus uniquement.",
@@ -3355,7 +3355,7 @@
                 },
                 {
                     "question": "16. Que signifie ce signal?",
-                    "questionImgUrl": "assets/images/q406.png",
+                    "questionImgUrl": "assets/images/q406.webp",
                     "option1": "a) Direction tout droit seulement.",
                     "option2": "b) Voie de dépassement devant.",
                     "option3": "c) Parking autorisé à partir de ce moment.",
@@ -3364,7 +3364,7 @@
                 },
                 {
                     "question": "17. Que signifie ce signal?",
-                    "questionImgUrl": "assets/images/q407.png",
+                    "questionImgUrl": "assets/images/q407.webp",
                     "option1": "a) Autoroute à gauche.",
                     "option2": "b) Déviation en avant à gauche.",
                     "option3": "c) Le trafic de droite est prioritaire.",
@@ -3373,7 +3373,7 @@
                 },
                 {
                     "question": "18. Que signifie ce signal?",
-                    "questionImgUrl": "assets/images/q408.png",
+                    "questionImgUrl": "assets/images/q408.webp",
                     "option1": "a) Dépasser uniquement à droite",
                     "option2": "b) Déviation vers la droite.",
                     "option3": "c) Tournez à droite seulement.",
@@ -3382,7 +3382,7 @@
                 },
                 {
                     "question": "19. Que signifie ce signal?",
-                    "questionImgUrl": "assets/images/q409.png",
+                    "questionImgUrl": "assets/images/q409.webp",
                     "option1": "a) Interdiction de tourner à droite.",
                     "option2": "b) Cédez le passage à la circulation lorsque vous tournez à droite.",
                     "option3": "c) Tourner à droite s'il n'y a pas de trafic venant en sens inverse.",
@@ -3391,7 +3391,7 @@
                 },
                 {
                     "question": "20. Que signifie ce signal?",
-                    "questionImgUrl": "assets/images/q8.png",
+                    "questionImgUrl": "assets/images/q8.webp",
                     "option1": "a) Rond-point devant sans sortie à gauche.",
                     "option2": "b) Cul-de-sac à gauche.",
                     "option3": "c) Pas d'épaule dure à gauche.",
@@ -3404,11 +3404,11 @@
             "quizId": "19",
             "examType": "Paid",
             "title": "Examen",
-            "examImgUrl": "assets/images/exam19.png",
+            "examImgUrl": "assets/images/exam19.webp",
             "questions": [
                 {
                     "question": "1. Que signifie ce signal?",
-                    "questionImgUrl": "assets/images/q411.png",
+                    "questionImgUrl": "assets/images/q411.webp",
                     "option1": "a) L'autoroute continue sur 50 kilomètres.",
                     "option2": "b) La distance minimale entre les véhicules est de 50 mètres.",
                     "option3": "c) La vitesse minimale est de 50 km / h.",
@@ -3417,7 +3417,7 @@
                 },
                 {
                     "question": "2. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q412.png",
+                    "questionImgUrl": "assets/images/q412.webp",
                     "option1": "a) Véhicules de service public interdits.",
                     "option2": "b) Parking interdit.",
                     "option3": "c) Les véhicules privés sont interdits.",
@@ -3426,7 +3426,7 @@
                 },
                 {
                     "question": "3. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q413.png",
+                    "questionImgUrl": "assets/images/q413.webp",
                     "option1": "a) Parking pour les cyclistes devant nous.",
                     "option2": "b) Zone réservée aux enfants qui apprennent à faire du vélo.",
                     "option3": "c) piste cyclable / piétonne partagée.",
@@ -3435,7 +3435,7 @@
                 },
                 {
                     "question": "4. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q414.png",
+                    "questionImgUrl": "assets/images/q414.webp",
                     "option1": "a) Le poids maximum autorisé est de 3 tonnes.",
                     "option2": "b) Aucune inscription pour les véhicules transportant des marchandises.",
                     "option3": "c) Véhicules à 3 essieux non autorisés.",
@@ -3444,7 +3444,7 @@
                 },
                 {
                     "question": "5. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q415.png",
+                    "questionImgUrl": "assets/images/q415.webp",
                     "option1": "a) Intersection à sens giratoire",
                     "option2": "b) Demi-tour permis.",
                     "option3": "c) Rue à sens unique devant.",
@@ -3453,7 +3453,7 @@
                 },
                 {
                     "question": "6. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q416.png",
+                    "questionImgUrl": "assets/images/q416.webp",
                     "option1": "a) La chaussée comporte deux bandes",
                     "option2": "b) La chaussée comporte quatre bandes",
                     "option3": "c) Rue à sens unique.",
@@ -3462,7 +3462,7 @@
                 },
                 {
                     "question": "7. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q417.png",
+                    "questionImgUrl": "assets/images/q417.webp",
                     "option1": "a) Chaussée inégale à droite.",
                     "option2": "b) Descente dangereuse",
                     "option3": "c) Passage ou la chaussée est en mauvais état",
@@ -3471,7 +3471,7 @@
                 },
                 {
                     "question": "8. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q418.png",
+                    "questionImgUrl": "assets/images/q418.webp",
                     "option1": "a) Monte à forte inclination",
                     "option2": "b) Surface de la route inégale à gauche.",
                     "option3": "c) Passage ou la chaussée est en mauvais état",
@@ -3480,7 +3480,7 @@
                 },
                 {
                     "question": "9. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q419.png",
+                    "questionImgUrl": "assets/images/q419.webp",
                     "option1": "a) Monte à forte inclination",
                     "option2": "b) Vents de travers devant.",
                     "option3": "c) Série de courbes en avant.",
@@ -3489,7 +3489,7 @@
                 },
                 {
                     "question": "10. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q420.png",
+                    "questionImgUrl": "assets/images/q420.webp",
                     "option1": "a) Enfants.",
                     "option2": "b) Passage pour piétons devant vous - préparez-vous à vous arrêter.",
                     "option3": "c) Aire de jeux pour enfants à venir.",
@@ -3498,7 +3498,7 @@
                 },
                 {
                     "question": "11. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q421.png",
+                    "questionImgUrl": "assets/images/q421.webp",
                     "option1": "a) Marché à bétail à venir.",
                     "option2": "b) Poste vétérinaire à venir.",
                     "option3": "c) Grille de bétail à venir.",
@@ -3507,7 +3507,7 @@
                 },
                 {
                     "question": "12. Quel signal signifie une voie sans issue?",
-                    "questionImgUrl": "assets/images/q422.png",
+                    "questionImgUrl": "assets/images/q422.webp",
                     "option1": "a) Le Signal C1",
                     "option2": "b) Le Signal E14",
                     "option3": "c) Le Signal C2a",
@@ -3516,7 +3516,7 @@
                 },
                 {
                     "question": "13. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q423.png",
+                    "questionImgUrl": "assets/images/q423.webp",
                     "option1": "a) Cédez le passage",
                     "option2": "b) Danger",
                     "option3": "c) Sens unique",
@@ -3525,7 +3525,7 @@
                 },
                 {
                     "question": "14. Quel signal d’indication donnée à un conducteur qui s’engager dans un passage étroit qu’il bénéficie de la priorité par rapport aux véhicules venant en sens inverse :",
-                    "questionImgUrl": "assets/images/q424.png",
+                    "questionImgUrl": "assets/images/q424.webp",
                     "option1": "a) Le signal B6",
                     "option2": "b) Le signal A19",
                     "option3": "c) Le signal B3",
@@ -3534,7 +3534,7 @@
                 },
                 {
                     "question": "15. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q425.png",
+                    "questionImgUrl": "assets/images/q425.webp",
                     "option1": "a) Sens giratoire",
                     "option2": "b) La chaussée comporte trois bandes",
                     "option3": "c) Approche d’une intersection",
@@ -3543,7 +3543,7 @@
                 },
                 {
                     "question": "16. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q426.png",
+                    "questionImgUrl": "assets/images/q426.webp",
                     "option1": "a) Sens unique",
                     "option2": "b) Accés interdit",
                     "option3": "c) Route sans issue",
@@ -3552,7 +3552,7 @@
                 },
                 {
                     "question": "17. Quel signal signifie une voie à sens unique?",
-                    "questionImgUrl": "assets/images/q427.png",
+                    "questionImgUrl": "assets/images/q427.webp",
                     "option1": "a) Le signal D1a",
                     "option2": "b) Le signal E13a",
                     "option3": "c) Le signal C19",
@@ -3561,7 +3561,7 @@
                 },
                 {
                     "question": "18. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q428.png",
+                    "questionImgUrl": "assets/images/q428.webp",
                     "option1": "a) Toute croisée à niveau",
                     "option2": "b) Intersection avec une route débouchanta sur la droite",
                     "option3": "c) Route sans issue",
@@ -3570,7 +3570,7 @@
                 },
                 {
                     "question": "19. Que signifie ce signal ?",
-                    "questionImgUrl": "assets/images/q429.png",
+                    "questionImgUrl": "assets/images/q429.webp",
                     "option1": "a) Fin d’autoroute",
                     "option2": "b) Le passage sur la chaussée opposée n’est pas autorisé.",
                     "option3": "c) Pas de dépassement.",
@@ -3579,7 +3579,7 @@
                 },
                 {
                     "question": "20. Que signifie ce marquage routier?",
-                    "questionImgUrl": "assets/images/q430.png",
+                    "questionImgUrl": "assets/images/q430.webp",
                     "option1": "a) Vous pouvez dépasser.",
                     "option2": "b) Un conducteur ne doit pas franchir la ligne.",
                     "option3": "c) Vous approchez d'un panneau d'arrêt.",
@@ -3588,7 +3588,7 @@
                 },
                 {
                     "question": "21. Que signifie ce marquage routier?",
-                    "questionImgUrl": "assets/images/q431.png",
+                    "questionImgUrl": "assets/images/q431.webp",
                     "option1": "a) Un conducteur ne doit pas franchir la ligne blanche brisée à moins que cela ne soit sans danger.",
                     "option2": "b) Vous ne pouvez pas dépasser.",
                     "option3": "c) Vous pouvez dépasser à condition de ne pas franchir la ligne blanche brisée.",
@@ -3597,7 +3597,7 @@
                 },
                 {
                     "question": "22. Si vous conduisez de A à B, que signifient ces marquages routiers?",
-                    "questionImgUrl": "assets/images/q432.png",
+                    "questionImgUrl": "assets/images/q432.webp",
                     "option1": "a) Un conducteur peut franchir la ligne blanche continue uniquement lorsqu'il effectue un demi-tour.",
                     "option2": "b) Un conducteur ne peut pas dépasser, seuls les motocyclistes peuvent franchir la ligne blanche continue.",
                     "option3": "c) Un conducteur ne peut pas dépasser en franchissant la ligne blanche continue.",
@@ -3606,7 +3606,7 @@
                 },
                 {
                     "question": "23. Si vous conduisez de A à B, que signifient ces marquages routiers?",
-                    "questionImgUrl": "assets/images/q433.png",
+                    "questionImgUrl": "assets/images/q433.webp",
                     "option1": "a) Un conducteur peut dépasser en franchissant la ligne blanche continue.",
                     "option2": "b) Un conducteur ne peut pas franchir les lignes blanche pour dépasser.",
                     "option3": "c) Un conducteur peut dépasser.",

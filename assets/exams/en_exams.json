@@ -4,7 +4,7 @@
       "quizId": "177",
       "examType": "Free",
       "title": "Exam",
-      "examImgUrl": "assets/images/free.jpg",
+      "examImgUrl": "assets/images/free.webp",
       "questions": [
         {
           "question": "1. Every vehicle or set of vehicles in motion must have:",
@@ -192,7 +192,7 @@
       "quizId": "1",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam1.png",
+      "examImgUrl": "assets/images/exam1.webp",
       "questions": [
         {
           "question": "1. Buses assigned to transport school children shall be provided with two flashing orange lights in order to signal stop and to recommend caution. These lights are placed:",
@@ -380,7 +380,7 @@
       "quizId": "2",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam2.jpg",
+      "examImgUrl": "assets/images/exam2.webp",
       "questions": [
         {
           "question": "1. Where there are no specific restrictive regulations, the maximum speeds for passenger service vehicles is:",
@@ -568,7 +568,7 @@
       "quizId": "3",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam10.jpg",
+      "examImgUrl": "assets/images/exam10.webp",
       "questions": [
         {
           "question": "1. When lighting of the vehicle is required if the loading projects beyond the back edge of the vehicle by more than one meter, the most accented protrusion must be signaled by:",
@@ -756,7 +756,7 @@
       "quizId": "4",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam4.png",
+      "examImgUrl": "assets/images/exam4.webp",
       "questions": [
         {
           "question": "1. Out of agglomerations, a driver of a car or a set of cars of which the maximum authorized weight exceeds 3.500kg or of which the overall length exceeds 10m must, except when it overtakes or gets ready to overtake another vehicle, leave between his car and that which proceeds him a sufficient interval to permit vehicles which overtake it to cut in without danger in case of necessity. But this provision is however not applicable when:",
@@ -953,7 +953,7 @@
       "quizId": "5",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam5.jpg",
+      "examImgUrl": "assets/images/exam5.webp",
       "questions": [
         {
           "question": "1. Additional sign road which shows the camping and caravan site is characterized by the following colors:",
@@ -1141,7 +1141,7 @@
       "quizId": "6",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam6.png",
+      "examImgUrl": "assets/images/exam6.webp",
       "questions": [
         {
           "question": "1. Where, because of the areas layout, the distance which separates the signal from the dangerous areas is less than 150m, that distance is shown by the following additional signal:",
@@ -1329,7 +1329,7 @@
       "quizId": "7",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam7.png",
+      "examImgUrl": "assets/images/exam7.webp",
       "questions": [
         {
           "question": "1. In urban areas as well as on national roads determined by the Minister having transports in his duties, the maximum weights authorized by vehicle or train of vehicles for triple axle are:",
@@ -1517,7 +1517,7 @@
       "quizId": "8",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam8.png",
+      "examImgUrl": "assets/images/exam8.webp",
       "questions": [
         {
           "question": "1. It is forbidden the circulation of self-propelling vehicles and trailers pulled by these vehicles, when their wheels are provided with either rigid bandages or elastic bandages of less than 0.04 meter thick. But these provisions do not apply on the following vehicles:",
@@ -1705,7 +1705,7 @@
       "quizId": "9",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam9.jpg",
+      "examImgUrl": "assets/images/exam9.webp",
       "questions": [
         {
           "question": "1. Your mobile phone rings while you are travelling. What should you do?",
@@ -1750,7 +1750,7 @@
           "option3": "c) Be ready to stop",
           "option4": "d. Brake hard",
           "correctAnswer": "c) Be ready to stop",
-          "questionImgUrl": "assets/images/q214.png"
+          "questionImgUrl": "assets/images/q214.webp"
         },
         {
           "question": "6. You’re following a trailer. Why should you stay at a safe distance behind it?",
@@ -1849,7 +1849,7 @@
           "option3": "c.",
           "option4": "d.",
           "correctAnswer": "c.",
-          "questionImgUrl": "assets/images/q224.png"
+          "questionImgUrl": "assets/images/q224.webp"
         },
         {
           "question": "17. Daytime visibility is poor but not seriously reduced. Which lights must be switched on?",
@@ -1885,7 +1885,7 @@
           "option3": "c. End of minimum speed",
           "option4": "d. Maximum speed 30km/h",
           "correctAnswer": "b. End of compulsory maximum speed",
-          "questionImgUrl": "assets/images/q229.png"
+          "questionImgUrl": "assets/images/q229.webp"
         }
       ]
     },
@@ -1893,7 +1893,7 @@
       "quizId": "10",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam10.jpg",
+      "examImgUrl": "assets/images/exam10.webp",
       "questions": [
         {
           "question": "1. What’s the meaning of this sign:",
@@ -1902,7 +1902,7 @@
           "option3": "c. National speed limit",
           "option4": "d. School crossing patrol",
           "correctAnswer": "b No parking",
-          "questionImgUrl": "assets/images/q230.png"
+          "questionImgUrl": "assets/images/q230.webp"
         },
         {
           "question": "2. On a two-lane roadway, what is the left-hand lane used for?",
@@ -1911,7 +1911,7 @@
           "option3": "c. Fast-moving traffic only",
           "option4": "d. Turning right only, never overtaking",
           "correctAnswer": "b. Overtaking or turning left",
-          "questionImgUrl": "assets/images/q231.jpg"
+          "questionImgUrl": "assets/images/q231.webp"
         },
         {
           "question": "3. Where may you overtake on a one-way road street?",
@@ -1938,7 +1938,7 @@
           "option3": "c. National speed limit applies",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "a. End of all local restrictions imposed on moving vehicles",
-          "questionImgUrl": "assets/images/q234.png"
+          "questionImgUrl": "assets/images/q234.webp"
         },
         {
           "question": "6. Traffic signs giving orders are generally which shape?",
@@ -1947,7 +1947,7 @@
           "option3": "c)",
           "option4": "d)",
           "correctAnswer": "c)",
-          "questionImgUrl": "assets/images/q235.png"
+          "questionImgUrl": "assets/images/q235.webp"
         },
         {
           "question": "7. Which sign means no motor vehicles are allowed?",
@@ -1956,7 +1956,7 @@
           "option3": "c)",
           "option4": "d)",
           "correctAnswer": "b)",
-          "questionImgUrl": "assets/images/q236.png"
+          "questionImgUrl": "assets/images/q236.webp"
         },
         {
           "question": "8. What does this sign mean?",
@@ -1965,7 +1965,7 @@
           "option3": "c. Two-way traffic",
           "option4": "d) No overtaking",
           "correctAnswer": "d) No overtaking",
-          "questionImgUrl": "assets/images/q237.png"
+          "questionImgUrl": "assets/images/q237.webp"
         },
         {
           "question": "9. You see this sign ahead. What does it mean?",
@@ -1974,7 +1974,7 @@
           "option3": "c. No parking",
           "option4": "d. No entry",
           "correctAnswer": "c. No parking",
-          "questionImgUrl": "assets/images/q238.png"
+          "questionImgUrl": "assets/images/q238.webp"
         },
         {
           "question": "10. What does this sign mean?",
@@ -1983,7 +1983,7 @@
           "option3": "c. Roundabout",
           "option4": "d. All answers are correct",
           "correctAnswer": "c. Roundabout",
-          "questionImgUrl": "assets/images/q239.png"
+          "questionImgUrl": "assets/images/q239.webp"
         },
         {
           "question": "11. What does this sign mean?",
@@ -1992,7 +1992,7 @@
           "option3": "c) Entrance to tunnel",
           "option4": "d) Soft verges",
           "correctAnswer": "b) Irregular surface",
-          "questionImgUrl": "assets/images/q240.png"
+          "questionImgUrl": "assets/images/q240.webp"
         },
         {
           "question": "12. What does this sign mean?",
@@ -2001,7 +2001,7 @@
           "option3": "c. Airport",
           "option4": "d. All the answers are correct",
           "correctAnswer": "a. Lateral winds",
-          "questionImgUrl": "assets/images/q241.png"
+          "questionImgUrl": "assets/images/q241.webp"
         },
         {
           "question": "13. What does this sign mean?",
@@ -2010,7 +2010,7 @@
           "option3": "c. A and B are correct",
           "option4": "d. No through road",
           "correctAnswer": "b. End of a highway",
-          "questionImgUrl": "assets/images/q242.png"
+          "questionImgUrl": "assets/images/q242.webp"
         },
         {
           "question": "14. What does this sign mean?",
@@ -2019,7 +2019,7 @@
           "option3": "c. Narrowing road",
           "option4": "d. End of narrow bridge",
           "correctAnswer": "c. Narrowing road",
-          "questionImgUrl": "assets/images/q243.png"
+          "questionImgUrl": "assets/images/q243.webp"
         },
         {
           "question": "15. What does this sign mean?",
@@ -2028,7 +2028,7 @@
           "option3": "c. Telephone box ahead",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "b. No through road",
-          "questionImgUrl": "assets/images/q244.png"
+          "questionImgUrl": "assets/images/q244.webp"
         },
         {
           "question": "16. What does this sign mean?",
@@ -2037,7 +2037,7 @@
           "option3": "c. Pedestrian zone- no vehicles",
           "option4": "d. Approaching a zebra crossing",
           "correctAnswer": "d. Approaching a zebra crossing",
-          "questionImgUrl": "assets/images/q245.png"
+          "questionImgUrl": "assets/images/q245.webp"
         },
         {
           "question": "17. What must you do when you see this sign?",
@@ -2046,7 +2046,7 @@
           "option3": "c. Stop only if children are waiting to cross",
           "option4": "d. Stop only if a red light is showing",
           "correctAnswer": "b. Stop even if the road is clear",
-          "questionImgUrl": "assets/images/q246.png"
+          "questionImgUrl": "assets/images/q246.webp"
         },
         {
           "question": "18. What does this sign mean?",
@@ -2055,7 +2055,7 @@
           "option3": "c. Uneven road surface",
           "option4": "d. Over flooding road",
           "correctAnswer": "a. Emerging into a quay or a river bank or approaching a ferry",
-          "questionImgUrl": "assets/images/q247.png"
+          "questionImgUrl": "assets/images/q247.webp"
         },
         {
           "question": "19. What does this sign mean?",
@@ -2064,7 +2064,7 @@
           "option3": "c. Cars only",
           "option4": "d. No entry for bicycles",
           "correctAnswer": "d. No entry for bicycles",
-          "questionImgUrl": "assets/images/q248.png"
+          "questionImgUrl": "assets/images/q248.webp"
         },
         {
           "question": "20. Which shape is used for a ‘give way’ sign?",
@@ -2073,7 +2073,7 @@
           "option3": "c)",
           "option4": "d)",
           "correctAnswer": "d)",
-          "questionImgUrl": "assets/images/q249.png"
+          "questionImgUrl": "assets/images/q249.webp"
         },
         {
           "question": "21. What does this sign mean?",
@@ -2082,7 +2082,7 @@
           "option3": "c. Level crossing without gate or barrier",
           "option4": "d. Cattle grid ahead",
           "correctAnswer": "a. Approaching a level crossing with barriers",
-          "questionImgUrl": "assets/images/q250.png"
+          "questionImgUrl": "assets/images/q250.webp"
         }
       ]
     },
@@ -2090,7 +2090,7 @@
       "quizId": "11",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam11.jpg",
+      "examImgUrl": "assets/images/exam11.webp",
       "questions": [
         {
           "question": "1. What does this sign mean?",
@@ -2099,7 +2099,7 @@
           "option3": "c. Uneven road",
           "option4": "d. Steep climb",
           "correctAnswer": "b. Dangerous slope",
-          "questionImgUrl": "assets/images/q251.png"
+          "questionImgUrl": "assets/images/q251.webp"
         },
         {
           "question": "2. What does this sign mean?",
@@ -2108,7 +2108,7 @@
           "option3": "c. No entry for traffic turning left",
           "option4": "d. Turn left for ferry terminal",
           "correctAnswer": "b. No through road",
-          "questionImgUrl": "assets/images/q252.png"
+          "questionImgUrl": "assets/images/q252.webp"
         },
         {
           "question": "3. What does a red traffic light mean?",
@@ -2117,7 +2117,7 @@
           "option3": "c. Prohibition to move beyond the signal",
           "option4": "d. Go if your exit from the junction is blocked",
           "correctAnswer": "c. Prohibition to move beyond the signal",
-          "questionImgUrl": "assets/images/q253.png"
+          "questionImgUrl": "assets/images/q253.webp"
         },
         {
           "question": "4. What does a yellow light mean?",
@@ -2126,7 +2126,7 @@
           "option3": "c. A and B are correct",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "b. Prohibition to move beyond the stop line or, in default of any stop line, the signal itself",
-          "questionImgUrl": "assets/images/q254.png"
+          "questionImgUrl": "assets/images/q254.webp"
         },
         {
           "question": "5. What does a green light mean?",
@@ -2135,7 +2135,7 @@
           "option3": "c. Stop if your exit from the junction is blocked",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "b. Authorization to pass the signal",
-          "questionImgUrl": "assets/images/q255.png"
+          "questionImgUrl": "assets/images/q255.webp"
         },
         {
           "question": "6. What does this broken white line mean?",
@@ -2144,7 +2144,7 @@
           "option3": "c. You’re approaching a hazard",
           "option4": "d. No overtaking allowed",
           "correctAnswer": "a. It’s forbidden to cross this line",
-          "questionImgUrl": "assets/images/q256.png"
+          "questionImgUrl": "assets/images/q256.webp"
         },
         {
           "question": "7. What does this sign mean?",
@@ -2153,7 +2153,7 @@
           "option3": "c. Showing an area where cyclists are supposed to enter",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "a. Two-way traffic",
-          "questionImgUrl": "assets/images/q257.png"
+          "questionImgUrl": "assets/images/q257.webp"
         },
         {
           "question": "8. What does this sign mean?",
@@ -2162,7 +2162,7 @@
           "option3": "c. Minimum speed 30 km/h",
           "option4": "d. Lay-by 30 miles ahead",
           "correctAnswer": "c. Minimum speed 30 km/h",
-          "questionImgUrl": "assets/images/q258.png"
+          "questionImgUrl": "assets/images/q258.webp"
         },
         {
           "question": "9. What does this sign mean?",
@@ -2171,7 +2171,7 @@
           "option3": "c. Approaching a danger but undefined danger",
           "option4": "d. Service area ahead",
           "correctAnswer": "c. Approaching a danger but undefined danger",
-          "questionImgUrl": "assets/images/q259.png"
+          "questionImgUrl": "assets/images/q259.webp"
         },
         {
           "question": "10. What does this sign mean?",
@@ -2180,7 +2180,7 @@
           "option3": "c. Level crossing without gate or barrier",
           "option4": "d. Level crossing with gate or barrier",
           "correctAnswer": "c. Level crossing without gate or barrier",
-          "questionImgUrl": "assets/images/q260.png"
+          "questionImgUrl": "assets/images/q260.webp"
         },
         {
           "question": "11. At this junction, there’s a ‘stop’ sign and a solid white line on the road surface. Why is there a ‘stop’ sign here?",
@@ -2189,7 +2189,7 @@
           "option3": "c. Visibility along the major road-way is limited",
           "option4": "d. There are hazard warning lines in the center of the road",
           "correctAnswer": "c. Visibility along the major road-way is limited",
-          "questionImgUrl": "assets/images/q261.png"
+          "questionImgUrl": "assets/images/q261.webp"
         },
         {
           "question": "12. Which of these is needed before you can legally use a vehicle on the road?",
@@ -2234,7 +2234,7 @@
           "option3": "c)",
           "option4": "d)",
           "correctAnswer": "b)",
-          "questionImgUrl": "assets/images/q266.png"
+          "questionImgUrl": "assets/images/q266.webp"
         },
         {
           "question": "17. You’re involved in a collision. Afterwards, which document may the police ask you to produce?",
@@ -2252,7 +2252,7 @@
           "option3": "c. 45 meters",
           "option4": "d. 100 meters",
           "correctAnswer": "b. 25 meters",
-          "questionImgUrl": "assets/images/q268.png"
+          "questionImgUrl": "assets/images/q268.webp"
         },
         {
           "question": "19. Whoever pushes a motorcycle by hand must be considered as:",
@@ -2261,7 +2261,7 @@
           "option3": "c. Passenger",
           "option4": "d. A and B are correct",
           "correctAnswer": "b. Driver",
-          "questionImgUrl": "assets/images/q269.png"
+          "questionImgUrl": "assets/images/q269.webp"
         },
         {
           "question": "20. Triangular Shape road signs announce:",
@@ -2270,7 +2270,7 @@
           "option3": "c. Obligation",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "a. Danger",
-          "questionImgUrl": "assets/images/q270.png"
+          "questionImgUrl": "assets/images/q270.webp"
         }
       ]
     },
@@ -2278,7 +2278,7 @@
       "quizId": "12",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam12.jpg",
+      "examImgUrl": "assets/images/exam12.webp",
       "questions": [
         {
           "question": "1. This signal means:",
@@ -2287,7 +2287,7 @@
           "option3": "b. Danger at the next crossroad",
           "option4": "c. a and b are correct",
           "correctAnswer": "a. Right of way",
-          "questionImgUrl": "assets/images/q271.png"
+          "questionImgUrl": "assets/images/q271.webp"
         },
         {
           "question": "2. This signal means:",
@@ -2296,7 +2296,7 @@
           "option3": "c. Announces a pedestrian crossing",
           "option4": "d. b and c are correct",
           "correctAnswer": "a. No entry for pedestrians",
-          "questionImgUrl": "assets/images/q272.png"
+          "questionImgUrl": "assets/images/q272.webp"
         },
         {
           "question": "3. Outside an agglomeration, you first encounter the two left-hand signals. Further, we announce the end of the work. Beyond that signal how fast do you roll?",
@@ -2305,7 +2305,7 @@
           "option3": "c. 40 km/h",
           "option4": "d. 80 km/h",
           "correctAnswer": "d. 80 km/h",
-          "questionImgUrl": "assets/images/q273.png"
+          "questionImgUrl": "assets/images/q273.webp"
         },
         {
           "question": "4. This signal indicates:",
@@ -2314,7 +2314,7 @@
           "option3": "c. A helicopter landing zone",
           "option4": "d. b and c are correct",
           "correctAnswer": "b. A hospital",
-          "questionImgUrl": "assets/images/q274.png"
+          "questionImgUrl": "assets/images/q274.webp"
         },
         {
           "question": "5. The two parallel discontinuous lines of white color at the edges of the road delimit:",
@@ -2323,7 +2323,7 @@
           "option3": "c. Cycle track",
           "option4": "d. a and b are correct",
           "correctAnswer": "c. Cycle track",
-          "questionImgUrl": "assets/images/q275.png"
+          "questionImgUrl": "assets/images/q275.webp"
         },
         {
           "question": "6. This signal prevents any driver from overtaking a car:",
@@ -2332,7 +2332,7 @@
           "option3": "c. On the right and the left",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "b. On the left",
-          "questionImgUrl": "assets/images/q276.png"
+          "questionImgUrl": "assets/images/q276.webp"
         },
         {
           "question": "7. This signal prohibits overtaking on the left for the following vehicles:",
@@ -2341,7 +2341,7 @@
           "option3": "c. Of any vehicle with an engine apart from those with two wheels without a side car",
           "option4": "d. No correct answer",
           "correctAnswer": "c. Of any vehicle with an engine apart from those with two wheels without a side car",
-          "questionImgUrl": "assets/images/q277.png"
+          "questionImgUrl": "assets/images/q277.webp"
         },
         {
           "question": "8. This signaling authorizes me to move on:",
@@ -2350,7 +2350,7 @@
           "option3": "c. Yes, by giving way to oncoming drivers",
           "option4": "d. No",
           "correctAnswer": "d. No",
-          "questionImgUrl": "assets/images/q278.png"
+          "questionImgUrl": "assets/images/q278.webp"
         },
         {
           "question": "9. On a winding road, when do I brake?",
@@ -2359,7 +2359,7 @@
           "option3": "c. After each turn",
           "option4": "d. No correct answer",
           "correctAnswer": "a. Before each turn",
-          "questionImgUrl": "assets/images/q279.png"
+          "questionImgUrl": "assets/images/q279.webp"
         },
         {
           "question": "10. What signal obliges me to give way:",
@@ -2368,7 +2368,7 @@
           "option3": "c. The signal B6",
           "option4": "d. No correct answer",
           "correctAnswer": "b. The signal B5",
-          "questionImgUrl": "assets/images/q280.png"
+          "questionImgUrl": "assets/images/q280.webp"
         },
         {
           "question": "11. This danger signal announces me:",
@@ -2377,7 +2377,7 @@
           "option3": "c. A slippery road",
           "option4": "d. a and b are correct",
           "correctAnswer": "a. Flying gravel",
-          "questionImgUrl": "assets/images/q281.png"
+          "questionImgUrl": "assets/images/q281.webp"
         },
         {
           "question": "12. Circulating on a cyclo, you see one of your acquaintances. She asks you to leave her some streets further. You are 18 but do not have a second helmet. Could you?",
@@ -2386,7 +2386,7 @@
           "option3": "c. Yes, except for a short trip",
           "option4": "d. No",
           "correctAnswer": "d. No",
-          "questionImgUrl": "assets/images/q282.png"
+          "questionImgUrl": "assets/images/q282.webp"
         },
         {
           "question": "13. What signal gives you priority at future intersections:",
@@ -2395,7 +2395,7 @@
           "option3": "c. The signal A20",
           "option4": "d. All answers are correct",
           "correctAnswer": "a. The signal B3",
-          "questionImgUrl": "assets/images/q283.png"
+          "questionImgUrl": "assets/images/q283.webp"
         },
         {
           "question": "14. Before overtaking a moped, I have to put my flashing on the left:",
@@ -2404,7 +2404,7 @@
           "option3": "c. Yes, when other vehicles coupled or have more than 2 wheels follow me",
           "option4": "d. No, never to overtake a two-wheeler",
           "correctAnswer": "a. Yes always",
-          "questionImgUrl": "assets/images/q284.png"
+          "questionImgUrl": "assets/images/q284.webp"
         },
         {
           "question": "15. I can overtake a driver who stops in front of a pedestrian crossing:",
@@ -2413,7 +2413,7 @@
           "option3": "c. Yes, when other vehicles follow me",
           "option4": "d. No",
           "correctAnswer": "d. No",
-          "questionImgUrl": "assets/images/q285.png"
+          "questionImgUrl": "assets/images/q285.webp"
         },
         {
           "question": "16. At the height of this elevated device:",
@@ -2422,7 +2422,7 @@
           "option3": "c. Any overtaking by the left is forbidden",
           "option4": "d. a and b are correct",
           "correctAnswer": "c. Any overtaking by the left is forbidden",
-          "questionImgUrl": "assets/images/q286.png"
+          "questionImgUrl": "assets/images/q286.webp"
         },
         {
           "question": "17. In case of an accident, aggression... which emergency number can call the emergency service:",
@@ -2431,7 +2431,7 @@
           "option3": "c. 112",
           "option4": "d. 131",
           "correctAnswer": "c. 112",
-          "questionImgUrl": "assets/images/q287.png"
+          "questionImgUrl": "assets/images/q287.webp"
         },
         {
           "question": "18. I arrive first at the scene of an accident with injuries. My first concern is to:",
@@ -2440,7 +2440,7 @@
           "option3": "c. Report the accident and notify the rescue",
           "option4": "d. No correct answer",
           "correctAnswer": "c. Report the accident and notify the rescue",
-          "questionImgUrl": "assets/images/q288.png"
+          "questionImgUrl": "assets/images/q288.webp"
         },
         {
           "question": "19. When our vehicle is being overtaken",
@@ -2466,7 +2466,7 @@
       "quizId": "13",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam13.png",
+      "examImgUrl": "assets/images/exam13.webp",
       "questions": [
         {
           "question": "1. Before overtaking a vehicle, it should be ensured that:",
@@ -2583,7 +2583,7 @@
           "option3": "c. Continue to drive at a fast speed.",
           "option4": "d. Drive closer to the right-hand kerb.",
           "correctAnswer": "a. Keep a close eye on the children, if necessary give a warning signal and be prepared to brake in good time.",
-          "questionImgUrl": "assets/images/q303.png"
+          "questionImgUrl": "assets/images/q303.webp"
         },
         {
           "question": "14. An approaching driver notices that the boy on the children’s bicycle has said goodbye to his friend. What is the correct action for the driver to take?",
@@ -2592,7 +2592,7 @@
           "option3": "c. Slow down and beckon the boy to cross the road.",
           "option4": "d. Proceed as the boy is on the footpath.",
           "correctAnswer": "b. Be prepared for the boy setting off at any moment without paying attention to your vehicle",
-          "questionImgUrl": "assets/images/q304.png"
+          "questionImgUrl": "assets/images/q304.webp"
         },
         {
           "question": "15. As the driver of the car, which conduct is correct?",
@@ -2601,7 +2601,7 @@
           "option3": "c. A driver must wait",
           "option4": "d. A driver must give right of way to the motorcyclist",
           "correctAnswer": "a. A driver may proceed",
-          "questionImgUrl": "assets/images/q305.png"
+          "questionImgUrl": "assets/images/q305.webp"
         },
         {
           "question": "16. When approaching the pedestrian crossing, what should the driver do in this situation?",
@@ -2610,7 +2610,7 @@
           "option3": "c. Maintain your speed because the pedestrians have not stepped on the crossing",
           "option4": "d. Sound the horn to draw attention to your vehicle and continue to drive at the same speed",
           "correctAnswer": "a. Slowdown in good time and be prepared to stop",
-          "questionImgUrl": "assets/images/q306.png"
+          "questionImgUrl": "assets/images/q306.webp"
         },
         {
           "question": "17. The driver is following these two vehicles and wishes to overtake. What must the driver consider before overtaking here?",
@@ -2619,7 +2619,7 @@
           "option3": "c. The roadway marking forbids overtaking here",
           "option4": "d. Pedestrian crossing ahead",
           "correctAnswer": "b. The driver's field of view is not good enough to allow safe overtaking",
-          "questionImgUrl": "assets/images/q307.png"
+          "questionImgUrl": "assets/images/q307.webp"
         },
         {
           "question": "18. What should the driver of the silver car do before turning right?",
@@ -2628,7 +2628,7 @@
           "option3": "c. Allow the cyclist heading straight on to pass",
           "option4": "d. Increase speed to be able to turn the corner before the cyclist",
           "correctAnswer": "c. Allow the cyclist heading straight on to pass",
-          "questionImgUrl": "assets/images/q308.png"
+          "questionImgUrl": "assets/images/q308.webp"
         },
         {
           "question": "19. What lights should a driver use in fog?",
@@ -2637,7 +2637,7 @@
           "option3": "d. Dipped headlights",
           "option4": "e. Just normal lights",
           "correctAnswer": "a. Front and rear fog lights along with dipped headlights",
-          "questionImgUrl": "assets/images/q309.png"
+          "questionImgUrl": "assets/images/q309.webp"
         },
         {
           "question": "20. Which car, if any, is parked incorrectly?",
@@ -2646,7 +2646,7 @@
           "option3": "c. The red car",
           "option4": "d. Neither car",
           "correctAnswer": "a. Both cars",
-          "questionImgUrl": "assets/images/q310.png"
+          "questionImgUrl": "assets/images/q310.webp"
         }
       ]
     },
@@ -2654,7 +2654,7 @@
       "quizId": "14",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam14.png",
+      "examImgUrl": "assets/images/exam14.webp",
       "questions": [
         {
           "question": "1. How should a driver overtake the cyclist in this situation?",
@@ -2663,7 +2663,7 @@
           "option3": "c) By crossing the broken white line",
           "option4": "d) By not crossing any of the lines",
           "correctAnswer": "c) By crossing the broken white line",
-          "questionImgUrl": "assets/images/q311.png"
+          "questionImgUrl": "assets/images/q311.webp"
         },
         {
           "question": "2. What should a driver do if dazzled by the lights of an oncoming vehicle?",
@@ -2672,7 +2672,7 @@
           "option3": "c) Flash the oncoming vehicle.",
           "option4": "d) Accelerate to get out of the range of the dazzle as quickly as possible.",
           "correctAnswer": "b) Look to the right-hand edge of the roadway and if necessary, reduce speed.",
-          "questionImgUrl": "assets/images/q312.png"
+          "questionImgUrl": "assets/images/q312.webp"
         },
         {
           "question": "3. What should you do when approaching traffic lights that change from green to amber?",
@@ -2681,7 +2681,7 @@
           "option3": "c) Proceed, as the green light is about to come on",
           "option4": "d) Continue with care being ready to stop if the light turns to red",
           "correctAnswer": "a) Stop, unless it is not safe",
-          "questionImgUrl": "assets/images/q313.png"
+          "questionImgUrl": "assets/images/q313.webp"
         },
         {
           "question": "4. What should a driver be aware of when following the motorcyclist, and the white car is reversing onto the road?",
@@ -2690,7 +2690,7 @@
           "option3": "c) The brake-lights may go off and the car continue reversing.",
           "option4": "d) The motorcyclist may suddenly brake.",
           "correctAnswer": "d) The motorcyclist may suddenly brake.",
-          "questionImgUrl": "assets/images/q314.png"
+          "questionImgUrl": "assets/images/q314.webp"
         },
         {
           "question": "5. What should a driver do in this situation when intending to turn right?",
@@ -2699,7 +2699,7 @@
           "option3": "c) Wait and allow both pedestrians to cross.",
           "option4": "d) Allow one pedestrian to cross, and then proceed as there should be room to clear the junction.",
           "correctAnswer": "c) Wait and allow both pedestrians to cross.",
-          "questionImgUrl": "assets/images/q315.png"
+          "questionImgUrl": "assets/images/q315.webp"
         },
         {
           "question": "6. In this situation, should you overtake the cyclists?",
@@ -2708,7 +2708,7 @@
           "option3": "c) Yes, the cyclists will hear your vehicle and thus will get out of the way.",
           "option4": "d) Yes, any oncoming traffic can observe the situation and will get out of the way.",
           "correctAnswer": "a) No, the driver cannot see clearly ahead",
-          "questionImgUrl": "assets/images/q316.png"
+          "questionImgUrl": "assets/images/q316.webp"
         },
         {
           "question": "7. What should a driver do in this situation?",
@@ -2717,7 +2717,7 @@
           "option3": "c) Wait at the zebra crossing until the van has turned off.",
           "option4": "d) Accelerate quickly before pedestrians cross the road.",
           "correctAnswer": "a) Allow the pedestrian to cross the road.",
-          "questionImgUrl": "assets/images/q317.png"
+          "questionImgUrl": "assets/images/q317.webp"
         },
         {
           "question": "8. Which vehicle is in the correct position to make a right turn from the major road into the minor road?",
@@ -2726,7 +2726,7 @@
           "option3": "c) Car 3 is in the correct position to make the right turn.",
           "option4": "d) Car 4 is in the correct position to make the right turn.",
           "correctAnswer": "a) Car 1 is in the correct position to make the right turn.",
-          "questionImgUrl": "assets/images/q18.png"
+          "questionImgUrl": "assets/images/q18.webp"
         },
         {
           "question": "9. What should a driver do if they see a red warning triangle on the road?",
@@ -2780,7 +2780,7 @@
           "option3": "c. Parking allowed.",
           "option4": "d. U-turn allowed during daylight hours.",
           "correctAnswer": "a. It is prohibited for every driver to cross it.",
-          "questionImgUrl": "assets/images/q324.png"
+          "questionImgUrl": "assets/images/q324.webp"
         },
         {
           "question": "15. What should a driver do when approaching a junction normally controlled by traffic lights and the traffic lights are not lighting?",
@@ -2842,7 +2842,7 @@
       "quizId": "15",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam15.png",
+      "examImgUrl": "assets/images/exam15.webp",
       "questions": [
         {
           "question": "11. When should signals (for example, with indicators) be given to other road users?",
@@ -2932,7 +2932,7 @@
           "option3": "c. Either side of the center of the road",
           "option4": "d. The left-hand side of the road",
           "correctAnswer": "b. Just right of the center of the road",
-          "questionImgUrl": "assets/images/q340.png"
+          "questionImgUrl": "assets/images/q340.webp"
         },
         {
           "question": "11. What must a driver be aware of before entering a roundabout?",
@@ -3030,7 +3030,7 @@
       "quizId": "16",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam16.png",
+      "examImgUrl": "assets/images/exam16.webp",
       "questions": [
         {
           "question": "1. When the vehicle behind has begun to overtake our vehicle:",
@@ -3120,7 +3120,7 @@
           "option3": "c. Stop at the stop line",
           "option4": "d. Continue ahead only",
           "correctAnswer": "c. Stop at the stop line",
-          "questionImgUrl": "assets/images/q360.png"
+          "questionImgUrl": "assets/images/q360.webp"
         },
         {
           "question": "11. The direction indicating lights must be visible at a minimum distance of:",
@@ -3174,7 +3174,7 @@
           "option3": "c. a and b are both correct answers",
           "option4": "d. none of the answers is correct",
           "correctAnswer": "d. none of the answers is correct",
-          "questionImgUrl": "assets/images/q366.png"
+          "questionImgUrl": "assets/images/q366.webp"
         },
         {
           "question": "17. This signal explains the following:",
@@ -3183,7 +3183,7 @@
           "option3": "c. a and b are correct",
           "option4": "d. none of the answers is correct",
           "correctAnswer": "b. right of way for vehicles moving in the opposite direction",
-          "questionImgUrl": "assets/images/q367.png"
+          "questionImgUrl": "assets/images/q367.webp"
         },
         {
           "question": "18. The reflector placed on the front side of the vehicle must be of:",
@@ -3201,7 +3201,7 @@
           "option3": "c. right of way before vehicles coming in the opposite direction",
           "option4": "d. none of the answer is correct",
           "correctAnswer": "c. right of way before vehicles coming in the opposite direction",
-          "questionImgUrl": "assets/images/q369.png"
+          "questionImgUrl": "assets/images/q369.webp"
         },
         {
           "question": "20. This signal constitutes by:",
@@ -3210,7 +3210,7 @@
           "option3": "c. triangle form, white surface",
           "option4": "d. none of the answer is correct",
           "correctAnswer": "c. triangle form, white surface",
-          "questionImgUrl": "assets/images/q370.png"
+          "questionImgUrl": "assets/images/q370.webp"
         }
       ]
     },
@@ -3218,7 +3218,7 @@
       "quizId": "17",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam17.jpg",
+      "examImgUrl": "assets/images/exam17.webp",
       "questions": [
         {
           "question": "1. This signal means:",
@@ -3227,7 +3227,7 @@
           "option3": "c. a small footpath",
           "option4": "d. none of the answers is correct",
           "correctAnswer": "b. narrowing road as a result of an encroachment upon the left verge of the road",
-          "questionImgUrl": "assets/images/q371.png"
+          "questionImgUrl": "assets/images/q371.webp"
         },
         {
           "question": "2. Every driver who realizes that a driver following him wishes to overtake him must:",
@@ -3245,7 +3245,7 @@
           "option3": "c. Irregular surface",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "d. None of the answers is correct",
-          "questionImgUrl": "assets/images/q373.png"
+          "questionImgUrl": "assets/images/q373.webp"
         },
         {
           "question": "4. This signal designates:",
@@ -3254,7 +3254,7 @@
           "option3": "c. It's only one direction",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "a. No vehicular traffic in both directions",
-          "questionImgUrl": "assets/images/q374.png"
+          "questionImgUrl": "assets/images/q374.webp"
         },
         {
           "question": "5. This sign indicates:",
@@ -3263,7 +3263,7 @@
           "option3": "c. Irregular surface",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "d. None of the answers is correct",
-          "questionImgUrl": "assets/images/q375.png"
+          "questionImgUrl": "assets/images/q375.webp"
         },
         {
           "question": "6. This sign showing the following:",
@@ -3272,7 +3272,7 @@
           "option3": "c. Dangerous slope",
           "option4": "d. b and c are correct",
           "correctAnswer": "a. Corner to the right (approaching a dangerous corner to the right)",
-          "questionImgUrl": "assets/images/q376.png"
+          "questionImgUrl": "assets/images/q376.webp"
         },
         {
           "question": "7. When the road has two traffic bands and the traffic moves in two directions, it's forbidden to:",
@@ -3371,7 +3371,7 @@
           "option3": "c. For all users appearing behind the agent.",
           "option4": "d. None of the answer is correct",
           "correctAnswer": "b. For all users, wherever they come from.",
-          "questionImgUrl": "assets/images/q387.png"
+          "questionImgUrl": "assets/images/q387.webp"
         },
         {
           "question": "18. These road signs forbid me to overtake on the left?",
@@ -3380,7 +3380,7 @@
           "option3": "c. No",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "a. Yes",
-          "questionImgUrl": "assets/images/q88.png"
+          "questionImgUrl": "assets/images/q88.webp"
         },
         {
           "question": "19. Highway. I want to overtake these two trucks in a single maneuver, by the left and at the same time. Is it authorized?",
@@ -3398,7 +3398,7 @@
           "option3": "c. right of way before vehicles coming in the opposite direction",
           "option4": "d. none of the answer is correct",
           "correctAnswer": "c. right of way before vehicles coming in the opposite direction",
-          "questionImgUrl": "assets/images/q369.png"
+          "questionImgUrl": "assets/images/q369.webp"
         }
       ]
     },
@@ -3406,7 +3406,7 @@
       "quizId": "18",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam18.png",
+      "examImgUrl": "assets/images/exam18.webp",
       "questions": [
         {
           "question": "1. The driver of a car This road sign means:",
@@ -3415,7 +3415,7 @@
           "option3": "c. Does not concern me, as it only applies to vehicles of 5 tons and over.",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "c. Does not concern me, as it only applies to vehicles of 5 tons and over.",
-          "questionImgUrl": "assets/images/q391.png"
+          "questionImgUrl": "assets/images/q391.webp"
         },
         {
           "question": "2. I want to turn right. It’s allowed.",
@@ -3424,7 +3424,7 @@
           "option3": "c. No",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "c. No",
-          "questionImgUrl": "assets/images/q392.png"
+          "questionImgUrl": "assets/images/q392.webp"
         },
         {
           "question": "3. Railroad Crossing.",
@@ -3433,7 +3433,7 @@
           "option3": "c. I cannot continue my journey. I have to stop now.",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "b. I must stop below the flashing red lights.",
-          "questionImgUrl": "assets/images/q393.png"
+          "questionImgUrl": "assets/images/q393.webp"
         },
         {
           "question": "4. Beyond the first road sign:",
@@ -3442,7 +3442,7 @@
           "option3": "c. Forbidden to drive more than 30 km/h.",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "c. Forbidden to drive more than 30 km/h.",
-          "questionImgUrl": "assets/images/q394.png"
+          "questionImgUrl": "assets/images/q394.webp"
         },
         {
           "question": "5. I stop at the stop line.",
@@ -3451,7 +3451,7 @@
           "option3": "c. Then, I can turn left or right.",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "b. Then, I can turn left.",
-          "questionImgUrl": "assets/images/q395.png"
+          "questionImgUrl": "assets/images/q395.webp"
         },
         {
           "question": "6. I must:",
@@ -3460,7 +3460,7 @@
           "option3": "c. Give way and stop, if necessary, 100 meters beyond this road sign.",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "b. Stop and give way to 100 meters beyond this road sign.",
-          "questionImgUrl": "assets/images/q396.png"
+          "questionImgUrl": "assets/images/q396.webp"
         },
         {
           "question": "7. I want to turn left. The green car came to a stop. Who has priority?",
@@ -3469,7 +3469,7 @@
           "option3": "c. Neither: we must exercise caution.",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "b. The green car has priority.",
-          "questionImgUrl": "assets/images/q397.png"
+          "questionImgUrl": "assets/images/q397.webp"
         },
         {
           "question": "8. I have priority at this crossroads?",
@@ -3478,7 +3478,7 @@
           "option3": "c. Yes, regardless of my direction.",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "c. Yes, regardless of my direction.",
-          "questionImgUrl": "assets/images/q398.png"
+          "questionImgUrl": "assets/images/q398.webp"
         },
         {
           "question": "9. I drive at 20 km/h. I can still get involved in the crossroads?",
@@ -3487,7 +3487,7 @@
           "option3": "c. Yes, and I can turn left as well as right.",
           "option4": "d. Yes, and I can turn left only",
           "correctAnswer": "a. No.",
-          "questionImgUrl": "assets/images/q399.png"
+          "questionImgUrl": "assets/images/q399.webp"
         },
         {
           "question": "10. The driver in front of me overtook me on the left.",
@@ -3496,7 +3496,7 @@
           "option3": "c. I can, in turn, overtake it on the left, as soon as I have enough space.",
           "option4": "d. None of the answers are correct",
           "correctAnswer": "c. I can, in turn, overtake it on the left, as soon as I have enough space.",
-          "questionImgUrl": "assets/images/q400.png"
+          "questionImgUrl": "assets/images/q400.webp"
         },
         {
           "question": "11. From these road signs, it is forbidden:",
@@ -3505,7 +3505,7 @@
           "option3": "c. To travel more than 70 km/h.",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "a. To overtake harnessed vehicles and vehicles with more than two wheels on the left and drive at more than 70 km/h.",
-          "questionImgUrl": "assets/images/q401.png"
+          "questionImgUrl": "assets/images/q401.webp"
         },
         {
           "question": "12. I want to store my parked car on the right, on this sidewalk.",
@@ -3514,7 +3514,7 @@
           "option3": "c. It is forbidden, both below and beyond the signal.",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "a. It is allowed, below the signal.",
-          "questionImgUrl": "assets/images/q402.png"
+          "questionImgUrl": "assets/images/q402.webp"
         },
         {
           "question": "13. What does this sign mean?",
@@ -3523,7 +3523,7 @@
           "option3": "c) Other traffic must give way to you.",
           "option4": "d) Give way to traffic coming from your right.",
           "correctAnswer": "b) Stop your vehicle.",
-          "questionImgUrl": "assets/images/q403.png"
+          "questionImgUrl": "assets/images/q403.webp"
         },
         {
           "question": "14. What does this sign mean at a junction?",
@@ -3532,7 +3532,7 @@
           "option3": "c) Yield to traffic on the major road.",
           "option4": "d) Yield to traffic coming from your right.",
           "correctAnswer": "c) Yield to traffic on the major road.",
-          "questionImgUrl": "assets/images/q404.png"
+          "questionImgUrl": "assets/images/q404.webp"
         },
         {
           "question": "15. What does this sign mean at a roundabout?",
@@ -3541,7 +3541,7 @@
           "option3": "c) Yield to trucks and buses only.",
           "option4": "d) All vehicles, except motorcycles, must yield.",
           "correctAnswer": "b) Yield to traffic coming from the right.",
-          "questionImgUrl": "assets/images/q405.png"
+          "questionImgUrl": "assets/images/q405.webp"
         },
         {
           "question": "16. What does this sign mean?",
@@ -3550,7 +3550,7 @@
           "option3": "c) Parking permitted from this point on.",
           "option4": "d) One-way street ahead.",
           "correctAnswer": "a) Straight ahead only.",
-          "questionImgUrl": "assets/images/q406.png"
+          "questionImgUrl": "assets/images/q406.webp"
         },
         {
           "question": "17. What does this sign mean?",
@@ -3559,7 +3559,7 @@
           "option3": "c) Traffic from the right has priority.",
           "option4": "d) Turn Left Only.",
           "correctAnswer": "d) Turn Left Only.",
-          "questionImgUrl": "assets/images/q407.png"
+          "questionImgUrl": "assets/images/q407.webp"
         },
         {
           "question": "18. What does this sign mean?",
@@ -3568,7 +3568,7 @@
           "option3": "c) Turn right only.",
           "option4": "d) Major road joining from the left.",
           "correctAnswer": "c) Turn right only.",
-          "questionImgUrl": "assets/images/q408.png"
+          "questionImgUrl": "assets/images/q408.webp"
         },
         {
           "question": "19. What does this sign mean?",
@@ -3577,7 +3577,7 @@
           "option3": "c) Turn right if there is no oncoming traffic.",
           "option4": "d) No hard shoulder to the right.",
           "correctAnswer": "a) No right turn.",
-          "questionImgUrl": "assets/images/q409.png"
+          "questionImgUrl": "assets/images/q409.webp"
         },
         {
           "question": "20. What does this sign mean?",
@@ -3586,7 +3586,7 @@
           "option3": "c) Slippery road ahead.",
           "option4": "d) Two-way traffic prohibited",
           "correctAnswer": "a) U-turn not permitted.",
-          "questionImgUrl": "assets/images/q410.png"
+          "questionImgUrl": "assets/images/q410.webp"
         }
       ]
     },
@@ -3594,7 +3594,7 @@
       "quizId": "19",
       "examType": "Paid",
       "title": "Exam",
-      "examImgUrl": "assets/images/exam19.png",
+      "examImgUrl": "assets/images/exam19.webp",
       "questions": [
         {
           "question": "1. What does this sign mean?",
@@ -3603,7 +3603,7 @@
           "option3": "c) Minimum speed is 50 km/h.",
           "option4": "d) Maximum speed is 50 km/h.",
           "correctAnswer": "d) Maximum speed is 50 km/h.",
-          "questionImgUrl": "assets/images/q411.png"
+          "questionImgUrl": "assets/images/q411.webp"
         },
         {
           "question": "2. What does this sign mean?",
@@ -3612,7 +3612,7 @@
           "option3": "c) Private vehicles prohibited.",
           "option4": "d) Parking permitted.",
           "correctAnswer": "b) Parking prohibited.",
-          "questionImgUrl": "assets/images/q412.png"
+          "questionImgUrl": "assets/images/q412.webp"
         },
         {
           "question": "13. What does this sign mean?",
@@ -3621,7 +3621,7 @@
           "option3": "c) Shared cycle/pedestrian track.",
           "option4": "d) Cyclists must dismount and walk.",
           "correctAnswer": "c) Shared cycle/pedestrian track.",
-          "questionImgUrl": "assets/images/q413.png"
+          "questionImgUrl": "assets/images/q413.webp"
         },
         {
           "question": "4. What does this sign mean?",
@@ -3630,7 +3630,7 @@
           "option3": "c) 3 axled vehicles not permitted.",
           "option4": "d) Only 3 axled vehicles are permitted.",
           "correctAnswer": "b) No entry for vehicles carrying goods.",
-          "questionImgUrl": "assets/images/q414.png"
+          "questionImgUrl": "assets/images/q414.webp"
         },
         {
           "question": "5. What does this sign mean?",
@@ -3639,7 +3639,7 @@
           "option3": "c) One-way street ahead.",
           "option4": "d) 'U'-turn prohibited ahead.",
           "correctAnswer": "a) Junction with compulsory roundabout",
-          "questionImgUrl": "assets/images/q415.png"
+          "questionImgUrl": "assets/images/q415.webp"
         },
         {
           "question": "6. What does this sign mean?",
@@ -3648,7 +3648,7 @@
           "option3": "c) One-way street.",
           "option4": "d) Two-way traffic ahead.",
           "correctAnswer": "d) Two-way traffic ahead.",
-          "questionImgUrl": "assets/images/q416.png"
+          "questionImgUrl": "assets/images/q416.webp"
         },
         {
           "question": "7. What does this sign mean?",
@@ -3657,7 +3657,7 @@
           "option3": "c) lane on a bad section of the road",
           "option4": "d) River or unprotected quay ahead.",
           "correctAnswer": "b) Dangerous slope.",
-          "questionImgUrl": "assets/images/q417.png"
+          "questionImgUrl": "assets/images/q417.webp"
         },
         {
           "question": "8. What does this sign mean?",
@@ -3666,7 +3666,7 @@
           "option3": "c) lane on a bad section of the road",
           "option4": "d) Approaching a hump back",
           "correctAnswer": "a) Steep climp",
-          "questionImgUrl": "assets/images/q418.png"
+          "questionImgUrl": "assets/images/q418.webp"
         },
         {
           "question": "9. What does this sign mean?",
@@ -3675,7 +3675,7 @@
           "option3": "c) Series of bends ahead.",
           "option4": "d) Slippery road",
           "correctAnswer": "d) Slippery road",
-          "questionImgUrl": "assets/images/q419.png"
+          "questionImgUrl": "assets/images/q419.webp"
         },
         {
           "question": "10. What does this sign mean?",
@@ -3684,7 +3684,7 @@
           "option3": "c) Children's play area ahead.",
           "option4": "d) Recreation area ahead.",
           "correctAnswer": "a) Children.",
-          "questionImgUrl": "assets/images/q420.png"
+          "questionImgUrl": "assets/images/q420.webp"
         },
         {
           "question": "11. What does this sign mean?",
@@ -3693,7 +3693,7 @@
           "option3": "c) Cattle grid ahead.",
           "option4": "d) Cattle crossing",
           "correctAnswer": "d) Cattle crossing",
-          "questionImgUrl": "assets/images/q421.png"
+          "questionImgUrl": "assets/images/q421.webp"
         },
         {
           "question": "12. Which sign shows no through road:",
@@ -3702,7 +3702,7 @@
           "option3": "c) The Signal C2a",
           "option4": "d) The Signal B2a",
           "correctAnswer": "b) The Signal E14",
-          "questionImgUrl": "assets/images/q422.png"
+          "questionImgUrl": "assets/images/q422.webp"
         },
         {
           "question": "13. What does this sign mean?",
@@ -3711,7 +3711,7 @@
           "option3": "c) One-way",
           "option4": "d) No entry",
           "correctAnswer": "a) Yield",
-          "questionImgUrl": "assets/images/q423.png"
+          "questionImgUrl": "assets/images/q423.webp"
         },
         {
           "question": "14. Which sign shows the driver who is about to enter a narrow road that he has the right of way before vehicles moving in the opposite direction:",
@@ -3720,7 +3720,7 @@
           "option3": "c) The Signal B3",
           "option4": "d) The signal A22a",
           "correctAnswer": "a) The Signal B6",
-          "questionImgUrl": "assets/images/q424.png"
+          "questionImgUrl": "assets/images/q424.webp"
         },
         {
           "question": "15. What does this sign mean?",
@@ -3729,7 +3729,7 @@
           "option3": "c) Approaching a junction",
           "option4": "d) Aucune des réponses n'est correcte.",
           "correctAnswer": "a) Roundabout",
-          "questionImgUrl": "assets/images/q425.png"
+          "questionImgUrl": "assets/images/q425.webp"
         },
         {
           "question": "16. What does this sign mean?",
@@ -3738,7 +3738,7 @@
           "option3": "c) No through road",
           "option4": "d) Aucune des réponses n'est correcte.",
           "correctAnswer": "b) No entry",
-          "questionImgUrl": "assets/images/q426.png"
+          "questionImgUrl": "assets/images/q426.webp"
         },
         {
           "question": "17. Which sign means a one-way road?",
@@ -3747,7 +3747,7 @@
           "option3": "c) The signal C19",
           "option4": "d) The signal C1",
           "correctAnswer": "b) The signal E13a",
-          "questionImgUrl": "assets/images/q427.png"
+          "questionImgUrl": "assets/images/q427.webp"
         },
         {
           "question": "18. What does this sign mean?",
@@ -3756,7 +3756,7 @@
           "option3": "c) No through road",
           "option4": "d) Aucune des réponses n'est correcte.",
           "correctAnswer": "d) Aucune des réponses n'est correcte.",
-          "questionImgUrl": "assets/images/q428.png"
+          "questionImgUrl": "assets/images/q428.webp"
         },
         {
           "question": "19. What does this sign mean?",
@@ -3765,7 +3765,7 @@
           "option3": "c) No overtaking.",
           "option4": "d) Stopping under bridge is not allowed.",
           "correctAnswer": "a) End of a highway",
-          "questionImgUrl": "assets/images/q429.png"
+          "questionImgUrl": "assets/images/q429.webp"
         },
         {
           "question": "20. What does this road marking mean?",
@@ -3774,7 +3774,7 @@
           "option3": "c) You are approaching a stop sign.",
           "option4": "d) Road narrows ahead.",
           "correctAnswer": "b) A driver must not cross the line.",
-          "questionImgUrl": "assets/images/q430.png"
+          "questionImgUrl": "assets/images/q430.webp"
         },
         {
           "question": "21. What does this road marking mean?",
@@ -3783,7 +3783,7 @@
           "option3": "c) You may overtake provided you do not cross the broken white line.",
           "option4": "d) You may not perform a reverse maneuver.",
           "correctAnswer": "a) A driver must not cross the broken white line unless it is safe to do so.",
-          "questionImgUrl": "assets/images/q431.png"
+          "questionImgUrl": "assets/images/q431.webp"
         },
         {
           "question": "22. If driving from A to B, what do these road markings mean?",
@@ -3792,7 +3792,7 @@
           "option3": "c) A driver may not overtake by crossing the continuous white line.",
           "option4": "d) A driver may overtake if it is safe to do so.",
           "correctAnswer": "d) A driver may overtake if it is safe to do so.",
-          "questionImgUrl": "assets/images/q432.png"
+          "questionImgUrl": "assets/images/q432.webp"
         },
         {
           "question": "433. If driving from A to B, what do these road markings mean?",
@@ -3801,7 +3801,7 @@
           "option3": "c) A driver may overtake.",
           "option4": "d) Only motorcyclists may overtake crossing the continuous white line.",
           "correctAnswer": "b) A driver may not cross the white lines to overtake.",
-          "questionImgUrl": "assets/images/q433.png"
+          "questionImgUrl": "assets/images/q433.webp"
         }
       ]
     }

@@ -167,14 +167,14 @@ class _SettingsPageState extends State<SettingsPage> {
         final currentName =
             LocaleNotifier.localeNames[localeState.effectiveLocale.languageCode] ??
                 'English';
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: surfaceColor,
-            border: Border.all(color: outlineColor.withValues(alpha: 0.5)),
-            borderRadius: BorderRadius.circular(12),
-          ),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ListTile(
+            tileColor: surfaceColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide(color: outlineColor.withValues(alpha: 0.5)),
+            ),
             title: Text(l10n.settingsLanguage,
                 style: Theme.of(context).textTheme.labelLarge),
             subtitle: Text(currentName,
@@ -200,14 +200,14 @@ class _SettingsPageState extends State<SettingsPage> {
         textColor == AppColors.textPrimary
             ? Theme.of(context).colorScheme.onSurface
             : textColor;
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: surfaceColor,
-        border: Border.all(color: outlineColor.withValues(alpha: 0.5)),
-        borderRadius: BorderRadius.circular(12),
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListTile(
+        tileColor: surfaceColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: outlineColor.withValues(alpha: 0.5)),
+        ),
         leading: Icon(icon, color: effectiveTextColor),
         title: Text(title,
             style: Theme.of(context)

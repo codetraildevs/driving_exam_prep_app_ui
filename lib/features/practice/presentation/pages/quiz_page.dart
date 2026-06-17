@@ -52,7 +52,7 @@ class _QuizPageState extends State<QuizPage> {
     
     // Protect exam content from screenshots/screen recording
     ScreenProtector.preventScreenshotOn();
-    // ScreenProtector.protectDataOn(); // Use this if needed for protecting data in background
+    //  ScreenProtector.protectDataOn(); // Use this if needed for protecting data in background
     _securityChannel.invokeMethod('secureScreenOn');
   }
 
@@ -111,7 +111,7 @@ class _QuizPageState extends State<QuizPage> {
     // Re-enable screenshots when leaving the quiz
     ScreenProtector.preventScreenshotOff();
     // ScreenProtector.protectDataOff();
-    _securityChannel.invokeMethod('secureScreenOff');
+     _securityChannel.invokeMethod('secureScreenOff');
     super.dispose();
   }
 

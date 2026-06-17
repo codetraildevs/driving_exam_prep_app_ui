@@ -875,15 +875,17 @@ class _ProfilePageState extends State<ProfilePage> {
     required String subtitle,
     required VoidCallback onTap,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.05)),
-      ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         onTap: onTap,
+        tileColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+          ),
+        ),
         leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
         subtitle: Text(subtitle),

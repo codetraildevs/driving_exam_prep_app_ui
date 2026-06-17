@@ -2,8 +2,9 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    // Kotlin-android is applied by the Flutter Gradle Plugin internally.
+    // Removed explicit declaration per Flutter's KGP migration guide:
+    // https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -21,10 +22,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     defaultConfig {
@@ -55,8 +52,18 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
             signingConfig = signingConfigs.getByName("release")
         }
+    }
+}
+
+// Kotlin JVM target — migrated from deprecated kotlinOptions per Flutter's
+// built-in Kotlin migration guide:
+// https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
 }
 
