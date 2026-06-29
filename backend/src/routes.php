@@ -13,6 +13,7 @@ return [
     // Auth
     ['POST', '/api/auth/register', 'authRegister'],
     ['POST', '/api/auth/login', 'authLogin'],
+    ['POST', '/api/auth/rebind-device', 'authRebindDevice'],
     ['POST', '/api/auth/logout', 'authLogout'],
     ['POST', '/api/auth/refresh', 'authRefresh'],
 

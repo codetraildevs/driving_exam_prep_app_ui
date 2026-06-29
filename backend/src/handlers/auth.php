@@ -70,6 +70,18 @@ function _revokeRefreshToken($conn, string $token): void
     );
 }
 
+function _authError(string $message, int $status, string $errorCode): void
+{
+    http_response_code($status);
+    echo json_encode([
+        'success' => false,
+        'message' => $message,
+        'code' => $status,
+        'error_code' => $errorCode,
+    ]);
+    exit();
+}
+
 function authRegister($conn, $params): void
 {
     $input = getInput();
@@ -82,7 +94,7 @@ function authRegister($conn, $params): void
 
     $phone = SecurityUtils::sanitizeString($input['phoneNumber']);
     if (!SecurityUtils::isValidPhone($phone)) {
-        ErrorHandler::badRequest('Invalid phone number format');
+        _authError('Invalid phone number format', 400, 'INVALID_PHONE_FORMAT');
     }
 
     $name = SecurityUtils::sanitizeString($input['fullName']);
@@ -110,10 +122,10 @@ function authRegister($conn, $params): void
     if ($existing) {
         if ($existing['deviceId'] === $device || $existing['role'] === 'ADMIN' || $existing['role'] === 'MANAGER') {
             Logger::info('Registration attempt with existing phone', ['phone' => substr($phone, -4)]);
-            ErrorHandler::conflict('You already have an account with this phone number. Please go back and tap "Log In".');
+            _authError('You already have an account with this phone number. Please go back and tap "Log In".', 409, 'ACCOUNT_ALREADY_EXISTS');
         } else {
             Logger::warning('Phone registered on different device', ['phone' => substr($phone, -4)]);
-            ErrorHandler::conflict('This phone number is already registered on a different phone. Please log in on your original phone or contact support.');
+            _authError('This phone number is already registered on a different phone. Please verify and move your account to this phone.', 409, 'PHONE_BOUND_TO_OTHER_DEVICE');
         }
     }
 
@@ -122,7 +134,7 @@ function authRegister($conn, $params): void
     if ($existingDevice) {
         if ($existingDevice['role'] !== 'ADMIN' && $existingDevice['role'] !== 'MANAGER') {
             Logger::warning('Device already registered', ['device' => substr($device, -4)]);
-            ErrorHandler::conflict('This phone is already registered to another user. For security, only one account is allowed per device.');
+            _authError('This phone is already registered to another user. For security, only one account is allowed per device.', 409, 'DEVICE_ALREADY_IN_USE');
         }
     }
 
@@ -170,7 +182,7 @@ function authLogin($conn, $params): void
     $phone = SecurityUtils::sanitizeString($input['phoneNumber']);
     if (!SecurityUtils::isValidPhone($phone)) {
         Logger::warning('Login attempt with invalid phone format', ['phone' => substr($phone, -4)]);
-        ErrorHandler::badRequest('Invalid phone number format');
+        _authError('Invalid phone number format', 400, 'INVALID_PHONE_FORMAT');
     }
 
     $device = isset($input['deviceId']) ? SecurityUtils::sanitizeString($input['deviceId']) : null;
@@ -183,19 +195,19 @@ function authLogin($conn, $params): void
 
     if (!$user) {
         Logger::warning('Login attempt with non-existent user', ['phone' => substr($phone, -4)]);
-        ErrorHandler::unauthorized('Phone number not registered. Please register first.');
+        _authError('Phone number not registered. Please register first.', 401, 'PHONE_NOT_REGISTERED');
     }
 
     if (!$user['isActive']) {
         Logger::security('Login attempt on inactive account', ['userId' => $user['id']]);
-        ErrorHandler::forbidden('Account is inactive. Please contact support.');
+        _authError('Account is inactive. Please contact support.', 403, 'ACCOUNT_INACTIVE');
     }
 
     // Device binding logic
     if ($user['role'] === 'USER' && $phone !== '0787012615') {
         if (!$device) {
             Logger::warning('USER login without deviceId', ['userId' => $user['id']]);
-            ErrorHandler::badRequest('Device ID is required for user login');
+            _authError('Device ID is required for user login', 400, 'DEVICE_ID_REQUIRED');
         }
         if ($user['deviceId'] !== $device) {
             Logger::security('Login device mismatch', [
@@ -203,7 +215,7 @@ function authLogin($conn, $params): void
                 'expected' => substr($user['deviceId'], -4),
                 'provided' => substr($device, -4),
             ]);
-            ErrorHandler::unauthorized('Device not registered for this account');
+            _authError('This account is linked to another device. Use account recovery to move it to this device.', 401, 'DEVICE_MISMATCH');
         }
     } else {
         if ($device) {
@@ -228,6 +240,79 @@ function authLogin($conn, $params): void
         'token'         => $token,
         'refresh_token' => $refreshToken,
     ], 200, 'Login successful');
+}
+
+function authRebindDevice($conn, $params): void
+{
+    $input = getInput();
+    $validation = SecurityUtils::validateRequired($input, ['phoneNumber', 'fullName', 'deviceId']);
+    if ($validation) {
+        _authError($validation, 400, 'MISSING_REQUIRED_FIELD');
+    }
+
+    $phone = SecurityUtils::sanitizeString($input['phoneNumber']);
+    $name = SecurityUtils::sanitizeString($input['fullName']);
+    $device = SecurityUtils::sanitizeString($input['deviceId']);
+
+    if (!SecurityUtils::isValidPhone($phone)) {
+        _authError('Invalid phone number format', 400, 'INVALID_PHONE_FORMAT');
+    }
+    if (!SecurityUtils::validateLength($name, 2, 255)) {
+        _authError('Full name must be between 2 and 255 characters', 400, 'INVALID_FULL_NAME');
+    }
+    if (!SecurityUtils::validateLength($device, 5, 255)) {
+        _authError('Device ID must be between 5 and 255 characters', 400, 'INVALID_DEVICE_ID');
+    }
+
+    $user = Database::fetchOne($conn,
+        'SELECT id, fullName, role, isActive, deviceId FROM users WHERE phoneNumber = ? LIMIT 1',
+        's',
+        [&$phone]
+    );
+    if (!$user) {
+        _authError('Phone number not registered. Please register first.', 404, 'PHONE_NOT_REGISTERED');
+    }
+    if (!$user['isActive']) {
+        _authError('Account is inactive. Please contact support.', 403, 'ACCOUNT_INACTIVE');
+    }
+
+    $normalize = function (string $v): string {
+        return preg_replace('/\s+/', ' ', strtolower(trim($v)));
+    };
+    if ($normalize($name) !== $normalize((string)$user['fullName'])) {
+        _authError('Full name does not match this account.', 401, 'IDENTITY_VERIFICATION_FAILED');
+    }
+
+    $owner = Database::fetchOne($conn,
+        'SELECT id, role, phoneNumber FROM users WHERE deviceId = ? LIMIT 1',
+        's',
+        [&$device]
+    );
+    if ($owner && $owner['id'] !== $user['id'] && $owner['role'] !== 'ADMIN' && $owner['role'] !== 'MANAGER') {
+        _authError('This phone is already linked to another account.', 409, 'DEVICE_ALREADY_IN_USE');
+    }
+
+    $now = date('Y-m-d H:i:s');
+    $updated = Database::query(
+        $conn,
+        'UPDATE users SET deviceId = ?, updatedAt = ? WHERE id = ?',
+        'sss',
+        [&$device, &$now, &$user['id']]
+    );
+    if ($updated === false) {
+        _authError('Unable to update this account device right now. Please try again.', 500, 'REBIND_FAILED');
+    }
+
+    Logger::info('Account rebind to new device successful', [
+        'userId' => $user['id'],
+        'phone' => substr($phone, -4),
+    ]);
+
+    respond([
+        'userId' => $user['id'],
+        'phoneNumber' => $phone,
+        'rebound' => true,
+    ], 200, 'Account moved to this device successfully');
 }
 
 function authLogout($conn, $params): void

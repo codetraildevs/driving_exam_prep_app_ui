@@ -11,13 +11,20 @@ export 'auth_state.dart';
 /// Returns a user-friendly error message; hides raw exceptions.
 String _friendlyError(Object e) {
   if (e is ApiException) {
+    if (e.code != null && e.code!.isNotEmpty) {
+      return '${e.code}|${e.message}';
+    }
     return e.message;
   }
   if (e is DioException) {
     final data = e.response?.data;
     if (data is Map) {
+      final code = data['error_code'] ?? data['errorCode'];
       final msg = data['message'] ?? data['error'];
       if (msg != null && msg.toString().trim().isNotEmpty) {
+        if (code != null && code.toString().trim().isNotEmpty) {
+          return '${code.toString().trim()}|${msg.toString().trim()}';
+        }
         return msg.toString().trim();
       }
     }
@@ -51,6 +58,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<CheckAuthStatusEvent>(_onCheckAuthStatus);
     on<SignUpEvent>(_onSignUp);
     on<SignInEvent>(_onSignIn);
+    on<RebindDeviceEvent>(_onRebindDevice);
     on<SignOutEvent>(_onSignOut);
     on<DeleteAccountEvent>(_onDeleteAccount);
   }
@@ -142,6 +150,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await _authRepository.signOut();
       emit(const AuthUnauthenticated());
+    } catch (e) {
+      emit(AuthError(_friendlyError(e)));
+    }
+  }
+
+  Future<void> _onRebindDevice(
+    RebindDeviceEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(const AuthLoading());
+    try {
+      await _authRepository.rebindDevice(
+        fullName: event.fullName,
+        phoneNumber: event.phoneNumber,
+      );
+      final user = await _authRepository.signIn(phoneNumber: event.phoneNumber);
+      if (user != null) {
+        emit(AuthAuthenticated(user));
+      } else {
+        emit(const AuthError('Failed to sign in after device recovery.'));
+      }
     } catch (e) {
       emit(AuthError(_friendlyError(e)));
     }

@@ -8,8 +8,9 @@ import 'api_config.dart';
 class ApiException implements Exception {
   final int? statusCode;
   final String message;
+  final String? code;
 
-  ApiException(this.message, {this.statusCode});
+  ApiException(this.message, {this.statusCode, this.code});
 
   @override
   String toString() => statusCode == null ? message : '($statusCode) $message';
@@ -129,13 +130,14 @@ class ApiClient {
         final statusCode = e.response?.statusCode;
         final message = _extractMessage(e.response?.data) ??
             'Request failed (HTTP $statusCode)';
+        final code = _extractCode(e.response?.data);
         if (kDebugMode) {
           debugPrint(
             '[API][ERROR] status=$statusCode message=$message '
             'payload=${_compact(e.response?.data)}',
           );
         }
-        return ApiException(message, statusCode: statusCode);
+        return ApiException(message, statusCode: statusCode, code: code);
       default:
         if (kDebugMode) {
           debugPrint('[API][ERROR] ${e.type}: ${e.message}');
@@ -164,6 +166,7 @@ class ApiClient {
               ? data['message'].toString()
               : 'Request failed',
           statusCode: res.statusCode,
+          code: _extractCode(data),
         );
       }
       if (data.containsKey('data')) return data['data'];
@@ -184,6 +187,20 @@ class ApiClient {
       }
     }
     if (payload is String && payload.trim().isNotEmpty) return payload.trim();
+    return null;
+  }
+
+  String? _extractCode(dynamic payload) {
+    if (payload is Map<String, dynamic>) {
+      final code = payload['error_code'] ?? payload['errorCode'];
+      if (code is String && code.trim().isNotEmpty) return code.trim();
+    }
+    if (payload is Map) {
+      final code = payload['error_code'] ?? payload['errorCode'];
+      if (code != null && code.toString().trim().isNotEmpty) {
+        return code.toString().trim();
+      }
+    }
     return null;
   }
 

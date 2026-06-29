@@ -20,6 +20,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   late TextEditingController _nameController;
   late TextEditingController _phoneController;
+  bool _isRecoveryDialogOpen = false;
   // bool _agreedToTerms = false;
 
   final String supportNumber1 = "+250788659575";
@@ -97,6 +98,61 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  ({String? code, String message}) _parseAuthError(String raw) {
+    final idx = raw.indexOf('|');
+    if (idx <= 0) return (code: null, message: raw);
+    return (
+      code: raw.substring(0, idx).trim(),
+      message: raw.substring(idx + 1).trim(),
+    );
+  }
+
+  Future<void> _promptRecoveryFromRegister() async {
+    if (_isRecoveryDialogOpen || !mounted) return;
+    final phone = _phoneController.text.replaceAll(RegExp(r'[\s\-]'), '');
+    final name = _nameController.text.trim();
+    if (phone.isEmpty || name.length < 2) {
+      _showError('Enter your full name and phone number to recover this account.');
+      return;
+    }
+
+    _isRecoveryDialogOpen = true;
+    try {
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: const Text('Move account to this device'),
+            content: const Text(
+              'This phone number already exists on another device. Do you want to move that account to this phone?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                child: const Text('Move account'),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmed == true && mounted) {
+        context.read<AuthBloc>().add(
+          RebindDeviceEvent(
+            fullName: name,
+            phoneNumber: phone,
+          ),
+        );
+      }
+    } finally {
+      _isRecoveryDialogOpen = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -116,12 +172,17 @@ class _RegisterPageState extends State<RegisterPage> {
             context.go(isAdmin ? '/admin' : '/home');
           } else if (state is AuthError) {
             final l10nLocal = AppLocalizations.of(context);
-            final msg = state.message == 'NETWORK_ERROR'
+            final parsed = _parseAuthError(state.message);
+            final msg = parsed.message == 'NETWORK_ERROR'
                 ? l10nLocal.errorNetwork
-                : state.message == 'GENERIC_ERROR'
+                : parsed.message == 'GENERIC_ERROR'
                     ? l10nLocal.commonError
-                    : state.message;
+                    : parsed.message;
             _showError(msg);
+            if (parsed.code == 'PHONE_BOUND_TO_OTHER_DEVICE' ||
+                parsed.code == 'DEVICE_ALREADY_IN_USE') {
+              _promptRecoveryFromRegister();
+            }
           }
         },
         child: Column(

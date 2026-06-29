@@ -26,6 +26,16 @@ class SignInEvent extends AuthEvent {
   });
 }
 
+class RebindDeviceEvent extends AuthEvent {
+  final String fullName;
+  final String phoneNumber;
+
+  const RebindDeviceEvent({
+    required this.fullName,
+    required this.phoneNumber,
+  });
+}
+
 class SignOutEvent extends AuthEvent {
   const SignOutEvent();
 }

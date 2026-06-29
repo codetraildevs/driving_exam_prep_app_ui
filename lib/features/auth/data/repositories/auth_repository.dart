@@ -115,6 +115,21 @@ class AuthRepository {
     }
   }
 
+  Future<void> rebindDevice({
+    required String fullName,
+    required String phoneNumber,
+  }) async {
+    final deviceId = await _deviceId.getOrCreate();
+    await _api.post(
+      ApiEndpoints.authRebindDevice,
+      body: {
+        'fullName': fullName,
+        'phoneNumber': phoneNumber,
+        'deviceId': deviceId,
+      },
+    );
+  }
+
   Future<void> signOut() async {
     try {
       final token = await _session.getToken();

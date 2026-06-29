@@ -206,6 +206,7 @@ $publicRoutes = [
     'GET:/api/health',
     'POST:/api/auth/register',
     'POST:/api/auth/login',
+    'POST:/api/auth/rebind-device',
     'POST:/api/auth/refresh',
     'GET:/api/pricing',
 ];

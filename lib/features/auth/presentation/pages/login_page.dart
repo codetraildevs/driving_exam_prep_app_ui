@@ -17,6 +17,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   late TextEditingController _phoneController;
+  bool _isRecoveryDialogOpen = false;
 
   final String supportNumber1 = "+250788659575";
   final String supportDisplay1 = "+250 788 659 575";
@@ -75,6 +76,75 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  ({String? code, String message}) _parseAuthError(String raw) {
+    final idx = raw.indexOf('|');
+    if (idx <= 0) return (code: null, message: raw);
+    return (
+      code: raw.substring(0, idx).trim(),
+      message: raw.substring(idx + 1).trim(),
+    );
+  }
+
+  Future<void> _promptRecovery(String phoneNumber) async {
+    if (_isRecoveryDialogOpen || !mounted) return;
+    _isRecoveryDialogOpen = true;
+    final nameController = TextEditingController();
+    try {
+      final confirmed = await showDialog<bool>(
+        context: context,
+        barrierDismissible: true,
+        builder: (ctx) {
+          return AlertDialog(
+            title: const Text('Recover account on this device'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Your account is linked to another device. Enter your full name to move this account to this phone.',
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: nameController,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: const InputDecoration(
+                    labelText: 'Full name',
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                child: const Text('Recover'),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmed == true && mounted) {
+        final fullName = nameController.text.trim();
+        if (fullName.length < 2) {
+          _showError('Please enter your full name to recover this account.');
+          return;
+        }
+        context.read<AuthBloc>().add(
+          RebindDeviceEvent(
+            fullName: fullName,
+            phoneNumber: phoneNumber,
+          ),
+        );
+      }
+    } finally {
+      nameController.dispose();
+      _isRecoveryDialogOpen = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -94,12 +164,19 @@ class _LoginPageState extends State<LoginPage> {
             context.go(isAdmin ? '/admin' : '/home');
           } else if (state is AuthError) {
             final l10nLocal = AppLocalizations.of(context);
-            final msg = state.message == 'NETWORK_ERROR'
+            final parsed = _parseAuthError(state.message);
+            final msg = parsed.message == 'NETWORK_ERROR'
                 ? l10nLocal.errorNetwork
-                : state.message == 'GENERIC_ERROR'
+                : parsed.message == 'GENERIC_ERROR'
                     ? l10nLocal.commonError
-                    : state.message;
+                    : parsed.message;
             _showError(msg);
+            if (parsed.code == 'DEVICE_MISMATCH') {
+              final phone = _phoneController.text.replaceAll(RegExp(r'[\s\-]'), '');
+              if (phone.isNotEmpty) {
+                _promptRecovery(phone);
+              }
+            }
           }
         },
         child: Column(
