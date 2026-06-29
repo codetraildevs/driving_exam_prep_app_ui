@@ -155,9 +155,9 @@ void main() {
     });
 
     // ──────────────────────────────────────────────────────────────────────
-    // 3. Shows validation error when name is invalid (contains digits)
+    // 3. Name field blocks digits via input formatter
     // ──────────────────────────────────────────────────────────────────────
-    testWidgets('shows error when name contains invalid characters',
+    testWidgets('name field strips digits from input',
         (tester) async {
       final bloc = AuthBloc();
       addTearDown(() => bloc.close());
@@ -172,23 +172,14 @@ void main() {
       );
       await _pumpFrames(tester);
 
-      // Enter an invalid name with digits
       final nameFields = find.byType(TextField);
       expect(nameFields, findsNWidgets(2));
 
       await tester.enterText(nameFields.at(0), 'John123');
-      await tester.enterText(nameFields.at(1), '0788123456');
       await _pumpFrames(tester);
 
-      // Tap Sign Up
-      await tester.tap(find.text('Sign Up'));
-      await _pumpFrames(tester);
-
-      // Snackbar with invalid name error
-      expect(
-        find.text('Name must contain only letters and spaces'),
-        findsOneWidget,
-      );
+      expect(find.text('John'), findsOneWidget);
+      expect(find.text('John123'), findsNothing);
     });
 
     // ──────────────────────────────────────────────────────────────────────

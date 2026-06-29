@@ -485,10 +485,7 @@ void main() {
         );
         expect(
           find.text(
-            'Préparez-vous intelligemment. '
-            'Entraînez-vous avec de vraies questions d\'examen. '
-            'Suivez vos progrès et réussissez votre '
-            'permis de conduire en toute confiance.',
+            'Entraînez-vous avec de vraies questions et réussissez votre permis.',
           ),
           findsOneWidget,
           reason: 'landingHeroSubtitle should be in French',
