@@ -1,5 +1,8 @@
 <?php
 
+// Load PDO compatibility shim (uses mysqli when PDO extension is missing)
+require_once __DIR__ . '/PDOCompat.php';
+
 class Database
 {
     private static $connection = null;
@@ -8,6 +11,15 @@ class Database
     {
         if (self::$connection !== null) {
             return self::$connection;
+        }
+
+        // Check that either PDO or mysqli extension is actually loaded
+        // (class_exists('PDO') is unreliable here because PDOCompat.php defines a fallback PDO class)
+        if (!extension_loaded('pdo') && !extension_loaded('mysqli')) {
+            $msg = 'Server configuration error: PHP extension "pdo_mysql" or "mysqli" is not installed/enabled. ' .
+                   'Please enable it in your hosting control panel (e.g. cPanel -> Select PHP Version -> enable pdo_mysql and mysqli).';
+            Logger::error('No database driver available');
+            ErrorHandler::serverError($msg);
         }
 
         $host = Env::get('DB_HOST', '127.0.0.1');
@@ -24,9 +36,10 @@ class Database
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => false,
             ]);
-        } catch (PDOException $e) {
-            Logger::error('Database connection failed', ['error' => $e->getMessage()]);
-            ErrorHandler::serverError('Database connection failed');
+        } catch (\Throwable $e) {
+            $errMsg = $e->getMessage();
+            Logger::error('Database connection failed', ['error' => $errMsg]);
+            ErrorHandler::serverError("Database connection failed: $errMsg");
         }
 
         return self::$connection;
@@ -34,8 +47,56 @@ class Database
 
     public static function getConnection()
     {
-        return self::connect();
+        $conn = self::connect();
+        self::_ensureUserConstraints($conn);
+        return $conn;
     }
+
+    /**
+     * Ensure unique constraints exist on users table.
+     * Idempotent: only adds if they don't already exist.
+     */
+    private static function _ensureUserConstraints($conn): void
+    {
+        try {
+            // Check if UNIQUE constraint on phoneNumber already exists
+            $stmt = $conn->prepare("SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME = 'users' AND COLUMN_NAME = 'phoneNumber' AND CONSTRAINT_NAME != 'PRIMARY'");
+            $stmt->execute();
+            $phoneExists = $stmt->rowCount() > 0;
+
+            // Check if UNIQUE constraint on deviceId already exists
+            $stmt = $conn->prepare("SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME = 'users' AND COLUMN_NAME = 'deviceId' AND CONSTRAINT_NAME != 'PRIMARY'");
+            $stmt->execute();
+            $deviceExists = $stmt->rowCount() > 0;
+
+            // Add phoneNumber constraint if missing
+            if (!$phoneExists) {
+                try {
+                    $conn->exec("ALTER TABLE users ADD UNIQUE KEY phoneNumber (phoneNumber)");
+                    Logger::info('Added UNIQUE constraint on users.phoneNumber');
+                } catch (\Throwable $e) {
+                    if (strpos($e->getMessage(), 'already exists') === false) {
+                        Logger::warning('Failed to add phoneNumber constraint', ['error' => $e->getMessage()]);
+                    }
+                }
+            }
+
+            // Add deviceId constraint if missing
+            if (!$deviceExists) {
+                try {
+                    $conn->exec("ALTER TABLE users ADD UNIQUE KEY deviceId (deviceId)");
+                    Logger::info('Added UNIQUE constraint on users.deviceId');
+                } catch (\Throwable $e) {
+                    if (strpos($e->getMessage(), 'already exists') === false) {
+                        Logger::warning('Failed to add deviceId constraint', ['error' => $e->getMessage()]);
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            Logger::warning('Could not verify user constraints', ['error' => $e->getMessage()]);
+        }
+    }
+
 
     /**
      * Execute a prepared statement and return the statement handle.
@@ -52,7 +113,7 @@ class Database
             $stmt = $conn->prepare($sql);
             $stmt->execute($params);
             return $stmt;
-        } catch (PDOException $e) {
+        } catch (\Throwable $e) {
             Logger::error('Query failed', ['sql' => $sql, 'error' => $e->getMessage()]);
             return null;
         }
@@ -75,7 +136,7 @@ class Database
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $stmt->closeCursor();
             return $row !== false ? $row : null;
-        } catch (PDOException $e) {
+        } catch (\Throwable $e) {
             Logger::error('Query failed', ['sql' => $sql, 'error' => $e->getMessage()]);
             return null;
         }
@@ -98,7 +159,7 @@ class Database
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $stmt->closeCursor();
             return $rows;
-        } catch (PDOException $e) {
+        } catch (\Throwable $e) {
             Logger::error('Query failed', ['sql' => $sql, 'error' => $e->getMessage()]);
             return [];
         }
@@ -121,7 +182,7 @@ class Database
             $affected = $stmt->rowCount();
             $stmt->closeCursor();
             return $affected;
-        } catch (PDOException $e) {
+        } catch (\Throwable $e) {
             Logger::error('Query failed', ['sql' => $sql, 'error' => $e->getMessage()]);
             return false;
         }
@@ -156,7 +217,7 @@ class Database
 
             // UUID/string PK — return affected rows so callers can check success
             return $affected > 0 ? $affected : null;
-        } catch (PDOException $e) {
+        } catch (\Throwable $e) {
             Logger::error('Query failed', ['sql' => $sql, 'error' => $e->getMessage()]);
             return null;
         }

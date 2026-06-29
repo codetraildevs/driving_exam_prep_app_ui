@@ -1,0 +1,37 @@
+# Disable directory listing
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # ---- BLOCK SENSITIVE FILES ----
+    # (Using RewriteRule instead of FilesMatch+Require for broader Apache compatibility)
+    RewriteRule ^\.env - [F,L]
+    RewriteRule ^\.env\. - [F,L]
+    RewriteRule ^composer\.(json|lock) - [F,L]
+    RewriteRule ^\.gitignore - [F,L]
+    RewriteRule ^\.htaccess - [F,L]
+    RewriteRule ^\.htpasswd - [F,L]
+
+    # Block sensitive file extensions
+    RewriteRule \.(log|sql|md|tmp|bak|swp|old)$ - [F,L]
+
+    # ---- BLOCK INTERNAL DIRECTORIES ----
+    RewriteRule ^storage/ - [F,L]
+    RewriteRule ^logs/ - [F,L]
+    RewriteRule ^src/ - [F,L]
+    RewriteRule ^vendor/ - [F,L]
+
+    # ---- API ROUTING ----
+    # Route all /api/* requests to the PHP entry point
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^api/(.*)$ public/index.php [QSA,L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

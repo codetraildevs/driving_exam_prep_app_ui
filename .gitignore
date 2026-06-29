@@ -25,3 +25,22 @@ android/key.properties
 # Windows reserved device name
 nul
 
+# Local-only docs and data (README.md is tracked)
+!README.md
+*.md
+*.zip
+*.sql
+*.csv
+BUILD_SUMMARY.txt
+FILE_MANIFEST.txt
+FEATURES_CHECKLIST.md
+IMPLEMENTATION_NOTES.md
+PLAY_STORE_LISTING.md
+PROJECT_SUMMARY.md
+QUICKSTART.md
+TECH_STACK_ANALYSIS_AND_RECOMMENDATIONS.md
+privacy-policy.md
+terms-and-conditions.md
+RELEASE_NOTES_*.md
+.flutter-plugins-dependencies
+

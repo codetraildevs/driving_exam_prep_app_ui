@@ -23,31 +23,75 @@ if (!Env::get('APP_ENV')) {
 }
 
 // ---------------------------------------------------------------------------
-// 2. Load core classes & helpers
+// 2. Set error & exception handlers FIRST so loading errors are caught
 // ---------------------------------------------------------------------------
 require_once __DIR__ . '/Logger.php';
 require_once __DIR__ . '/ErrorHandler.php';
+
+set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+    static $inError = false;
+    if ($inError) return false;
+    $inError = true;
+
+    Logger::error("PHP Error: $errstr", ['file' => $errfile, 'line' => $errline]);
+
+    if (class_exists('\\Sentry\\SentrySdk') && \Sentry\SentrySdk::getCurrentHub()->getClient() !== null) {
+        \Sentry\captureException(new \ErrorException($errstr, 0, $errno, $errfile, $errline));
+    }
+
+    $inError = false;
+    ErrorHandler::serverError($errstr);
+});
+
+set_exception_handler(function ($exception) {
+    static $inException = false;
+    if ($inException) {
+        http_response_code(500);
+        echo '{"success":false,"message":"Fatal error during exception handling"}';
+        exit();
+    }
+    $inException = true;
+
+    $exceptionMsg = $exception->getMessage();
+    $exceptionType = get_class($exception);
+
+    Logger::error('Uncaught Exception: ' . $exceptionMsg, [
+        'type'  => $exceptionType,
+        'file'  => $exception->getFile(),
+        'line'  => $exception->getLine(),
+        'trace' => $exception->getTraceAsString(),
+    ]);
+
+    if (class_exists('\\Sentry\\SentrySdk') && \Sentry\SentrySdk::getCurrentHub()->getClient() !== null) {
+        \Sentry\captureException($exception);
+    }
+
+    ErrorHandler::serverError($exceptionType . ': ' . $exceptionMsg);
+});
+
+// ---------------------------------------------------------------------------
+// 3. Load remaining core classes & helpers
+// ---------------------------------------------------------------------------
 require_once __DIR__ . '/SecurityUtils.php';
 require_once __DIR__ . '/Database.php';
 require_once __DIR__ . '/RateLimiter.php';
 require_once __DIR__ . '/helpers.php';
 
 // ---------------------------------------------------------------------------
-// 3. Sentry error monitoring (P0b)
+// 4. Sentry error monitoring (P0b)
 // ---------------------------------------------------------------------------
 $sentryDsn = Env::get('SENTRY_DSN', '');
 if (!empty($sentryDsn) && class_exists('\\Sentry\\SentrySdk')) {
     \Sentry\init([
         'dsn'         => $sentryDsn,
         'environment' => Env::get('APP_ENV', 'production'),
-        // Capture up to 100% of errors in production
         'sample_rate' => 1.0,
     ]);
     Logger::info('Sentry error monitoring initialized');
 }
 
 // ---------------------------------------------------------------------------
-// 4. JWT Secret validation (P0c)
+// 5. JWT Secret validation (P0c)
 // ---------------------------------------------------------------------------
 $jwtSecret = Env::get('JWT_SECRET');
 if (empty($jwtSecret) || $jwtSecret === 'your-secret-key-change-in-production') {
@@ -61,10 +105,6 @@ if (empty($jwtSecret) || $jwtSecret === 'your-secret-key-change-in-production') 
         exit();
     }
 }
-
-// ---------------------------------------------------------------------------
-// 5. Set error & exception handlers
-// ---------------------------------------------------------------------------
 set_error_handler(function ($errno, $errstr, $errfile, $errline) {
     static $inError = false;
     if ($inError) return false;
@@ -78,11 +118,8 @@ set_error_handler(function ($errno, $errstr, $errfile, $errline) {
     }
 
     $inError = false;
-    if (Env::get('APP_ENV') !== 'production') {
-        ErrorHandler::serverError($errstr);
-    } else {
-        ErrorHandler::serverError('An error occurred');
-    }
+    // Show the actual PHP error message (not hidden in production)
+    ErrorHandler::serverError($errstr);
 });
 
 set_exception_handler(function ($exception) {
@@ -94,7 +131,11 @@ set_exception_handler(function ($exception) {
     }
     $inException = true;
 
-    Logger::error('Uncaught Exception: ' . $exception->getMessage(), [
+    $exceptionMsg = $exception->getMessage();
+    $exceptionType = get_class($exception);
+
+    Logger::error('Uncaught Exception: ' . $exceptionMsg, [
+        'type'  => $exceptionType,
         'file'  => $exception->getFile(),
         'line'  => $exception->getLine(),
         'trace' => $exception->getTraceAsString(),
@@ -105,11 +146,8 @@ set_exception_handler(function ($exception) {
         \Sentry\captureException($exception);
     }
 
-    if (Env::get('APP_ENV') !== 'production') {
-        ErrorHandler::serverError($exception->getMessage(), $exception->getTraceAsString());
-    } else {
-        ErrorHandler::serverError('Internal Server Error');
-    }
+    // Show the actual exception message (not hidden in production)
+    ErrorHandler::serverError($exceptionType . ': ' . $exceptionMsg);
 });
 
 // ---------------------------------------------------------------------------

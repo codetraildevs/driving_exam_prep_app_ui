@@ -66,12 +66,13 @@ function adminListUsers($conn, $params): void
     $where = empty($conditions) ? '' : 'WHERE ' . implode(' AND ', $conditions);
 
     $joinSql = 'LEFT JOIN (
-        SELECT ac1.* FROM access_codes ac1
-        INNER JOIN (
-            SELECT userId, MAX(createdAt) as maxCreated
-            FROM access_codes
-            GROUP BY userId
-        ) ac2 ON ac1.userId = ac2.userId AND ac1.createdAt = ac2.maxCreated
+        SELECT ac.* FROM access_codes ac
+        WHERE ac.id = (
+            SELECT id FROM access_codes ac2
+            WHERE ac2.userId = ac.userId
+            ORDER BY ac2.createdAt DESC, ac2.id DESC
+            LIMIT 1
+        )
     ) ac ON u.id = ac.userId';
 
     $countSql = "SELECT COUNT(*) as total FROM users u $joinSql $where";

@@ -1,9 +1,14 @@
-Options +FollowSymLinks
+Options +FollowSymLinks -Indexes
 RewriteEngine On
 
 # Pass Authorization header through to PHP (required for CGI/FastCGI)
 RewriteCond %{HTTP:Authorization} .
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Block hidden files (.env, .git, etc.) — defense in depth
+<FilesMatch "^\\.">
+    Require all denied
+</FilesMatch>
 
 # Handle API routes
 RewriteCond %{REQUEST_FILENAME} !-f
