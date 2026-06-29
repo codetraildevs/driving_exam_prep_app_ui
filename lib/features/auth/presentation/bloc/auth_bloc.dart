@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../shared/network/api_client.dart';
 import '../../data/repositories/auth_repository.dart';
@@ -9,6 +10,27 @@ export 'auth_state.dart';
 
 /// Returns a user-friendly error message; hides raw exceptions.
 String _friendlyError(Object e) {
+  if (e is ApiException) {
+    return e.message;
+  }
+  if (e is DioException) {
+    final data = e.response?.data;
+    if (data is Map) {
+      final msg = data['message'] ?? data['error'];
+      if (msg != null && msg.toString().trim().isNotEmpty) {
+        return msg.toString().trim();
+      }
+    }
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.receiveTimeout:
+      case DioExceptionType.sendTimeout:
+      case DioExceptionType.connectionError:
+        return 'NETWORK_ERROR';
+      default:
+        break;
+    }
+  }
   final msg = e.toString().toLowerCase();
   if (msg.contains('socketexception') ||
       msg.contains('failed host lookup') ||
@@ -18,9 +40,6 @@ String _friendlyError(Object e) {
       msg.contains('handshake') ||
       msg.contains('clientexception')) {
     return 'NETWORK_ERROR';
-  }
-  if (e is ApiException) {
-    return e.message;
   }
   return 'GENERIC_ERROR';
 }
@@ -41,31 +60,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     try {
-      if (await _authRepository.isAuthenticated()) {
-        final userId = await _authRepository.getCurrentUserId();
-        if (userId != null) {
-          final user = await _authRepository.fetchUserProfile(userId);
-          if (user != null) {
-            emit(AuthAuthenticated(user));
-          } else {
-            // fetchUserProfile returned null but we have a token — try the
-            // locally cached user so offline users still reach the dashboard.
-            final cached = await _authRepository.getCurrentUser();
-            if (cached != null) {
-              emit(AuthAuthenticated(cached));
-            } else {
-              emit(const AuthUnauthenticated());
-            }
-          }
-        } else {
-          emit(const AuthUnauthenticated());
+      final hasSession = await _authRepository.isAuthenticated();
+      if (!hasSession) {
+        emit(const AuthUnauthenticated());
+        return;
+      }
+
+      await _authRepository.tryRefreshSession();
+
+      final userId = await _authRepository.getCurrentUserId();
+      if (userId != null) {
+        final user = await _authRepository.fetchUserProfile(userId);
+        if (user != null) {
+          emit(AuthAuthenticated(user));
+          return;
         }
+      }
+
+      final cached = await _authRepository.getCurrentUser();
+      if (cached != null) {
+        emit(AuthAuthenticated(cached));
       } else {
         emit(const AuthUnauthenticated());
       }
     } catch (e) {
-      // On network errors, fall back to the cached session so returning
-      // users can reach the dashboard without an internet connection.
       final cached = await _authRepository.getCurrentUser();
       if (cached != null) {
         emit(AuthAuthenticated(cached));

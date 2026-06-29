@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../../shared/network/api_client.dart';
+import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/network/api_endpoints.dart';
 import '../../../../shared/device/device_id.dart';
 import '../../../../shared/session/auth_session.dart';
@@ -217,8 +218,23 @@ class AuthRepository {
 
   Future<bool> isAuthenticated() async {
     final token = await _session.getToken();
-    return token != null && token.isNotEmpty;
+    if (token != null && token.isNotEmpty) return true;
+
+    final refreshToken = await _session.getRefreshToken();
+    if (refreshToken != null && refreshToken.isNotEmpty) {
+      final refreshed = await ApiHelper().tryRefreshToken();
+      if (refreshed) {
+        final newToken = await _session.getToken();
+        if (newToken != null && newToken.isNotEmpty) return true;
+      }
+      // Refresh failed — keep user logged in with cached session until logout.
+      return await _session.hasPersistedSession();
+    }
+
+    return await _session.hasPersistedSession();
   }
+
+  Future<bool> tryRefreshSession() => ApiHelper().tryRefreshToken();
 
   Future<String?> getCurrentUserId() async => (await _session.getUser())?.id;
 

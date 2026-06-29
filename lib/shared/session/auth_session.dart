@@ -61,6 +61,22 @@ class AuthSession {
     return prefs.getString(_refreshTokenKey);
   }
 
+  /// True when the user has a stored session (refresh token or cached user).
+  Future<bool> hasPersistedSession() async {
+    final refreshToken = await getRefreshToken();
+    if (refreshToken != null && refreshToken.isNotEmpty) return true;
+    final user = await getUser();
+    return user != null;
+  }
+
+  /// Raw access token from storage, even if JWT is expired.
+  Future<String?> getStoredAccessToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(_tokenKey);
+    if (token == null || token.isEmpty) return null;
+    return token;
+  }
+
   Future<void> setRefreshToken(String? token) async {
     final prefs = await SharedPreferences.getInstance();
     if (token == null || token.isEmpty) {

@@ -32,13 +32,17 @@ class ApiClient {
     Map<String, String>? headers,
   }) async {
     _debugRequest('GET', path, queryParameters: queryParameters);
-    final res = await _dio.get(
-      path,
-      queryParameters: queryParameters,
-      options: Options(headers: headers),
-    );
-    _debugResponse('GET', path, res);
-    return _decode(res);
+    try {
+      final res = await _dio.get(
+        path,
+        queryParameters: queryParameters,
+        options: Options(headers: headers),
+      );
+      _debugResponse('GET', path, res);
+      return _decode(res);
+    } on DioException catch (e) {
+      throw _toApiException(e);
+    }
   }
 
   Future<dynamic> post(
@@ -47,18 +51,22 @@ class ApiClient {
     Map<String, String>? headers,
   }) async {
     _debugRequest('POST', path, body: body);
-    final res = await _dio.post(
-      path,
-      data: body == null ? null : jsonEncode(body),
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-          ...?headers,
-        },
-      ),
-    );
-    _debugResponse('POST', path, res);
-    return _decode(res);
+    try {
+      final res = await _dio.post(
+        path,
+        data: body == null ? null : jsonEncode(body),
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            ...?headers,
+          },
+        ),
+      );
+      _debugResponse('POST', path, res);
+      return _decode(res);
+    } on DioException catch (e) {
+      throw _toApiException(e);
+    }
   }
 
   Future<dynamic> put(
@@ -67,18 +75,22 @@ class ApiClient {
     Map<String, String>? headers,
   }) async {
     _debugRequest('PUT', path, body: body);
-    final res = await _dio.put(
-      path,
-      data: body == null ? null : jsonEncode(body),
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-          ...?headers,
-        },
-      ),
-    );
-    _debugResponse('PUT', path, res);
-    return _decode(res);
+    try {
+      final res = await _dio.put(
+        path,
+        data: body == null ? null : jsonEncode(body),
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            ...?headers,
+          },
+        ),
+      );
+      _debugResponse('PUT', path, res);
+      return _decode(res);
+    } on DioException catch (e) {
+      throw _toApiException(e);
+    }
   }
 
   Future<dynamic> delete(
@@ -87,18 +99,49 @@ class ApiClient {
     Map<String, String>? headers,
   }) async {
     _debugRequest('DELETE', path, body: body);
-    final res = await _dio.delete(
-      path,
-      data: body == null ? null : jsonEncode(body),
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-          ...?headers,
-        },
-      ),
-    );
-    _debugResponse('DELETE', path, res);
-    return _decode(res);
+    try {
+      final res = await _dio.delete(
+        path,
+        data: body == null ? null : jsonEncode(body),
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            ...?headers,
+          },
+        ),
+      );
+      _debugResponse('DELETE', path, res);
+      return _decode(res);
+    } on DioException catch (e) {
+      throw _toApiException(e);
+    }
+  }
+
+  ApiException _toApiException(DioException e) {
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.receiveTimeout:
+      case DioExceptionType.sendTimeout:
+        return ApiException('NETWORK_ERROR');
+      case DioExceptionType.connectionError:
+        return ApiException('NETWORK_ERROR');
+      case DioExceptionType.badResponse:
+        final statusCode = e.response?.statusCode;
+        final message = _extractMessage(e.response?.data) ??
+            'Request failed (HTTP $statusCode)';
+        if (kDebugMode) {
+          debugPrint(
+            '[API][ERROR] status=$statusCode message=$message '
+            'payload=${_compact(e.response?.data)}',
+          );
+        }
+        return ApiException(message, statusCode: statusCode);
+      default:
+        if (kDebugMode) {
+          debugPrint('[API][ERROR] ${e.type}: ${e.message}');
+        }
+        return ApiException('An unexpected error occurred');
+    }
   }
 
   dynamic _decode(Response res) {
@@ -133,6 +176,12 @@ class ApiClient {
     if (payload is Map<String, dynamic>) {
       final msg = payload['message'] ?? payload['error'];
       if (msg is String && msg.trim().isNotEmpty) return msg.trim();
+    }
+    if (payload is Map) {
+      final msg = payload['message'] ?? payload['error'];
+      if (msg != null && msg.toString().trim().isNotEmpty) {
+        return msg.toString().trim();
+      }
     }
     if (payload is String && payload.trim().isNotEmpty) return payload.trim();
     return null;

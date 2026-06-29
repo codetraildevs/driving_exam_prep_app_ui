@@ -142,11 +142,8 @@ class ApiHelper {
     final refreshToken = await session.getRefreshToken();
     if (refreshToken == null || refreshToken.isEmpty) return; // Can't refresh
 
-    // Try to refresh
-    final success = await _doRefresh(refreshToken);
-    if (!success) {
-      await session.clear();
-    }
+    // Try to refresh — keep local session if refresh fails (offline / transient).
+    await _doRefresh(refreshToken);
   }
 
   /// Mutex-guarded token refresh.
@@ -174,7 +171,8 @@ class ApiHelper {
         ),
       );
       if (response.statusCode == 200 && response.data is Map) {
-        final data = response.data as Map;
+        final outer = response.data as Map;
+        final data = outer['data'] is Map ? outer['data'] as Map : outer;
         final newToken = data['token']?.toString();
         final newRefreshToken = data['refresh_token']?.toString();
         if (newToken != null && newToken.isNotEmpty) {
@@ -223,13 +221,11 @@ class ApiHelper {
     final session = AuthSession();
     final refreshToken = await session.getRefreshToken();
     if (refreshToken == null || refreshToken.isEmpty) {
-      await session.clear();
-      return null; // No refresh token — let normal error handling take over
+      return null;
     }
 
     final refreshed = await _doRefresh(refreshToken);
     if (!refreshed) {
-      await session.clear();
       return _networkError(method, path,
           'Session expired. Please log in again.', e.toString());
     }
@@ -277,7 +273,6 @@ class ApiHelper {
       }
       return _processResponse(method, path, retryResponse);
     } catch (retryError) {
-      await session.clear();
       return _networkError(method, path,
           'Session expired. Please log in again.', retryError.toString());
     }

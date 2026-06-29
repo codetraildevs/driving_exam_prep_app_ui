@@ -385,7 +385,7 @@ abstract class AppLocalizations {
   /// Landing page hero subtitle
   ///
   /// In en, this message translates to:
-  /// **'Prepare smarter. Practice real exam questions. Track your progress and pass your driving license exam with confidence.'**
+  /// **'Practice real exam questions and pass your driving test.'**
   String get landingHeroSubtitle;
 
   /// Landing page CTA button

@@ -81,8 +81,8 @@ class _RegisterPageState extends State<RegisterPage> {
     final langCode = container.read(localeProvider).effectiveLocale.languageCode;
     context.read<AuthBloc>().add(
       SignUpEvent(
-        fullName: _nameController.text.trim(),
-        phoneNumber: _phoneController.text.trim(),
+        fullName: name,
+        phoneNumber: phone,
         preferredLanguage: langCode,
       ),
     );

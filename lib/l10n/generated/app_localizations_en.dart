@@ -170,7 +170,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get landingHeroSubtitle =>
-      'Prepare smarter. Practice real exam questions. Track your progress and pass your driving license exam with confidence.';
+      'Practice real exam questions and pass your driving test.';
 
   @override
   String get landingGetStarted => 'Get Started';

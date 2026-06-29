@@ -175,7 +175,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get landingHeroSubtitle =>
-      'Witegure neza. Witozere ku bibazo byanyabyo by\'imyitozo. Kurikirana iterambere ryawe kandi utsinde ikizamini cy\'uruhushya rwo gutwara byizewe.';
+      'Witozere ku bibazo byanyabyo kandi utsinde ikizamini cyawe.';
 
   @override
   String get landingGetStarted => 'Tangira';
