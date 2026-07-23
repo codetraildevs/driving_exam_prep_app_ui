@@ -170,7 +170,7 @@ $origin = $_SERVER['HTTP_ORIGIN'] ?? null;
 // before the production ALLOWED_ORIGINS whitelist so these origins are
 // never accidentally blocked by a strictly-set env var.
 $allowedWebAppOrigins = $origin !== null && preg_match(
-    '/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$|^https:\/\/learn-traffic-rules-cbbd1\.(web|firebaseapp)\.com$/i',
+    '/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$|^https:\/\/learn-traffic-rules-cbbd1\.(web\.app|firebaseapp\.com)$/i',
     $origin
 );
 
