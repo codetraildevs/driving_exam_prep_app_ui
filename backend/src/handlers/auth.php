@@ -35,7 +35,10 @@ function _createRefreshToken($conn, string $userId): string
 {
     _ensureRefreshTokensTable($conn);
     $token = SecurityUtils::generateRandomToken(64);
-    $expiresAt = date('Y-m-d H:i:s', time() + 30 * 24 * 60 * 60); // 30 days
+    // Effectively permanent — token stays valid until user explicitly logs out
+    // (which sets revoked=1) or admin revokes it. 10-year horizon avoids any
+    // practical date overflow while eliminating the need for re-authentication.
+    $expiresAt = date('Y-m-d H:i:s', time() + 3650 * 24 * 60 * 60); // ~10 years
     Database::insert($conn,
         'INSERT INTO refresh_tokens (userId, token, expiresAt) VALUES (?, ?, ?)',
         'sss',
@@ -317,19 +320,14 @@ function authRebindDevice($conn, $params): void
 
 function authLogout($conn, $params): void
 {
-    // Safely parse body — handle empty/missing body gracefully
+    // Public endpoint — no JWT required.
+    // The app always sends the refresh_token in the request body,
+    // so revocation works even if the access token is expired.
     $raw = file_get_contents('php://input');
     $input = $raw ? (json_decode($raw, true) ?: []) : [];
 
-    // Try to revoke the specific refresh token (if provided)
     if (!empty($input['refresh_token'])) {
         _revokeRefreshToken($conn, $input['refresh_token']);
-    }
-
-    // Also revoke all tokens for the current user (if we have the userId from JWT)
-    global $tokenData;
-    if (!empty($tokenData['userId'])) {
-        _revokeUserRefreshTokens($conn, $tokenData['userId']);
     }
 
     Logger::info('User logged out — refresh tokens revoked');
@@ -365,11 +363,11 @@ function authRefresh($conn, $params): void
         ErrorHandler::unauthorized('Refresh token has been revoked. Please log in again.');
     }
 
-    if (strtotime($row['expiresAt']) < time()) {
-        Logger::info('Expired refresh token used', ['userId' => $row['userId']]);
-        _revokeRefreshToken($conn, $authToken);
-        ErrorHandler::unauthorized('Refresh token has expired. Please log in again.');
-    }
+    // Time-based expiry removed — refresh token only becomes invalid via
+    // explicit logout (revoked=1) or admin action. This ensures users who
+    // study offline for extended periods never lose their session.
+    // The expiresAt column still holds a far-future date (~10 years) for
+    // database hygiene but is never checked at runtime.
 
     $userId = $row['userId'];
 

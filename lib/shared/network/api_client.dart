@@ -4,6 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 import 'api_config.dart';
+import 'api_endpoints.dart';
+import 'token_refresh_mutex.dart';
+import '../session/auth_session.dart';
 
 class ApiException implements Exception {
   final int? statusCode;
@@ -27,11 +30,57 @@ class ApiClient {
     ));
   }
 
+  /// If the stored access token is expired and a refresh token exists,
+  /// silently attempts a refresh before the next API call.
+  /// Uses the app-wide [TokenRefreshMutex] to coordinate with [ApiHelper].
+  Future<void> _ensureFreshToken() async {
+    final session = AuthSession();
+    final expired = await session.isAccessTokenExpired();
+    if (!expired) return;
+
+    final refreshToken = await session.getRefreshToken();
+    if (refreshToken == null || refreshToken.isEmpty) return;
+
+    await TokenRefreshMutex.runRefresh(() async {
+      try {
+        final res = await _dio.post(
+          ApiEndpoints.authRefresh,
+          options: Options(
+            headers: {'Authorization': 'Bearer $refreshToken'},
+          ),
+        );
+        if (res.statusCode == 200 && res.data is Map) {
+          final outer = res.data as Map;
+          final data = outer['data'] is Map ? outer['data'] as Map : outer;
+          final newToken = data['token']?.toString();
+          final newRefreshToken = data['refresh_token']?.toString();
+          if (newToken != null && newToken.isNotEmpty) {
+            await session.setToken(newToken);
+            if (newRefreshToken != null && newRefreshToken.isNotEmpty) {
+              await session.setRefreshToken(newRefreshToken);
+            }
+            if (kDebugMode) {
+              debugPrint('[API][REFRESH] Token refreshed successfully');
+            }
+            return true;
+          }
+        }
+        return false;
+      } catch (e) {
+        if (kDebugMode) {
+          debugPrint('[API][REFRESH] Failed: $e');
+        }
+        return false;
+      }
+    });
+  }
+
   Future<dynamic> get(
     String path, {
     Map<String, dynamic>? queryParameters,
     Map<String, String>? headers,
   }) async {
+    await _ensureFreshToken();
     _debugRequest('GET', path, queryParameters: queryParameters);
     try {
       final res = await _dio.get(
@@ -51,6 +100,7 @@ class ApiClient {
     Object? body,
     Map<String, String>? headers,
   }) async {
+    await _ensureFreshToken();
     _debugRequest('POST', path, body: body);
     try {
       final res = await _dio.post(
@@ -75,6 +125,7 @@ class ApiClient {
     Object? body,
     Map<String, String>? headers,
   }) async {
+    await _ensureFreshToken();
     _debugRequest('PUT', path, body: body);
     try {
       final res = await _dio.put(
@@ -99,6 +150,7 @@ class ApiClient {
     Object? body,
     Map<String, String>? headers,
   }) async {
+    await _ensureFreshToken();
     _debugRequest('DELETE', path, body: body);
     try {
       final res = await _dio.delete(

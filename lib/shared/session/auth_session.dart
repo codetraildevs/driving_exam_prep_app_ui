@@ -9,17 +9,22 @@ class AuthSession {
   static const _refreshTokenKey = 'auth_refresh_token';
   static const _userKey = 'auth_user_json';
 
+  /// Returns the stored access token regardless of expiry.
+  /// Returns null only if no token is stored.
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(_tokenKey);
     if (token == null || token.isEmpty) return null;
-    // Check JWT expiry (payload is the 2nd base64url-encoded segment).
-    if (_isTokenExpired(token)) {
-      // Don't clear the session if we have a refresh token —
-      // the ApiHelper interceptor will attempt to refresh.
-      return null;
-    }
     return token;
+  }
+
+  /// Returns true if the stored JWT `exp` claim is in the past.
+  /// Returns false if no token or malformed (safe default).
+  Future<bool> isAccessTokenExpired() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(_tokenKey);
+    if (token == null || token.isEmpty) return false;
+    return _isTokenExpired(token);
   }
 
   /// Returns true if the JWT `exp` claim is in the past.
@@ -70,12 +75,8 @@ class AuthSession {
   }
 
   /// Raw access token from storage, even if JWT is expired.
-  Future<String?> getStoredAccessToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString(_tokenKey);
-    if (token == null || token.isEmpty) return null;
-    return token;
-  }
+  /// Kept for backward compatibility.
+  Future<String?> getStoredAccessToken() => getToken();
 
   Future<void> setRefreshToken(String? token) async {
     final prefs = await SharedPreferences.getInstance();
@@ -90,8 +91,12 @@ class AuthSession {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_userKey);
     if (raw == null || raw.isEmpty) return null;
-    final decoded = jsonDecode(raw);
-    if (decoded is Map<String, dynamic>) return UserModel.fromJson(decoded);
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is Map<String, dynamic>) return UserModel.fromJson(decoded);
+    } catch (_) {
+      // Corrupted JSON — treat as missing session.
+    }
     return null;
   }
 

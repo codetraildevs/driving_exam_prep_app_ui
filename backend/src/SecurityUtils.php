@@ -21,7 +21,7 @@ class SecurityUtils
     /**
      * Generate JWT Access Token (short-lived).
      */
-    public static function generateToken($data, $expiresIn = 900)
+    public static function generateToken($data, $expiresIn = 604800)
     {
         if (!self::$jwtSecret) {
             self::init();

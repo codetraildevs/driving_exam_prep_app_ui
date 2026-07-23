@@ -448,37 +448,33 @@ class _ResponsiveServicesGrid extends StatelessWidget {
   List<_ServiceItem> _buildServiceList(
       BuildContext context, AppLocalizations l10n) {
     return [
-      _ServiceItem(
-        icon: Icons.traffic_rounded,
+      _ServiceItem.asset(
+        imageAsset: 'assets/images/practices_image.webp',
         title: l10n.homePractices,
         subtitle: l10n.homePracticesSubtitle,
         color: AppColors.primary,
         onTap: () => context.push('/practice'),
       ),
-      _ServiceItem(
-        icon: Icons.group_rounded,
+      _ServiceItem.asset(
+        imageAsset: 'assets/images/whatsapp_logo.webp',
         title: l10n.joinGroup,
         subtitle: l10n.joinGroupSubtitle,
         color: AppColors.accent,
         onTap: () {
-        //i have link for group whatsapp  use url_launcher to open it
-        //https://chat.whatsapp.com/JHfdbKSYVFz1s5jlTKfpcm?mode=gi_t
-        //implement it here
           launchUrl(
             Uri.parse(
                 'https://chat.whatsapp.com/JHfdbKSYVFz1s5jlTKfpcm?mode=gi_t'),
-
           );
         },
       ),
-      _ServiceItem(
+      _ServiceItem.icon(
         icon: Icons.show_chart_rounded,
         title: l10n.homeProgress,
         subtitle: l10n.homeProgressSubtitle,
         color: AppColors.success,
         onTap: () => context.push('/progress'),
       ),
-      _ServiceItem(
+      _ServiceItem.icon(
         icon: Icons.share_rounded,
         title: l10n.homeShareApp,
         subtitle: l10n.homeShareAppSubtitle,
@@ -575,7 +571,7 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Icon — smaller, tighter
+                  // Icon or asset image — smaller, tighter
                   Container(
                     width: 42,
                     height: 42,
@@ -583,7 +579,20 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
                       color: item.color.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(item.icon, color: item.color, size: 22),
+                    clipBehavior: item.imageAsset != null ? Clip.antiAlias : Clip.none,
+                    child: item.imageAsset != null
+                        ? Image.asset(
+                            item.imageAsset!,
+                            width: 42,
+                            height: 42,
+                            fit: BoxFit.contain,
+                            errorBuilder: (_, __, ___) => Icon(
+                              Icons.broken_image,
+                              color: item.color,
+                              size: 22,
+                            ),
+                          )
+                        : Icon(item.icon, color: item.color, size: 22),
                   ),
                   const SizedBox(height: 8),
 
@@ -626,17 +635,26 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _ServiceItem {
-  final IconData icon;
+  final IconData? icon;
+  final String? imageAsset;
   final String title;
   final String subtitle;
   final Color color;
   final VoidCallback onTap;
 
-  _ServiceItem({
+  _ServiceItem.icon({
     required this.icon,
     required this.title,
     required this.subtitle,
     required this.color,
     required this.onTap,
-  });
+  }) : imageAsset = null;
+
+  _ServiceItem.asset({
+    required this.imageAsset,
+    required this.title,
+    required this.subtitle,
+    required this.color,
+    required this.onTap,
+  }) : icon = null;
 }

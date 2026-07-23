@@ -30,6 +30,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // Note: NDK abiFilters would go here, but they only affect plugin-native code,
+        // NOT the Flutter engine .so files. The reliable way to build a single-ABI APK
+        // is via the CLI flag:  flutter build apk --release --target-platform android-arm64
     }
 
     signingConfigs {

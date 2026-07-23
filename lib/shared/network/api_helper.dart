@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 
 import 'api_config.dart';
 import 'api_endpoints.dart';
+import 'token_refresh_mutex.dart';
 import '../session/auth_session.dart';
 
 /// Centralized API helper with debug logging for all HTTP calls
@@ -13,10 +14,6 @@ class ApiHelper {
   static final ApiHelper _instance = ApiHelper._();
   factory ApiHelper() => _instance;
   ApiHelper._();
-
-  /// Mutex to prevent concurrent refresh token calls (token rotation would
-  /// cause the second call to fail since the first already revoked the token).
-  bool _isRefreshing = false;
 
   late final Dio _dio = Dio(BaseOptions(
     baseUrl: ApiConfig.baseUrl,
@@ -136,8 +133,10 @@ class ApiHelper {
   /// If the access token is expired and a refresh token exists, attempts a refresh.
   Future<void> _ensureAccessToken() async {
     final session = AuthSession();
-    final token = await session.getToken();
-    if (token != null) return; // Token is still valid
+    // getToken() now returns the stored token even if expired.
+    // Check expiry explicitly to decide whether a refresh is needed.
+    final expired = await session.isAccessTokenExpired();
+    if (!expired) return; // Token is still valid (or no token stored)
 
     final refreshToken = await session.getRefreshToken();
     if (refreshToken == null || refreshToken.isEmpty) return; // Can't refresh
@@ -146,56 +145,44 @@ class ApiHelper {
     await _doRefresh(refreshToken);
   }
 
-  /// Mutex-guarded token refresh.
-  /// Uses a simple bool flag to prevent concurrent refresh calls.
+  /// Token refresh guarded by the app-wide [TokenRefreshMutex].
   Future<bool> _doRefresh(String refreshToken) async {
-    // If another refresh is already in progress, wait for it to complete
-    if (_isRefreshing) {
-      // Brief backoff — the other call should finish quickly
-      await Future.delayed(const Duration(milliseconds: 200));
-      // Check if the refresh succeeded (token is now valid)
-      final token = await AuthSession().getToken();
-      if (token != null) return true;
-      // Other refresh failed — try ourselves
-    }
-
-    _isRefreshing = true;
-    try {
+    return TokenRefreshMutex.runRefresh(() async {
       if (kDebugMode) {
         debugPrint('🔄 Attempting token refresh...');
       }
-      final response = await _dio.post(
-        ApiEndpoints.authRefresh,
-        options: Options(
-          headers: {'Authorization': 'Bearer $refreshToken'},
-        ),
-      );
-      if (response.statusCode == 200 && response.data is Map) {
-        final outer = response.data as Map;
-        final data = outer['data'] is Map ? outer['data'] as Map : outer;
-        final newToken = data['token']?.toString();
-        final newRefreshToken = data['refresh_token']?.toString();
-        if (newToken != null && newToken.isNotEmpty) {
-          final session = AuthSession();
-          await session.setToken(newToken);
-          if (newRefreshToken != null && newRefreshToken.isNotEmpty) {
-            await session.setRefreshToken(newRefreshToken);
+      try {
+        final response = await _dio.post(
+          ApiEndpoints.authRefresh,
+          options: Options(
+            headers: {'Authorization': 'Bearer $refreshToken'},
+          ),
+        );
+        if (response.statusCode == 200 && response.data is Map) {
+          final outer = response.data as Map;
+          final data = outer['data'] is Map ? outer['data'] as Map : outer;
+          final newToken = data['token']?.toString();
+          final newRefreshToken = data['refresh_token']?.toString();
+          if (newToken != null && newToken.isNotEmpty) {
+            final session = AuthSession();
+            await session.setToken(newToken);
+            if (newRefreshToken != null && newRefreshToken.isNotEmpty) {
+              await session.setRefreshToken(newRefreshToken);
+            }
+            if (kDebugMode) {
+              debugPrint('✅ Token refreshed successfully');
+            }
+            return true;
           }
-          if (kDebugMode) {
-            debugPrint('✅ Token refreshed successfully');
-          }
-          return true;
         }
+        return false;
+      } catch (e) {
+        if (kDebugMode) {
+          debugPrint('❌ Token refresh failed: $e');
+        }
+        return false;
       }
-      return false;
-    } catch (e) {
-      if (kDebugMode) {
-        debugPrint('❌ Token refresh failed: $e');
-      }
-      return false;
-    } finally {
-      _isRefreshing = false;
-    }
+    });
   }
 
   /// When a 401 error occurs, attempt to refresh the token and retry the request.

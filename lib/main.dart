@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,24 +20,7 @@ import 'shared/theme/theme_notifier.dart';
 import 'shared/widgets/data_consent_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Future<void> main() async {
-  await SentryFlutter.init(
-    (options) {
-      options.dsn = const String.fromEnvironment(
-        'SENTRY_DSN',
-        defaultValue: '',
-      );
-      options.environment = const String.fromEnvironment(
-        'APP_ENV',
-        defaultValue: 'production',
-      );
-      options.tracesSampleRate = 0.2;
-      // Suppress Sentry's verbose debug logs (ClassNotFoundException probes, etc.).
-      options.debug = false;
-    },
-    appRunner: () => _runApp(),
-  );
-}
+Future<void> main() => _runApp();
 
 Future<void> _runApp() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -34,6 +34,22 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- Explicitly enable Impeller rendering engine.
+             Impeller uses a modern rendering pipeline (Vulkan/OpenGL ES)
+             that avoids GPU driver bugs found in older PowerVR GPUs.
+             Enabled by default in Flutter 3.22+, this makes it explicit. -->
+        <meta-data
+            android:name="io.flutter.embedding.android.EnableImpeller"
+            android:value="true" />
+
+        <!-- Enable edge-to-edge rendering for Android 15+.
+             This makes the app draw behind system bars (status bar,
+             navigation bar) with proper SafeArea insets handled by Flutter.
+             Resolves Play Console warning about edge-to-edge display. -->
+        <meta-data
+            android:name="io.flutter.embedding.android.EnableEdgeToEdge"
+            android:value="true" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

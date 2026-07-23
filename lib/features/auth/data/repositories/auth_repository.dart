@@ -132,28 +132,20 @@ class AuthRepository {
 
   Future<void> signOut() async {
     try {
-      final token = await _session.getToken();
       final refreshToken = await _session.getRefreshToken();
       // Clear local session FIRST so UI updates immediately.
       await _session.clear();
 
-      // Build body with refresh_token if available
-      final body = <String, dynamic>{};
+      // Fire-and-forget server logout — endpoint is now public (no JWT needed).
+      // The refresh_token alone is sufficient for server-side revocation.
       if (refreshToken != null && refreshToken.isNotEmpty) {
-        body['refresh_token'] = refreshToken;
+        _api.post(
+          ApiEndpoints.authLogout,
+          body: {'refresh_token': refreshToken},
+        ).catchError((_) {});
       }
-
-      // Fire-and-forget server logout; always try to send refresh_token
-      // for server-side revocation, even if the access token is expired.
-      _api.post(
-        ApiEndpoints.authLogout,
-        body: body.isNotEmpty ? body : null,
-        headers: token != null && token.isNotEmpty
-            ? {'Authorization': 'Bearer $token'}
-            : null,
-      ).catchError((_) {});
     } catch (e) {
-      // Ensure session is cleared even if getToken() throws.
+      // Ensure session is cleared even if getRefreshToken() throws.
       await _session.clear();
       rethrow;
     }
