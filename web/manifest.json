@@ -1,13 +1,17 @@
 {
-    "name": "traffic_rules_app",
-    "short_name": "traffic_rules_app",
+    "name": "Rwanda Traffic Rule",
+    "short_name": "Rwanda Traffic",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#F5F5F8",
+    "theme_color": "#00039E",
+    "description": "Learn Rwanda traffic rules and practice theory questions for the driving licence test.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
+    "categories": ["education", "automotive"],
+    "lang": "en",
+    "dir": "ltr",
+    "screenshots": [],
     "icons": [
         {
             "src": "icons/Icon-192.png",

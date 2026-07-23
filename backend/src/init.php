@@ -165,7 +165,16 @@ header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
 $allowedOrigins = explode(',', Env::get('ALLOWED_ORIGINS') ?: '*');
 $origin = $_SERVER['HTTP_ORIGIN'] ?? null;
 
-if (in_array('*', $allowedOrigins) || in_array($origin, $allowedOrigins)) {
+// Always allow localhost / 127.0.0.1 origins for local development
+// (e.g. flutter run -d chrome on port 8000). This check runs before
+// the production ALLOWED_ORIGINS whitelist so dev workflows are never
+// blocked even if the env var is strictly set for production domains.
+$isLocalhost = $origin !== null && preg_match(
+    '/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i',
+    $origin
+);
+
+if ($isLocalhost || in_array('*', $allowedOrigins) || in_array($origin, $allowedOrigins)) {
     header('Access-Control-Allow-Origin: ' . ($origin ?: '*'));
     header('Access-Control-Allow-Credentials: true');
 }
