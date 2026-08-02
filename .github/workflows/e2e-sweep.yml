@@ -1,0 +1,55 @@
+# E2E Stale Account Sweeper
+#
+# Defense in depth: the E2E smoke test deletes its own throwaway account at
+# the end of every run, but force-killed runs (CI timeout, machine loss) can
+# leave an "E2E Test User" account behind. This job finds accounts matching
+# the E2E pattern that are older than 24h and deletes them.
+#
+# Runs daily (03:00 UTC) + on manual dispatch.
+#
+# ⚠️  NOTE: GitHub only runs scheduled workflows on the DEFAULT branch (main).
+# Until this file is merged into main, the cron won't fire — only manual
+# dispatch will. `workflow_dispatch` works on any branch containing the file.
+#
+# Required repository secrets:
+#   E2E_ADMIN_PHONE     — admin/manager account phone (admin logins skip device
+#                         binding, so the phone alone grants access — treat as
+#                         a credential, keep it in secrets, not in code)
+#   E2E_ADMIN_DEVICE_ID — optional, only needed if the account is not ADMIN
+
+name: E2E Stale Account Sweeper
+
+on:
+  schedule:
+    # Daily at 03:00 UTC
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-sweep
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    name: Delete stale E2E accounts
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      # Deliberate opt-in: the sweeper deletes production accounts.
+      E2E_SWEEP_ENABLED: "1"
+      E2E_ADMIN_PHONE: ${{ secrets.E2E_ADMIN_PHONE }}
+      E2E_ADMIN_DEVICE_ID: ${{ secrets.E2E_ADMIN_DEVICE_ID }}
+      E2E_MAX_AGE_HOURS: "24"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run stale-account sweep
+        run: node tools/e2e_sweep.mjs
