@@ -1,0 +1,66 @@
+# Live E2E Smoke Test
+#
+# Runs tools/e2e_cdp_test.mjs against the DEPLOYED site
+# (https://learn-traffic-rules-cbbd1.web.app) and the live backend
+# (https://backendapi.rwandatraffic.rw) in a real headless Chrome browser.
+#
+# Triggers:
+#   - push to main   — main is the deploy branch; every push lands in production
+#   - workflow_dispatch — run manually, e.g. right after a local `firebase deploy`
+#
+# ⚠️  IMPORTANT: the registration step creates a REAL throwaway account in the
+# PRODUCTION database on every run (this is why E2E_ALLOW_PROD=1 is set here).
+# The phone number is random and printed in the job log so it can be deleted.
+# Only run this when you accept that side effect.
+
+name: E2E Live Smoke Test
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-live-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e-live:
+    name: E2E against live site
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      # Deliberate opt-in: the E2E script refuses to run registration without
+      # this, since it creates a throwaway account in the production DB.
+      E2E_ALLOW_PROD: "1"
+      # Stage screenshots are uploaded as an artifact for debugging.
+      E2E_SCREENSHOT_DIR: ${{ runner.temp }}/e2e-shots
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        # Node 22+ ships a global WebSocket + fetch, which the script relies on.
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify Chrome
+        # ubuntu-latest runners have google-chrome preinstalled. Fail fast with
+        # a clear message if it's ever missing so the script can set CHROME_PATH.
+        run: |
+          google-chrome --version
+          test -x /usr/bin/google-chrome
+
+      - name: Run E2E smoke test against live site
+        run: node tools/e2e_cdp_test.mjs
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screenshots
+          path: ${{ runner.temp }}/e2e-shots/
+          retention-days: 7
