@@ -8,7 +8,12 @@ import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/widgets/app_menu_button.dart';
 
 class AdminAnalyticsPage extends StatefulWidget {
-  const AdminAnalyticsPage({Key? key}) : super(key: key);
+  /// Optional injected analytics loader (used by widget tests to avoid
+  /// network calls). Defaults to the real API request.
+  final Future<ApiResponse> Function()? analyticsLoader;
+
+  const AdminAnalyticsPage({Key? key, this.analyticsLoader})
+      : super(key: key);
 
   @override
   State<AdminAnalyticsPage> createState() => _AdminAnalyticsPageState();
@@ -62,17 +67,21 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
     }
 
     try {
-      final sdf = DateFormat('yyyy-MM-dd');
-      final qStart = _startDate != null ? sdf.format(_startDate!) : '';
-      final qEnd = _endDate != null ? sdf.format(_endDate!) : '';
-
-      final result = await ApiHelper().get(
-        '/api/admin/analytics',
-        queryParams: {
-          if (qStart.isNotEmpty) 'dateFrom': qStart,
-          if (qEnd.isNotEmpty) 'dateTo': qEnd,
-        },
-      );
+      final loader = widget.analyticsLoader;
+      final result = loader != null
+          ? await loader()
+          : await ApiHelper().get(
+              '/api/admin/analytics',
+              queryParams: () {
+                final sdf = DateFormat('yyyy-MM-dd');
+                final qStart = _startDate != null ? sdf.format(_startDate!) : '';
+                final qEnd = _endDate != null ? sdf.format(_endDate!) : '';
+                return {
+                  if (qStart.isNotEmpty) 'dateFrom': qStart,
+                  if (qEnd.isNotEmpty) 'dateTo': qEnd,
+                };
+              }(),
+            );
 
       if (result.isSuccess) {
         final data = result.data as Map<String, dynamic>?;

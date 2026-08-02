@@ -10,7 +10,11 @@ import '../../../../shared/widgets/app_page_header.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class AdminProgressPage extends StatefulWidget {
-  const AdminProgressPage({Key? key}) : super(key: key);
+  /// Optional injected results loader (used by widget tests to avoid network
+  /// calls). Defaults to the real API request.
+  final Future<ApiResponse> Function()? resultsLoader;
+
+  const AdminProgressPage({Key? key, this.resultsLoader}) : super(key: key);
 
   @override
   State<AdminProgressPage> createState() => _AdminProgressPageState();
@@ -33,7 +37,10 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
       _error = null;
     });
     try {
-      final result = await ApiHelper().get('/api/exam-results');
+      final loader = widget.resultsLoader;
+      final result = loader != null
+          ? await loader()
+          : await ApiHelper().get('/api/exam-results');
       if (result.isSuccess) {
         setState(() {
           _results = result.dataList;
