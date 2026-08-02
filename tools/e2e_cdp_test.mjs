@@ -8,8 +8,9 @@
 //   4. Practice page → exam grid loads from bundled assets
 //   5. Tapping a paid exam → subscription page renders with plan cards
 //
-// NOTE: step 3 creates a real account in the production database. The phone
-// number is random and printed below so it can be deleted afterwards.
+// NOTE: step 3 creates a real account in the production database. At the end
+// of the run the script auto-deletes that same account (self-delete via its own
+// token), and the phone number is printed as a fallback for manual cleanup.
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -65,6 +66,9 @@ mkdirSync(shotDir, { recursive: true });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const results = [];
 const apiCalls = new Set();
+// Credentials of the throwaway account created in step 3, captured from the
+// register response so the script can delete it at the end of the run.
+let cleanupCreds = null;
 
 function record(name, ok, detail = '') {
   results.push({ name, ok, detail });
@@ -156,6 +160,23 @@ async function connect() {
       const r = msg.params.request;
       if (/backendapi\.rwandatraffic\.rw/.test(r.url)) {
         apiCalls.add(`${r.method} ${r.url}`);
+      }
+    } else if (msg.method === 'Network.responseReceived') {
+      // Capture the register response body (201) so we can self-delete the
+      // throwaway account at the end of the run. OPTIONS preflight returns
+      // 2xx but not 201, so it can't match by mistake.
+      const { requestId, response } = msg.params;
+      const url = response?.url || '';
+      if (!cleanupCreds && response?.status === 201 && /\/api\/auth\/register/.test(url)) {
+        send('Network.getResponseBody', { requestId }).then((m) => {
+          try {
+            const data = JSON.parse(m.result?.body || '{}').data;
+            if (data?.id && data?.token) {
+              cleanupCreds = { id: data.id, token: data.token, phone: data.phoneNumber };
+              console.log(`  📝 captured throwaway account for auto-cleanup (${data.phoneNumber})`);
+            }
+          } catch (_) {}
+        }).catch(() => {});
       }
     }
   };
@@ -439,7 +460,7 @@ async function testRegistration(sem) {
     onHome ? `phone=${phone}` : (errMsg || 'still on register page'),
   );
   if (onHome) {
-    console.log(`  THROWAWAY ACCOUNT PHONE: ${phone} — delete it from the admin panel after the test.`);
+    console.log(`  THROWAWAY ACCOUNT PHONE: ${phone} — auto-cleanup will delete it at the end of the run (printed as a manual fallback).`);
   }
   return { sem, phone };
 }
@@ -530,6 +551,35 @@ async function main() {
   await finish();
 }
 
+// Delete the throwaway account created in step 3 using its own token
+// (backend allows self-deletion via DELETE /api/users/:id). Best-effort:
+// never fails the run, prints a manual fallback phone if it can't.
+async function cleanupAccount() {
+  if (!cleanupCreds) {
+    console.log('\n⚠️  No throwaway account captured — nothing to auto-cleanup.');
+    return;
+  }
+  const { id, token, phone } = cleanupCreds;
+  console.log(`\n🧹 Auto-cleanup: deleting throwaway account ${phone}…`);
+  try {
+    const res = await fetch(`https://backendapi.rwandatraffic.rw/api/users/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+      signal: AbortSignal.timeout(15000), // don't stall exit on a hung network
+    });
+    const body = await res.text();
+    if (res.status === 200) {
+      console.log(`✅ AUTO-CLEANUP SUCCESS: ${phone} deleted (self-delete with its own token)`);
+    } else {
+      console.log(`⚠️  AUTO-CLEANUP FAILED (HTTP ${res.status}): ${body.slice(0, 150)}`);
+      console.log(`    → delete manually: phone=${phone}`);
+    }
+  } catch (e) {
+    console.log(`⚠️  AUTO-CLEANUP ERROR: ${e.message}`);
+    console.log(`    → delete manually: phone=${phone}`);
+  }
+}
+
 async function finish() {
   console.log('\n===== API CALLS SEEN (live backend) =====');
   console.log([...apiCalls].join('\n') || '(none)');
@@ -544,13 +594,16 @@ async function finish() {
     .catch(e => 'FETCH_ERROR: ' + e.message)`);
   console.log('\nCROSS-ORIGIN FETCH FROM PAGE:', fetchCheck.value);
 
+  await cleanupAccount();
+
   const passed = results.filter((r) => r.ok).length;
   const failed = results.filter((r) => !r.ok).length;
   console.log(`\n===== SUMMARY: ${passed} passed, ${failed} failed =====`);
   process.exit(failed > 0 ? 1 : 0);
 }
 
-main().catch((e) => {
+main().catch(async (e) => {
   console.error('E2E FAILED:', e.message);
+  try { await cleanupAccount(); } catch (_) {}
   process.exit(1);
 });
