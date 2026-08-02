@@ -5,8 +5,10 @@
 # (https://backendapi.rwandatraffic.rw) in a real headless Chrome browser.
 #
 # Triggers:
-#   - push to main   — main is the deploy branch; every push lands in production
-#   - workflow_dispatch — run manually, e.g. right after a local `firebase deploy`
+#   - push to main        — main is the deploy branch; every push lands in production
+#   - push to web-refinement — the web-refinement branch: every push runs the smoke
+#                              test against the live site so web changes are verified
+#   - workflow_dispatch   — run manually, e.g. right after a local `firebase deploy`
 #
 # ⚠️  IMPORTANT: the registration step creates a REAL throwaway account in the
 # PRODUCTION database on every run (this is why E2E_ALLOW_PROD=1 is set here).
@@ -17,7 +19,7 @@ name: E2E Live Smoke Test
 
 on:
   push:
-    branches: [main]
+    branches: [main, web-refinement]
   workflow_dispatch:
 
 concurrency:
