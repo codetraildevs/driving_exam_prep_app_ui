@@ -31,6 +31,7 @@ import '../../features/settings/presentation/pages/terms_of_service_page.dart';
 import '../../features/profile/presentation/pages/my_certificates_page.dart';
 import '../../features/subscription/presentation/pages/subscription_page.dart';
 import '../../features/admin/presentation/pages/admin_dashboard_page.dart';
+import '../../shared/responsive/responsive_layout.dart';
 import '../../features/admin/presentation/pages/admin_users_page.dart';
 import '../../features/admin/presentation/pages/admin_access_page.dart';
 import '../../features/admin/presentation/pages/admin_progress_page.dart';
@@ -340,7 +341,16 @@ class AppRouter {
       child: Scaffold(
         appBar: AppBar(title: Text(AppLocalizations.of(context).commonErrorTitle)),
         body: Center(
-          child: Text(state.error.toString()),
+          child: ConstrainedContent(
+            maxWidth: AppContentWidths.narrow,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Text(
+                state.error.toString(),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
         ),
       ),
     ),

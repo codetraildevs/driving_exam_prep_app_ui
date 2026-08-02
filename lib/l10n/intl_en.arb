@@ -158,6 +158,9 @@
   "commonCancel": "Cancel",
   "@commonCancel": { "description": "Generic cancel button" },
 
+  "commonMenu": "Menu",
+  "@commonMenu": { "description": "Tooltip for the navigation drawer hamburger button" },
+
   "commonConfirm": "Confirm",
   "@commonConfirm": { "description": "Generic confirm button" },
 

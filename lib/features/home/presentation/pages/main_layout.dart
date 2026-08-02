@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,11 +36,14 @@ class _MainLayoutState extends State<MainLayout> {
     final isAdmin = _isAdminOrManager(userRole);
 
     return PopScope(
-      canPop: false,
+      // The shell owns the exit confirmation. On web there is no "exit app"
+      // (SystemNavigator.pop is a no-op), so the browser's own back/history
+      // navigation is left untouched; only mobile intercepts Android back.
+      canPop: kIsWeb,
       onPopInvokedWithResult: (didPop, _) async {
         if (didPop) return;
         final shouldExit = await _showExitDialog(context, l10n);
-        if (shouldExit == true) {
+        if (shouldExit == true && !kIsWeb) {
           SystemNavigator.pop();
         }
       },

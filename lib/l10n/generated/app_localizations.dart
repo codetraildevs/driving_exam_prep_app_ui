@@ -364,6 +364,12 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get commonCancel;
 
+  /// Tooltip for the navigation drawer hamburger button
+  ///
+  /// In en, this message translates to:
+  /// **'Menu'**
+  String get commonMenu;
+
   /// Generic confirm button
   ///
   /// In en, this message translates to:

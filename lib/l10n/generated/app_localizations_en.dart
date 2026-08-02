@@ -160,6 +160,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonCancel => 'Cancel';
 
   @override
+  String get commonMenu => 'Menu';
+
+  @override
   String get commonConfirm => 'Confirm';
 
   @override

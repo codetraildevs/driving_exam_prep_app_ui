@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../config/theme/app_colors.dart';
 import '../../config/theme/app_text_styles.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../responsive/responsive_layout.dart';
 
 /// Shows a data-consent dialog on first launch.
 ///
@@ -486,13 +487,16 @@ class _InlinePrivacyPolicyPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              l10n.privacyIntro,
-              style: AppTextStyles.bodyMedium.copyWith(height: 1.6),
-            ),
+        child: ConstrainedContent(
+          maxWidth: AppContentWidths.narrow,
+          padding: EdgeInsets.zero,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.privacyIntro,
+                style: AppTextStyles.bodyMedium.copyWith(height: 1.6),
+              ),
             const SizedBox(height: 20),
             _section(
               l10n.privacyDataCollection,
@@ -506,7 +510,8 @@ class _InlinePrivacyPolicyPage extends StatelessWidget {
             _section(l10n.privacyDataSharing, l10n.privacyDataSharingBody),
             _section(l10n.privacyUserRights, l10n.privacyUserRightsBody),
             const SizedBox(height: 32),
-          ],
+            ],
+          ),
         ),
       ),
     );

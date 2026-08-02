@@ -165,6 +165,9 @@ class AppLocalizationsRw extends AppLocalizations {
   String get commonCancel => 'Hagarika';
 
   @override
+  String get commonMenu => 'Menyu';
+
+  @override
   String get commonConfirm => 'Emeza';
 
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../config/theme/app_colors.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../responsive/responsive_layout.dart';
 import 'app_drawer_scope.dart';
 
@@ -17,7 +18,7 @@ class AppMenuButton extends StatelessWidget {
     if (scope == null) return const SizedBox.shrink();
     return IconButton(
       icon: const Icon(Icons.menu, color: AppColors.textInverse),
-      tooltip: 'Menu',
+      tooltip: AppLocalizations.of(context).commonMenu,
       onPressed: scope.openDrawer,
     );
   }
