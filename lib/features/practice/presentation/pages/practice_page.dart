@@ -5,6 +5,7 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_notifier.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/subscription/subscription_notifier.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 import '../../../exam/data/models/exam_model.dart';
@@ -23,6 +24,7 @@ class _PracticePageState extends ConsumerState<PracticePage> {
   bool _isLoading = true;
   String? _error;
   String _lastLangCode = '';
+
   /// Ensures the locale listener is attached only once in build().
   bool _listenerAttached = false;
 
@@ -92,53 +94,81 @@ class _PracticePageState extends ConsumerState<PracticePage> {
     return Scaffold(
       body: Column(
         children: [
-          AppPageHeader(
-            title: l10n.practiceTitle,
-            showBack: false,
-          ),
+          AppPageHeader(title: l10n.practiceTitle, showBack: false),
           Expanded(
             child: SafeArea(
               top: false,
               child: _isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : _error != null
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.error_outline,
-                                  size: 48, color: AppColors.error),
-                              const SizedBox(height: 16),
-                              Text(
-                                _error!,
-                                style: AppTextStyles.bodyMedium
-                                    .copyWith(color: AppColors.textSecondary),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 16),
-                              ElevatedButton(
-                                onPressed: () => _loadExams(_lastLangCode),
-                                child: Text(l10n.commonRetry),
-                              ),
-                            ],
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.error_outline,
+                            size: 48,
+                            color: AppColors.error,
                           ),
-                        )
-                      : ListView.builder(
-                          padding: const EdgeInsets.all(16),
-                          itemCount: _exams.length,
-                          itemBuilder: (context, index) {
-                            final exam = _exams[index];
-                            final isLocked =
-                                exam.isPaid && !subscription.hasActiveAccess;
-                            return _ExamCard(
-                              index: index,
-                              exam: exam,
-                              isLocked: isLocked,
-                              onTap: () => _onExamTap(context, exam, index),
-                              l10n: l10n,
-                            );
-                          },
-                        ),
+                          const SizedBox(height: 16),
+                          Text(
+                            _error!,
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () => _loadExams(_lastLangCode),
+                            child: Text(l10n.commonRetry),
+                          ),
+                        ],
+                      ),
+                    )
+                  : ConstrainedContent(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          // 1 column on phones, 2 on tablets, 3 on desktop.
+                          final crossAxisCount =
+                              constraints.maxWidth >= AppContentWidths.medium
+                              ? 3
+                              : (constraints.maxWidth >=
+                                        AppContentWidths.gridDense
+                                    ? 2
+                                    : 1);
+                          // The grid is the page's scrollable: it must keep
+                          // default physics so exams below the fold stay
+                          // reachable on every screen size.
+                          return GridView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: crossAxisCount,
+                                  mainAxisSpacing: 12,
+                                  crossAxisSpacing: 12,
+                                  // Exam cards are compact rows; keep a
+                                  // comfortable fixed height in grid cells.
+                                  mainAxisExtent: 100,
+                                ),
+                            itemCount: _exams.length,
+                            itemBuilder: (context, index) {
+                              final exam = _exams[index];
+                              final isLocked =
+                                  exam.isPaid && !subscription.hasActiveAccess;
+                              return _ExamCard(
+                                index: index,
+                                exam: exam,
+                                isLocked: isLocked,
+                                onTap: () => _onExamTap(context, exam, index),
+                                l10n: l10n,
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
             ),
           ),
         ],
@@ -167,11 +197,12 @@ class _ExamCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           border: Border.all(
-            color: exam.isFree ? AppColors.success.withValues(alpha: 0.4) : AppColors.neutral200,
+            color: exam.isFree
+                ? AppColors.success.withValues(alpha: 0.4)
+                : AppColors.neutral200,
           ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
@@ -208,13 +239,16 @@ class _ExamCard extends StatelessWidget {
                             color: AppColors.textSecondary,
                           ),
                         ),
-                      ]
+                      ],
                     ),
                   ),
                   if (isLocked)
                     const Icon(Icons.lock, color: AppColors.textTertiary)
                   else
-                    const Icon(Icons.chevron_right, color: AppColors.textSecondary),
+                    const Icon(
+                      Icons.chevron_right,
+                      color: AppColors.textSecondary,
+                    ),
                 ],
               ),
             ),
@@ -223,7 +257,10 @@ class _ExamCard extends StatelessWidget {
                 top: 8,
                 right: 8,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.success,
                     borderRadius: BorderRadius.circular(8),
@@ -237,7 +274,7 @@ class _ExamCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              )
+              ),
           ],
         ),
       ),

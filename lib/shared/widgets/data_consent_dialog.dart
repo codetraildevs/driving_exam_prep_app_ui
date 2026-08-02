@@ -29,6 +29,9 @@ class DataConsentDialog {
       context: context,
       barrierDismissible: false,
       barrierColor: Colors.black54,
+      // Note: `isScrollControlled` no longer exists in Flutter 3.44+ —
+      // dialogs now expand to the full window by default, so the pinned
+      // Accept button below stays visible without requiring a scroll.
       builder: (dialogContext) => _ConsentDialogContent(
         onAccept: () async {
           final prefs = await SharedPreferences.getInstance();
@@ -103,60 +106,71 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
       child: SlideTransition(
         position: _slideUp,
         child: Dialog(
-          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 24,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(28),
+          ),
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 420),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // ── Gradient header ──
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
-                    decoration: BoxDecoration(
-                      gradient: AppColors.primaryGradientFor(
-                          isDark ? Brightness.dark : Brightness.light),
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(28),
-                      ),
+            constraints: BoxConstraints(
+              maxWidth: 420,
+              // Cap the height so the pinned Accept button always stays on
+              // screen; the middle section scrolls when content is tall.
+              maxHeight: MediaQuery.of(context).size.height * 0.9,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ── Gradient header (fixed) ──
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+                  decoration: BoxDecoration(
+                    gradient: AppColors.primaryGradientFor(
+                      isDark ? Brightness.dark : Brightness.light,
                     ),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.2),
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.3),
-                              width: 2,
-                            ),
-                          ),
-                          child: const Icon(
-                            Icons.verified_user_rounded,
-                            color: Colors.white,
-                            size: 32,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          l10n.consentTitle,
-                          style: AppTextStyles.heading5.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(28),
                     ),
                   ),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.3),
+                            width: 2,
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.verified_user_rounded,
+                          color: Colors.white,
+                          size: 32,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        l10n.consentTitle,
+                        style: AppTextStyles.heading5.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
 
-                  // ── Body ──
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+                // ── Scrollable body ──
+                Flexible(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -315,69 +329,70 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                             ),
                           ),
                         ),
-
-                        const SizedBox(height: 16),
-
-                        // Accept button
-                        SizedBox(
-                          width: double.infinity,
-                          height: 52,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              gradient: AppColors.primaryGradientFor(
-                                  isDark ? Brightness.dark : Brightness.light),
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.primary.withValues(alpha: 0.3),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: ElevatedButton(
-                              onPressed: widget.onAccept,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                shadowColor: Colors.transparent,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 10,
-                                ),  
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.check_circle_outline_rounded,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Expanded( child: Text(
-                                    l10n.consentAccept,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  )
-                                ],
-                              )
-                              
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+
+                // ── Footer: Accept button — always visible ──
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: AppColors.primaryGradientFor(
+                          isDark ? Brightness.dark : Brightness.light,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary.withValues(alpha: 0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton(
+                        onPressed: widget.onAccept,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 10,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.check_circle_outline_rounded,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                l10n.consentAccept,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -474,12 +489,20 @@ class _InlinePrivacyPolicyPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(l10n.privacyIntro,
-                style: AppTextStyles.bodyMedium.copyWith(height: 1.6)),
+            Text(
+              l10n.privacyIntro,
+              style: AppTextStyles.bodyMedium.copyWith(height: 1.6),
+            ),
             const SizedBox(height: 20),
-            _section(l10n.privacyDataCollection, l10n.privacyDataCollectionBody),
+            _section(
+              l10n.privacyDataCollection,
+              l10n.privacyDataCollectionBody,
+            ),
             _section(l10n.privacyDataUsage, l10n.privacyDataUsageBody),
-            _section(l10n.privacyDataProtection, l10n.privacyDataProtectionBody),
+            _section(
+              l10n.privacyDataProtection,
+              l10n.privacyDataProtectionBody,
+            ),
             _section(l10n.privacyDataSharing, l10n.privacyDataSharingBody),
             _section(l10n.privacyUserRights, l10n.privacyUserRightsBody),
             const SizedBox(height: 32),
@@ -495,12 +518,12 @@ class _InlinePrivacyPolicyPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title,
-              style: AppTextStyles.heading6
-                  .copyWith(color: AppColors.primary)),
+          Text(
+            title,
+            style: AppTextStyles.heading6.copyWith(color: AppColors.primary),
+          ),
           const SizedBox(height: 8),
-          Text(body,
-              style: AppTextStyles.bodySmall.copyWith(height: 1.6)),
+          Text(body, style: AppTextStyles.bodySmall.copyWith(height: 1.6)),
         ],
       ),
     );

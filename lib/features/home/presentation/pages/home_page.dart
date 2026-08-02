@@ -8,11 +8,14 @@ import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../shared/subscription/subscription_notifier.dart';
+import '../../../../shared/widgets/app_menu_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../config/app_config.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -28,7 +31,8 @@ class HomePage extends StatelessWidget {
     });
     final phoneNumber = context.select<AuthBloc, String>((bloc) {
       final state = bloc.state;
-      if (state is AuthAuthenticated && state.user.phoneNumber.trim().isNotEmpty) {
+      if (state is AuthAuthenticated &&
+          state.user.phoneNumber.trim().isNotEmpty) {
         return state.user.phoneNumber.trim();
       }
       return '0788 123 456';
@@ -52,24 +56,32 @@ class HomePage extends StatelessWidget {
         child: Scaffold(
           body: Column(
             children: [
-              _CompactHeader(l10n: l10n, userName: userName, phoneNumber: phoneNumber),
+              _CompactHeader(
+                l10n: l10n,
+                userName: userName,
+                phoneNumber: phoneNumber,
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.fromLTRB(16, 14, 16, 32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const _CompactAccessCard(),
-                      const SizedBox(height: 20),
-                      Text(
-                        l10n.homeServices,
-                        style: AppTextStyles.labelLarge.copyWith(
-                          fontWeight: FontWeight.w700,
+                  // The scroll view below already applies 16px side padding.
+                  child: ConstrainedContent(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const _CompactAccessCard(),
+                        const SizedBox(height: 20),
+                        Text(
+                          l10n.homeServices,
+                          style: AppTextStyles.labelLarge.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      _ResponsiveServicesGrid(l10n: l10n),
-                    ],
+                        const SizedBox(height: 12),
+                        _ResponsiveServicesGrid(l10n: l10n),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -80,11 +92,16 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Future<bool> _showExitDialog(BuildContext context, AppLocalizations l10n) async {
+  Future<bool> _showExitDialog(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
     return await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
             backgroundColor: Theme.of(context).colorScheme.surface,
             title: Row(
               children: [
@@ -93,16 +110,15 @@ class HomePage extends StatelessWidget {
                 Text(l10n.exitAppTitle, style: AppTextStyles.heading4),
               ],
             ),
-            content: Text(
-              l10n.exitAppMessage,
-              style: AppTextStyles.bodyMedium,
-            ),
+            content: Text(l10n.exitAppMessage, style: AppTextStyles.bodyMedium),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(ctx, false),
                 child: Text(
                   l10n.exitAppNo,
-                  style: AppTextStyles.labelLarge.copyWith(color: AppColors.neutral600),
+                  style: AppTextStyles.labelLarge.copyWith(
+                    color: AppColors.neutral600,
+                  ),
                 ),
               ),
               ElevatedButton(
@@ -110,7 +126,9 @@ class HomePage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.error,
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   elevation: 0,
                 ),
                 child: Text(l10n.exitAppYes),
@@ -130,8 +148,10 @@ class HomePage extends StatelessWidget {
 enum CompactHeaderIconType {
   /// Notification bell with optional badge.
   notification,
+
   /// Refresh/reload icon.
   refresh,
+
   /// No icon (empty right section).
   none,
 }
@@ -140,6 +160,7 @@ class _CompactHeader extends StatelessWidget {
   final AppLocalizations l10n;
   final String userName;
   final String phoneNumber;
+
   /// Type of icon to show on the right. Defaults to [CompactHeaderIconType.notification].
   final CompactHeaderIconType iconType;
 
@@ -171,6 +192,8 @@ class _CompactHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
+          // Hamburger opens the desktop drawer; hidden on mobile.
+          const AppMenuButton(),
           // Left: greeting block
           Expanded(
             child: Column(
@@ -274,8 +297,10 @@ class _CompactAccessCard extends ConsumerWidget {
       final tier = sub.paymentTier ?? '';
       if (tier.contains('1_MONTH')) {
         totalDays = 30;
-      } else if (tier.contains('3_MONTH')) totalDays = 90;
-      else totalDays = 180;
+      } else if (tier.contains('3_MONTH'))
+        totalDays = 90;
+      else
+        totalDays = 180;
     }
     final progress = hasAccess && totalDays > 0
         ? (daysLeft / totalDays).clamp(0.0, 1.0)
@@ -295,114 +320,127 @@ class _CompactAccessCard extends ConsumerWidget {
         onTap: hasAccess ? null : () => context.push('/subscription'),
         borderRadius: BorderRadius.circular(16),
         child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: hasAccess
-                ? AppColors.success.withValues(alpha: 0.3)
-                : AppColors.primary.withValues(alpha: 0.3),
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: hasAccess
+                  ? AppColors.success.withValues(alpha: 0.3)
+                  : AppColors.primary.withValues(alpha: 0.3),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            // Circular indicator
-            SizedBox(
-              width: 44,
-              height: 44,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  CircularProgressIndicator(
-                    value: hasAccess ? progress : 0.0,
-                    strokeWidth: 4,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.outline.withValues(alpha: 0.15),
-                    valueColor: AlwaysStoppedAnimation<Color>(
+          child: Row(
+            children: [
+              // Circular indicator
+              SizedBox(
+                width: 44,
+                height: 44,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    CircularProgressIndicator(
+                      value: hasAccess ? progress : 0.0,
+                      strokeWidth: 4,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.outline.withValues(alpha: 0.15),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        hasAccess
+                            ? AppColors.success
+                            : Theme.of(context).colorScheme.outline,
+                      ),
+                    ),
+                    Center(
+                      child: Icon(
+                        hasAccess ? Icons.check : Icons.lock_outline,
+                        color: hasAccess
+                            ? AppColors.success
+                            : Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.4),
+                        size: 18,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+
+              // Info
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
                       hasAccess
-                          ? AppColors.success
-                          : Theme.of(context).colorScheme.outline,
+                          ? l10n.homeAccessActive(daysLeft)
+                          : l10n.subscriptionTitle,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Center(
-                    child: Icon(
-                      hasAccess ? Icons.check : Icons.lock_outline,
-                      color: hasAccess
-                          ? AppColors.success
-                          : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
-                      size: 18,
+                    const SizedBox(height: 2),
+                    Text(
+                      hasAccess && tierLabel.isNotEmpty
+                          ? l10n.homePaymentTier(tierLabel)
+                          : l10n.subscriptionSubtitle,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textSecondary,
+                        fontSize: 11,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: 12),
 
-            // Info
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    hasAccess
-                        ? l10n.homeAccessActive(daysLeft)
-                        : l10n.subscriptionTitle,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+              // CTA chip
+              FilledButton(
+                onPressed: () {
+                  if (hasAccess) {
+                    context.push('/practice');
+                  } else {
+                    context.push('/subscription');
+                  }
+                },
+                style: FilledButton.styleFrom(
+                  backgroundColor: hasAccess
+                      ? AppColors.primary
+                      : AppColors.accent,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 8,
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    hasAccess && tierLabel.isNotEmpty
-                        ? l10n.homePaymentTier(tierLabel)
-                        : l10n.subscriptionSubtitle,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
-                      fontSize: 11,
-                    ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                ],
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text(
+                  hasAccess
+                      ? l10n.homeContinueLearning
+                      : l10n.subscriptionRequestAccess,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textInverse,
+                  ),
+                ),
               ),
-            ),
-
-            // CTA chip
-            FilledButton(
-              onPressed: () {
-                if (hasAccess) {
-                  context.push('/practice');
-                } else {
-                  context.push('/subscription');
-                }
-              },
-              style: FilledButton.styleFrom(
-                backgroundColor:
-                    hasAccess ? AppColors.primary : AppColors.accent,
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                minimumSize: Size.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              child: Text(
-                hasAccess ? l10n.homeContinueLearning : l10n.subscriptionRequestAccess,
-                style: const TextStyle(fontSize: 12, color: AppColors.textInverse),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-      ) 
     );
   }
 }
@@ -419,10 +457,11 @@ class _ResponsiveServicesGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    // 2 columns on phones, 3 on tablets, 4 on wide
+    // 2 columns on phones, 3 on tablets, 4 on wide screens (only 4
+    // services exist, so 4 columns fill the row exactly).
     final crossAxisCount = width >= 900 ? 4 : (width >= 600 ? 3 : 2);
-    // Smaller card height for compact look
-    final cardHeight = width >= 600 ? 120.0 : 110.0;
+    // Larger cards get a touch more height so they don't feel cramped.
+    final cardHeight = width >= 900 ? 130.0 : (width >= 600 ? 120.0 : 110.0);
 
     final services = _buildServiceList(context, l10n);
 
@@ -437,16 +476,15 @@ class _ResponsiveServicesGrid extends StatelessWidget {
       ),
       itemCount: services.length,
       itemBuilder: (context, index) {
-        return _AnimatedServiceCard(
-          item: services[index],
-          index: index,
-        );
+        return _AnimatedServiceCard(item: services[index], index: index);
       },
     );
   }
 
   List<_ServiceItem> _buildServiceList(
-      BuildContext context, AppLocalizations l10n) {
+    BuildContext context,
+    AppLocalizations l10n,
+  ) {
     return [
       _ServiceItem.asset(
         imageAsset: 'assets/images/practices_image.webp',
@@ -463,7 +501,8 @@ class _ResponsiveServicesGrid extends StatelessWidget {
         onTap: () {
           launchUrl(
             Uri.parse(
-                'https://chat.whatsapp.com/JHfdbKSYVFz1s5jlTKfpcm?mode=gi_t'),
+              'https://chat.whatsapp.com/JHfdbKSYVFz1s5jlTKfpcm?mode=gi_t',
+            ),
           );
         },
       ),
@@ -481,7 +520,9 @@ class _ResponsiveServicesGrid extends StatelessWidget {
         color: AppColors.primaryLight,
         onTap: () {
           SharePlus.instance.share(
-            ShareParams(text: '${l10n.homeShareAppMessage} ${AppConfig.playStoreUrl}'),
+            ShareParams(
+              text: '${l10n.homeShareAppMessage} ${AppConfig.playStoreUrl}',
+            ),
           );
         },
       ),
@@ -518,12 +559,14 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
       vsync: this,
       duration: const Duration(milliseconds: 400),
     );
-    _scaleAnim = Tween<double>(begin: 0.85, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
-    );
-    _fadeAnim = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _scaleAnim = Tween<double>(
+      begin: 0.85,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
+    _fadeAnim = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     // Stagger entrance by index
     Future.delayed(Duration(milliseconds: 80 * widget.index), () {
@@ -579,7 +622,9 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
                       color: item.color.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    clipBehavior: item.imageAsset != null ? Clip.antiAlias : Clip.none,
+                    clipBehavior: item.imageAsset != null
+                        ? Clip.antiAlias
+                        : Clip.none,
                     child: item.imageAsset != null
                         ? Image.asset(
                             item.imageAsset!,

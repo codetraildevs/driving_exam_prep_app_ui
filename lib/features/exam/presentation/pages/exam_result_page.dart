@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
 
 // ─── Grade helper ─────────────────────────────────────────────────────────────
 
@@ -66,9 +67,13 @@ class _ConfettiPainter extends CustomPainter {
         canvas.drawCircle(Offset.zero, p.size, paint);
       } else {
         canvas.drawRect(
-            Rect.fromCenter(
-                center: Offset.zero, width: p.size * 1.6, height: p.size * 0.8),
-            paint);
+          Rect.fromCenter(
+            center: Offset.zero,
+            width: p.size * 1.6,
+            height: p.size * 0.8,
+          ),
+          paint,
+        );
       }
       canvas.restore();
     }
@@ -116,8 +121,12 @@ class _ExamResultPageState extends State<ExamResultPage>
   // ── Confetti ─────────────────────────────────────────────────────────────
   final List<_Particle> _particles = [];
   static const _confettiColors = [
-    Color(0xFFFF5252), Color(0xFFFFD740), Color(0xFF69F0AE),
-    Color(0xFF40C4FF), Color(0xFFE040FB), Color(0xFFFF6D00),
+    Color(0xFFFF5252),
+    Color(0xFFFFD740),
+    Color(0xFF69F0AE),
+    Color(0xFF40C4FF),
+    Color(0xFFE040FB),
+    Color(0xFFFF6D00),
     Color(0xFFFFFFFF),
   ];
 
@@ -126,18 +135,28 @@ class _ExamResultPageState extends State<ExamResultPage>
     super.initState();
 
     _ringCtrl = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1400));
+      vsync: this,
+      duration: const Duration(milliseconds: 1400),
+    );
     _cardCtrl = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 700));
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
     _confettiCtrl = AnimationController(
-        vsync: this, duration: const Duration(seconds: 3));
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
 
     _ringAnim = CurvedAnimation(parent: _ringCtrl, curve: Curves.easeOutCubic);
-    _slideAnim = Tween<Offset>(begin: const Offset(0, 0.25), end: Offset.zero)
-        .animate(CurvedAnimation(parent: _cardCtrl, curve: Curves.easeOut));
+    _slideAnim = Tween<Offset>(
+      begin: const Offset(0, 0.25),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _cardCtrl, curve: Curves.easeOut));
     _fadeAnim = CurvedAnimation(parent: _cardCtrl, curve: Curves.easeIn);
-    _counterAnim = IntTween(begin: 0, end: widget.score).animate(
-        CurvedAnimation(parent: _ringCtrl, curve: Curves.easeOutCubic));
+    _counterAnim = IntTween(
+      begin: 0,
+      end: widget.score,
+    ).animate(CurvedAnimation(parent: _ringCtrl, curve: Curves.easeOutCubic));
 
     // Stagger: ring starts first, card slides in at 400 ms
     Future.delayed(const Duration(milliseconds: 200), () {
@@ -161,18 +180,20 @@ class _ExamResultPageState extends State<ExamResultPage>
   void _initParticles() {
     final rng = Random();
     for (int i = 0; i < 80; i++) {
-      _particles.add(_Particle(
-        x: rng.nextDouble(),
-        y: -0.1 - rng.nextDouble() * 0.4,
-        vx: (rng.nextDouble() - 0.5) * 0.006,
-        vy: 0.004 + rng.nextDouble() * 0.006,
-        size: 4 + rng.nextDouble() * 5,
-        color: _confettiColors[rng.nextInt(_confettiColors.length)]
-            .withValues(alpha: 0.85),
-        isCircle: rng.nextBool(),
-        angle: rng.nextDouble() * 2 * pi,
-        spin: (rng.nextDouble() - 0.5) * 0.15,
-      ));
+      _particles.add(
+        _Particle(
+          x: rng.nextDouble(),
+          y: -0.1 - rng.nextDouble() * 0.4,
+          vx: (rng.nextDouble() - 0.5) * 0.006,
+          vy: 0.004 + rng.nextDouble() * 0.006,
+          size: 4 + rng.nextDouble() * 5,
+          color: _confettiColors[rng.nextInt(_confettiColors.length)]
+              .withValues(alpha: 0.85),
+          isCircle: rng.nextBool(),
+          angle: rng.nextDouble() * 2 * pi,
+          spin: (rng.nextDouble() - 0.5) * 0.15,
+        ),
+      );
     }
   }
 
@@ -203,9 +224,13 @@ class _ExamResultPageState extends State<ExamResultPage>
   }
 
   void _shareResult(BuildContext context, AppLocalizations l10n) {
-    final title = widget.examTitle.isNotEmpty ? widget.examTitle : l10n.examMockExam;
+    final title = widget.examTitle.isNotEmpty
+        ? widget.examTitle
+        : l10n.examMockExam;
     final grade = _gradeFor(widget.score);
-    final statusLabel = widget.score >= 70 ? l10n.progressPassed : l10n.progressFailedCount;
+    final statusLabel = widget.score >= 70
+        ? l10n.progressPassed
+        : l10n.progressFailedCount;
     final statusIcon = widget.score >= 70 ? '✅' : '❌';
     final text =
         '$title\n$statusIcon $statusLabel — Score: ${widget.score}% (${l10n.examGradeLabel} $grade)\n'
@@ -264,9 +289,7 @@ class _ExamResultPageState extends State<ExamResultPage>
           if (passed && _particles.isNotEmpty)
             Positioned.fill(
               child: IgnorePointer(
-                child: CustomPaint(
-                  painter: _ConfettiPainter(_particles),
-                ),
+                child: CustomPaint(painter: _ConfettiPainter(_particles)),
               ),
             ),
 
@@ -280,8 +303,11 @@ class _ExamResultPageState extends State<ExamResultPage>
                   child: Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.close_rounded,
-                            color: Colors.white, size: 22),
+                        icon: const Icon(
+                          Icons.close_rounded,
+                          color: Colors.white,
+                          size: 22,
+                        ),
                         onPressed: () => context.go('/home'),
                       ),
                       Expanded(
@@ -299,8 +325,11 @@ class _ExamResultPageState extends State<ExamResultPage>
                       ),
                       // Share button
                       IconButton(
-                        icon: const Icon(Icons.ios_share_rounded,
-                            color: Colors.white, size: 22),
+                        icon: const Icon(
+                          Icons.ios_share_rounded,
+                          color: Colors.white,
+                          size: 22,
+                        ),
                         tooltip: l10n.examShareResult,
                         onPressed: () => _shareResult(context, l10n),
                       ),
@@ -349,12 +378,12 @@ class _ExamResultPageState extends State<ExamResultPage>
                         builder: (ctx, _) {
                           final delay = (i * 0.15).clamp(0.0, 1.0);
                           final animVal =
-                              ((_ringAnim.value - delay) / (1 - delay))
-                                  .clamp(0.0, 1.0);
+                              ((_ringAnim.value - delay) / (1 - delay)).clamp(
+                                0.0,
+                                1.0,
+                              );
                           return Transform.scale(
-                            scale: i < stars
-                                ? 0.6 + 0.4 * animVal
-                                : 1.0,
+                            scale: i < stars ? 0.6 + 0.4 * animVal : 1.0,
                             child: Icon(
                               i < stars
                                   ? Icons.star_rounded
@@ -400,82 +429,90 @@ class _ExamResultPageState extends State<ExamResultPage>
                     opacity: _fadeAnim,
                     child: SlideTransition(
                       position: _slideAnim,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 14),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(28)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.12),
-                              blurRadius: 24,
-                              offset: const Offset(0, -4),
+                      // Cap the result card's width on desktop so stats and
+                      // buttons don't stretch across the whole window.
+                      child: ConstrainedContent(
+                        maxWidth: AppContentWidths.compact,
+                        padding: EdgeInsets.zero,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 14),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(28),
                             ),
-                          ],
-                        ),
-                        child: SingleChildScrollView(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              // ── Stats grid ───────────────────────────
-                              _StatsGrid(
-                                correct: widget.correctAnswers,
-                                wrong: wrong,
-                                total: widget.totalQuestions,
-                                timeStr: _formatTime(widget.timeSpentSeconds),
-                                score: widget.score,
-                                l10n: l10n,
-                                primaryColor: primaryColor,
-                                ringAnim: _ringAnim,
-                              ),
-
-                              const SizedBox(height: 16),
-
-                              // ── Pass/fail banner ─────────────────────
-                              _ResultBanner(
-                                  passed: passed,
-                                  primaryColor: primaryColor,
-                                  l10n: l10n),
-
-                              const SizedBox(height: 20),
-
-                              // ── Action buttons ────────────────────────
-                              _ActionButton(
-                                icon: Icons.replay_rounded,
-                                label: l10n.examRetakeTest,
-                                color: primaryColor,
-                                filled: true,
-                                onTap: () => context.go('/exam'),
-                              ),
-                              const SizedBox(height: 10),
-                              _ActionButton(
-                                icon: Icons.home_rounded,
-                                label: l10n.examBackHome,
-                                color: primaryColor,
-                                filled: false,
-                                onTap: () => context.go('/home'),
-                              ),
-                              const SizedBox(height: 10),
-                              _ActionButton(
-                                icon: Icons.bar_chart_rounded,
-                                label: l10n.progressTitle,
-                                color: AppColors.textSecondary,
-                                filled: false,
-                                outlined: false,
-                                onTap: () => context.go('/progress'),
-                              ),
-                              const SizedBox(height: 10),
-                              _ActionButton(
-                                icon: Icons.ios_share_rounded,
-                                label: l10n.examShareResult,
-                                color: AppColors.textSecondary,
-                                filled: false,
-                                outlined: false,
-                                onTap: () => _shareResult(context, l10n),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.12),
+                                blurRadius: 24,
+                                offset: const Offset(0, -4),
                               ),
                             ],
+                          ),
+                          child: SingleChildScrollView(
+                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                // ── Stats grid ───────────────────────────
+                                _StatsGrid(
+                                  correct: widget.correctAnswers,
+                                  wrong: wrong,
+                                  total: widget.totalQuestions,
+                                  timeStr: _formatTime(widget.timeSpentSeconds),
+                                  score: widget.score,
+                                  l10n: l10n,
+                                  primaryColor: primaryColor,
+                                  ringAnim: _ringAnim,
+                                ),
+
+                                const SizedBox(height: 16),
+
+                                // ── Pass/fail banner ─────────────────────
+                                _ResultBanner(
+                                  passed: passed,
+                                  primaryColor: primaryColor,
+                                  l10n: l10n,
+                                ),
+
+                                const SizedBox(height: 20),
+
+                                // ── Action buttons ────────────────────────
+                                _ActionButton(
+                                  icon: Icons.replay_rounded,
+                                  label: l10n.examRetakeTest,
+                                  color: primaryColor,
+                                  filled: true,
+                                  onTap: () => context.go('/exam'),
+                                ),
+                                const SizedBox(height: 10),
+                                _ActionButton(
+                                  icon: Icons.home_rounded,
+                                  label: l10n.examBackHome,
+                                  color: primaryColor,
+                                  filled: false,
+                                  onTap: () => context.go('/home'),
+                                ),
+                                const SizedBox(height: 10),
+                                _ActionButton(
+                                  icon: Icons.bar_chart_rounded,
+                                  label: l10n.progressTitle,
+                                  color: AppColors.textSecondary,
+                                  filled: false,
+                                  outlined: false,
+                                  onTap: () => context.go('/progress'),
+                                ),
+                                const SizedBox(height: 10),
+                                _ActionButton(
+                                  icon: Icons.ios_share_rounded,
+                                  label: l10n.examShareResult,
+                                  color: AppColors.textSecondary,
+                                  filled: false,
+                                  outlined: false,
+                                  onTap: () => _shareResult(context, l10n),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -624,9 +661,10 @@ class _GradeBadge extends StatelessWidget {
         border: Border.all(color: Colors.white, width: 2.5),
         boxShadow: [
           BoxShadow(
-              color: bg.withValues(alpha: 0.5),
-              blurRadius: 8,
-              spreadRadius: 2),
+            color: bg.withValues(alpha: 0.5),
+            blurRadius: 8,
+            spreadRadius: 2,
+          ),
         ],
       ),
       child: Center(
@@ -675,22 +713,25 @@ class _StatsGrid extends StatelessWidget {
         Row(
           children: [
             _Chip(
-                icon: Icons.check_circle_rounded,
-                value: '$correct',
-                label: l10n.examCorrect,
-                color: AppColors.success),
+              icon: Icons.check_circle_rounded,
+              value: '$correct',
+              label: l10n.examCorrect,
+              color: AppColors.success,
+            ),
             const SizedBox(width: 10),
             _Chip(
-                icon: Icons.cancel_rounded,
-                value: '$wrong',
-                label: l10n.examWrong,
-                color: AppColors.error),
+              icon: Icons.cancel_rounded,
+              value: '$wrong',
+              label: l10n.examWrong,
+              color: AppColors.error,
+            ),
             const SizedBox(width: 10),
             _Chip(
-                icon: Icons.timer_rounded,
-                value: timeStr,
-                label: l10n.examTimeSpent,
-                color: AppColors.primaryLight),
+              icon: Icons.timer_rounded,
+              value: timeStr,
+              label: l10n.examTimeSpent,
+              color: AppColors.primaryLight,
+            ),
           ],
         ),
 
@@ -730,16 +771,16 @@ class _StatsGrid extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
                 '${l10n.examPassingScore}: 70%',
-                style: AppTextStyles.labelSmall
-                    .copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.labelSmall.copyWith(
+                  color: AppColors.textSecondary,
+                ),
               ),
             ),
           ],
@@ -755,11 +796,12 @@ class _Chip extends StatelessWidget {
   final String label;
   final Color color;
 
-  const _Chip(
-      {required this.icon,
-      required this.value,
-      required this.label,
-      required this.color});
+  const _Chip({
+    required this.icon,
+    required this.value,
+    required this.label,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -775,14 +817,16 @@ class _Chip extends StatelessWidget {
           children: [
             Icon(icon, color: color, size: 22),
             const SizedBox(height: 6),
-            Text(value,
-                style:
-                    AppTextStyles.heading6.copyWith(color: color, height: 1)),
+            Text(
+              value,
+              style: AppTextStyles.heading6.copyWith(color: color, height: 1),
+            ),
             const SizedBox(height: 2),
             Text(
               label,
-              style: AppTextStyles.labelSmall
-                  .copyWith(color: AppColors.textSecondary),
+              style: AppTextStyles.labelSmall.copyWith(
+                color: AppColors.textSecondary,
+              ),
               textAlign: TextAlign.center,
             ),
           ],
@@ -799,10 +843,11 @@ class _ResultBanner extends StatelessWidget {
   final Color primaryColor;
   final AppLocalizations l10n;
 
-  const _ResultBanner(
-      {required this.passed,
-      required this.primaryColor,
-      required this.l10n});
+  const _ResultBanner({
+    required this.passed,
+    required this.primaryColor,
+    required this.l10n,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -870,8 +915,9 @@ class _ActionButton extends StatelessWidget {
           backgroundColor: color,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 15),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           elevation: 2,
         ),
       );
@@ -885,8 +931,9 @@ class _ActionButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 15),
           foregroundColor: color,
           side: BorderSide(color: color.withValues(alpha: 0.6)),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
       );
     }

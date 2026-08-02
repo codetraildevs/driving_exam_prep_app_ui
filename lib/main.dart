@@ -29,19 +29,26 @@ Future<void> _runApp() async {
   // Fonts are bundled via the app's asset pipeline.
   GoogleFonts.config.allowRuntimeFetching = false;
 
-  final isFirstLaunch = await AppLaunchSession().consumeFirstLaunch();
-
-  // Pre-load locale and theme before runApp so the first frame is correct.
-  final initialLocale = await _loadSavedLocale();
-  final initialThemeMode = await _loadSavedTheme();
-
-  // Check cached session to determine the initial route without waiting for
-  // a network round-trip — prevents the login-page flash for returning users.
-  final cachedUser = await AuthSession().getUser();
-
+  // Kick off the auth-status check immediately (it never blocks the first
+  // frame) so its network round-trip overlaps with the prefs reads below.
   final authBloc = AuthBloc()..add(const CheckAuthStatusEvent());
 
-  final lastRoute = await LastRouteSession().getSavedRoute();
+  // Resolve all persisted preferences in parallel so the first frame is
+  // painted as quickly as possible. Previously these ran sequentially, which
+  // delayed runApp on every launch.
+  final (
+    isFirstLaunch,
+    initialLocale,
+    initialThemeMode,
+    cachedUser,
+    lastRoute,
+  ) = await (
+    AppLaunchSession().consumeFirstLaunch(),
+    _loadSavedLocale(),
+    _loadSavedTheme(),
+    AuthSession().getUser(),
+    LastRouteSession().getSavedRoute(),
+  ).wait;
 
   runApp(
     // Riverpod must wrap the entire app to provide the ProviderScope.
@@ -100,9 +107,11 @@ Future<ThemeMode> _loadSavedTheme() async {
 class TrafficRulesApp extends ConsumerStatefulWidget {
   final AuthBloc authBloc;
   final bool isFirstLaunch;
+
   /// Pre-loaded locale so the router can determine if a locale was selected
   /// without reading from Riverpod during initState.
   final Locale? initialLocale;
+
   /// Role from the locally-cached user — used to set the correct initial route.
   final String? cachedUserRole;
   final String? restoredRoute;
@@ -208,8 +217,9 @@ class _TrafficRulesAppState extends ConsumerState<TrafficRulesApp> {
           FallbackMaterialLocalizationsDelegate(),
           FallbackCupertinoLocalizationsDelegate(),
         ],
-        localeResolutionCallback:
-            ref.read(localeProvider.notifier).localeResolutionCallback,
+        localeResolutionCallback: ref
+            .read(localeProvider.notifier)
+            .localeResolutionCallback,
       ),
     );
   }

@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../shared/network/api_helper.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
+import '../../../../shared/widgets/app_menu_button.dart';
 
 class AdminAnalyticsPage extends StatefulWidget {
   const AdminAnalyticsPage({Key? key}) : super(key: key);
@@ -104,9 +106,9 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: Theme.of(context).colorScheme.copyWith(
-                  primary: AppColors.primary,
-                  onPrimary: AppColors.textInverse,
-                ),
+              primary: AppColors.primary,
+              onPrimary: AppColors.textInverse,
+            ),
           ),
           child: child!,
         );
@@ -144,7 +146,11 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
     // Iterate every day in the range
     final sdf = DateFormat('yyyy-MM-dd');
     final result = <Map<String, dynamic>>[];
-    var current = DateTime(_startDate!.year, _startDate!.month, _startDate!.day);
+    var current = DateTime(
+      _startDate!.year,
+      _startDate!.month,
+      _startDate!.day,
+    );
     final end = DateTime(_endDate!.year, _endDate!.month, _endDate!.day);
 
     while (!current.isAfter(end)) {
@@ -181,10 +187,14 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
       floating: false,
       backgroundColor: AppColors.primary,
       elevation: 0,
+      // Desktop: hamburger opens the shell drawer.
+      leading: isDesktop(context) ? const AppMenuButton() : null,
       title: const Text(
         'Analytics',
         style: TextStyle(
-            color: AppColors.textInverse, fontWeight: FontWeight.bold),
+          color: AppColors.textInverse,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       centerTitle: false,
       actions: [
@@ -200,7 +210,8 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
         background: Container(
           decoration: BoxDecoration(
             gradient: AppColors.primaryGradientFor(
-                isDark ? Brightness.dark : Brightness.light),
+              isDark ? Brightness.dark : Brightness.light,
+            ),
           ),
           child: SafeArea(
             child: Padding(
@@ -216,9 +227,9 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
                         Text(
                           'Track Tester Engagement',
                           style: TextStyle(
-                              color:
-                                  AppColors.textInverse.withValues(alpha: 0.8),
-                              fontSize: 12),
+                            color: AppColors.textInverse.withValues(alpha: 0.8),
+                            fontSize: 12,
+                          ),
                         ),
                         const SizedBox(height: 4),
                         const Text(
@@ -238,8 +249,11 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
                       color: AppColors.textInverse.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(Icons.analytics,
-                        color: AppColors.textInverse, size: 28),
+                    child: const Icon(
+                      Icons.analytics,
+                      color: AppColors.textInverse,
+                      size: 28,
+                    ),
                   ),
                 ],
               ),
@@ -261,12 +275,17 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.error_outline,
-                  size: 56, color: AppColors.error.withValues(alpha: 0.7)),
+              Icon(
+                Icons.error_outline,
+                size: 56,
+                color: AppColors.error.withValues(alpha: 0.7),
+              ),
               const SizedBox(height: 16),
-              Text(_error!,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: AppColors.textSecondary)),
+              Text(
+                _error!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: AppColors.textSecondary),
+              ),
               const SizedBox(height: 24),
               ElevatedButton.icon(
                 onPressed: _loadData,
@@ -286,17 +305,24 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildDateFilter(),
-              const SizedBox(height: 16),
-              if (_isLowEngagement && _analytics.isNotEmpty) _buildAlertBanner(),
-              const SizedBox(height: 16),
-              _buildSummaryCards(),
-              const SizedBox(height: 28),
-              _buildChartSection(),
-            ],
+          // Scroll view already applies 16px side padding; only cap width
+          // so charts and cards don't stretch edge-to-edge on desktop.
+          child: ConstrainedContent(
+            maxWidth: AppContentWidths.wide,
+            padding: EdgeInsets.zero,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildDateFilter(),
+                const SizedBox(height: 16),
+                if (_isLowEngagement && _analytics.isNotEmpty)
+                  _buildAlertBanner(),
+                const SizedBox(height: 16),
+                _buildSummaryCards(),
+                const SizedBox(height: 28),
+                _buildChartSection(),
+              ],
+            ),
           ),
         ),
       ),
@@ -313,16 +339,20 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
       ),
       child: Row(
         children: [
-          const Icon(Icons.warning_amber_rounded,
-              color: AppColors.warning, size: 22),
+          const Icon(
+            Icons.warning_amber_rounded,
+            color: AppColors.warning,
+            size: 22,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               'Low engagement detected — only $_uniqueUsers unique users submitted exams in this period. Consider reaching out to testers.',
               style: const TextStyle(
-                  color: AppColors.error,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500),
+                color: AppColors.error,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],
@@ -347,14 +377,13 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(14),
-          border:
-              Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+          border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
           boxShadow: [
             BoxShadow(
-                color:
-                    Theme.of(context).shadowColor.withValues(alpha: 0.06),
-                blurRadius: 8,
-                offset: const Offset(0, 2)),
+              color: Theme.of(context).shadowColor.withValues(alpha: 0.06),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
           ],
         ),
         child: Row(
@@ -365,28 +394,38 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
                 color: AppColors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.calendar_month,
-                  color: AppColors.primary, size: 18),
+              child: const Icon(
+                Icons.calendar_month,
+                color: AppColors.primary,
+                size: 18,
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Date Range',
-                      style: TextStyle(
-                          fontSize: 11, color: AppColors.textSecondary)),
+                  const Text(
+                    'Date Range',
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
                   const SizedBox(height: 2),
-                  Text(dateText,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 13)),
+                  Text(
+                    dateText,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                    ),
+                  ),
                 ],
               ),
             ),
             if (dayCount > 0)
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
@@ -394,9 +433,10 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
                 child: Text(
                   '$dayCount days',
                   style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primary),
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
                 ),
               ),
             const SizedBox(width: 8),
@@ -447,13 +487,17 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
               width: 10,
               height: 10,
               decoration: BoxDecoration(
-                  color: _barColor,
-                  borderRadius: BorderRadius.circular(3)),
+                color: _barColor,
+                borderRadius: BorderRadius.circular(3),
+              ),
             ),
             const SizedBox(width: 6),
             Text(
               _isLowEngagement ? 'Low activity' : 'Active',
-              style: TextStyle(fontSize: 11, color: _isLowEngagement ? _barColor: AppColors.primary,),
+              style: TextStyle(
+                fontSize: 11,
+                color: _isLowEngagement ? _barColor : AppColors.primary,
+              ),
             ),
           ],
         ),
@@ -464,10 +508,10 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
             borderRadius: BorderRadius.circular(18),
             boxShadow: [
               BoxShadow(
-                  color:
-                      Theme.of(context).shadowColor.withValues(alpha: 0.07),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4)),
+                color: Theme.of(context).shadowColor.withValues(alpha: 0.07),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
             ],
           ),
           child: Column(
@@ -481,14 +525,15 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
               const SizedBox(height: 8),
               // Bottom legend
               Padding(
-                padding:
-                    const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                 child: Text(
                   days.isEmpty
                       ? 'No data for the selected period.'
                       : 'Showing ${days.length} day${days.length == 1 ? "" : "s"} · ${_rawDailyStats.length} active day${_rawDailyStats.length == 1 ? "" : "s"}',
                   style: const TextStyle(
-                      fontSize: 11, color: AppColors.textSecondary),
+                    fontSize: 11,
+                    color: AppColors.textSecondary,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -509,8 +554,10 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
             children: [
               Icon(Icons.bar_chart, size: 48, color: AppColors.textTertiary),
               SizedBox(height: 8),
-              Text('No exam data for this period',
-                  style: TextStyle(color: AppColors.textSecondary)),
+              Text(
+                'No exam data for this period',
+                style: TextStyle(color: AppColors.textSecondary),
+              ),
             ],
           ),
         ),
@@ -527,135 +574,145 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
     // Each bar column: countLabelSlot(18) + chartHeight(150) + labelHeight(36) = 204 total
     const double barColumnWidth = 36.0;
     const double countLabelSlot = 18.0; // 16px text + 2px spacer
-    const double chartHeight = 180.0;   // max bar height
-    const double labelHeight = 36.0;    // rotated date label
-    const double totalColumnHeight = countLabelSlot + chartHeight + labelHeight; // 204
+    const double chartHeight = 180.0; // max bar height
+    const double labelHeight = 36.0; // rotated date label
+    const double totalColumnHeight =
+        countLabelSlot + chartHeight + labelHeight; // 204
 
-    return LayoutBuilder(builder: (context, constraints) {
-      final totalWidth = math.max(
-          constraints.maxWidth, days.length * barColumnWidth.toDouble());
-      final needsScroll = totalWidth > constraints.maxWidth;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final totalWidth = math.max(
+          constraints.maxWidth,
+          days.length * barColumnWidth.toDouble(),
+        );
+        final needsScroll = totalWidth > constraints.maxWidth;
 
-      final chart = SizedBox(
-        width: totalWidth,
-        height: totalColumnHeight,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: days.map((day) {
-            final count = day['count'] as int;
-            final dateStr = day['date'] as String;
-            String shortLabel = dateStr;
-            try {
-              final parsed = DateTime.parse(dateStr);
-              shortLabel = DateFormat('d/M').format(parsed);
-            } catch (_) {}
+        final chart = SizedBox(
+          width: totalWidth,
+          height: totalColumnHeight,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: days.map((day) {
+              final count = day['count'] as int;
+              final dateStr = day['date'] as String;
+              String shortLabel = dateStr;
+              try {
+                final parsed = DateTime.parse(dateStr);
+                shortLabel = DateFormat('d/M').format(parsed);
+              } catch (_) {}
 
-            final fraction = count / maxCount;
-            // final barH = math.max(fraction * chartHeight, count > 0 ? 8.0 : 2.0);
-            const availableBarHeight = chartHeight - countLabelSlot;
+              final fraction = count / maxCount;
+              // final barH = math.max(fraction * chartHeight, count > 0 ? 8.0 : 2.0);
+              const availableBarHeight = chartHeight - countLabelSlot;
 
-final barH = math.min(
-  math.max(fraction * availableBarHeight, count > 0 ? 8.0 : 2.0),
-  availableBarHeight,
-);
+              final barH = math.min(
+                math.max(fraction * availableBarHeight, count > 0 ? 8.0 : 2.0),
+                availableBarHeight,
+              );
 
-            final isEmpty = count == 0;
-            final barDecoration = isEmpty
-                ? const BoxDecoration(
-                    color: AppColors.neutral200,
-                    borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(4)),
-                  )
-                : BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [_barColorLight, _barColor],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                    borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(6)),
-                    boxShadow: [
-                      BoxShadow(
+              final isEmpty = count == 0;
+              final barDecoration = isEmpty
+                  ? const BoxDecoration(
+                      color: AppColors.neutral200,
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(4),
+                      ),
+                    )
+                  : BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [_barColorLight, _barColor],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(6),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
                           color: _barColor.withValues(alpha: 0.3),
                           blurRadius: 4,
-                          offset: const Offset(0, 2))
-                    ],
-                  );
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    );
 
-            return SizedBox(
-              width: barColumnWidth,
-              height: totalColumnHeight,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // count label above bar — fixed 16px slot
-                  SizedBox(
-                    height: 16,
-                    child: count > 0
-                        ? Text(
-                            count.toString(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 9,
-                              fontWeight: FontWeight.bold,
-                              color: _isLowEngagement ? _barColor: AppColors.primary,
-                            ),
-                          )
-                        : const SizedBox.shrink(),
-                  ),
-                  const SizedBox(height: 2),
-                  // the bar — grows proportionally inside the remaining space
-                  SizedBox(
-                    height: barH,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeOutCubic,
-                        decoration: barDecoration,
+              return SizedBox(
+                width: barColumnWidth,
+                height: totalColumnHeight,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // count label above bar — fixed 16px slot
+                    SizedBox(
+                      height: 16,
+                      child: count > 0
+                          ? Text(
+                              count.toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold,
+                                color: _isLowEngagement
+                                    ? _barColor
+                                    : AppColors.primary,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                    ),
+                    const SizedBox(height: 2),
+                    // the bar — grows proportionally inside the remaining space
+                    SizedBox(
+                      height: barH,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeOutCubic,
+                          decoration: barDecoration,
+                        ),
                       ),
                     ),
-                  ),
-                  // date label — fixed rotated slot
-                  SizedBox(
-                    height: labelHeight,
-                    child: OverflowBox(
-                      maxWidth: barColumnWidth * 1.5,
-                      child: Center(
-                        child: Transform.rotate(
-                          angle: -math.pi / 4,
-                          child: Text(
-                            shortLabel,
-                            style: TextStyle(
-                              fontSize: 8,
-                              color: isEmpty
-                                  ? AppColors.textTertiary
-                                  : AppColors.textSecondary,
+                    // date label — fixed rotated slot
+                    SizedBox(
+                      height: labelHeight,
+                      child: OverflowBox(
+                        maxWidth: barColumnWidth * 1.5,
+                        child: Center(
+                          child: Transform.rotate(
+                            angle: -math.pi / 4,
+                            child: Text(
+                              shortLabel,
+                              style: TextStyle(
+                                fontSize: 8,
+                                color: isEmpty
+                                    ? AppColors.textTertiary
+                                    : AppColors.textSecondary,
+                              ),
+                              overflow: TextOverflow.clip,
+                              maxLines: 1,
                             ),
-                            overflow: TextOverflow.clip,
-                            maxLines: 1,
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
-        ),
-      );
-
-      if (needsScroll) {
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: chart,
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
         );
-      }
-      return chart;
-    });
+
+        if (needsScroll) {
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: chart,
+          );
+        }
+        return chart;
+      },
+    );
   }
 }
 
@@ -687,9 +744,10 @@ class _StatCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-              color: Theme.of(context).shadowColor.withValues(alpha: 0.06),
-              blurRadius: 10,
-              offset: const Offset(0, 3)),
+            color: Theme.of(context).shadowColor.withValues(alpha: 0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
         ],
       ),
       child: Column(
@@ -710,7 +768,9 @@ class _StatCard extends StatelessWidget {
                 child: Text(
                   title,
                   style: const TextStyle(
-                      fontSize: 12, color: AppColors.textSecondary),
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -719,16 +779,19 @@ class _StatCard extends StatelessWidget {
           const SizedBox(height: 14),
           Text(
             value,
-            style: AppTextStyles.heading2
-                .copyWith(color: color, fontWeight: FontWeight.bold),
+            style: AppTextStyles.heading2.copyWith(
+              color: color,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             subtitle,
             style: TextStyle(
-                fontSize: 11,
-                color: color.withValues(alpha: 0.75),
-                fontWeight: FontWeight.w500),
+              fontSize: 11,
+              color: color.withValues(alpha: 0.75),
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),

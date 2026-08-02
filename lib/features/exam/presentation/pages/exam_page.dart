@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
 
 class ExamPage extends StatefulWidget {
   const ExamPage({Key? key}) : super(key: key);
@@ -22,17 +23,32 @@ class _ExamPageState extends State<ExamPage> {
   List<Map<String, dynamic>> _buildExamQuestions(AppLocalizations l10n) => [
     {
       'question': l10n.examSampleQ1,
-      'answers': [l10n.examSampleQ1A1, l10n.examSampleQ1A2, l10n.examSampleQ1A3, l10n.examSampleQ1A4],
+      'answers': [
+        l10n.examSampleQ1A1,
+        l10n.examSampleQ1A2,
+        l10n.examSampleQ1A3,
+        l10n.examSampleQ1A4,
+      ],
       'correct': 3,
     },
     {
       'question': l10n.examSampleQ2,
-      'answers': [l10n.examSampleQ2A1, l10n.examSampleQ2A2, l10n.examSampleQ2A3, l10n.examSampleQ2A4],
+      'answers': [
+        l10n.examSampleQ2A1,
+        l10n.examSampleQ2A2,
+        l10n.examSampleQ2A3,
+        l10n.examSampleQ2A4,
+      ],
       'correct': 2,
     },
     {
       'question': l10n.examSampleQ3,
-      'answers': [l10n.examSampleQ3A1, l10n.examSampleQ3A2, l10n.examSampleQ3A3, l10n.examSampleQ3A4],
+      'answers': [
+        l10n.examSampleQ3A1,
+        l10n.examSampleQ3A2,
+        l10n.examSampleQ3A3,
+        l10n.examSampleQ3A4,
+      ],
       'correct': 1,
     },
   ];
@@ -95,13 +111,16 @@ class _ExamPageState extends State<ExamPage> {
     final total = examQuestions.length;
     final accuracy = total > 0 ? ((_correctAnswers / total) * 100).toInt() : 0;
     final elapsed = DateTime.now().difference(_startTime).inSeconds;
-    context.push('/exam/result/0', extra: {
-      'score': accuracy,
-      'totalQuestions': total,
-      'correctAnswers': _correctAnswers,
-      'timeSpentSeconds': elapsed,
-      'examTitle': '',
-    });
+    context.push(
+      '/exam/result/0',
+      extra: {
+        'score': accuracy,
+        'totalQuestions': total,
+        'correctAnswers': _correctAnswers,
+        'timeSpentSeconds': elapsed,
+        'examTitle': '',
+      },
+    );
   }
 
   String _formatTime(int seconds) {
@@ -115,7 +134,9 @@ class _ExamPageState extends State<ExamPage> {
     final l10n = AppLocalizations.of(context);
     final question = examQuestions[_currentQuestion];
     final progress = (_currentQuestion + 1) / examQuestions.length;
-    final timeColor = _remainingSeconds < 300 ? AppColors.error : AppColors.primary;
+    final timeColor = _remainingSeconds < 300
+        ? AppColors.error
+        : AppColors.primary;
 
     return Scaffold(
       appBar: AppBar(
@@ -126,16 +147,17 @@ class _ExamPageState extends State<ExamPage> {
             padding: const EdgeInsets.all(16),
             child: Center(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: timeColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   _formatTime(_remainingSeconds),
-                  style: AppTextStyles.labelLarge.copyWith(
-                    color: timeColor,
-                  ),
+                  style: AppTextStyles.labelLarge.copyWith(color: timeColor),
                 ),
               ),
             ),
@@ -147,122 +169,163 @@ class _ExamPageState extends State<ExamPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        l10n.quizQuestion(_currentQuestion + 1, examQuestions.length),
-                        style: AppTextStyles.labelLarge,
-                      ),
-                      Text(
-                        '$_correctAnswers/${examQuestions.length}',
-                        style: AppTextStyles.labelLarge.copyWith(
-                          color: AppColors.success,
+              // Cap the progress row so it stays aligned with the question
+              // content below on desktop.
+              child: ConstrainedContent(
+                maxWidth: AppContentWidths.narrow,
+                padding: EdgeInsets.zero,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          l10n.quizQuestion(
+                            _currentQuestion + 1,
+                            examQuestions.length,
+                          ),
+                          style: AppTextStyles.labelLarge,
+                        ),
+                        Text(
+                          '$_correctAnswers/${examQuestions.length}',
+                          style: AppTextStyles.labelLarge.copyWith(
+                            color: AppColors.success,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: LinearProgressIndicator(
+                        value: progress,
+                        minHeight: 8,
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.outlineVariant,
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          AppColors.primary,
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: LinearProgressIndicator(
-                      value: progress,
-                      minHeight: 8,
-                      backgroundColor: Theme.of(context).colorScheme.outlineVariant,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        AppColors.primary,
-                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Expanded(
               child: SingleChildScrollView(
+                // Scroll view already applies 24px side padding; only cap the
+                // content width so question text stays readable on desktop.
                 padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      question['question'] as String,
-                      style: AppTextStyles.heading4,
-                    ),
-                    const SizedBox(height: 32),
-                    ...(question['answers'] as List<String>).asMap().entries.map((e) {
-                      final index = e.key;
-                      final answer = e.value;
-                      final isSelected = _selectedAnswer == index;
-                      final isCorrect = index == question['correct'];
-                      final shouldHighlight = _answered && (isSelected || isCorrect);
+                child: ConstrainedContent(
+                  maxWidth: AppContentWidths.narrow,
+                  padding: EdgeInsets.zero,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        question['question'] as String,
+                        style: AppTextStyles.heading4,
+                      ),
+                      const SizedBox(height: 32),
+                      ...(question['answers'] as List<String>)
+                          .asMap()
+                          .entries
+                          .map((e) {
+                            final index = e.key;
+                            final answer = e.value;
+                            final isSelected = _selectedAnswer == index;
+                            final isCorrect = index == question['correct'];
+                            final shouldHighlight =
+                                _answered && (isSelected || isCorrect);
 
-                      Color borderColor = Theme.of(context).colorScheme.outline;
-                      Color backgroundColor = Theme.of(context).colorScheme.surface;
+                            Color borderColor = Theme.of(
+                              context,
+                            ).colorScheme.outline;
+                            Color backgroundColor = Theme.of(
+                              context,
+                            ).colorScheme.surface;
 
-                      if (shouldHighlight) {
-                        if (isCorrect) {
-                          borderColor = AppColors.success;
-                          backgroundColor = AppColors.success.withValues(alpha: 0.1);
-                        } else if (isSelected) {
-                          borderColor = AppColors.error;
-                          backgroundColor = AppColors.error.withValues(alpha: 0.1);
-                        }
-                      } else if (isSelected && !_answered) {
-                        borderColor = AppColors.primary;
-                        backgroundColor = AppColors.primary.withValues(alpha: 0.05);
-                      }
+                            if (shouldHighlight) {
+                              if (isCorrect) {
+                                borderColor = AppColors.success;
+                                backgroundColor = AppColors.success.withValues(
+                                  alpha: 0.1,
+                                );
+                              } else if (isSelected) {
+                                borderColor = AppColors.error;
+                                backgroundColor = AppColors.error.withValues(
+                                  alpha: 0.1,
+                                );
+                              }
+                            } else if (isSelected && !_answered) {
+                              borderColor = AppColors.primary;
+                              backgroundColor = AppColors.primary.withValues(
+                                alpha: 0.05,
+                              );
+                            }
 
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: GestureDetector(
-                          onTap: () => _handleAnswerSelected(index),
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: backgroundColor,
-                              border: Border.all(color: borderColor, width: 2),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    answer,
-                                    style: AppTextStyles.bodyMedium,
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: GestureDetector(
+                                onTap: () => _handleAnswerSelected(index),
+                                child: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    color: backgroundColor,
+                                    border: Border.all(
+                                      color: borderColor,
+                                      width: 2,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          answer,
+                                          style: AppTextStyles.bodyMedium,
+                                        ),
+                                      ),
+                                      if (shouldHighlight)
+                                        Icon(
+                                          isCorrect
+                                              ? Icons.check_circle
+                                              : Icons.cancel,
+                                          color: isCorrect
+                                              ? AppColors.success
+                                              : AppColors.error,
+                                        ),
+                                    ],
                                   ),
                                 ),
-                                if (shouldHighlight)
-                                  Icon(
-                                    isCorrect ? Icons.check_circle : Icons.cancel,
-                                    color: isCorrect
-                                        ? AppColors.success
-                                        : AppColors.error,
-                                  ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-                  ],
+                              ),
+                            );
+                          }),
+                    ],
+                  ),
                 ),
               ),
             ),
             if (_answered)
               Padding(
                 padding: const EdgeInsets.all(24),
-                child: ElevatedButton(
-                  onPressed: _handleNext,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: Text(
-                    _currentQuestion == examQuestions.length - 1
-                        ? l10n.examSubmit
-                        : l10n.quizNextQuestion,
-                    style: AppTextStyles.buttonLarge,
+                // Cap the button width so it stays centered on desktop.
+                child: ConstrainedContent(
+                  maxWidth: AppContentWidths.narrow,
+                  padding: EdgeInsets.zero,
+                  child: ElevatedButton(
+                    onPressed: _handleNext,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    child: Text(
+                      _currentQuestion == examQuestions.length - 1
+                          ? l10n.examSubmit
+                          : l10n.quizNextQuestion,
+                      style: AppTextStyles.buttonLarge,
+                    ),
                   ),
                 ),
               ),

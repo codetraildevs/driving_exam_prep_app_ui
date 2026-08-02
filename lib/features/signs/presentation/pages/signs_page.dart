@@ -5,19 +5,23 @@ import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../data/models/sign_model.dart';
 import '../../data/repositories/signs_repository.dart';
 
 class SignsPage extends StatefulWidget {
-  const SignsPage({Key? key}) : super(key: key);
+  /// Optional repository override for tests; defaults to the real one.
+  final SignsRepository? repository;
+
+  const SignsPage({Key? key, this.repository}) : super(key: key);
 
   @override
   State<SignsPage> createState() => _SignsPageState();
 }
 
 class _SignsPageState extends State<SignsPage> {
-  final signsRepo = SignsRepository();
+  late final SignsRepository signsRepo = widget.repository ?? SignsRepository();
   late TextEditingController _searchController;
   String _selectedCategory = '';
   List<String> _categories = [];
@@ -70,9 +74,23 @@ class _SignsPageState extends State<SignsPage> {
       body: SafeArea(
         child: Column(
           children: [
-            _buildSearchBar(),
-            _buildCategoryFilter(),
-            Expanded(child: _buildSignsGrid()),
+            ConstrainedContent(
+              maxWidth: AppContentWidths.wide,
+              padding: EdgeInsets.zero,
+              child: _buildSearchBar(),
+            ),
+            ConstrainedContent(
+              maxWidth: AppContentWidths.wide,
+              padding: EdgeInsets.zero,
+              child: _buildCategoryFilter(),
+            ),
+            Expanded(
+              child: ConstrainedContent(
+                maxWidth: AppContentWidths.wide,
+                padding: EdgeInsets.zero,
+                child: _buildSignsGrid(),
+              ),
+            ),
           ],
         ),
       ),
@@ -126,10 +144,14 @@ class _SignsPageState extends State<SignsPage> {
               },
               selectedColor: AppColors.primary,
               labelStyle: TextStyle(
-                color: isSelected ? AppColors.textInverse : Theme.of(context).colorScheme.onSurface,
+                color: isSelected
+                    ? AppColors.textInverse
+                    : Theme.of(context).colorScheme.onSurface,
               ),
               side: BorderSide(
-                color: isSelected ? AppColors.primary : Theme.of(context).colorScheme.outline,
+                color: isSelected
+                    ? AppColors.primary
+                    : Theme.of(context).colorScheme.outline,
               ),
             ),
           );
@@ -170,16 +192,26 @@ class _SignsPageState extends State<SignsPage> {
 
         final signs = snapshot.data!;
 
-        return GridView.builder(
-          padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            childAspectRatio: 0.85,
-          ),
-          itemCount: signs.length,
-          itemBuilder: (context, index) => _buildSignCard(signs[index]),
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            // More columns on wider screens so the grid doesn't stretch
+            // edge-to-edge with two oversized cards on desktop.
+            final crossAxisCount =
+                constraints.maxWidth >= AppContentWidths.medium
+                ? 4
+                : (constraints.maxWidth >= AppContentWidths.gridDense ? 3 : 2);
+            return GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
+                childAspectRatio: 0.85,
+              ),
+              itemCount: signs.length,
+              itemBuilder: (context, index) => _buildSignCard(signs[index]),
+            );
+          },
         );
       },
     );
@@ -202,11 +234,17 @@ class _SignsPageState extends State<SignsPage> {
               child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5)),
+                  border: Border.all(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.5),
+                  ),
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
+                      color: Theme.of(
+                        context,
+                      ).shadowColor.withValues(alpha: 0.05),
                       blurRadius: 8,
                     ),
                   ],
@@ -223,10 +261,7 @@ class _SignsPageState extends State<SignsPage> {
                           ),
                         ),
                         child: const Center(
-                          child: Text(
-                            '🛑',
-                            style: TextStyle(fontSize: 48),
-                          ),
+                          child: Text('🛑', style: TextStyle(fontSize: 48)),
                         ),
                       ),
                     ),

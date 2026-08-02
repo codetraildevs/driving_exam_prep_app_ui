@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
@@ -46,48 +47,64 @@ class PrivacyPolicyPage extends StatelessWidget {
           AppPageHeader(title: l10n.settingsPrivacyPolicy, showBack: true),
           Expanded(
             child: SingleChildScrollView(
+              // Scroll view already applies 24px side padding; only cap the
+              // content width so cards don't stretch edge-to-edge on desktop.
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.policy_rounded, color: AppColors.primary, size: 18),
-                        const SizedBox(width: 8),
-                        Text(
-                          l10n.privacyLastUpdated,
-                          style: AppTextStyles.bodySmall.copyWith(
+              child: ConstrainedContent(
+                maxWidth: AppContentWidths.narrow,
+                padding: EdgeInsets.zero,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header badge
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.policy_rounded,
                             color: AppColors.primary,
-                            fontWeight: FontWeight.w600,
+                            size: 18,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 8),
+                          Text(
+                            l10n.privacyLastUpdated,
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(l10n.privacyIntro, style: AppTextStyles.bodyMedium.copyWith(height: 1.5)),
-                  const SizedBox(height: 20),
-                  ...sections.asMap().entries.map((entry) {
-                    final i = entry.key;
-                    final s = entry.value;
-                    return _PolicyCard(
-                      index: i + 1,
-                      icon: s.icon,
-                      title: s.title,
-                      body: s.body,
-                      cs: cs,
-                    );
-                  }),
-                  const SizedBox(height: 32),
-                ],
+                    const SizedBox(height: 16),
+                    Text(
+                      l10n.privacyIntro,
+                      style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
+                    ),
+                    const SizedBox(height: 20),
+                    ...sections.asMap().entries.map((entry) {
+                      final i = entry.key;
+                      final s = entry.value;
+                      return _PolicyCard(
+                        index: i + 1,
+                        icon: s.icon,
+                        title: s.title,
+                        body: s.body,
+                        cs: cs,
+                      );
+                    }),
+                    const SizedBox(height: 32),
+                  ],
+                ),
               ),
             ),
           ),
@@ -157,16 +174,11 @@ class _PolicyCard extends StatelessWidget {
                 child: Icon(icon, color: AppColors.primary, size: 18),
               ),
               const SizedBox(width: 12),
-              Expanded(
-                child: Text(title, style: AppTextStyles.heading6),
-              ),
+              Expanded(child: Text(title, style: AppTextStyles.heading6)),
             ],
           ),
           const SizedBox(height: 10),
-          Text(
-            body,
-            style: AppTextStyles.bodySmall.copyWith(height: 1.5),
-          ),
+          Text(body, style: AppTextStyles.bodySmall.copyWith(height: 1.5)),
         ],
       ),
     );

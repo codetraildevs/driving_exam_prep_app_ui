@@ -5,6 +5,7 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_notifier.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/subscription/subscription_notifier.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 
@@ -24,12 +25,26 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
   List<Map<String, dynamic>> _getPlans(String langCode, AppLocalizations l10n) {
     return [
-      {'tier': '1_MONTH', 'durationDays': 30, 'label': l10n.subscriptionMonth1, 'popular': false},
-      {'tier': '3_MONTHS', 'durationDays': 90, 'label': l10n.subscriptionMonth3, 'popular': true},
-      {'tier': '6_MONTHS', 'durationDays': 180, 'label': l10n.subscriptionMonth6, 'popular': false},
+      {
+        'tier': '1_MONTH',
+        'durationDays': 30,
+        'label': l10n.subscriptionMonth1,
+        'popular': false,
+      },
+      {
+        'tier': '3_MONTHS',
+        'durationDays': 90,
+        'label': l10n.subscriptionMonth3,
+        'popular': true,
+      },
+      {
+        'tier': '6_MONTHS',
+        'durationDays': 180,
+        'label': l10n.subscriptionMonth6,
+        'popular': false,
+      },
     ];
   }
-
 
   Future<void> _callNumber() async {
     final uri = Uri(scheme: 'tel', path: _kHelpNumber);
@@ -46,7 +61,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   }
 
   Future<void> _openWhatsApp(String message) async {
-    final uri = Uri.parse('https://wa.me/250${_kHelpNumber.substring(1)}?text=${Uri.encodeComponent(message)}');
+    final uri = Uri.parse(
+      'https://wa.me/250${_kHelpNumber.substring(1)}?text=${Uri.encodeComponent(message)}',
+    );
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
@@ -56,7 +73,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final container = ProviderScope.containerOf(context, listen: false);
-    final langCode = container.read(localeProvider).effectiveLocale.languageCode;
+    final langCode = container
+        .read(localeProvider)
+        .effectiveLocale
+        .languageCode;
     final subscription = container.read(subscriptionProvider);
     final plans = _getPlans(langCode, l10n);
 
@@ -71,53 +91,69 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                 
+              // Scroll view already applies 20px side padding; only cap
+              // the width so plan cards stay comfortable on desktop.
+              child: ConstrainedContent(
+                maxWidth: AppContentWidths.compact,
+                padding: EdgeInsets.zero,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // ── Active subscription banner ──
+                    if (subscription.hasActiveAccess) ...[
+                      _ActiveAccessBanner(
+                        l10n: l10n,
+                        subscription: subscription,
+                      ),
+                      const SizedBox(height: 10),
+                    ],
 
-                  // ── Active subscription banner ──
-                  if (subscription.hasActiveAccess) ...[
-                    _ActiveAccessBanner(l10n: l10n, subscription: subscription),
+                    // ── Plan selection ──
+                    Text(
+                      l10n.subscriptionChoosePlan,
+                      style: AppTextStyles.heading5,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.subscriptionCurrency,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
                     const SizedBox(height: 10),
-                  ],
-
-                  // ── Plan selection ──
-                  Text(l10n.subscriptionChoosePlan, style: AppTextStyles.heading5),
-                  const SizedBox(height: 4),
-                  Text(
-                    l10n.subscriptionCurrency,
-                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
-                  ),
-                  const SizedBox(height: 10),
-                  ...plans.map((plan) => _PlanCard(
+                    ...plans.map(
+                      (plan) => _PlanCard(
                         plan: plan,
                         loadingTier: _loadingTier,
                         selectedTier: _selectedTier,
-                        onSelect: (tier) => setState(() => _selectedTier = tier),
+                        onSelect: (tier) =>
+                            setState(() => _selectedTier = tier),
                         l10n: l10n,
-                      )),
-const SizedBox(height: 4),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
 
-                  // ── Learning Support Message ──
-                  _TrafficRulesSupportCard(l10n: l10n),
-                  const SizedBox(height: 20),
-                  
-                  // ── Need Help ──
-                  _SectionHeader(
-                    icon: Icons.headset_mic_rounded,
-                    title: l10n.subscriptionNeedHelp,
-                  ),
-                  const SizedBox(height: 10),
-                  _NeedHelpCard(
-                    l10n: l10n,
-                    onCall: _callNumber,
-                    onTigoCall: _callTigoNumber,
-                    onWhatsApp: () => _openWhatsApp(l10n.paymentWhatsAppMessage),
-                  ),
+                    // ── Learning Support Message ──
+                    _TrafficRulesSupportCard(l10n: l10n),
+                    const SizedBox(height: 20),
 
-                  const SizedBox(height: 32),
-                ],
+                    // ── Need Help ──
+                    _SectionHeader(
+                      icon: Icons.headset_mic_rounded,
+                      title: l10n.subscriptionNeedHelp,
+                    ),
+                    const SizedBox(height: 10),
+                    _NeedHelpCard(
+                      l10n: l10n,
+                      onCall: _callNumber,
+                      onTigoCall: _callTigoNumber,
+                      onWhatsApp: () =>
+                          _openWhatsApp(l10n.paymentWhatsAppMessage),
+                    ),
+
+                    const SizedBox(height: 32),
+                  ],
+                ),
               ),
             ),
           ),
@@ -154,7 +190,11 @@ class _ActiveAccessBanner extends StatelessWidget {
               color: AppColors.success.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.verified_rounded, color: AppColors.success, size: 24),
+            child: const Icon(
+              Icons.verified_rounded,
+              color: AppColors.success,
+              size: 24,
+            ),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -163,16 +203,24 @@ class _ActiveAccessBanner extends StatelessWidget {
               children: [
                 Text(
                   l10n.subscriptionAccessActive,
-                  style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.success, fontSize: 15),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.success,
+                    fontSize: 15,
+                  ),
                 ),
                 if (subscription.expiresAt != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 2),
                     child: Text(
                       l10n.subscriptionExpires(
-                        subscription.expiresAt!.toLocal().toString().split(' ')[0],
+                        subscription.expiresAt!.toLocal().toString().split(
+                          ' ',
+                        )[0],
                       ),
-                      style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ),
               ],
@@ -231,17 +279,21 @@ class _NeedHelpCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.2)),
+        border: Border.all(
+          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+        ),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: theme.shadowColor.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2)),
+          BoxShadow(
+            color: theme.shadowColor.withValues(alpha: 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-  
-
           // Action buttons
           Column(
             children: [
@@ -251,16 +303,14 @@ class _NeedHelpCard extends StatelessWidget {
                 color: AppColors.primary,
                 onTap: onCall,
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               _ContactButton(
                 icon: Icons.phone_rounded,
                 label: l10n.paymentCallTigoNumber,
                 color: AppColors.textSecondary,
                 onTap: onTigoCall,
               ),
-             
+
               const SizedBox(height: 10),
               _ContactButton(
                 icon: Icons.chat_rounded,
@@ -361,7 +411,10 @@ class _PlanCard extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
-            BoxShadow(color: theme.shadowColor.withValues(alpha: 0.04), blurRadius: 8),
+            BoxShadow(
+              color: theme.shadowColor.withValues(alpha: 0.04),
+              blurRadius: 8,
+            ),
           ],
         ),
         child: Stack(
@@ -377,7 +430,9 @@ class _PlanCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: isSelected ? AppColors.primary : AppColors.textSecondary.withValues(alpha: 0.4),
+                        color: isSelected
+                            ? AppColors.primary
+                            : AppColors.textSecondary.withValues(alpha: 0.4),
                         width: 2,
                       ),
                     ),
@@ -394,47 +449,56 @@ class _PlanCard extends StatelessWidget {
                           )
                         : null,
                   ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(label, style: AppTextStyles.heading6),
-                      const SizedBox(height: 2),
-                      Text(
-                        l10n.subscriptionDays(days),
-                        style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
-                      ),
-                    ],
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(label, style: AppTextStyles.heading6),
+                        const SizedBox(height: 2),
+                        Text(
+                          l10n.subscriptionDays(days),
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                if (isSelected)
-                const Icon(Icons.check_circle, color: AppColors.primary),
-              ],
-            ),
-          ),
-          // Popular badge
-          if (isPopular)
-            Positioned(
-              top: 0,
-              right: 16,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                decoration: const BoxDecoration(
-                  color: AppColors.success,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(8),
-                    bottomRight: Radius.circular(8),
-                  ),
-                ),
-                child: Text(
-                  l10n.subscriptionPopular,
-                  style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600),
-                ),
+                  if (isSelected)
+                    const Icon(Icons.check_circle, color: AppColors.primary),
+                ],
               ),
             ),
-        ],
-      ),
+            // Popular badge
+            if (isPopular)
+              Positioned(
+                top: 0,
+                right: 16,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 3,
+                  ),
+                  decoration: const BoxDecoration(
+                    color: AppColors.success,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8),
+                    ),
+                  ),
+                  child: Text(
+                    l10n.subscriptionPopular,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

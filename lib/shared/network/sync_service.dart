@@ -35,6 +35,11 @@ class SyncService {
   }
 
   Future<void> _checkConnectivity() async {
+    // dart:io is stubbed on web — InternetAddress.lookup throws
+    // UnsupportedError there. Browsers expose their own online/offline
+    // events; keep the default (online) state on web.
+    if (kIsWeb) return;
+
     final wasOnline = _isOnline;
     try {
       final result = await InternetAddress.lookup('google.com')

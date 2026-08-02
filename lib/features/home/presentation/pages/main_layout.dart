@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../config/theme/app_colors.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
+import '../../../../shared/widgets/app_drawer_scope.dart';
+import '../../../../shared/widgets/app_logo_widget.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
-bool _isAdminOrManager(String role) =>
-    role == 'ADMIN' || role == 'MANAGER';
+bool _isAdminOrManager(String role) => role == 'ADMIN' || role == 'MANAGER';
 
 class MainLayout extends StatefulWidget {
   final Widget child;
@@ -18,6 +21,10 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
+  /// Owned by the shell so page headers can open the drawer via
+  /// [AppDrawerScope] + [AppMenuButton].
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -36,17 +43,189 @@ class _MainLayoutState extends State<MainLayout> {
           SystemNavigator.pop();
         }
       },
-      child: Scaffold(
-        body: widget.child,
-        bottomNavigationBar: isAdmin
-            ? _buildAdminNav(context, l10n)
-            : _buildUserNav(context, l10n),
+      child: AppDrawerScope(
+        openDrawer: () => _scaffoldKey.currentState?.openDrawer(),
+        child: Scaffold(
+          key: _scaffoldKey,
+          // Desktop gets a slide-out hamburger drawer; mobile keeps the
+          // bottom navigation bar.
+          drawer: isDesktop(context)
+              ? _buildDrawer(context, l10n, isAdmin)
+              : null,
+          body: widget.child,
+          bottomNavigationBar: isDesktop(context)
+              ? null
+              : isAdmin
+              ? _buildAdminNav(context, l10n)
+              : _buildUserNav(context, l10n),
+        ),
       ),
     );
   }
 
-  Future<bool?> _showExitDialog(
-      BuildContext context, AppLocalizations l10n) {
+  Widget _buildDrawer(
+    BuildContext context,
+    AppLocalizations l10n,
+    bool isAdmin,
+  ) {
+    final theme = Theme.of(context);
+    return Drawer(
+      child: SafeArea(
+        child: Column(
+          children: [
+            // ── Brand header ─────────────────────────────────────────────
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
+              decoration: BoxDecoration(
+                gradient: AppColors.primaryGradientFor(theme.brightness),
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(24),
+                ),
+              ),
+              child: Row(
+                children: [
+                  const AppLogoWidget(size: 44),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      l10n.appTitle,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: AppColors.textInverse,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // ── Navigation destinations ─────────────────────────────────
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                children: isAdmin
+                    ? _adminDrawerTiles(context, l10n)
+                    : _userDrawerTiles(context, l10n),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _userDrawerTiles(BuildContext context, AppLocalizations l10n) {
+    return [
+      _drawerTile(
+        context: context,
+        icon: Icons.home_outlined,
+        selectedIcon: Icons.home,
+        label: l10n.navHome,
+        index: 0,
+        isAdmin: false,
+      ),
+      _drawerTile(
+        context: context,
+        icon: Icons.quiz_outlined,
+        selectedIcon: Icons.quiz,
+        label: l10n.navPractice,
+        index: 1,
+        isAdmin: false,
+      ),
+      _drawerTile(
+        context: context,
+        icon: Icons.assessment_outlined,
+        selectedIcon: Icons.assessment,
+        label: l10n.navProgress,
+        index: 2,
+        isAdmin: false,
+      ),
+      _drawerTile(
+        context: context,
+        icon: Icons.person_outlined,
+        selectedIcon: Icons.person,
+        label: l10n.navProfile,
+        index: 3,
+        isAdmin: false,
+      ),
+    ];
+  }
+
+  List<Widget> _adminDrawerTiles(BuildContext context, AppLocalizations l10n) {
+    return [
+      _drawerTile(
+        context: context,
+        icon: Icons.dashboard_outlined,
+        selectedIcon: Icons.dashboard,
+        label: l10n.adminDashboard,
+        index: 0,
+        isAdmin: true,
+      ),
+      _drawerTile(
+        context: context,
+        icon: Icons.people_outlined,
+        selectedIcon: Icons.people,
+        label: l10n.adminUsers,
+        index: 1,
+        isAdmin: true,
+      ),
+      _drawerTile(
+        context: context,
+        icon: Icons.key_outlined,
+        selectedIcon: Icons.key,
+        label: l10n.adminAccess,
+        index: 2,
+        isAdmin: true,
+      ),
+      _drawerTile(
+        context: context,
+        icon: Icons.analytics_outlined,
+        selectedIcon: Icons.analytics,
+        label: 'Analytics',
+        index: 3,
+        isAdmin: true,
+      ),
+      _drawerTile(
+        context: context,
+        icon: Icons.person_outlined,
+        selectedIcon: Icons.person,
+        label: l10n.navProfile,
+        index: 4,
+        isAdmin: true,
+      ),
+    ];
+  }
+
+  Widget _drawerTile({
+    required BuildContext context,
+    required IconData icon,
+    required IconData selectedIcon,
+    required String label,
+    required int index,
+    required bool isAdmin,
+  }) {
+    final selected = isAdmin
+        ? _getAdminSelectedIndex(context) == index
+        : _getUserSelectedIndex(context) == index;
+    return ListTile(
+      leading: Icon(selected ? selectedIcon : icon),
+      title: Text(label),
+      selected: selected,
+      selectedColor: AppColors.primary,
+      selectedTileColor: AppColors.primary.withValues(alpha: 0.08),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      onTap: () {
+        Navigator.of(context).pop(); // close the drawer
+        if (isAdmin) {
+          _onAdminNavTapped(context, index);
+        } else {
+          _onUserNavTapped(context, index);
+        }
+      },
+    );
+  }
+
+  Future<bool?> _showExitDialog(BuildContext context, AppLocalizations l10n) {
     return showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(

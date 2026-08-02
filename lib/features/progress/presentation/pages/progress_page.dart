@@ -8,6 +8,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/network/offline_cache.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 
 class ProgressPage extends StatefulWidget {
@@ -66,23 +67,24 @@ class _ProgressPageState extends State<ProgressPage>
       final result = await ApiHelper().get('/api/exam-results/$userId');
 
       if (result.isSuccess) {
-        final results = result.dataList;
+        // Defensive copy: never sort the API/caller-owned list in place.
+        final results = List<dynamic>.from(result.dataList);
         // Sort by date DESC explicitly (Latest first)
         results.sort((a, b) {
           final daStr = (a['createdAt'] ?? a['completedAt'] ?? '').toString();
           final dbStr = (b['createdAt'] ?? b['completedAt'] ?? '').toString();
-          
+
           // Try parsing ISO first, then fallback to MySQL format (replacing space with T)
           DateTime? da = DateTime.tryParse(daStr);
           if (da == null && daStr.length >= 10) {
             da = DateTime.tryParse(daStr.replaceFirst(' ', 'T'));
           }
-          
+
           DateTime? db = DateTime.tryParse(dbStr);
           if (db == null && dbStr.length >= 10) {
             db = DateTime.tryParse(dbStr.replaceFirst(' ', 'T'));
           }
-          
+
           return (db ?? DateTime(1970)).compareTo(da ?? DateTime(1970));
         });
         await cache.save(cacheKey, results);
@@ -113,7 +115,9 @@ class _ProgressPageState extends State<ProgressPage>
             setState(() => _results = cached);
             _animCtrl.forward(from: 0);
           } else {
-            setState(() => _error = 'You are offline. No cached progress found.');
+            setState(
+              () => _error = 'You are offline. No cached progress found.',
+            );
           }
         } catch (_) {
           setState(() => _error = 'You are offline. No cached progress found.');
@@ -130,21 +134,17 @@ class _ProgressPageState extends State<ProgressPage>
 
   int get _total => _results.length;
 
-  int get _passed =>
-      _results.where((r) => _boolVal(r['passed'])).length;
+  int get _passed => _results.where((r) => _boolVal(r['passed'])).length;
 
   int get _failed => _total - _passed;
 
-  int get _bestScore => _total == 0
-      ? 0
-      : _results
-          .map((r) => _intVal(r['score']))
-          .reduce(max);
+  int get _bestScore =>
+      _total == 0 ? 0 : _results.map((r) => _intVal(r['score'])).reduce(max);
 
   double get _avgScore => _total == 0
       ? 0
       : _results.map((r) => _intVal(r['score'])).reduce((a, b) => a + b) /
-          _total;
+            _total;
 
   static bool _boolVal(dynamic v) =>
       v == true || v == 1 || v == '1' || v == 'true';
@@ -182,60 +182,63 @@ class _ProgressPageState extends State<ProgressPage>
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _error != null
-                    ? _ErrorView(
-                        error: _error!,
-                        onRetry: _loadResults,
-                        l10n: l10n,
-                      )
-                    : _total == 0
-                        ? _EmptyView(l10n: l10n)
-                        : RefreshIndicator(
-                            onRefresh: _loadResults,
-                            child: SingleChildScrollView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  // ── Summary grid ──────────────────────
-                                  _SummaryGrid(
-                                    total: _total,
-                                    passed: _passed,
-                                    failed: _failed,
-                                    best: _bestScore,
-                                    avg: _avgScore,
-                                    l10n: l10n,
-                                    anim: _anim,
-                                  ),
-                                  const SizedBox(height: 24),
-
-                                  // ── Recent exams ──────────────────────
-                                  Text(
-                                    l10n.progressRecentExams,
-                                    style: AppTextStyles.heading5,
-                                  ),
-                                  const SizedBox(height: 12),
-                                  ..._results.take(20).map((r) =>
-                                      _ExamResultCard(
-                                          result: r, l10n: l10n)),
-
-                                  if (_results.length > 20)
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8),
-                                      child: Text(
-                                        '+ ${_results.length - 20} more',
-                                        style: AppTextStyles.bodySmall
-                                            .copyWith(
-                                                color:
-                                                    AppColors.textSecondary),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  const SizedBox(height: 32),
-                                ],
-                              ),
+                ? _ErrorView(error: _error!, onRetry: _loadResults, l10n: l10n)
+                : _total == 0
+                ? _EmptyView(l10n: l10n)
+                : RefreshIndicator(
+                    onRefresh: _loadResults,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(
+                        16,
+                      ), // The scroll view below already applies 16px
+                      // padding; only constrain width on desktop.
+                      child: ConstrainedContent(
+                        padding: EdgeInsets.zero,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            // ── Summary grid ──────────────────────
+                            _SummaryGrid(
+                              total: _total,
+                              passed: _passed,
+                              failed: _failed,
+                              best: _bestScore,
+                              avg: _avgScore,
+                              l10n: l10n,
+                              anim: _anim,
                             ),
-                          ),
+                            const SizedBox(height: 24),
+
+                            // ── Recent exams ──────────────────────
+                            Text(
+                              l10n.progressRecentExams,
+                              style: AppTextStyles.heading5,
+                            ),
+                            const SizedBox(height: 12),
+                            ..._results
+                                .take(20)
+                                .map(
+                                  (r) => _ExamResultCard(result: r, l10n: l10n),
+                                ),
+
+                            if (_results.length > 20)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Text(
+                                  '+ ${_results.length - 20} more',
+                                  style: AppTextStyles.bodySmall.copyWith(
+                                    color: AppColors.textSecondary,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            const SizedBox(height: 32),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
           ),
         ],
       ),
@@ -272,34 +275,24 @@ class _SummaryGrid extends StatelessWidget {
       children: [
         Text(l10n.progressPerformanceSummary, style: AppTextStyles.heading5),
         const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: _StatCard(
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final cards = <Widget>[
+              _StatCard(
                 icon: Icons.check_circle_rounded,
                 value: '$passed',
                 label: l10n.progressPassedCount,
                 color: AppColors.success,
                 anim: anim,
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _StatCard(
+              _StatCard(
                 icon: Icons.cancel_rounded,
                 value: '$failed',
                 label: l10n.progressFailedCount,
                 color: AppColors.warning,
                 anim: anim,
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: _StatCard(
+              _StatCard(
                 icon: Icons.emoji_events_rounded,
                 value: '$best%',
                 label: l10n.progressBestScore,
@@ -307,10 +300,7 @@ class _SummaryGrid extends StatelessWidget {
                 anim: anim,
                 delay: 0.2,
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _StatCard(
+              _StatCard(
                 icon: Icons.analytics_rounded,
                 value: '${avg.toStringAsFixed(0)}%',
                 label: l10n.progressAverageScore,
@@ -318,8 +308,38 @@ class _SummaryGrid extends StatelessWidget {
                 anim: anim,
                 delay: 0.3,
               ),
-            ),
-          ],
+            ];
+            // 2x2 below the desktop breakpoint, 4-across on desktop.
+            if (constraints.maxWidth >= AppBreakpoints.desktop) {
+              return Row(
+                children: [
+                  for (var i = 0; i < cards.length; i++) ...[
+                    if (i > 0) const SizedBox(width: 12),
+                    Expanded(child: cards[i]),
+                  ],
+                ],
+              );
+            }
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(child: cards[0]),
+                    const SizedBox(width: 12),
+                    Expanded(child: cards[1]),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(child: cards[2]),
+                    const SizedBox(width: 12),
+                    Expanded(child: cards[3]),
+                  ],
+                ),
+              ],
+            );
+          },
         ),
 
         // Pass-rate progress bar
@@ -359,9 +379,7 @@ class _SummaryGrid extends StatelessWidget {
                 builder: (ctx, _) => ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: LinearProgressIndicator(
-                    value: total > 0
-                        ? (passed / total) * anim.value
-                        : 0,
+                    value: total > 0 ? (passed / total) * anim.value : 0,
                     minHeight: 10,
                     backgroundColor: Colors.white.withValues(alpha: 0.2),
                     valueColor: const AlwaysStoppedAnimation<Color>(
@@ -497,8 +515,8 @@ class _ExamResultCard extends StatelessWidget {
     final score = _intVal(result['score']);
     final total = _intVal(result['totalQuestions']);
     final correct = _intVal(result['correctAnswers']);
-    final rawDate =
-        (result['completedAt'] ?? result['createdAt'] ?? '').toString();
+    final rawDate = (result['completedAt'] ?? result['createdAt'] ?? '')
+        .toString();
     String date = '';
     if (rawDate.isNotEmpty) {
       final dayPart = rawDate.contains('T')
@@ -564,16 +582,20 @@ class _ExamResultCard extends StatelessWidget {
                     if (date.isNotEmpty)
                       Text(
                         '• $date',
-                        style: AppTextStyles.labelSmall
-                            .copyWith(color: AppColors.textTertiary, fontSize: 9),
+                        style: AppTextStyles.labelSmall.copyWith(
+                          color: AppColors.textTertiary,
+                          fontSize: 9,
+                        ),
                       ),
                   ],
                 ),
                 if (total > 0)
                   Text(
                     '$correct/$total ${l10n.examCorrect.toLowerCase()}',
-                    style: AppTextStyles.bodySmall
-                        .copyWith(color: AppColors.textSecondary, fontSize: 10),
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textSecondary,
+                      fontSize: 10,
+                    ),
                   ),
               ],
             ),
@@ -598,8 +620,11 @@ class _ErrorView extends StatelessWidget {
   final VoidCallback onRetry;
   final AppLocalizations l10n;
 
-  const _ErrorView(
-      {required this.error, required this.onRetry, required this.l10n});
+  const _ErrorView({
+    required this.error,
+    required this.onRetry,
+    required this.l10n,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -611,8 +636,11 @@ class _ErrorView extends StatelessWidget {
           children: [
             const Icon(Icons.wifi_off, size: 64, color: AppColors.neutral400),
             const SizedBox(height: 16),
-            Text(error,
-                style: AppTextStyles.bodyMedium, textAlign: TextAlign.center),
+            Text(
+              error,
+              style: AppTextStyles.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
               onPressed: onRetry,
@@ -646,8 +674,11 @@ class _EmptyView extends StatelessWidget {
                 color: AppColors.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.quiz_outlined,
-                  size: 48, color: AppColors.primary),
+              child: const Icon(
+                Icons.quiz_outlined,
+                size: 48,
+                color: AppColors.primary,
+              ),
             ),
             const SizedBox(height: 20),
             Text(

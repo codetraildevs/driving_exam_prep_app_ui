@@ -11,6 +11,7 @@ import 'package:screen_protector/screen_protector.dart';
 import '../../../../shared/locale/locale_notifier.dart';
 import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/network/offline_cache.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../exam/data/models/exam_model.dart';
@@ -21,7 +22,8 @@ class QuizPage extends StatefulWidget {
   final String quizId;
   final int examIndex;
 
-  const QuizPage({required this.quizId, this.examIndex = 0, Key? key}) : super(key: key);
+  const QuizPage({required this.quizId, this.examIndex = 0, Key? key})
+    : super(key: key);
 
   @override
   State<QuizPage> createState() => _QuizPageState();
@@ -44,12 +46,14 @@ class _QuizPageState extends State<QuizPage> {
   static const int _totalSeconds = 1200;
   int _secondsLeft = _totalSeconds;
   Timer? _timer;
-  static const _securityChannel = MethodChannel('com.driveprep.rwanda/security');
+  static const _securityChannel = MethodChannel(
+    'com.driveprep.rwanda/security',
+  );
 
   @override
   void initState() {
     super.initState();
-    
+
     // Protect exam content from screenshots/screen recording
     ScreenProtector.preventScreenshotOn();
     //  ScreenProtector.protectDataOn(); // Use this if needed for protecting data in background
@@ -60,8 +64,10 @@ class _QuizPageState extends State<QuizPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_isLoading) {
-      final langCode =
-          ProviderScope.containerOf(context, listen: false).read(localeProvider).effectiveLocale.languageCode;
+      final langCode = ProviderScope.containerOf(
+        context,
+        listen: false,
+      ).read(localeProvider).effectiveLocale.languageCode;
       _loadExam(langCode);
     }
   }
@@ -73,7 +79,9 @@ class _QuizPageState extends State<QuizPage> {
         setState(() {
           _exam = exam;
           _isLoading = false;
-          _error = exam == null ? AppLocalizations.of(context).examNotFound : null;
+          _error = exam == null
+              ? AppLocalizations.of(context).examNotFound
+              : null;
         });
         if (exam != null) _startTimer();
       }
@@ -111,7 +119,7 @@ class _QuizPageState extends State<QuizPage> {
     // Re-enable screenshots when leaving the quiz
     ScreenProtector.preventScreenshotOff();
     // ScreenProtector.protectDataOff();
-     _securityChannel.invokeMethod('secureScreenOff');
+    _securityChannel.invokeMethod('secureScreenOff');
     super.dispose();
   }
 
@@ -198,17 +206,19 @@ class _QuizPageState extends State<QuizPage> {
     final cacheKey = cache.examResultsKey(userId);
     try {
       final existing = await cache.load(cacheKey);
-      final list = (existing is List) ? List<dynamic>.from(existing) : <dynamic>[];
-      list.insert(0, {
-        ...body,
-        'createdAt': DateTime.now().toIso8601String(),
-      });
+      final list = (existing is List)
+          ? List<dynamic>.from(existing)
+          : <dynamic>[];
+      list.insert(0, {...body, 'createdAt': DateTime.now().toIso8601String()});
       await cache.save(cacheKey, list);
     } catch (_) {}
 
     // Try API; on failure queue for later sync
     try {
-      final result = await ApiHelper().post('/api/practice-results', body: body);
+      final result = await ApiHelper().post(
+        '/api/practice-results',
+        body: body,
+      );
       if (!result.isSuccess) {
         await cache.queuePendingResult(body);
       }
@@ -246,7 +256,9 @@ class _QuizPageState extends State<QuizPage> {
               child: Center(
                 child: Text(
                   _error ?? l10n.examNotFound,
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
                 ),
               ),
             ),
@@ -286,177 +298,213 @@ class _QuizPageState extends State<QuizPage> {
           AppPageHeader(title: l10n.quizResults, showBack: false),
           Expanded(
             child: SingleChildScrollView(
+              // Scroll view already applies 20px side padding; only cap the
+              // content width so the result card doesn't stretch edge-to-edge.
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              child: Column(
-                children: [
-                  if (_timedOut) ...[
+              child: ConstrainedContent(
+                maxWidth: AppContentWidths.narrow,
+                padding: EdgeInsets.zero,
+                child: Column(
+                  children: [
+                    if (_timedOut) ...[
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.warning.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.warning.withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.timer_off_rounded,
+                              color: AppColors.warning,
+                              size: 18,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              l10n.quizTimeUp,
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.warning,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+
+                    // ── Premium Score Header ──
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: AppColors.warning.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 24,
                       ),
-                      child: Row(
+                      decoration: BoxDecoration(
+                        gradient: gradient,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: resultColor.withValues(alpha: 0.25),
+                            blurRadius: 20,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: Column(
                         children: [
-                          const Icon(Icons.timer_off_rounded, color: AppColors.warning, size: 18),
-                          const SizedBox(width: 8),
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: CircularProgressIndicator(
+                                  value: accuracy / 100,
+                                  strokeWidth: 8,
+                                  backgroundColor: Colors.white.withValues(
+                                    alpha: 0.15,
+                                  ),
+                                  valueColor:
+                                      const AlwaysStoppedAnimation<Color>(
+                                        Colors.white,
+                                      ),
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    '$accuracy%',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 28,
+                                    ),
+                                  ),
+                                  Text(
+                                    l10n.examYourScore.toUpperCase(),
+                                    style: TextStyle(
+                                      color: Colors.white.withValues(
+                                        alpha: 0.7,
+                                      ),
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
                           Text(
-                            l10n.quizTimeUp,
-                            style: AppTextStyles.bodySmall.copyWith(color: AppColors.warning, fontWeight: FontWeight.w600),
+                            passed ? l10n.quizPassed : l10n.quizFailed,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 24,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            l10n.quizResult(correct, total),
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: 0.8),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12),
-                  ],
+                    const SizedBox(height: 16),
 
-                  // ── Premium Score Header ──
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-                    decoration: BoxDecoration(
-                      gradient: gradient,
-                      borderRadius: BorderRadius.circular(24),
-                      boxShadow: [
-                        BoxShadow(
-                          color: resultColor.withValues(alpha: 0.25),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
-                    child: Column(
+                    // ── Modern Stats Grid ──
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                      childAspectRatio: 2.2,
                       children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              height: 100,
-                              child: CircularProgressIndicator(
-                                value: accuracy / 100,
-                                strokeWidth: 8,
-                                backgroundColor: Colors.white.withValues(alpha: 0.15),
-                                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  '$accuracy%',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 28,
-                                  ),
-                                ),
-                                Text(
-                                  l10n.examYourScore.toUpperCase(),
-                                  style: TextStyle(
-                                    color: Colors.white.withValues(alpha: 0.7),
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                        _ResultStatMini(
+                          icon: Icons.check_circle_rounded,
+                          label: l10n.progressCorrectAnswers,
+                          value: '$correct',
+                          color: AppColors.success,
                         ),
-                        const SizedBox(height: 20),
-                        Text(
-                          passed ? l10n.quizPassed : l10n.quizFailed,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 24,
-                            letterSpacing: -0.5,
-                          ),
+                        _ResultStatMini(
+                          icon: Icons.cancel_rounded,
+                          label: l10n.progressIncorrect,
+                          value: '$incorrect',
+                          color: AppColors.error,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          l10n.quizResult(correct, total),
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.8),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        _ResultStatMini(
+                          icon: Icons.timer_rounded,
+                          label: l10n.quizTimeTaken,
+                          value: _timeSpentFormatted,
+                          color: AppColors.warning,
+                        ),
+                        _ResultStatMini(
+                          icon: Icons.quiz_rounded,
+                          label: l10n.progressTotalQuestions,
+                          value: '$total',
+                          color: AppColors.primary,
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 16),
+                    const SizedBox(height: 20),
 
-                  // ── Modern Stats Grid ──
-                  GridView.count(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 12,
-                    crossAxisSpacing: 12,
-                    childAspectRatio: 2.2,
-                    children: [
-                      _ResultStatMini(
-                        icon: Icons.check_circle_rounded,
-                        label: l10n.progressCorrectAnswers,
-                        value: '$correct',
-                        color: AppColors.success,
-                      ),
-                      _ResultStatMini(
-                        icon: Icons.cancel_rounded,
-                        label: l10n.progressIncorrect,
-                        value: '$incorrect',
-                        color: AppColors.error,
-                      ),
-                      _ResultStatMini(
-                        icon: Icons.timer_rounded,
-                        label: l10n.quizTimeTaken,
-                        value: _timeSpentFormatted,
-                        color: AppColors.warning,
-                      ),
-                      _ResultStatMini(
-                        icon: Icons.quiz_rounded,
-                        label: l10n.progressTotalQuestions,
-                        value: '$total',
-                        color: AppColors.primary,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Actions
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: _retake,
-                      icon: const Icon(Icons.replay_rounded, size: 20),
-                      label: Text(l10n.quizRetake),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        elevation: 0,
+                    // Actions
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: _retake,
+                        icon: const Icon(Icons.replay_rounded, size: 20),
+                        label: Text(l10n.quizRetake),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      onPressed: () => context.pop(),
-                      icon: const Icon(Icons.arrow_back_rounded, size: 20),
-                      label: Text(l10n.quizBackToPractice),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        side: BorderSide(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5)),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () => context.pop(),
+                        icon: const Icon(Icons.arrow_back_rounded, size: 20),
+                        label: Text(l10n.quizBackToPractice),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          side: BorderSide(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.outline.withValues(alpha: 0.5),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                ],
+                    const SizedBox(height: 16),
+                  ],
+                ),
               ),
             ),
           ),
@@ -494,7 +542,11 @@ class _QuizPageState extends State<QuizPage> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.timer, color: AppColors.textInverse, size: 14),
+                  const Icon(
+                    Icons.timer,
+                    color: AppColors.textInverse,
+                    size: 14,
+                  ),
                   const SizedBox(width: 4),
                   Text(
                     _formattedTime,
@@ -512,79 +564,107 @@ class _QuizPageState extends State<QuizPage> {
           // Progress bar
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      l10n.quizQuestionOf(_currentQuestion + 1, questions.length),
-                      style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
-                    ),
-                    Text(
-                      l10n.quizAnswered(answeredCount, questions.length),
-                      style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 6),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: LinearProgressIndicator(
-                    value: progress,
-                    minHeight: 6,
-                    backgroundColor: Theme.of(context).colorScheme.outlineVariant,
-                    valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+            // Cap the progress row so it stays centered on desktop.
+            child: ConstrainedContent(
+              maxWidth: AppContentWidths.narrow,
+              padding: EdgeInsets.zero,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        l10n.quizQuestionOf(
+                          _currentQuestion + 1,
+                          questions.length,
+                        ),
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                      Text(
+                        l10n.quizAnswered(answeredCount, questions.length),
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 6),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: LinearProgressIndicator(
+                      value: progress,
+                      minHeight: 6,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.outlineVariant,
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                        AppColors.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
 
           // Question + Options
           Expanded(
             child: SingleChildScrollView(
+              // Scroll view already applies 16px side padding; only cap the
+              // content width so question text stays readable on desktop.
               padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Question card
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
-                          blurRadius: 8,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 12),
-                        Text(question.question, style: AppTextStyles.bodyMedium),
-                        if (question.questionImgUrl.isNotEmpty) ...[
-                          const SizedBox(height: 12),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              question.questionImgUrl,
-                              height: 160,
-                              width: double.infinity,
-                              fit: BoxFit.contain,
-                              errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-                            ),
+              child: ConstrainedContent(
+                maxWidth: AppContentWidths.narrow,
+                padding: EdgeInsets.zero,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Question card
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Theme.of(
+                              context,
+                            ).shadowColor.withValues(alpha: 0.05),
+                            blurRadius: 8,
                           ),
                         ],
-                      ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(width: 12),
+                          Text(
+                            question.question,
+                            style: AppTextStyles.bodyMedium,
+                          ),
+                          if (question.questionImgUrl.isNotEmpty) ...[
+                            const SizedBox(height: 12),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(
+                                question.questionImgUrl,
+                                height: 160,
+                                width: double.infinity,
+                                fit: BoxFit.contain,
+                                errorBuilder: (_, __, ___) =>
+                                    const SizedBox.shrink(),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  ..._buildOptions(question),
-                ],
+                    const SizedBox(height: 12),
+                    ..._buildOptions(question),
+                  ],
+                ),
               ),
             ),
           ),
@@ -593,54 +673,70 @@ class _QuizPageState extends State<QuizPage> {
           Container(
             color: Theme.of(context).colorScheme.surface,
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-            child: Row(
-              children: [
-                // Previous button
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: _currentQuestion > 0 ? _goToPrevious : null,
-                    icon: const Icon(Icons.chevron_left),
-                    label: Text(l10n.quizPrevious),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+            // Cap the button row so the action buttons stay centered on desktop.
+            child: ConstrainedContent(
+              maxWidth: AppContentWidths.narrow,
+              padding: EdgeInsets.zero,
+              child: Row(
+                children: [
+                  // Previous button
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: _currentQuestion > 0 ? _goToPrevious : null,
+                      icon: const Icon(Icons.chevron_left),
+                      label: Text(l10n.quizPrevious),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 3),
-                // Submit Practice button (always visible, but disabled if already submitted)
-                FloatingActionButton.extended(
-                  heroTag: 'submitPracticeFAB',
-                  onPressed: _submitted ? null : _doSubmit,
-                  backgroundColor: AppColors.success,
-                  foregroundColor: AppColors.textInverse,
-                  label: Text(l10n.quizSubmitPractice, style: const TextStyle(fontSize: 10)),
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                ),
-                const SizedBox(width: 4),
-                // Next or Submit button
-                Expanded(
-                  child: isLastQuestion
-                      ? ElevatedButton.icon(
-                          onPressed: _submitted ? null : _doSubmit,
-                          icon: const Icon(Icons.check_circle_outline),
-                          label: Text(l10n.quizSubmitPractice, style: const TextStyle(fontSize: 12)),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.success,
-                            foregroundColor: AppColors.textInverse,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
+                  const SizedBox(width: 3),
+                  // Submit Practice button (always visible, but disabled if already submitted)
+                  FloatingActionButton.extended(
+                    heroTag: 'submitPracticeFAB',
+                    onPressed: _submitted ? null : _doSubmit,
+                    backgroundColor: AppColors.success,
+                    foregroundColor: AppColors.textInverse,
+                    label: Text(
+                      l10n.quizSubmitPractice,
+                      style: const TextStyle(fontSize: 10),
+                    ),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  // Next or Submit button
+                  Expanded(
+                    child: isLastQuestion
+                        ? ElevatedButton.icon(
+                            onPressed: _submitted ? null : _doSubmit,
+                            icon: const Icon(Icons.check_circle_outline),
+                            label: Text(
+                              l10n.quizSubmitPractice,
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.success,
+                              foregroundColor: AppColors.textInverse,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                            ),
+                          )
+                        : ElevatedButton.icon(
+                            onPressed: _goToNext,
+                            icon: const Icon(Icons.chevron_right),
+                            label: Text(
+                              l10n.quizNext,
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                            ),
                           ),
-                        )
-                      : ElevatedButton.icon(
-                          onPressed: _goToNext,
-                          icon: const Icon(Icons.chevron_right),
-                          label: Text(l10n.quizNext, style: const TextStyle(fontSize: 12)),
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                          ),
-                        ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -673,7 +769,10 @@ class _QuizPageState extends State<QuizPage> {
         if (isCorrect) {
           borderColor = AppColors.success;
           backgroundColor = AppColors.success.withValues(alpha: 0.1);
-          trailingIcon = const Icon(Icons.check_circle, color: AppColors.success);
+          trailingIcon = const Icon(
+            Icons.check_circle,
+            color: AppColors.success,
+          );
         } else if (isSelected) {
           borderColor = AppColors.error;
           backgroundColor = AppColors.error.withValues(alpha: 0.1);
@@ -706,7 +805,8 @@ class _QuizPageState extends State<QuizPage> {
                       width: 1,
                     ),
                     color: isSelected
-                        ? (isCorrect ? AppColors.success : AppColors.error).withValues(alpha: 0.2)
+                        ? (isCorrect ? AppColors.success : AppColors.error)
+                              .withValues(alpha: 0.2)
                         : Colors.transparent,
                   ),
                   child: isSelected
@@ -716,7 +816,9 @@ class _QuizPageState extends State<QuizPage> {
                             height: 10,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: isCorrect ? AppColors.success : AppColors.error,
+                              color: isCorrect
+                                  ? AppColors.success
+                                  : AppColors.error,
                             ),
                           ),
                         )
@@ -790,7 +892,9 @@ class _ResultStatMini extends StatelessWidget {
                 Text(
                   label,
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.4),
                     fontSize: 8,
                     fontWeight: FontWeight.bold,
                   ),

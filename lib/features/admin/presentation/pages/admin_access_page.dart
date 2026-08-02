@@ -6,6 +6,8 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/network/api_helper.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
+import '../../../../shared/widgets/app_menu_button.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class AdminAccessPage extends StatefulWidget {
@@ -38,14 +40,15 @@ class _AdminAccessPageState extends State<AdminAccessPage>
       body: Column(
         children: [
           // ── Gradient header with tabs ───────────────────────────────────
-          _GradientTabHeader(title: l10n.adminAccess, tabCtrl: _tabCtrl, l10n: l10n),
+          _GradientTabHeader(
+            title: l10n.adminAccess,
+            tabCtrl: _tabCtrl,
+            l10n: l10n,
+          ),
           Expanded(
             child: TabBarView(
               controller: _tabCtrl,
-              children: const [
-                _AccessCodesTab(),
-                _GrantAccessTab(),
-              ],
+              children: const [_AccessCodesTab(), _GrantAccessTab()],
             ),
           ),
         ],
@@ -79,9 +82,7 @@ class _GradientTabHeader extends StatelessWidget {
         statusBarBrightness: Brightness.dark,
       ),
       child: Container(
-        decoration: BoxDecoration(
-          gradient: gradient,
-        ),
+        decoration: BoxDecoration(gradient: gradient),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -89,6 +90,8 @@ class _GradientTabHeader extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(20, topPad + 12, 12, 4),
               child: Row(
                 children: [
+                  // Desktop: hamburger opens the shell drawer.
+                  const AppMenuButton(),
                   Expanded(
                     child: Text(
                       title,
@@ -105,7 +108,9 @@ class _GradientTabHeader extends StatelessWidget {
             TabBar(
               controller: tabCtrl,
               labelColor: AppColors.textInverse,
-              unselectedLabelColor: AppColors.textInverse.withValues(alpha: 0.6),
+              unselectedLabelColor: AppColors.textInverse.withValues(
+                alpha: 0.6,
+              ),
               indicatorColor: AppColors.textInverse,
               indicatorWeight: 3,
               tabs: [
@@ -170,13 +175,18 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
       };
       final authBloc = context.read<AuthBloc>();
       final router = GoRouter.of(context);
-      final result = await ApiHelper().get('/api/access-codes', queryParams: qp);
+      final result = await ApiHelper().get(
+        '/api/access-codes',
+        queryParams: qp,
+      );
       if (!mounted) return;
       if (result.isSuccess) {
         final data = result.data;
         setState(() {
           _codes = result.dataList;
-          _total = (data is Map) ? (data['total'] ?? _codes.length) : _codes.length;
+          _total = (data is Map)
+              ? (data['total'] ?? _codes.length)
+              : _codes.length;
         });
       } else if (result.statusCode == 401) {
         authBloc.add(const SignOutEvent());
@@ -239,11 +249,13 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
   }
 
   void _showSnack(String msg, Color color) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(msg),
-      backgroundColor: color,
-      behavior: SnackBarBehavior.floating,
-    ));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(msg),
+        backgroundColor: color,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   void _confirmBlock(BuildContext ctx, Map code, AppLocalizations l10n) {
@@ -255,8 +267,9 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
         content: Text(l10n.adminBlockAccessConfirm),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(dialogCtx),
-              child: Text(l10n.commonCancel)),
+            onPressed: () => Navigator.pop(dialogCtx),
+            child: Text(l10n.commonCancel),
+          ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(dialogCtx);
@@ -282,8 +295,9 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
         content: Text(l10n.adminDeleteAccessConfirm),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(dialogCtx),
-              child: Text(l10n.commonCancel)),
+            onPressed: () => Navigator.pop(dialogCtx),
+            child: Text(l10n.commonCancel),
+          ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(dialogCtx);
@@ -306,205 +320,244 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    return Column(
-      children: [
-        // ── Toolbar ─────────────────────────────────────────────────────
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
-          child: Row(
-            children: [
-              // Chips group — scrollable so they never overflow on small screens
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      // Sort
-                      _toolChip(context,
-                        icon: _sortDir == 'DESC'
-                            ? Icons.arrow_downward
-                            : Icons.arrow_upward,
-                        label: _sortDir == 'DESC' ? l10n.adminSortDesc : l10n.adminSortAsc,
-                        onTap: () {
-                          setState(() => _sortDir =
-                              _sortDir == 'DESC' ? 'ASC' : 'DESC');
-                          _page = 1;
-                          _load();
-                        },
-                      ),
-                      const SizedBox(width: 8),
-                      // Today
-                      _toolChip(context,
-                        icon: Icons.today,
-                        label: l10n.adminFilterToday,
-                        selected: _todayOnly,
-                        onTap: () {
-                          setState(() {
-                            _todayOnly = !_todayOnly;
-                            if (_todayOnly) {
-                              _dateFrom = null;
-                              _dateTo = null;
-                            }
-                          });
-                          _page = 1;
-                          _load();
-                        },
-                      ),
-                      // Date range
-                      if (!_todayOnly) ...[
-                        const SizedBox(width: 8),
-                        _toolChip(context,
-                          icon: Icons.date_range,
-                          label: _dateFrom != null
-                              ? _dateFrom!.toIso8601String().split('T')[0]
-                              : l10n.adminDateRange,
-                          selected: _dateFrom != null,
-                          onTap: () => _pickDateRange(context, l10n),
-                          onClear: _dateFrom != null
-                              ? () {
-                                  setState(() {
-                                    _dateFrom = null;
-                                    _dateTo = null;
-                                  });
-                                  _page = 1;
-                                  _load();
-                                }
-                              : null,
+    return ConstrainedContent(
+      maxWidth: AppContentWidths.wide,
+      padding: EdgeInsets.zero,
+      child: Column(
+        children: [
+          // ── Toolbar ─────────────────────────────────────────────────────
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+            child: Row(
+              children: [
+                // Chips group — scrollable so they never overflow on small screens
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        // Sort
+                        _toolChip(
+                          context,
+                          icon: _sortDir == 'DESC'
+                              ? Icons.arrow_downward
+                              : Icons.arrow_upward,
+                          label: _sortDir == 'DESC'
+                              ? l10n.adminSortDesc
+                              : l10n.adminSortAsc,
+                          onTap: () {
+                            setState(
+                              () => _sortDir = _sortDir == 'DESC'
+                                  ? 'ASC'
+                                  : 'DESC',
+                            );
+                            _page = 1;
+                            _load();
+                          },
                         ),
-                      ],
-                    ],
-                  ),
-                ),
-              ),
-              // Refresh button — always visible on the right
-              IconButton(
-                icon: const Icon(Icons.refresh),
-                onPressed: _load,
-                iconSize: 20,
-              ),
-            ],
-          ),
-        ),
-
-        // ── Status filter chips ──────────────────────────────────────────
-        SizedBox(
-          height: 42,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            children: [
-              _filterChip(context, l10n.adminFilterAll, _blockedFilter == null, () {
-                setState(() => _blockedFilter = null);
-                _page = 1;
-                _load();
-              }),
-              const SizedBox(width: 6),
-              _filterChip(context, l10n.adminIsActive, _blockedFilter == 'false', () {
-                setState(() =>
-                    _blockedFilter = _blockedFilter == 'false' ? null : 'false');
-                _page = 1;
-                _load();
-              }),
-              const SizedBox(width: 6),
-              _filterChip(context, l10n.adminIsBlocked, _blockedFilter == 'true', () {
-                setState(() =>
-                    _blockedFilter = _blockedFilter == 'true' ? null : 'true');
-                _page = 1;
-                _load();
-              }),
-            ],
-          ),
-        ),
-
-        // ── List ─────────────────────────────────────────────────────────
-        Expanded(
-          child: _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : _error != null
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.error_outline,
-                              size: 48, color: AppColors.error),
-                          const SizedBox(height: 12),
-                          Text(_error!,
-                              style: AppTextStyles.bodyMedium,
-                              textAlign: TextAlign.center),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: _load,
-                            child: Text(l10n.commonRetry),
+                        const SizedBox(width: 8),
+                        // Today
+                        _toolChip(
+                          context,
+                          icon: Icons.today,
+                          label: l10n.adminFilterToday,
+                          selected: _todayOnly,
+                          onTap: () {
+                            setState(() {
+                              _todayOnly = !_todayOnly;
+                              if (_todayOnly) {
+                                _dateFrom = null;
+                                _dateTo = null;
+                              }
+                            });
+                            _page = 1;
+                            _load();
+                          },
+                        ),
+                        // Date range
+                        if (!_todayOnly) ...[
+                          const SizedBox(width: 8),
+                          _toolChip(
+                            context,
+                            icon: Icons.date_range,
+                            label: _dateFrom != null
+                                ? _dateFrom!.toIso8601String().split('T')[0]
+                                : l10n.adminDateRange,
+                            selected: _dateFrom != null,
+                            onTap: () => _pickDateRange(context, l10n),
+                            onClear: _dateFrom != null
+                                ? () {
+                                    setState(() {
+                                      _dateFrom = null;
+                                      _dateTo = null;
+                                    });
+                                    _page = 1;
+                                    _load();
+                                  }
+                                : null,
                           ),
                         ],
-                      ),
-                    )
-                  : _codes.isEmpty
-                      ? const Center(child: Icon(Icons.key_off, size: 64,
-                          color: AppColors.neutral400))
-                      : RefreshIndicator(
-                          onRefresh: _load,
-                          child: ListView.builder(
-                            padding:
-                                const EdgeInsets.fromLTRB(12, 0, 12, 8),
-                            itemCount: _codes.length,
-                            itemBuilder: (ctx, i) {
-                              final code = _codes[i] as Map;
-                              final id = (code['id'] ?? '').toString();
-                              final isLoading =
-                                  _loadingMap[id] ?? false;
-                              return _AccessCodeCard(
-                                code: code,
-                                isLoading: isLoading,
-                                onBlock: () =>
-                                    _confirmBlock(ctx, code, l10n),
-                                onDelete: () =>
-                                    _confirmDelete(ctx, code, l10n),
-                                l10n: l10n,
-                              );
-                            },
-                          ),
-                        ),
-        ),
-
-        // ── Pagination ───────────────────────────────────────────────────
-        if (!_isLoading && _error == null && _totalPages > 1)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.chevron_left),
-                  onPressed: _page > 1
-                      ? () {
-                          setState(() => _page--);
-                          _load();
-                        }
-                      : null,
+                      ],
+                    ),
+                  ),
                 ),
-                Text(
-                  AppLocalizations.of(context)
-                      .adminPage(_page, _totalPages),
-                  style: AppTextStyles.labelMedium,
-                ),
+                // Refresh button — always visible on the right
                 IconButton(
-                  icon: const Icon(Icons.chevron_right),
-                  onPressed: _page < _totalPages
-                      ? () {
-                          setState(() => _page++);
-                          _load();
-                        }
-                      : null,
+                  icon: const Icon(Icons.refresh),
+                  onPressed: _load,
+                  iconSize: 20,
                 ),
               ],
             ),
           ),
-      ],
+
+          // ── Status filter chips ──────────────────────────────────────────
+          SizedBox(
+            height: 42,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              children: [
+                _filterChip(
+                  context,
+                  l10n.adminFilterAll,
+                  _blockedFilter == null,
+                  () {
+                    setState(() => _blockedFilter = null);
+                    _page = 1;
+                    _load();
+                  },
+                ),
+                const SizedBox(width: 6),
+                _filterChip(
+                  context,
+                  l10n.adminIsActive,
+                  _blockedFilter == 'false',
+                  () {
+                    setState(
+                      () => _blockedFilter = _blockedFilter == 'false'
+                          ? null
+                          : 'false',
+                    );
+                    _page = 1;
+                    _load();
+                  },
+                ),
+                const SizedBox(width: 6),
+                _filterChip(
+                  context,
+                  l10n.adminIsBlocked,
+                  _blockedFilter == 'true',
+                  () {
+                    setState(
+                      () => _blockedFilter = _blockedFilter == 'true'
+                          ? null
+                          : 'true',
+                    );
+                    _page = 1;
+                    _load();
+                  },
+                ),
+              ],
+            ),
+          ),
+
+          // ── List ─────────────────────────────────────────────────────────
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _error != null
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          size: 48,
+                          color: AppColors.error,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          _error!,
+                          style: AppTextStyles.bodyMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: _load,
+                          child: Text(l10n.commonRetry),
+                        ),
+                      ],
+                    ),
+                  )
+                : _codes.isEmpty
+                ? const Center(
+                    child: Icon(
+                      Icons.key_off,
+                      size: 64,
+                      color: AppColors.neutral400,
+                    ),
+                  )
+                : RefreshIndicator(
+                    onRefresh: _load,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                      itemCount: _codes.length,
+                      itemBuilder: (ctx, i) {
+                        final code = _codes[i] as Map;
+                        final id = (code['id'] ?? '').toString();
+                        final isLoading = _loadingMap[id] ?? false;
+                        return _AccessCodeCard(
+                          code: code,
+                          isLoading: isLoading,
+                          onBlock: () => _confirmBlock(ctx, code, l10n),
+                          onDelete: () => _confirmDelete(ctx, code, l10n),
+                          l10n: l10n,
+                        );
+                      },
+                    ),
+                  ),
+          ),
+
+          // ── Pagination ───────────────────────────────────────────────────
+          if (!_isLoading && _error == null && _totalPages > 1)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.chevron_left),
+                    onPressed: _page > 1
+                        ? () {
+                            setState(() => _page--);
+                            _load();
+                          }
+                        : null,
+                  ),
+                  Text(
+                    AppLocalizations.of(context).adminPage(_page, _totalPages),
+                    style: AppTextStyles.labelMedium,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.chevron_right),
+                    onPressed: _page < _totalPages
+                        ? () {
+                            setState(() => _page++);
+                            _load();
+                          }
+                        : null,
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
     );
   }
 
-  Widget _toolChip(BuildContext context, {
+  Widget _toolChip(
+    BuildContext context, {
     required IconData icon,
     required String label,
     bool selected = false,
@@ -516,12 +569,9 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: selected
-              ? primary.withValues(alpha: 0.12)
-              : bg,
+          color: selected ? primary.withValues(alpha: 0.12) : bg,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: primary.withValues(alpha: 0.25)),
         ),
@@ -530,15 +580,12 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
           children: [
             Icon(icon, size: 14, color: primary),
             const SizedBox(width: 4),
-            Text(label,
-                style: TextStyle(
-                    color: primary, fontSize: 12)),
+            Text(label, style: TextStyle(color: primary, fontSize: 12)),
             if (onClear != null) ...[
               const SizedBox(width: 4),
               GestureDetector(
                 onTap: onClear,
-                child: Icon(Icons.close,
-                    size: 12, color: primary),
+                child: Icon(Icons.close, size: 12, color: primary),
               ),
             ],
           ],
@@ -547,23 +594,24 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
     );
   }
 
-  Widget _filterChip(BuildContext context, String label, bool selected, VoidCallback onTap) {
+  Widget _filterChip(
+    BuildContext context,
+    String label,
+    bool selected,
+    VoidCallback onTap,
+  ) {
     final primary = Theme.of(context).colorScheme.primary;
     final bg = Theme.of(context).colorScheme.surface;
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: selected
-              ? primary.withValues(alpha: 0.15)
-              : bg,
+          color: selected ? primary.withValues(alpha: 0.15) : bg,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-              color: selected
-                  ? primary
-                  : primary.withValues(alpha: 0.2)),
+            color: selected ? primary : primary.withValues(alpha: 0.2),
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -575,11 +623,9 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
             Text(
               label,
               style: TextStyle(
-                color:
-                    selected ? primary : AppColors.textSecondary,
+                color: selected ? primary : AppColors.textSecondary,
                 fontSize: 12,
-                fontWeight:
-                    selected ? FontWeight.bold : FontWeight.normal,
+                fontWeight: selected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           ],
@@ -589,7 +635,9 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
   }
 
   Future<void> _pickDateRange(
-      BuildContext context, AppLocalizations l10n) async {
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
     final range = await showDateRangePicker(
       context: context,
       firstDate: DateTime(2023),
@@ -645,18 +693,15 @@ class _AccessCodeCard extends StatelessWidget {
     final userPhone = (code['userPhone'] ?? '').toString();
     final tier = (code['paymentTier'] ?? '').toString();
     final amount = code['paymentAmount'];
-    final created =
-        (code['createdAt'] ?? '').toString().split('T')[0];
-    final expires =
-        (code['expiresAt'] ?? '').toString().split('T')[0];
+    final created = (code['createdAt'] ?? '').toString().split('T')[0];
+    final expires = (code['expiresAt'] ?? '').toString().split('T')[0];
     final inactive = _isBlocked || _isExpired;
     final statusColor = inactive ? AppColors.error : AppColors.success;
     final primary = Theme.of(context).colorScheme.primary;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -667,7 +712,9 @@ class _AccessCodeCard extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 6),
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: primary.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(8),
@@ -675,8 +722,7 @@ class _AccessCodeCard extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.key_rounded,
-                          size: 14, color: primary),
+                      Icon(Icons.key_rounded, size: 14, color: primary),
                       const SizedBox(width: 6),
                       Text(
                         codeStr,
@@ -697,25 +743,31 @@ class _AccessCodeCard extends StatelessWidget {
                     Clipboard.setData(ClipboardData(text: codeStr));
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                          content: Text(AppLocalizations.of(context).generalCopied),
-                          duration: const Duration(seconds: 1)),
+                        content: Text(
+                          AppLocalizations.of(context).generalCopied,
+                        ),
+                        duration: const Duration(seconds: 1),
+                      ),
                     );
                   },
-                  child: const Icon(Icons.copy, size: 16,
-                      color: AppColors.textSecondary),
+                  child: const Icon(
+                    Icons.copy,
+                    size: 16,
+                    color: AppColors.textSecondary,
+                  ),
                 ),
                 const Spacer(),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 3),
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: statusColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    inactive
-                        ? l10n.adminIsBlocked
-                        : l10n.adminIsActive,
+                    inactive ? l10n.adminIsBlocked : l10n.adminIsActive,
                     style: TextStyle(
                       color: statusColor,
                       fontSize: 10,
@@ -732,20 +784,25 @@ class _AccessCodeCard extends StatelessWidget {
             if (userName.isNotEmpty || userPhone.isNotEmpty)
               Row(
                 children: [
-                  const Icon(Icons.person_outline,
-                      size: 14, color: AppColors.textSecondary),
+                  const Icon(
+                    Icons.person_outline,
+                    size: 14,
+                    color: AppColors.textSecondary,
+                  ),
                   const SizedBox(width: 6),
                   Text(
                     userName.isNotEmpty ? userName : userPhone,
-                    style: AppTextStyles.bodySmall
-                        .copyWith(color: AppColors.textSecondary),
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                   if (userPhone.isNotEmpty && userName.isNotEmpty) ...[
                     const SizedBox(width: 6),
                     Text(
                       userPhone,
-                      style: AppTextStyles.labelSmall
-                          .copyWith(color: AppColors.textTertiary),
+                      style: AppTextStyles.labelSmall.copyWith(
+                        color: AppColors.textTertiary,
+                      ),
                     ),
                   ],
                 ],
@@ -761,11 +818,13 @@ class _AccessCodeCard extends StatelessWidget {
                   _info(Icons.workspace_premium, tier.replaceAll('_', ' ')),
                 if (amount != null)
                   _info(Icons.payment, l10n.priceRwf(amount.toString())),
-                if (created.isNotEmpty)
-                  _info(Icons.calendar_today, created),
+                if (created.isNotEmpty) _info(Icons.calendar_today, created),
                 if (expires.isNotEmpty)
-                  _info(Icons.access_time, expires,
-                      color: _isExpired ? AppColors.error : null),
+                  _info(
+                    Icons.access_time,
+                    expires,
+                    color: _isExpired ? AppColors.error : null,
+                  ),
               ],
             ),
 
@@ -774,10 +833,12 @@ class _AccessCodeCard extends StatelessWidget {
             // ── Actions ───────────────────────────────────────────────
             if (isLoading)
               const Center(
-                  child: SizedBox(
-                      height: 24,
-                      width: 24,
-                      child: CircularProgressIndicator(strokeWidth: 2)))
+                child: SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              )
             else
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -790,15 +851,14 @@ class _AccessCodeCard extends StatelessWidget {
                       color: AppColors.warning,
                       onTap: onBlock,
                     ),
-                  const SizedBox(height: 4),  
+                  const SizedBox(height: 4),
                   if (!inactive) const SizedBox(width: 2),
-                    _actionBtn(
-                      icon: Icons.delete_rounded,
-                      label: l10n.adminDeleteAccess,
-                      color: AppColors.error,
-                      onTap: onDelete,
-                    ),
-                  
+                  _actionBtn(
+                    icon: Icons.delete_rounded,
+                    label: l10n.adminDeleteAccess,
+                    color: AppColors.error,
+                    onTap: onDelete,
+                  ),
                 ],
               ),
           ],
@@ -808,47 +868,50 @@ class _AccessCodeCard extends StatelessWidget {
   }
 
   Widget _info(IconData icon, String text, {Color? color}) => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 12,
-              color: color ?? AppColors.textSecondary),
-          const SizedBox(width: 4),
-          Text(text,
-              style: AppTextStyles.labelSmall.copyWith(
-                  color: color ?? AppColors.textSecondary)),
-        ],
-      );
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Icon(icon, size: 12, color: color ?? AppColors.textSecondary),
+      const SizedBox(width: 4),
+      Text(
+        text,
+        style: AppTextStyles.labelSmall.copyWith(
+          color: color ?? AppColors.textSecondary,
+        ),
+      ),
+    ],
+  );
 
   Widget _actionBtn({
     required IconData icon,
     required String label,
     required Color color,
     required VoidCallback onTap,
-  }) =>
-      GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: color.withValues(alpha: 0.25)),
+  }) => GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color.withValues(alpha: 0.25)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: color, size: 14),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: color,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, color: color, size: 14),
-              const SizedBox(width: 4),
-              Text(label,
-                  style: TextStyle(
-                      color: color,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600)),
-            ],
-          ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -927,7 +990,9 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
       if (usersResult.isSuccess) {
         final data = usersResult.data;
         final userList = usersResult.dataList;
-        _total = (data is Map) ? (data['total'] ?? userList.length) : userList.length;
+        _total = (data is Map)
+            ? (data['total'] ?? userList.length)
+            : userList.length;
 
         _pendingIds.clear();
         if (paymentsResult.isSuccess) {
@@ -970,12 +1035,16 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setModal) => Padding(
           padding: EdgeInsets.only(
-              bottom: MediaQuery.of(ctx).viewInsets.bottom,
-              left: 20, right: 20, top: 20),
+            bottom: MediaQuery.of(ctx).viewInsets.bottom,
+            left: 20,
+            right: 20,
+            top: 20,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -995,11 +1064,17 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
                   },
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: tiers.map((t) => RadioListTile<String>(
-                      value: t['tier'] as String,
-                      title: Text(t['label'] as String),
-                      subtitle: Text(l10n.priceRwf(t['price'].toString())),
-                    )).toList(),
+                    children: tiers
+                        .map(
+                          (t) => RadioListTile<String>(
+                            value: t['tier'] as String,
+                            title: Text(t['label'] as String),
+                            subtitle: Text(
+                              l10n.priceRwf(t['price'].toString()),
+                            ),
+                          ),
+                        )
+                        .toList(),
                   ),
                 ),
               CheckboxListTile(
@@ -1012,20 +1087,25 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
                 TextField(
                   controller: daysCtrl,
                   keyboardType: TextInputType.number,
-                  decoration:
-                      InputDecoration(labelText: l10n.adminEnterDays),
+                  decoration: InputDecoration(labelText: l10n.adminEnterDays),
                 ),
               const SizedBox(height: 8),
               TextField(
                 controller: amtCtrl,
                 keyboardType: TextInputType.number,
-                decoration:
-                    InputDecoration(labelText: l10n.adminPaymentAmount),
+                decoration: InputDecoration(labelText: l10n.adminPaymentAmount),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () => _submitGrant(ctx, userId, selectedTier,
-                    customMode, daysCtrl.text, amtCtrl.text, l10n),
+                onPressed: () => _submitGrant(
+                  ctx,
+                  userId,
+                  selectedTier,
+                  customMode,
+                  daysCtrl.text,
+                  amtCtrl.text,
+                  l10n,
+                ),
                 child: Text(l10n.adminAccessGranted),
               ),
               const SizedBox(height: 24),
@@ -1047,18 +1127,24 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
   ) async {
     final amount = int.tryParse(amtText) ?? 0;
     if (amount <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
           content: Text(l10n.adminInvalidAmount),
-          backgroundColor: AppColors.error));
+          backgroundColor: AppColors.error,
+        ),
+      );
       return;
     }
     final body = <String, dynamic>{'paymentAmount': amount};
     if (customMode) {
       final d = int.tryParse(daysText) ?? 0;
       if (d <= 0) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
             content: Text(l10n.adminInvalidDays),
-            backgroundColor: AppColors.error));
+            backgroundColor: AppColors.error,
+          ),
+        );
         return;
       }
       body['durationDays'] = d;
@@ -1076,21 +1162,28 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
       );
       if (mounted && ctx.mounted) Navigator.pop(ctx);
       if (result.isSuccess) {
-        messenger.showSnackBar(SnackBar(
+        messenger.showSnackBar(
+          SnackBar(
             content: Text(l10n.adminAccessGranted),
-            backgroundColor: AppColors.success));
+            backgroundColor: AppColors.success,
+          ),
+        );
         _loadData();
       } else if (result.statusCode == 401) {
         authBloc.add(const SignOutEvent());
         router.go('/login');
       } else {
-        messenger.showSnackBar(SnackBar(
+        messenger.showSnackBar(
+          SnackBar(
             content: Text(result.errorMessage ?? 'Error'),
-            backgroundColor: AppColors.error));
+            backgroundColor: AppColors.error,
+          ),
+        );
       }
     } catch (e) {
-      messenger.showSnackBar(SnackBar(
-          content: Text(e.toString()), backgroundColor: AppColors.error));
+      messenger.showSnackBar(
+        SnackBar(content: Text(e.toString()), backgroundColor: AppColors.error),
+      );
     } finally {
       setState(() => _loadingMap.remove(userId));
     }
@@ -1114,158 +1207,177 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Column(
-      children: [
-        // ── Search bar ───────────────────────────────────────────────────
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
-          child: TextField(
-            controller: _searchCtrl,
-            decoration: InputDecoration(
-              hintText: l10n.adminSearchUsers,
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(
+    return ConstrainedContent(
+      maxWidth: AppContentWidths.wide,
+      padding: EdgeInsets.zero,
+      child: Column(
+        children: [
+          // ── Search bar ───────────────────────────────────────────────────
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+            child: TextField(
+              controller: _searchCtrl,
+              decoration: InputDecoration(
+                hintText: l10n.adminSearchUsers,
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none),
-              filled: true,
-              fillColor: Theme.of(context).colorScheme.surface,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Theme.of(context).colorScheme.surface,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+              ),
             ),
           ),
-        ),
 
-        // ── Filter chips ─────────────────────────────────────────────────
-        SizedBox(
-          height: 42,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            children: [
-              _chip(context, l10n.adminFilterAll, _accessFilter == 'all', () {
-                setState(() => _accessFilter = 'all');
-                _page = 1;
-                _loadData();
-              }),
-              const SizedBox(width: 6),
-              _chip(context, l10n.adminFilterHasAccess, _accessFilter == 'hasAccess',
-                  () {
-                setState(() => _accessFilter = 'hasAccess');
-                _page = 1;
-                _loadData();
-              }),
-              const SizedBox(width: 6),
-              _chip(context, l10n.adminFilterNoAccess, _accessFilter == 'noAccess',
-                  () {
-                setState(() => _accessFilter = 'noAccess');
-                _page = 1;
-                _loadData();
-              }),
-            ],
-          ),
-        ),
-
-        Expanded(
-          child: _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : _error != null
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.error_outline,
-                              size: 48, color: AppColors.error),
-                          const SizedBox(height: 12),
-                          Text(_error!,
-                              style: AppTextStyles.bodyMedium,
-                              textAlign: TextAlign.center),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: _loadData,
-                            child: Text(l10n.commonRetry),
-                          ),
-                        ],
-                      ),
-                    )
-                  : _users.isEmpty
-                      ? Center(child: Text(l10n.adminNoUsers))
-                      : RefreshIndicator(
-                          onRefresh: _loadData,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-                            itemCount: _users.length,
-                            itemBuilder: (ctx, i) {
-                              final user = _users[i];
-                              final userId =
-                                  (user['id'] ?? '').toString();
-                              final isLoading =
-                                  _loadingMap[userId] ?? false;
-                              final hasPending =
-                                  _pendingIds.contains(userId);
-                              return _GrantUserCard(
-                                user: user,
-                                isLoading: isLoading,
-                                hasPending: hasPending,
-                                onGrant: () =>
-                                    _showGrantSheet(user, l10n),
-                                l10n: l10n,
-                              );
-                            },
-                          ),
-                        ),
-        ),
-
-        // ── Pagination ───────────────────────────────────────────────────
-        if (!_isLoading && _error == null && _totalPages > 1)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+          // ── Filter chips ─────────────────────────────────────────────────
+          SizedBox(
+            height: 42,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               children: [
-                IconButton(
-                  icon: const Icon(Icons.chevron_left),
-                  onPressed: _page > 1
-                      ? () {
-                          setState(() => _page--);
-                          _loadData();
-                        }
-                      : null,
+                _chip(context, l10n.adminFilterAll, _accessFilter == 'all', () {
+                  setState(() => _accessFilter = 'all');
+                  _page = 1;
+                  _loadData();
+                }),
+                const SizedBox(width: 6),
+                _chip(
+                  context,
+                  l10n.adminFilterHasAccess,
+                  _accessFilter == 'hasAccess',
+                  () {
+                    setState(() => _accessFilter = 'hasAccess');
+                    _page = 1;
+                    _loadData();
+                  },
                 ),
-                Text(l10n.adminPage(_page, _totalPages),
-                    style: AppTextStyles.labelMedium),
-                IconButton(
-                  icon: const Icon(Icons.chevron_right),
-                  onPressed: _page < _totalPages
-                      ? () {
-                          setState(() => _page++);
-                          _loadData();
-                        }
-                      : null,
+                const SizedBox(width: 6),
+                _chip(
+                  context,
+                  l10n.adminFilterNoAccess,
+                  _accessFilter == 'noAccess',
+                  () {
+                    setState(() => _accessFilter = 'noAccess');
+                    _page = 1;
+                    _loadData();
+                  },
                 ),
               ],
             ),
           ),
-      ],
+
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _error != null
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          size: 48,
+                          color: AppColors.error,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          _error!,
+                          style: AppTextStyles.bodyMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: _loadData,
+                          child: Text(l10n.commonRetry),
+                        ),
+                      ],
+                    ),
+                  )
+                : _users.isEmpty
+                ? Center(child: Text(l10n.adminNoUsers))
+                : RefreshIndicator(
+                    onRefresh: _loadData,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                      itemCount: _users.length,
+                      itemBuilder: (ctx, i) {
+                        final user = _users[i];
+                        final userId = (user['id'] ?? '').toString();
+                        final isLoading = _loadingMap[userId] ?? false;
+                        final hasPending = _pendingIds.contains(userId);
+                        return _GrantUserCard(
+                          user: user,
+                          isLoading: isLoading,
+                          hasPending: hasPending,
+                          onGrant: () => _showGrantSheet(user, l10n),
+                          l10n: l10n,
+                        );
+                      },
+                    ),
+                  ),
+          ),
+
+          // ── Pagination ───────────────────────────────────────────────────
+          if (!_isLoading && _error == null && _totalPages > 1)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.chevron_left),
+                    onPressed: _page > 1
+                        ? () {
+                            setState(() => _page--);
+                            _loadData();
+                          }
+                        : null,
+                  ),
+                  Text(
+                    l10n.adminPage(_page, _totalPages),
+                    style: AppTextStyles.labelMedium,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.chevron_right),
+                    onPressed: _page < _totalPages
+                        ? () {
+                            setState(() => _page++);
+                            _loadData();
+                          }
+                        : null,
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
     );
   }
 
-  Widget _chip(BuildContext context, String label, bool selected, VoidCallback onTap) {
+  Widget _chip(
+    BuildContext context,
+    String label,
+    bool selected,
+    VoidCallback onTap,
+  ) {
     final primary = Theme.of(context).colorScheme.primary;
     final bg = Theme.of(context).colorScheme.surface;
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: selected
-              ? primary.withValues(alpha: 0.15)
-              : bg,
+          color: selected ? primary.withValues(alpha: 0.15) : bg,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-              color: selected
-                  ? primary
-                  : primary.withValues(alpha: 0.2)),
+            color: selected ? primary : primary.withValues(alpha: 0.2),
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -1279,8 +1391,7 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
               style: TextStyle(
                 color: selected ? primary : AppColors.textSecondary,
                 fontSize: 12,
-                fontWeight:
-                    selected ? FontWeight.bold : FontWeight.normal,
+                fontWeight: selected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           ],
@@ -1324,8 +1435,7 @@ class _GrantUserCard extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Row(
@@ -1335,8 +1445,7 @@ class _GrantUserCard extends StatelessWidget {
               radius: 22,
               child: Text(
                 name.isNotEmpty ? name[0].toUpperCase() : '?',
-                style: AppTextStyles.heading6
-                    .copyWith(color: primary),
+                style: AppTextStyles.heading6.copyWith(color: primary),
               ),
             ),
             const SizedBox(width: 12),
@@ -1347,14 +1456,19 @@ class _GrantUserCard extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                          child: Text(name,
-                              style: AppTextStyles.labelLarge,
-                              overflow: TextOverflow.ellipsis)),
+                        child: Text(
+                          name,
+                          style: AppTextStyles.labelLarge,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                       if (hasPending)
                         Container(
                           margin: const EdgeInsets.only(left: 4),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 2),
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.warning.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(6),
@@ -1362,33 +1476,38 @@ class _GrantUserCard extends StatelessWidget {
                           child: Text(
                             '⏳ ${l10n.certificatesPending}',
                             style: const TextStyle(
-                                color: AppColors.warning,
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold),
+                              color: AppColors.warning,
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                     ],
                   ),
-                  Text(phone,
-                      style: AppTextStyles.bodySmall
-                          .copyWith(color: AppColors.textSecondary)),
+                  Text(
+                    phone,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
                   Row(
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: accessColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          _hasAccess
-                              ? l10n.adminHasAccess
-                              : l10n.adminNoAccess,
+                          _hasAccess ? l10n.adminHasAccess : l10n.adminNoAccess,
                           style: TextStyle(
-                              color: accessColor,
-                              fontSize: 9,
-                              fontWeight: FontWeight.bold),
+                            color: accessColor,
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 6),
@@ -1396,7 +1515,8 @@ class _GrantUserCard extends StatelessWidget {
                         child: Text(
                           lang.toUpperCase(),
                           style: AppTextStyles.labelSmall.copyWith(
-                              color: AppColors.textTertiary),
+                            color: AppColors.textTertiary,
+                          ),
                         ),
                       ),
                       if (_hasAccess && expires.isNotEmpty) ...[
@@ -1405,7 +1525,8 @@ class _GrantUserCard extends StatelessWidget {
                           child: Text(
                             expires,
                             style: AppTextStyles.labelSmall.copyWith(
-                                color: AppColors.textTertiary),
+                              color: AppColors.textTertiary,
+                            ),
                           ),
                         ),
                       ],
@@ -1416,13 +1537,13 @@ class _GrantUserCard extends StatelessWidget {
             ),
             if (isLoading)
               const SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2))
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
             else
               IconButton(
-                icon: const Icon(Icons.key_rounded,
-                    color: AppColors.success),
+                icon: const Icon(Icons.key_rounded, color: AppColors.success),
                 onPressed: onGrant,
                 tooltip: l10n.adminAccessGranted,
               ),

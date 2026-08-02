@@ -6,6 +6,7 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/network/api_helper.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
@@ -98,7 +99,10 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
   // ── Actions ─────────────────────────────────────────────────────────────────
 
   Future<void> _blockUser(
-      String userId, bool currentlyBlocked, AppLocalizations l10n) async {
+    String userId,
+    bool currentlyBlocked,
+    AppLocalizations l10n,
+  ) async {
     final newStatus = currentlyBlocked ? 1 : 0;
     setState(() => _loadingMap[userId] = true);
     final authBloc = context.read<AuthBloc>();
@@ -110,35 +114,48 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
         body: {'isActive': newStatus},
       );
       if (result.isSuccess) {
-        messenger.showSnackBar(SnackBar(
-          content: Text(currentlyBlocked ? l10n.adminUserUnblocked : l10n.adminUserBlocked),
-          backgroundColor: AppColors.success,
-          behavior: SnackBarBehavior.floating,
-        ));
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              currentlyBlocked
+                  ? l10n.adminUserUnblocked
+                  : l10n.adminUserBlocked,
+            ),
+            backgroundColor: AppColors.success,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
         _loadUsers();
       } else if (result.statusCode == 401) {
         authBloc.add(const SignOutEvent());
         router.go('/login');
       } else {
-        messenger.showSnackBar(SnackBar(
-          content: Text(result.errorMessage ?? 'Error'),
-          backgroundColor: AppColors.error,
-          behavior: SnackBarBehavior.floating,
-        ));
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(result.errorMessage ?? 'Error'),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
       }
     } catch (e) {
-      messenger.showSnackBar(SnackBar(
-        content: Text(e.toString()),
-        backgroundColor: AppColors.error,
-        behavior: SnackBarBehavior.floating,
-      ));
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     } finally {
       setState(() => _loadingMap.remove(userId));
     }
   }
 
   Future<void> _deleteUser(
-      String userId, String name, AppLocalizations l10n) async {
+    String userId,
+    String name,
+    AppLocalizations l10n,
+  ) async {
     setState(() => _loadingMap[userId] = true);
     final authBloc = context.read<AuthBloc>();
     final router = GoRouter.of(context);
@@ -146,11 +163,13 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     try {
       final result = await ApiHelper().delete('/api/admin/users/$userId');
       if (result.isSuccess) {
-        messenger.showSnackBar(SnackBar(
-          content: Text(l10n.adminUserDeleted),
-          backgroundColor: AppColors.success,
-          behavior: SnackBarBehavior.floating,
-        ));
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(l10n.adminUserDeleted),
+            backgroundColor: AppColors.success,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
         _loadUsers();
       } else if (result.statusCode == 401) {
         authBloc.add(const SignOutEvent());
@@ -159,32 +178,41 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
         final data = result.data;
         final code = (data is Map) ? (data['code'] ?? '') : '';
         if (code == 'BLOCK_FIRST') {
-          messenger.showSnackBar(SnackBar(
-            content: Text(l10n.adminMustBlockFirst),
-            backgroundColor: AppColors.warning,
-            behavior: SnackBarBehavior.floating,
-          ));
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text(l10n.adminMustBlockFirst),
+              backgroundColor: AppColors.warning,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
         } else {
-          messenger.showSnackBar(SnackBar(
-            content: Text(result.errorMessage ?? 'Error'),
-            backgroundColor: AppColors.error,
-            behavior: SnackBarBehavior.floating,
-          ));
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text(result.errorMessage ?? 'Error'),
+              backgroundColor: AppColors.error,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
         }
       }
     } catch (e) {
-      messenger.showSnackBar(SnackBar(
-        content: Text(e.toString()),
-        backgroundColor: AppColors.error,
-        behavior: SnackBarBehavior.floating,
-      ));
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     } finally {
       setState(() => _loadingMap.remove(userId));
     }
   }
 
   Future<void> _markCalled(
-      String userId, String notes, AppLocalizations l10n) async {
+    String userId,
+    String notes,
+    AppLocalizations l10n,
+  ) async {
     setState(() => _loadingMap[userId] = true);
     final authBloc = context.read<AuthBloc>();
     final router = GoRouter.of(context);
@@ -195,39 +223,47 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
         body: {'notes': notes},
       );
       if (result.isSuccess) {
-        messenger.showSnackBar(SnackBar(
-          content: Text(l10n.adminCallLogged),
-          backgroundColor: AppColors.success,
-          behavior: SnackBarBehavior.floating,
-        ));
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(l10n.adminCallLogged),
+            backgroundColor: AppColors.success,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
         _loadUsers();
       } else if (result.statusCode == 401) {
         authBloc.add(const SignOutEvent());
         router.go('/login');
       } else {
-        messenger.showSnackBar(SnackBar(
-          content: Text(result.errorMessage ?? 'Error'),
-          backgroundColor: AppColors.error,
-          behavior: SnackBarBehavior.floating,
-        ));
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(result.errorMessage ?? 'Error'),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
       }
     } catch (e) {
-      messenger.showSnackBar(SnackBar(
-        content: Text(e.toString()),
-        backgroundColor: AppColors.error,
-        behavior: SnackBarBehavior.floating,
-      ));
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     } finally {
       setState(() => _loadingMap.remove(userId));
     }
   }
 
   void _showSnack(BuildContext ctx, String msg, Color color) {
-    ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-      content: Text(msg),
-      backgroundColor: color,
-      behavior: SnackBarBehavior.floating,
-    ));
+    ScaffoldMessenger.of(ctx).showSnackBar(
+      SnackBar(
+        content: Text(msg),
+        backgroundColor: color,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   // ── Dialogs ──────────────────────────────────────────────────────────────────
@@ -240,9 +276,11 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       context: ctx,
       builder: (dialogCtx) => AlertDialog(
         title: Text(isActive ? l10n.adminBlockUser : l10n.adminUnblockUser),
-        content: Text(isActive
-            ? l10n.adminBlockUserConfirm(name)
-            : '${l10n.adminUnblockUser} $name?'),
+        content: Text(
+          isActive
+              ? l10n.adminBlockUserConfirm(name)
+              : '${l10n.adminUnblockUser} $name?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogCtx),
@@ -274,8 +312,11 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       builder: (dialogCtx) => AlertDialog(
         title: Row(
           children: [
-            const Icon(Icons.warning_amber_rounded,
-                color: AppColors.error, size: 26),
+            const Icon(
+              Icons.warning_amber_rounded,
+              color: AppColors.error,
+              size: 26,
+            ),
             const SizedBox(width: 8),
             Expanded(child: Text(l10n.adminDeleteUserAction)),
           ],
@@ -290,20 +331,24 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                 decoration: BoxDecoration(
                   color: AppColors.warning.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
+                  border: Border.all(
+                    color: AppColors.warning.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: Row(
                   children: [
                     const Icon(Icons.info, color: AppColors.warning, size: 18),
                     const SizedBox(width: 8),
                     Expanded(
-                        child: Text(l10n.adminMustBlockFirst,
-                            style: const TextStyle(fontSize: 13))),
+                      child: Text(
+                        l10n.adminMustBlockFirst,
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    ),
                   ],
                 ),
               ),
-            if (!isActive)
-              Text(l10n.adminDeleteUserConfirm(name)),
+            if (!isActive) Text(l10n.adminDeleteUserConfirm(name)),
           ],
         ),
         actions: [
@@ -328,9 +373,14 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     );
   }
 
-  Future<void> _callUser(BuildContext ctx, Map user, AppLocalizations l10n) async {
+  Future<void> _callUser(
+    BuildContext ctx,
+    Map user,
+    AppLocalizations l10n,
+  ) async {
     final id = (user['id'] ?? '').toString();
-    final phone = (user['phoneNumber'] ?? user['phone_number'] ?? '').toString();
+    final phone = (user['phoneNumber'] ?? user['phone_number'] ?? '')
+        .toString();
     if (phone.isEmpty) {
       _showSnack(ctx, 'No phone number', AppColors.error);
       return;
@@ -356,20 +406,23 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (ctx) {
         return StatefulBuilder(
           builder: (ctx, setModal) {
             return Padding(
               padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(ctx).viewInsets.bottom,
-                  left: 20, right: 20, top: 20),
+                bottom: MediaQuery.of(ctx).viewInsets.bottom,
+                left: 20,
+                right: 20,
+                top: 20,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(l10n.adminSelectTier,
-                      style: AppTextStyles.heading6),
+                  Text(l10n.adminSelectTier, style: AppTextStyles.heading6),
                   const SizedBox(height: 12),
                   if (!customMode)
                     RadioGroup<String>(
@@ -399,30 +452,37 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                   CheckboxListTile(
                     value: customMode,
                     title: Text(l10n.adminOrCustom),
-                    onChanged: (v) =>
-                        setModal(() => customMode = v ?? false),
+                    onChanged: (v) => setModal(() => customMode = v ?? false),
                     dense: true,
                   ),
                   if (customMode) ...[
                     TextField(
                       controller: daysCtrl,
                       keyboardType: TextInputType.number,
-                      decoration:
-                          InputDecoration(labelText: l10n.adminEnterDays),
+                      decoration: InputDecoration(
+                        labelText: l10n.adminEnterDays,
+                      ),
                     ),
                   ],
                   const SizedBox(height: 8),
                   TextField(
                     controller: amtCtrl,
                     keyboardType: TextInputType.number,
-                    decoration:
-                        InputDecoration(labelText: l10n.adminPaymentAmount),
+                    decoration: InputDecoration(
+                      labelText: l10n.adminPaymentAmount,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () =>
-                        _submitGrant(ctx, userId, selectedTier, customMode,
-                            daysCtrl.text, amtCtrl.text, l10n),
+                    onPressed: () => _submitGrant(
+                      ctx,
+                      userId,
+                      selectedTier,
+                      customMode,
+                      daysCtrl.text,
+                      amtCtrl.text,
+                      l10n,
+                    ),
                     child: Text(l10n.adminAccessGranted),
                   ),
                   const SizedBox(height: 24),
@@ -486,28 +546,34 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       );
       if (mounted && ctx.mounted) Navigator.pop(ctx);
       if (result.isSuccess) {
-        messenger.showSnackBar(SnackBar(
-          content: Text(l10n.adminAccessGranted),
-          backgroundColor: AppColors.success,
-          behavior: SnackBarBehavior.floating,
-        ));
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(l10n.adminAccessGranted),
+            backgroundColor: AppColors.success,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
         _loadUsers();
       } else if (result.statusCode == 401) {
         authBloc.add(const SignOutEvent());
         router.go('/login');
       } else {
-        messenger.showSnackBar(SnackBar(
-          content: Text(result.errorMessage ?? 'Error'),
-          backgroundColor: AppColors.error,
-          behavior: SnackBarBehavior.floating,
-        ));
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(result.errorMessage ?? 'Error'),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
       }
     } catch (e) {
-      messenger.showSnackBar(SnackBar(
-        content: Text(e.toString()),
-        backgroundColor: AppColors.error,
-        behavior: SnackBarBehavior.floating,
-      ));
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     } finally {
       setState(() => _loadingMap.remove(userId));
     }
@@ -542,269 +608,331 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
             ),
           ),
           Expanded(
-            child: Column(
-              children: [
-          // ── Search bar ───────────────────────────────────────────────
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
-            child: TextField(
-              controller: _searchCtrl,
-              decoration: InputDecoration(
-                hintText: l10n.adminSearchUsers,
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none),
-                filled: true,
-                fillColor: surfaceColor,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              ),
-            ),
-          ),
-
-          // ── Filter row ───────────────────────────────────────────────
-          SizedBox(
-            height: 46,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              children: [
-                _chip(context, l10n.adminFilterAll, 'all' == _accessFilter, () {
-                  setState(() => _accessFilter = 'all');
-                  _page = 1;
-                  _loadUsers();
-                }),
-                const SizedBox(width: 6),
-                _chip(context, l10n.adminFilterHasAccess, _accessFilter == 'hasAccess', () {
-                  setState(() => _accessFilter = 'hasAccess');
-                  _page = 1;
-                  _loadUsers();
-                }),
-                const SizedBox(width: 6),
-                _chip(context, l10n.adminFilterNoAccess, _accessFilter == 'noAccess', () {
-                  setState(() => _accessFilter = 'noAccess');
-                  _page = 1;
-                  _loadUsers();
-                }),
-                const SizedBox(width: 6),
-                _chip(context, '👑 Admin', _roleFilter == 'ADMIN', () {
-                  setState(() => _roleFilter =
-                      _roleFilter == 'ADMIN' ? '' : 'ADMIN');
-                  _page = 1;
-                  _loadUsers();
-                }),
-                const SizedBox(width: 6),
-                _chip(context, '👤 User', _roleFilter == 'USER', () {
-                  setState(() =>
-                      _roleFilter = _roleFilter == 'USER' ? '' : 'USER');
-                  _page = 1;
-                  _loadUsers();
-                }),
-                const SizedBox(width: 6),
-                _chip(context, l10n.adminFilterToday, _todayOnly, () {
-                  setState(() {
-                    _todayOnly = !_todayOnly;
-                    if (_todayOnly) {
-                      _dateFrom = null;
-                      _dateTo = null;
-                    }
-                  });
-                  _page = 1;
-                  _loadUsers();
-                }),
-              ],
-            ),
-          ),
-
-          // ── Sort + Date range row ────────────────────────────────────
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 2, 12, 4),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() => _sortDir =
-                        _sortDir == 'DESC' ? 'ASC' : 'DESC');
-                    _page = 1;
-                    _loadUsers();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: primary.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                          color: primary.withValues(alpha: 0.2)),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          _sortDir == 'DESC'
-                              ? Icons.arrow_downward
-                              : Icons.arrow_upward,
-                          size: 14,
-                          color: primary,
+            child: ConstrainedContent(
+              maxWidth: AppContentWidths.wide,
+              padding: EdgeInsets.zero,
+              child: Column(
+                children: [
+                  // ── Search bar ───────────────────────────────────────────────
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+                    child: TextField(
+                      controller: _searchCtrl,
+                      decoration: InputDecoration(
+                        hintText: l10n.adminSearchUsers,
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
                         ),
-                        const SizedBox(width: 4),
-                        Text(
-                          _sortDir == 'DESC'
-                              ? l10n.adminSortDesc
-                              : l10n.adminSortAsc,
-                          style: TextStyle(
-                              color: primary, fontSize: 12),
+                        filled: true,
+                        fillColor: surfaceColor,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // ── Filter row ───────────────────────────────────────────────
+                  SizedBox(
+                    height: 46,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      children: [
+                        _chip(
+                          context,
+                          l10n.adminFilterAll,
+                          'all' == _accessFilter,
+                          () {
+                            setState(() => _accessFilter = 'all');
+                            _page = 1;
+                            _loadUsers();
+                          },
+                        ),
+                        const SizedBox(width: 6),
+                        _chip(
+                          context,
+                          l10n.adminFilterHasAccess,
+                          _accessFilter == 'hasAccess',
+                          () {
+                            setState(() => _accessFilter = 'hasAccess');
+                            _page = 1;
+                            _loadUsers();
+                          },
+                        ),
+                        const SizedBox(width: 6),
+                        _chip(
+                          context,
+                          l10n.adminFilterNoAccess,
+                          _accessFilter == 'noAccess',
+                          () {
+                            setState(() => _accessFilter = 'noAccess');
+                            _page = 1;
+                            _loadUsers();
+                          },
+                        ),
+                        const SizedBox(width: 6),
+                        _chip(context, '👑 Admin', _roleFilter == 'ADMIN', () {
+                          setState(
+                            () => _roleFilter = _roleFilter == 'ADMIN'
+                                ? ''
+                                : 'ADMIN',
+                          );
+                          _page = 1;
+                          _loadUsers();
+                        }),
+                        const SizedBox(width: 6),
+                        _chip(context, '👤 User', _roleFilter == 'USER', () {
+                          setState(
+                            () => _roleFilter = _roleFilter == 'USER'
+                                ? ''
+                                : 'USER',
+                          );
+                          _page = 1;
+                          _loadUsers();
+                        }),
+                        const SizedBox(width: 6),
+                        _chip(context, l10n.adminFilterToday, _todayOnly, () {
+                          setState(() {
+                            _todayOnly = !_todayOnly;
+                            if (_todayOnly) {
+                              _dateFrom = null;
+                              _dateTo = null;
+                            }
+                          });
+                          _page = 1;
+                          _loadUsers();
+                        }),
+                      ],
+                    ),
+                  ),
+
+                  // ── Sort + Date range row ────────────────────────────────────
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 2, 12, 4),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(
+                              () => _sortDir = _sortDir == 'DESC'
+                                  ? 'ASC'
+                                  : 'DESC',
+                            );
+                            _page = 1;
+                            _loadUsers();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: primary.withValues(alpha: 0.08),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: primary.withValues(alpha: 0.2),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  _sortDir == 'DESC'
+                                      ? Icons.arrow_downward
+                                      : Icons.arrow_upward,
+                                  size: 14,
+                                  color: primary,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  _sortDir == 'DESC'
+                                      ? l10n.adminSortDesc
+                                      : l10n.adminSortAsc,
+                                  style: TextStyle(
+                                    color: primary,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        if (!_todayOnly)
+                          GestureDetector(
+                            onTap: () => _pickDateRange(context, l10n),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: (_dateFrom != null)
+                                    ? primary.withValues(alpha: 0.1)
+                                    : surfaceColor,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: primary.withValues(alpha: 0.2),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.date_range,
+                                    size: 14,
+                                    color: primary,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    _dateFrom != null
+                                        ? '${_dateFrom!.toIso8601String().split('T')[0]} – ${_dateTo?.toIso8601String().split('T')[0] ?? '...'}'
+                                        : l10n.adminDateRange,
+                                    style: TextStyle(
+                                      color: primary,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  if (_dateFrom != null) ...[
+                                    const SizedBox(width: 4),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _dateFrom = null;
+                                          _dateTo = null;
+                                        });
+                                        _page = 1;
+                                        _loadUsers();
+                                      },
+                                      child: Icon(
+                                        Icons.close,
+                                        size: 14,
+                                        color: primary,
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ),
+                          ),
+                        const Spacer(),
+                        Expanded(
+                          child: Text(
+                            '${l10n.adminTotalUsers}: $_totalUsers',
+                            style: AppTextStyles.labelSmall.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                if (!_todayOnly)
-                  GestureDetector(
-                    onTap: () => _pickDateRange(context, l10n),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: (_dateFrom != null)
-                            ? primary.withValues(alpha: 0.1)
-                            : surfaceColor,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                            color: primary.withValues(alpha: 0.2)),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.date_range, size: 14,
-                              color: primary),
-                          const SizedBox(width: 4),
-                          Text(
-                            _dateFrom != null
-                                ? '${_dateFrom!.toIso8601String().split('T')[0]} – ${_dateTo?.toIso8601String().split('T')[0] ?? '...'}'
-                                : l10n.adminDateRange,
-                            style: TextStyle(
-                                color: primary, fontSize: 12),
-                          ),
-                          if (_dateFrom != null) ...[
-                            const SizedBox(width: 4),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _dateFrom = null;
-                                  _dateTo = null;
-                                });
-                                _page = 1;
-                                _loadUsers();
-                              },
-                              child: Icon(Icons.close,
-                                  size: 14, color: primary),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-                const Spacer(),
-                Expanded(
-                  child: Text(
-                    '${l10n.adminTotalUsers}: $_totalUsers',
-                    style: AppTextStyles.labelSmall
-                        .copyWith(color: AppColors.textSecondary),
-                  ),
-                ),
-              ],
-            ),
-          ),
 
-          // ── User list ────────────────────────────────────────────────
-          Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _error != null
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.error_outline,
-                                size: 48, color: AppColors.error),
-                            const SizedBox(height: 16),
-                            Text(_error!,
-                                style: AppTextStyles.bodyMedium,
-                                textAlign: TextAlign.center),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: _loadUsers,
-                              child: Text(l10n.commonRetry),
+                  // ── User list ────────────────────────────────────────────────
+                  Expanded(
+                    child: _isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : _error != null
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.error_outline,
+                                  size: 48,
+                                  color: AppColors.error,
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  _error!,
+                                  style: AppTextStyles.bodyMedium,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 16),
+                                ElevatedButton(
+                                  onPressed: _loadUsers,
+                                  child: Text(l10n.commonRetry),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      )
-                    : _users.isEmpty
+                          )
+                        : _users.isEmpty
                         ? Center(child: Text(l10n.adminNoUsers))
                         : ListView.builder(
                             padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
                             itemCount: _users.length,
-                            itemBuilder: (ctx, i) =>
-                                _UserCard(
-                                  user: _users[i] as Map,
-                                  isLoading: _loadingMap[
-                                          (_users[i] as Map)['id']?.toString() ?? ''] ??
-                                      false,
-                                  onCall: () => _callUser(
-                                      ctx, _users[i] as Map, l10n),
-                                  onGrant: () =>
-                                      _showGrantSheet(_users[i] as Map, l10n),
-                                  onBlock: () => _showBlockConfirm(
-                                      ctx, _users[i] as Map, l10n),
-                                  onDelete: () => _showDeleteConfirm(
-                                      ctx, _users[i] as Map, l10n),
-                                  onProfile: () {
-                                    final id = (_users[i] as Map)['id']
-                                        ?.toString() ?? '';
-                                    context
-                                        .push('/admin/users/$id/profile');
-                                  },
-                                  l10n: l10n,
-                                ),
+                            itemBuilder: (ctx, i) => _UserCard(
+                              user: _users[i] as Map,
+                              isLoading:
+                                  _loadingMap[(_users[i] as Map)['id']
+                                          ?.toString() ??
+                                      ''] ??
+                                  false,
+                              onCall: () =>
+                                  _callUser(ctx, _users[i] as Map, l10n),
+                              onGrant: () =>
+                                  _showGrantSheet(_users[i] as Map, l10n),
+                              onBlock: () => _showBlockConfirm(
+                                ctx,
+                                _users[i] as Map,
+                                l10n,
+                              ),
+                              onDelete: () => _showDeleteConfirm(
+                                ctx,
+                                _users[i] as Map,
+                                l10n,
+                              ),
+                              onProfile: () {
+                                final id =
+                                    (_users[i] as Map)['id']?.toString() ?? '';
+                                context.push('/admin/users/$id/profile');
+                              },
+                              l10n: l10n,
+                            ),
                           ),
-          ),
+                  ),
 
-          // ── Pagination ───────────────────────────────────────────────
-          if (!_isLoading && _error == null && _totalPages > 1)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.chevron_left),
-                    onPressed: _page > 1
-                        ? () {
-                            setState(() => _page--);
-                            _loadUsers();
-                          }
-                        : null,
-                  ),
-                  Text(
-                    l10n.adminPage(_page, _totalPages),
-                    style: AppTextStyles.labelMedium,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.chevron_right),
-                    onPressed: _page < _totalPages
-                        ? () {
-                            setState(() => _page++);
-                            _loadUsers();
-                          }
-                        : null,
-                  ),
+                  // ── Pagination ───────────────────────────────────────────────
+                  if (!_isLoading && _error == null && _totalPages > 1)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.chevron_left),
+                            onPressed: _page > 1
+                                ? () {
+                                    setState(() => _page--);
+                                    _loadUsers();
+                                  }
+                                : null,
+                          ),
+                          Text(
+                            l10n.adminPage(_page, _totalPages),
+                            style: AppTextStyles.labelMedium,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.chevron_right),
+                            onPressed: _page < _totalPages
+                                ? () {
+                                    setState(() => _page++);
+                                    _loadUsers();
+                                  }
+                                : null,
+                          ),
+                        ],
+                      ),
+                    ),
                 ],
               ),
-            ),
-              ],
             ),
           ),
         ],
@@ -812,7 +940,12 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     );
   }
 
-  Widget _chip(BuildContext ctx, String label, bool selected, VoidCallback onTap) {
+  Widget _chip(
+    BuildContext ctx,
+    String label,
+    bool selected,
+    VoidCallback onTap,
+  ) {
     final primary = Theme.of(ctx).colorScheme.primary;
     final bgColor = Theme.of(ctx).colorScheme.surface;
     return GestureDetector(
@@ -820,14 +953,10 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: selected
-              ? primary.withValues(alpha: 0.15)
-              : bgColor,
+          color: selected ? primary.withValues(alpha: 0.15) : bgColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: selected
-                ? primary
-                : primary.withValues(alpha: 0.2),
+            color: selected ? primary : primary.withValues(alpha: 0.2),
           ),
         ),
         child: Row(
@@ -842,8 +971,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
               style: TextStyle(
                 color: selected ? primary : AppColors.textSecondary,
                 fontSize: 12,
-                fontWeight:
-                    selected ? FontWeight.bold : FontWeight.normal,
+                fontWeight: selected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           ],
@@ -853,7 +981,9 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
   }
 
   Future<void> _pickDateRange(
-      BuildContext context, AppLocalizations l10n) async {
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
     final now = DateTime.now();
     final range = await showDateRangePicker(
       context: context,
@@ -899,8 +1029,7 @@ class _UserCard extends StatelessWidget {
   });
 
   bool get _hasAccess {
-    final expires =
-        (user['accessExpiresAt'])?.toString();
+    final expires = (user['accessExpiresAt'])?.toString();
     if (expires == null) return false;
     return DateTime.tryParse(expires)?.isAfter(DateTime.now()) ?? false;
   }
@@ -923,13 +1052,13 @@ class _UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name =
-        (user['fullName'] ?? user['name'] ?? 'Unknown').toString();
-    final phone =
-        (user['phoneNumber'] ?? user['phone_number'] ?? '').toString();
+    final name = (user['fullName'] ?? user['name'] ?? 'Unknown').toString();
+    final phone = (user['phoneNumber'] ?? user['phone_number'] ?? '')
+        .toString();
     final role = (user['role'] ?? 'USER').toString();
-    final created =
-        (user['createdAt'] ?? user['created_at'] ?? '').toString().split('T')[0];
+    final created = (user['createdAt'] ?? user['created_at'] ?? '')
+        .toString()
+        .split('T')[0];
     final calledAt = (user['lastCalledAt'] ?? '').toString();
     final lang = (user['preferredLanguage'] ?? 'en').toString();
     final primary = Theme.of(context).colorScheme.primary;
@@ -938,8 +1067,7 @@ class _UserCard extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -951,13 +1079,11 @@ class _UserCard extends StatelessWidget {
                 GestureDetector(
                   onTap: onProfile,
                   child: CircleAvatar(
-                    backgroundColor:
-                        primary.withValues(alpha: 0.15),
+                    backgroundColor: primary.withValues(alpha: 0.15),
                     radius: 22,
                     child: Text(
                       name.isNotEmpty ? name[0].toUpperCase() : '?',
-                      style: AppTextStyles.heading6
-                          .copyWith(color: primary),
+                      style: AppTextStyles.heading6.copyWith(color: primary),
                     ),
                   ),
                 ),
@@ -971,15 +1097,19 @@ class _UserCard extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                              child: Text(name,
-                                  style: AppTextStyles.heading6,
-                                  overflow: TextOverflow.ellipsis),
+                              child: Text(
+                                name,
+                                style: AppTextStyles.heading6,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                             if (!_isActive)
                               Container(
                                 margin: const EdgeInsets.only(left: 4),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 6, vertical: 2),
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
                                   color: AppColors.error.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(6),
@@ -987,20 +1117,25 @@ class _UserCard extends StatelessWidget {
                                 child: Text(
                                   l10n.adminIsBlocked,
                                   style: const TextStyle(
-                                      color: AppColors.error,
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.bold),
+                                    color: AppColors.error,
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                           ],
                         ),
-                        Text(phone,
-                            style: AppTextStyles.bodySmall.copyWith(
-                                color: AppColors.textSecondary)),
+                        Text(
+                          phone,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
                         Text(
                           l10n.adminRegistrationDate(created),
-                          style: AppTextStyles.labelSmall
-                              .copyWith(color: AppColors.textTertiary),
+                          style: AppTextStyles.labelSmall.copyWith(
+                            color: AppColors.textTertiary,
+                          ),
                         ),
                       ],
                     ),
@@ -1009,13 +1144,13 @@ class _UserCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(_langEmoji(),
-                        style: const TextStyle(fontSize: 18)),
+                    Text(_langEmoji(), style: const TextStyle(fontSize: 18)),
                     const SizedBox(height: 2),
                     Text(
                       lang,
                       style: AppTextStyles.labelSmall.copyWith(
-                          color: AppColors.textSecondary),
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
@@ -1035,8 +1170,10 @@ class _UserCard extends StatelessWidget {
                 ),
                 _badge(role, primary),
                 if (calledAt.isNotEmpty)
-                  _badge('📞 ${calledAt.split('T')[0]}',
-                      AppColors.textSecondary),
+                  _badge(
+                    '📞 ${calledAt.split('T')[0]}',
+                    AppColors.textSecondary,
+                  ),
               ],
             ),
 
@@ -1044,8 +1181,9 @@ class _UserCard extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 '${l10n.subscriptionExpires(user['accessExpiresAt'].toString().split('T')[0])} • ${user['paymentTier'] ?? ''}',
-                style: AppTextStyles.labelSmall
-                    .copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.labelSmall.copyWith(
+                  color: AppColors.textSecondary,
+                ),
               ),
             ],
 
@@ -1054,10 +1192,12 @@ class _UserCard extends StatelessWidget {
             // ── Actions row ───────────────────────────────────────────
             if (isLoading)
               const Center(
-                  child: SizedBox(
-                      height: 24,
-                      width: 24,
-                      child: CircularProgressIndicator(strokeWidth: 2)))
+                child: SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              )
             else
               Wrap(
                 spacing: 6,
@@ -1098,52 +1238,46 @@ class _UserCard extends StatelessWidget {
   }
 
   Widget _badge(String label, Color color) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: color,
-            fontSize: 10,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+    decoration: BoxDecoration(
+      color: color.withValues(alpha: 0.12),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: Text(
+      label,
+      style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.bold),
+    ),
+  );
 
   Widget _actionBtn({
     required IconData icon,
     required String label,
     required Color color,
     required VoidCallback onTap,
-  }) =>
-      GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: color.withValues(alpha: 0.25)),
+  }) => GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color.withValues(alpha: 0.25)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: color, size: 14),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: color,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, color: color, size: 14),
-              const SizedBox(width: 4),
-              Text(
-                label,
-                style: TextStyle(
-                  color: color,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 }

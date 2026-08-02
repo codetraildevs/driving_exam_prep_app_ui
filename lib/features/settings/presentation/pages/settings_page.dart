@@ -8,6 +8,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_notifier.dart';
 import '../../../../shared/locale/language_selector_page.dart';
 import '../../../../shared/network/api_helper.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/theme/theme_notifier.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -32,69 +33,71 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       body: Column(
         children: [
-          AppPageHeader(
-            title: l10n.settingsTitle,
-            showBack: true,
-          ),
+          AppPageHeader(title: l10n.settingsTitle, showBack: true),
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildSectionHeader(l10n.settingsPreferences),
+              child: ConstrainedContent(
+                maxWidth: AppContentWidths.narrow,
+                padding: EdgeInsets.zero,
+                child: Column(
+                  children: [
+                    _buildSectionHeader(l10n.settingsPreferences),
 
-              // ── Theme selector ──────────────────────────────────────
-              _ThemeSelectorTile(
-                surfaceColor: surfaceColor,
-                outlineColor: outlineColor,
-              ),
+                    // ── Theme selector ──────────────────────────────────────
+                    _ThemeSelectorTile(
+                      surfaceColor: surfaceColor,
+                      outlineColor: outlineColor,
+                    ),
 
-              _buildToggleSetting(
-                surfaceColor: surfaceColor,
-                outlineColor: outlineColor,
-                title: l10n.settingsNotifications,
-                subtitle: l10n.settingsNotificationsSubtitle,
-                value: _notifications,
-                onChanged: (value) => setState(() => _notifications = value),
-              ),
-              _buildLanguageSetting(l10n, surfaceColor, outlineColor),
-              const Divider(),
-              _buildSectionHeader(l10n.settingsAbout),
-              _buildTextSetting(
-                surfaceColor: surfaceColor,
-                outlineColor: outlineColor,
-                icon: Icons.info_outline,
-                title: l10n.settingsAboutApp,
-                subtitle: l10n.settingsVersion('1.0.0'),
-                onTap: () => context.push('/about'),
-              ),
-              _buildTextSetting(
-                surfaceColor: surfaceColor,
-                outlineColor: outlineColor,
-                icon: Icons.description_outlined,
-                title: l10n.settingsPrivacyPolicy,
-                subtitle: l10n.settingsPrivacyPolicySubtitle,
-                onTap: () => context.push('/privacy-policy'),
-              ),
-              _buildTextSetting(
-                surfaceColor: surfaceColor,
-                outlineColor: outlineColor,
-                icon: Icons.description_outlined,
-                title: l10n.settingsTermsOfService,
-                subtitle: l10n.settingsTermsOfServiceSubtitle,
-                onTap: () => context.push('/terms-of-service'),
-              ),
-              _buildSectionHeader(l10n.settingsData),
-              _buildTextSetting(
-                surfaceColor: surfaceColor,
-                outlineColor: outlineColor,
-                icon: Icons.delete_outline,
-                title: l10n.settingsResetProgress,
-                subtitle: l10n.settingsResetProgressSubtitle,
-                textColor: AppColors.error,
-                onTap: () => _showResetConfirmation(),
-              ),
-              const SizedBox(height: 32),
-                ],
+                    _buildToggleSetting(
+                      surfaceColor: surfaceColor,
+                      outlineColor: outlineColor,
+                      title: l10n.settingsNotifications,
+                      subtitle: l10n.settingsNotificationsSubtitle,
+                      value: _notifications,
+                      onChanged: (value) =>
+                          setState(() => _notifications = value),
+                    ),
+                    _buildLanguageSetting(l10n, surfaceColor, outlineColor),
+                    const Divider(),
+                    _buildSectionHeader(l10n.settingsAbout),
+                    _buildTextSetting(
+                      surfaceColor: surfaceColor,
+                      outlineColor: outlineColor,
+                      icon: Icons.info_outline,
+                      title: l10n.settingsAboutApp,
+                      subtitle: l10n.settingsVersion('1.0.0'),
+                      onTap: () => context.push('/about'),
+                    ),
+                    _buildTextSetting(
+                      surfaceColor: surfaceColor,
+                      outlineColor: outlineColor,
+                      icon: Icons.description_outlined,
+                      title: l10n.settingsPrivacyPolicy,
+                      subtitle: l10n.settingsPrivacyPolicySubtitle,
+                      onTap: () => context.push('/privacy-policy'),
+                    ),
+                    _buildTextSetting(
+                      surfaceColor: surfaceColor,
+                      outlineColor: outlineColor,
+                      icon: Icons.description_outlined,
+                      title: l10n.settingsTermsOfService,
+                      subtitle: l10n.settingsTermsOfServiceSubtitle,
+                      onTap: () => context.push('/terms-of-service'),
+                    ),
+                    _buildSectionHeader(l10n.settingsData),
+                    _buildTextSetting(
+                      surfaceColor: surfaceColor,
+                      outlineColor: outlineColor,
+                      icon: Icons.delete_outline,
+                      title: l10n.settingsResetProgress,
+                      subtitle: l10n.settingsResetProgressSubtitle,
+                      textColor: AppColors.error,
+                      onTap: () => _showResetConfirmation(),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
               ),
             ),
           ),
@@ -111,7 +114,9 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Text(
           title,
           style: AppTextStyles.heading6.copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.6),
           ),
         ),
       ),
@@ -141,18 +146,13 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title,
-                      style: Theme.of(context).textTheme.labelLarge),
+                  Text(title, style: Theme.of(context).textTheme.labelLarge),
                   const SizedBox(height: 4),
-                  Text(subtitle,
-                      style: Theme.of(context).textTheme.bodySmall),
+                  Text(subtitle, style: Theme.of(context).textTheme.bodySmall),
                 ],
               ),
             ),
-            Switch(
-              value: value,
-              onChanged: onChanged,
-            ),
+            Switch(value: value, onChanged: onChanged),
           ],
         ),
       ),
@@ -160,13 +160,18 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget _buildLanguageSetting(
-      AppLocalizations l10n, Color surfaceColor, Color outlineColor) {
+    AppLocalizations l10n,
+    Color surfaceColor,
+    Color outlineColor,
+  ) {
     return Consumer(
       builder: (context, ref, _) {
         final localeState = ref.watch(localeProvider);
         final currentName =
-            LocaleNotifier.localeNames[localeState.effectiveLocale.languageCode] ??
-                'English';
+            LocaleNotifier.localeNames[localeState
+                .effectiveLocale
+                .languageCode] ??
+            'English';
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ListTile(
@@ -175,10 +180,14 @@ class _SettingsPageState extends State<SettingsPage> {
               borderRadius: BorderRadius.circular(12),
               side: BorderSide(color: outlineColor.withValues(alpha: 0.5)),
             ),
-            title: Text(l10n.settingsLanguage,
-                style: Theme.of(context).textTheme.labelLarge),
-            subtitle: Text(currentName,
-                style: Theme.of(context).textTheme.bodySmall),
+            title: Text(
+              l10n.settingsLanguage,
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            subtitle: Text(
+              currentName,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
             trailing: const Icon(Icons.arrow_forward),
             onTap: () => _showLanguageDialog(),
           ),
@@ -196,10 +205,9 @@ class _SettingsPageState extends State<SettingsPage> {
     Color textColor = AppColors.textPrimary,
     VoidCallback? onTap,
   }) {
-    final effectiveTextColor =
-        textColor == AppColors.textPrimary
-            ? Theme.of(context).colorScheme.onSurface
-            : textColor;
+    final effectiveTextColor = textColor == AppColors.textPrimary
+        ? Theme.of(context).colorScheme.onSurface
+        : textColor;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListTile(
@@ -209,13 +217,13 @@ class _SettingsPageState extends State<SettingsPage> {
           side: BorderSide(color: outlineColor.withValues(alpha: 0.5)),
         ),
         leading: Icon(icon, color: effectiveTextColor),
-        title: Text(title,
-            style: Theme.of(context)
-                .textTheme
-                .labelLarge
-                ?.copyWith(color: effectiveTextColor)),
-        subtitle: Text(subtitle,
-            style: Theme.of(context).textTheme.bodySmall),
+        title: Text(
+          title,
+          style: Theme.of(
+            context,
+          ).textTheme.labelLarge?.copyWith(color: effectiveTextColor),
+        ),
+        subtitle: Text(subtitle, style: Theme.of(context).textTheme.bodySmall),
         trailing: const Icon(Icons.arrow_forward),
         onTap: onTap,
       ),
@@ -225,7 +233,10 @@ class _SettingsPageState extends State<SettingsPage> {
   void _showLanguageDialog() async {
     final locale = await showLanguageSelectorDialog(context);
     if (locale != null && mounted) {
-      ProviderScope.containerOf(context, listen: false).read(localeProvider.notifier).setLocale(locale);
+      ProviderScope.containerOf(
+        context,
+        listen: false,
+      ).read(localeProvider.notifier).setLocale(locale);
       syncLanguageToBackend(locale.languageCode);
     }
   }
@@ -272,9 +283,10 @@ class _SettingsPageState extends State<SettingsPage> {
     if (userId == null || userId.isEmpty) return;
 
     try {
-      await ApiHelper().post('/api/practice-results/reset', body: {
-        'userId': userId,
-      });
+      await ApiHelper().post(
+        '/api/practice-results/reset',
+        body: {'userId': userId},
+      );
     } catch (_) {
       // Backend may not support this yet; that's okay
     }
@@ -403,7 +415,7 @@ class _ThemeChip extends StatelessWidget {
                       color: cs.primary.withValues(alpha: 0.25),
                       blurRadius: 8,
                       offset: const Offset(0, 3),
-                    )
+                    ),
                   ]
                 : null,
           ),
@@ -413,7 +425,9 @@ class _ThemeChip extends StatelessWidget {
               Icon(
                 icon,
                 size: 20,
-                color: selected ? cs.onPrimary : cs.onSurface.withValues(alpha: 0.7),
+                color: selected
+                    ? cs.onPrimary
+                    : cs.onSurface.withValues(alpha: 0.7),
               ),
               const SizedBox(height: 4),
               Text(
@@ -421,7 +435,9 @@ class _ThemeChip extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
-                  color: selected ? cs.onPrimary : cs.onSurface.withValues(alpha: 0.7),
+                  color: selected
+                      ? cs.onPrimary
+                      : cs.onSurface.withValues(alpha: 0.7),
                 ),
               ),
             ],

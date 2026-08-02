@@ -8,6 +8,8 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/network/api_helper.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
+import '../../../../shared/widgets/app_menu_button.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class AdminDashboardPage extends StatefulWidget {
@@ -65,7 +67,13 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
         if (data != null && data.containsKey('quickStats')) {
           final stats = data['quickStats'] as Map<String, dynamic>;
           final prefs = await SharedPreferences.getInstance();
-          await prefs.setString(_cacheKey, json.encode({'stats': stats, 'ts': DateTime.now().toIso8601String()}));
+          await prefs.setString(
+            _cacheKey,
+            json.encode({
+              'stats': stats,
+              'ts': DateTime.now().toIso8601String(),
+            }),
+          );
           setState(() {
             _quickStats = stats;
           });
@@ -82,7 +90,9 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
       // Network error — already showing cached data
       if (mounted) {
         setState(() => _isOffline = true);
-        if (_quickStats.isEmpty) setState(() => _error = l10n.adminNoNetworkError);
+        if (_quickStats.isEmpty) {
+          setState(() => _error = l10n.adminNoNetworkError);
+        }
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -108,10 +118,12 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
 
   int get _totalUsers => _quickStats['totalUsers'] as int? ?? 0;
   int get _totalPractices => _quickStats['totalPractices'] as int? ?? 0;
-  int get _activeSubscriptions => _quickStats['activeSubscriptions'] as int? ?? 0;
+  int get _activeSubscriptions =>
+      _quickStats['activeSubscriptions'] as int? ?? 0;
 
   Map<String, int> get _usersByLanguage {
-    final langData = _quickStats['usersByLanguage'] as Map<String, dynamic>? ?? {};
+    final langData =
+        _quickStats['usersByLanguage'] as Map<String, dynamic>? ?? {};
     return {
       'rw': (langData['rw'] ?? 0) as int,
       'en': (langData['en'] ?? 0) as int,
@@ -124,12 +136,20 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     final l10n = AppLocalizations.of(context);
     final authState = context.watch<AuthBloc>().state;
     final userName = authState is AuthAuthenticated ? authState.user.name : '';
-    final userInitial = userName.trim().isNotEmpty ? userName.trim()[0].toUpperCase() : 'A';
+    final userInitial = userName.trim().isNotEmpty
+        ? userName.trim()[0].toUpperCase()
+        : 'A';
 
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          _buildSliverAppBar(context, l10n, userName, userInitial, innerBoxIsScrolled),
+          _buildSliverAppBar(
+            context,
+            l10n,
+            userName,
+            userInitial,
+            innerBoxIsScrolled,
+          ),
         ],
         body: _buildBody(context, l10n),
       ),
@@ -149,10 +169,15 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
       floating: false,
       backgroundColor: AppColors.primary,
       elevation: 0,
-     
+      // Desktop: hamburger opens the shell drawer.
+      leading: isDesktop(context) ? const AppMenuButton() : null,
+
       title: Text(
         l10n.adminDashboard,
-        style: const TextStyle(color: AppColors.textInverse, fontWeight: FontWeight.bold),
+        style: const TextStyle(
+          color: AppColors.textInverse,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       centerTitle: false,
       actions: [
@@ -169,7 +194,14 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                   color: AppColors.warning.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text(l10n.adminOfflineBadge, style: const TextStyle(color: AppColors.textInverse, fontSize: 10, fontWeight: FontWeight.bold)),
+                child: Text(
+                  l10n.adminOfflineBadge,
+                  style: const TextStyle(
+                    color: AppColors.textInverse,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),
@@ -185,11 +217,15 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
         // ),
         const SizedBox(width: 4),
       ],
-      
+
       flexibleSpace: FlexibleSpaceBar(
         collapseMode: CollapseMode.parallax,
         background: Container(
-          decoration: BoxDecoration(gradient: AppColors.primaryGradientFor(Theme.of(context).brightness)),
+          decoration: BoxDecoration(
+            gradient: AppColors.primaryGradientFor(
+              Theme.of(context).brightness,
+            ),
+          ),
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 56, 20, 16),
@@ -203,7 +239,10 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppColors.textInverse.withValues(alpha: 0.25),
-                      border: Border.all(color: AppColors.textInverse.withValues(alpha: 0.5), width: 2),
+                      border: Border.all(
+                        color: AppColors.textInverse.withValues(alpha: 0.5),
+                        width: 2,
+                      ),
                     ),
                     child: Center(
                       child: Text(
@@ -224,10 +263,15 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                       children: [
                         Text(
                           l10n.homeWelcomeBack,
-                          style: TextStyle(color: AppColors.textInverse.withValues(alpha: 0.8), fontSize: 13),
+                          style: TextStyle(
+                            color: AppColors.textInverse.withValues(alpha: 0.8),
+                            fontSize: 13,
+                          ),
                         ),
                         Text(
-                          userName.isNotEmpty ? userName : l10n.adminFallbackName,
+                          userName.isNotEmpty
+                              ? userName
+                              : l10n.adminFallbackName,
                           style: const TextStyle(
                             color: AppColors.textInverse,
                             fontSize: 18,
@@ -240,7 +284,10 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                   ),
                   // Active subs badge
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.success.withValues(alpha: 0.85),
                       borderRadius: BorderRadius.circular(20),
@@ -248,11 +295,19 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.verified, color: AppColors.textInverse, size: 14),
+                        const Icon(
+                          Icons.verified,
+                          color: AppColors.textInverse,
+                          size: 14,
+                        ),
                         const SizedBox(width: 4),
                         Text(
                           l10n.adminActiveLabel(_activeSubscriptions),
-                          style: const TextStyle(color: AppColors.textInverse, fontSize: 12, fontWeight: FontWeight.w600),
+                          style: const TextStyle(
+                            color: AppColors.textInverse,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ],
                     ),
@@ -279,7 +334,11 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
             children: [
               const Icon(Icons.wifi_off, size: 64, color: AppColors.neutral400),
               const SizedBox(height: 16),
-              Text(_error!, style: AppTextStyles.bodyMedium, textAlign: TextAlign.center),
+              Text(
+                _error!,
+                style: AppTextStyles.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 24),
               ElevatedButton.icon(
                 onPressed: _loadData,
@@ -299,30 +358,36 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // ── Platform banner card ─────────────────────────────────
-              // _buildPlatformCard(context, l10n),
-              // const SizedBox(height: 24),
+          // Scroll view already applies 16px side padding; only cap width
+          // so admin cards don't stretch edge-to-edge on desktop.
+          child: ConstrainedContent(
+            maxWidth: AppContentWidths.wide,
+            padding: EdgeInsets.zero,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // ── Platform banner card ─────────────────────────────────
+                // _buildPlatformCard(context, l10n),
+                // const SizedBox(height: 24),
 
-              // ── Admin Actions ────────────────────────────────────────
-              _sectionHeader(l10n.adminActionsTitle),
-              const SizedBox(height: 12),
-              _buildActionsGrid(context, l10n),
-              const SizedBox(height: 24),
+                // ── Admin Actions ────────────────────────────────────────
+                _sectionHeader(l10n.adminActionsTitle),
+                const SizedBox(height: 12),
+                _buildActionsGrid(context, l10n),
+                const SizedBox(height: 24),
 
-              // ── Quick Stats ──────────────────────────────────────────
-              _sectionHeader(l10n.adminQuickStats),
-              const SizedBox(height: 12),
-              _buildQuickStats(l10n),
-              const SizedBox(height: 24),
+                // ── Quick Stats ──────────────────────────────────────────
+                _sectionHeader(l10n.adminQuickStats),
+                const SizedBox(height: 12),
+                _buildQuickStats(l10n),
+                const SizedBox(height: 24),
 
-              // ── Language breakdown ───────────────────────────────────
-              _sectionHeader(l10n.adminUsersByLanguage),
-              const SizedBox(height: 12),
-              _buildLanguageBreakdown(l10n),
-            ],
+                // ── Language breakdown ───────────────────────────────────
+                _sectionHeader(l10n.adminUsersByLanguage),
+                const SizedBox(height: 12),
+                _buildLanguageBreakdown(l10n),
+              ],
+            ),
           ),
         ),
       ),
@@ -343,7 +408,10 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                 icon: Icons.people,
                 title: l10n.adminManageUsers,
                 description: l10n.adminManageUsersDesc,
-                gradientColors: const [AppColors.primary, AppColors.primaryLight],
+                gradientColors: const [
+                  AppColors.primary,
+                  AppColors.primaryLight,
+                ],
                 onTap: () => context.push('/admin/users'),
               ),
             ),
@@ -411,25 +479,45 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withValues(alpha: 0.04), blurRadius: 8)],
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).shadowColor.withValues(alpha: 0.04),
+            blurRadius: 8,
+          ),
+        ],
       ),
       child: Column(
         children: [
-          _LangRow(flag: '��🇼', lang: 'Kinyarwanda', count: byLang['rw']!, total: total, color: AppColors.primary),
+          _LangRow(
+            flag: '��🇼',
+            lang: 'Kinyarwanda',
+            count: byLang['rw']!,
+            total: total,
+            color: AppColors.primary,
+          ),
           const SizedBox(height: 10),
-          _LangRow(flag: '🇬🇧', lang: 'English', count: byLang['en']!, total: total, color: AppColors.accent),
+          _LangRow(
+            flag: '🇬🇧',
+            lang: 'English',
+            count: byLang['en']!,
+            total: total,
+            color: AppColors.accent,
+          ),
           const SizedBox(height: 10),
-          _LangRow(flag: '🇫🇷', lang: 'Français', count: byLang['fr']!, total: total, color: AppColors.success),
+          _LangRow(
+            flag: '🇫🇷',
+            lang: 'Français',
+            count: byLang['fr']!,
+            total: total,
+            color: AppColors.success,
+          ),
         ],
       ),
     );
   }
 
   Widget _sectionHeader(String title) {
-    return Text(
-      title,
-      style: AppTextStyles.heading5,
-    );
+    return Text(title, style: AppTextStyles.heading5);
   }
 }
 
@@ -511,7 +599,6 @@ class _ActionCard extends StatelessWidget {
   }
 }
 
-
 class _StatTile extends StatelessWidget {
   final IconData icon;
   final String value;
@@ -532,7 +619,12 @@ class _StatTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Theme.of(context).shadowColor.withValues(alpha: 0.05), blurRadius: 10)],
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
+            blurRadius: 10,
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -540,12 +632,17 @@ class _StatTile extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             value,
-            style: AppTextStyles.heading3.copyWith(color: color, fontWeight: FontWeight.bold),
+            style: AppTextStyles.heading3.copyWith(
+              color: color,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: AppTextStyles.labelSmall.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.labelSmall.copyWith(
+              color: AppColors.textSecondary,
+            ),
             textAlign: TextAlign.center,
           ),
         ],
@@ -578,7 +675,12 @@ class _LangRow extends StatelessWidget {
         const SizedBox(width: 10),
         SizedBox(
           width: 72,
-          child: Text(lang, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
+          child: Text(
+            lang,
+            style: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
         ),
         Expanded(
           child: ClipRRect(

@@ -9,6 +9,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/network/offline_cache.dart';
+import '../../../../shared/responsive/responsive_layout.dart';
 
 /// Total unique exams available in the app.
 const _kTotalExams = 21;
@@ -26,7 +27,13 @@ const _kIremboUrl =
     'https://irembo.gov.rw/user/citizen/service/rnp/registration_for_driving_license_test_provisional_computer_based';
 
 class MyCertificatesPage extends StatefulWidget {
-  const MyCertificatesPage({Key? key}) : super(key: key);
+  /// Optional injected loader for the user's exam results.
+  ///
+  /// Tests pass a fake to avoid hitting the network; production uses the
+  /// default [ApiHelper] call.
+  final Future<ApiResponse> Function(String userId)? resultsLoader;
+
+  const MyCertificatesPage({this.resultsLoader, Key? key}) : super(key: key);
 
   @override
   State<MyCertificatesPage> createState() => _MyCertificatesPageState();
@@ -68,25 +75,29 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
 
       final authBloc = context.read<AuthBloc>();
       final router = GoRouter.of(context);
-      // Try network first
-      final result = await ApiHelper().get('/api/exam-results/$userId');
+      // Try network first (or use the injected loader in tests).
+      final result = widget.resultsLoader != null
+          ? await widget.resultsLoader!(userId)
+          : await ApiHelper().get('/api/exam-results/$userId');
       if (result.isSuccess) {
-        final list = result.dataList;
+        // Defensive copy: never sort the caller/API-owned list in place.
+        // (In tests the loader may return an unmodifiable const list.)
+        final list = List<dynamic>.from(result.dataList);
         // Sort by date DESC explicitly (Latest first)
         list.sort((a, b) {
           final daStr = (a['createdAt'] ?? a['completedAt'] ?? '').toString();
           final dbStr = (b['createdAt'] ?? b['completedAt'] ?? '').toString();
-          
+
           DateTime? da = DateTime.tryParse(daStr);
           if (da == null && daStr.length >= 10) {
             da = DateTime.tryParse(daStr.replaceFirst(' ', 'T'));
           }
-          
+
           DateTime? db = DateTime.tryParse(dbStr);
           if (db == null && dbStr.length >= 10) {
             db = DateTime.tryParse(dbStr.replaceFirst(' ', 'T'));
           }
-          
+
           return (db ?? DateTime(1970)).compareTo(da ?? DateTime(1970));
         });
         await cache.save(cacheKey, list);
@@ -147,12 +158,14 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
       if (r is! Map<String, dynamic>) continue;
       final examId = (r['examId'] ?? '').toString();
       if (examId.isEmpty) continue;
-      
+
       final currentScore = _intVal(r['score']);
-      final existingScore = map.containsKey(examId) ? _intVal(map[examId]!['score']) : -1;
-      
+      final existingScore = map.containsKey(examId)
+          ? _intVal(map[examId]!['score'])
+          : -1;
+
       // We want to keep the BEST score for each exam, not necessarily the latest attempt.
-      // This ensures if a user passed with 95% and then retried for practice and got 40%, 
+      // This ensures if a user passed with 95% and then retried for practice and got 40%,
       // the 95% still counts for their certificate.
       if (currentScore > existingScore) {
         map[examId] = r;
@@ -170,8 +183,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
     return score >= _kPassPercent;
   }
 
-  int get _passedCount =>
-      _uniqueExams.values.where((r) => _isPassed(r)).length;
+  int get _passedCount => _uniqueExams.values.where((r) => _isPassed(r)).length;
 
   bool get _hasCertificate => _passedCount >= _kRequiredPassed;
 
@@ -184,8 +196,27 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
 
   // ── Ordered list of all 21 exam IDs ──────────────────────────────────
   static const _allExamIds = [
-    '177', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-    '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+    '177',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20',
   ];
 
   @override
@@ -209,14 +240,17 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
               padding: EdgeInsets.fromLTRB(8, topPadding + 4, 8, 20),
               decoration: BoxDecoration(
                 gradient: gradient,
-                borderRadius:
-                    const BorderRadius.vertical(bottom: Radius.circular(24)),
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(24),
+                ),
               ),
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back,
-                        color: AppColors.textInverse),
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: AppColors.textInverse,
+                    ),
                     onPressed: () => context.pop(),
                   ),
                   Expanded(
@@ -229,8 +263,10 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.refresh,
-                        color: AppColors.textInverse),
+                    icon: const Icon(
+                      Icons.refresh,
+                      color: AppColors.textInverse,
+                    ),
                     onPressed: _load,
                   ),
                 ],
@@ -241,8 +277,10 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
             if (_fromCache)
               Container(
                 width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 color: Colors.orange.shade700,
                 child: Row(
                   children: [
@@ -252,7 +290,9 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
                       child: Text(
                         l10n.offlineBanner,
                         style: const TextStyle(
-                            color: Colors.white, fontSize: 13),
+                          color: Colors.white,
+                          fontSize: 13,
+                        ),
                       ),
                     ),
                   ],
@@ -264,31 +304,37 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
               child: _isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : _error != null
-                      ? _errorView(l10n)
-                      : RefreshIndicator(
-                          onRefresh: _load,
-                          child: SingleChildScrollView(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                _progressCard(context, l10n),
+                  ? _errorView(l10n)
+                  : RefreshIndicator(
+                      onRefresh: _load,
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(16),
+                        // Scroll view already applies 16px side padding;
+                        // only cap width so cards stay readable on desktop.
+                        child: ConstrainedContent(
+                          maxWidth: AppContentWidths.medium,
+                          padding: EdgeInsets.zero,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              _progressCard(context, l10n),
+                              const SizedBox(height: 16),
+                              _passMarkCard(context, l10n),
+                              const SizedBox(height: 16),
+                              _examGrid(context, l10n),
+                              const SizedBox(height: 20),
+                              if (_hasCertificate) ...[
+                                _certificateCard(context, l10n),
                                 const SizedBox(height: 16),
-                                _passMarkCard(context, l10n),
-                                const SizedBox(height: 16),
-                                _examGrid(context, l10n),
-                                const SizedBox(height: 20),
-                                if (_hasCertificate) ...[
-                                  _certificateCard(context, l10n),
-                                  const SizedBox(height: 16),
-                                  _iremboCard(context, l10n),
-                                ],
-                                const SizedBox(height: 32),
+                                _iremboCard(context, l10n),
                               ],
-                            ),
+                              const SizedBox(height: 32),
+                            ],
                           ),
                         ),
+                      ),
+                    ),
             ),
           ],
         ),
@@ -313,8 +359,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
           Expanded(
             child: Text(
               l10n.certificatePassMark(_kPassCorrect, 20, _kPassPercent),
-              style: AppTextStyles.bodySmall
-                  .copyWith(color: cs.onSurface),
+              style: AppTextStyles.bodySmall.copyWith(color: cs.onSurface),
             ),
           ),
         ],
@@ -330,9 +375,8 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
     final crossCount = screenW >= 600 ? 7 : 6;
     final availableW = screenW - 32 - 32; // page padding + container padding
     const spacing = 10.0;
-    final tileSize =
-        ((availableW - spacing * (crossCount - 1)) / crossCount)
-            .clamp(44.0, 54.0);
+    final tileSize = ((availableW - spacing * (crossCount - 1)) / crossCount)
+        .clamp(44.0, 54.0);
 
     return Container(
       padding: const EdgeInsets.all(4),
@@ -358,8 +402,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  l10n.certificateUniqueExamsPassed(
-                      _passedCount, _kTotalExams),
+                  l10n.certificateUniqueExamsPassed(_passedCount, _kTotalExams),
                   style: AppTextStyles.labelMedium.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -378,9 +421,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
                           end: Alignment.bottomRight,
                         )
                       : null,
-                  color: _passedCount == 0
-                      ? cs.surfaceContainerHighest
-                      : null,
+                  color: _passedCount == 0 ? cs.surfaceContainerHighest : null,
                 ),
                 child: Center(
                   child: Text(
@@ -435,10 +476,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
               } else if (attempted) {
                 decoration = BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      cs.error,
-                      cs.error.withValues(alpha: 0.75),
-                    ],
+                    colors: [cs.error, cs.error.withValues(alpha: 0.75)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -501,8 +539,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
               const SizedBox(height: 4),
               _legendDot(cs.error, l10n.progressFailedCount),
               const SizedBox(height: 4),
-              _legendDot(
-                  cs.outlineVariant, l10n.certificateNotAttempted),
+              _legendDot(cs.outlineVariant, l10n.certificateNotAttempted),
             ],
           ),
         ],
@@ -523,9 +560,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
           ),
         ),
         const SizedBox(width: 4),
-          Flexible(
-          child: Text(label, style: AppTextStyles.labelSmall),
-        ),
+        Flexible(child: Text(label, style: AppTextStyles.labelSmall)),
       ],
     );
   }
@@ -603,13 +638,16 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
             children: [
               Text(
                 l10n.certificateProgressLabel(passed, _kTotalExams),
-                style: AppTextStyles.labelSmall
-                    .copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.labelSmall.copyWith(
+                  color: AppColors.textSecondary,
+                ),
               ),
               Text(
                 '${(pct * 100).toInt()}%',
-                style: AppTextStyles.labelMedium
-                    .copyWith(color: color, fontWeight: FontWeight.bold),
+                style: AppTextStyles.labelMedium.copyWith(
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -651,8 +689,11 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
         children: [
           Row(
             children: [
-              const Icon(Icons.workspace_premium_rounded,
-                  color: Color(0xFFFFD700), size: 36),
+              const Icon(
+                Icons.workspace_premium_rounded,
+                color: Color(0xFFFFD700),
+                size: 36,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -684,7 +725,11 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
           const SizedBox(height: 20),
           Row(
             children: [
-              const Icon(Icons.star_rounded, color: Color(0xFFFFD700), size: 18),
+              const Icon(
+                Icons.star_rounded,
+                color: Color(0xFFFFD700),
+                size: 18,
+              ),
               const SizedBox(width: 6),
               Text(
                 '$_passedCount ${l10n.progressPassedCount}',
@@ -696,7 +741,9 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 6),
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(20),
@@ -730,7 +777,11 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
         children: [
           Row(
             children: [
-              const Icon(Icons.link_rounded, color: AppColors.success, size: 22),
+              const Icon(
+                Icons.link_rounded,
+                color: AppColors.success,
+                size: 22,
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
@@ -754,7 +805,8 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
           ),
@@ -772,7 +824,11 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
           children: [
             const Icon(Icons.wifi_off, size: 64, color: AppColors.neutral400),
             const SizedBox(height: 16),
-            Text(_error!, style: AppTextStyles.bodyMedium, textAlign: TextAlign.center),
+            Text(
+              _error!,
+              style: AppTextStyles.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
               onPressed: _load,
