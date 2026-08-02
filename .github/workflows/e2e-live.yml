@@ -34,8 +34,6 @@ jobs:
       # Deliberate opt-in: the E2E script refuses to run registration without
       # this, since it creates a throwaway account in the production DB.
       E2E_ALLOW_PROD: "1"
-      # Stage screenshots are uploaded as an artifact for debugging.
-      E2E_SCREENSHOT_DIR: ${{ runner.temp }}/e2e-shots
 
     steps:
       - name: Checkout repository
@@ -55,6 +53,9 @@ jobs:
           test -x /usr/bin/google-chrome
 
       - name: Run E2E smoke test against live site
+        # runner.temp is only available at step level, not job level
+        env:
+          E2E_SCREENSHOT_DIR: ${{ runner.temp }}/e2e-shots
         run: node tools/e2e_cdp_test.mjs
 
       - name: Upload screenshots
