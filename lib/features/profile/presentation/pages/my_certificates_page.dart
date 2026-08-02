@@ -624,7 +624,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
                           ? l10n.certificateReadySubtitle(passed)
                           : l10n.certificateExamsNeeded(needed),
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                       ),
                     ),
                   ],
@@ -639,7 +639,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
               Text(
                 l10n.certificateProgressLabel(passed, _kTotalExams),
                 style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                 ),
               ),
               Text(
@@ -787,7 +787,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
                 child: Text(
                   l10n.certificateIremboDesc,
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                   ),
                 ),
               ),

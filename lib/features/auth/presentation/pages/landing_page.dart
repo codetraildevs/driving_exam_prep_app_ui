@@ -27,7 +27,7 @@ class LandingPage extends StatelessWidget {
           children: [
             _buildHeroSection(context, isMobile, l10n),
             Expanded(
-              child: _buildFeaturesSection(isMobile, l10n),
+              child: _buildFeaturesSection(context, isMobile, l10n),
             ),
           ],
         ),
@@ -53,8 +53,8 @@ class LandingPage extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  AppColors.primary,
-                  AppColors.primary.withValues(alpha: 0.8),
+                  AppColors.primaryFor(Theme.of(context).brightness),
+                  AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.8),
                   const Color(0xFF1A237E),
                 ],
               ),
@@ -135,7 +135,7 @@ class LandingPage extends StatelessWidget {
             child: Text(
               l10n.landingGetStarted,
               style: AppTextStyles.buttonLarge.copyWith(
-                color: AppColors.primary,
+                color: AppColors.primaryFor(Theme.of(context).brightness),
               ),
             ),
           ),
@@ -154,7 +154,11 @@ class LandingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildFeaturesSection(bool isMobile, AppLocalizations l10n) {
+  Widget _buildFeaturesSection(
+    BuildContext context,
+    bool isMobile,
+    AppLocalizations l10n,
+  ) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: isMobile ? 16 : 60,
@@ -180,18 +184,21 @@ class LandingPage extends StatelessWidget {
             alignment: WrapAlignment.center,
             children: [
               _featureCard(
+                context,
                 Icons.menu_book,
                 l10n.landingLearnRules,
                 l10n.landingLearnRulesDesc,
                 isMobile,
               ),
               _featureCard(
+                context,
                 Icons.quiz,
                 l10n.landingPracticeExams,
                 l10n.landingPracticeExamsDesc,
                 isMobile,
               ),
               _featureCard(
+                context,
                 Icons.show_chart,
                 l10n.landingTrackProgress,
                 l10n.landingTrackProgressDesc,
@@ -207,6 +214,7 @@ class LandingPage extends StatelessWidget {
   }
 
   Widget _featureCard(
+    BuildContext context,
     IconData icon,
     String title,
     String desc,
@@ -216,22 +224,26 @@ class LandingPage extends StatelessWidget {
       width: isMobile ? 100 : 320,
       padding: EdgeInsets.all(isMobile ? 12 : 24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surfaceFor(Theme.of(context).brightness),
         borderRadius: BorderRadius.circular(isMobile ? 16 : 24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Theme.of(context).shadowColor.withValues(alpha: 0.08),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
         ],
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.05)),
+        border: Border.all(
+          color: AppColors.primaryFor(
+            Theme.of(context).brightness,
+          ).withValues(alpha: 0.05),
+        ),
       ),
       child: isMobile
           ? Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(icon, size: 24, color: AppColors.primary),
+                Icon(icon, size: 24, color: AppColors.primaryFor(Theme.of(context).brightness)),
                 const SizedBox(height: 6),
                 Text(
                   title,
@@ -250,10 +262,10 @@ class LandingPage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
+                    color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Icon(icon, size: 28, color: AppColors.primary),
+                  child: Icon(icon, size: 28, color: AppColors.primaryFor(Theme.of(context).brightness)),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -267,7 +279,7 @@ class LandingPage extends StatelessWidget {
                 Text(
                   desc,
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                     height: 1.5,
                   ),
                 ),

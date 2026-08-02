@@ -228,7 +228,7 @@ class _ProgressPageState extends State<ProgressPage>
                                 child: Text(
                                   '+ ${_results.length - 20} more',
                                   style: AppTextStyles.bodySmall.copyWith(
-                                    color: AppColors.textSecondary,
+                                    color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -296,7 +296,7 @@ class _SummaryGrid extends StatelessWidget {
                 icon: Icons.emoji_events_rounded,
                 value: '$best%',
                 label: l10n.progressBestScore,
-                color: AppColors.primary,
+                color: AppColors.primaryFor(Theme.of(context).brightness),
                 anim: anim,
                 delay: 0.2,
               ),
@@ -476,7 +476,7 @@ class _StatCard extends StatelessWidget {
             Text(
               label,
               style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                 fontWeight: FontWeight.w600,
                 fontSize: 10,
               ),
@@ -593,7 +593,7 @@ class _ExamResultCard extends StatelessWidget {
                   Text(
                     '$correct/$total ${l10n.examCorrect.toLowerCase()}',
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                       fontSize: 10,
                     ),
                   ),
@@ -671,13 +671,13 @@ class _EmptyView extends StatelessWidget {
               width: 100,
               height: 100,
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
+                color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.quiz_outlined,
                 size: 48,
-                color: AppColors.primary,
+                color: AppColors.primaryFor(Theme.of(context).brightness),
               ),
             ),
             const SizedBox(height: 20),

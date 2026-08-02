@@ -257,7 +257,7 @@ class _QuizPageState extends State<QuizPage> {
                 child: Text(
                   _error ?? l10n.examNotFound,
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                   ),
                 ),
               ),
@@ -460,7 +460,7 @@ class _QuizPageState extends State<QuizPage> {
                           icon: Icons.quiz_rounded,
                           label: l10n.progressTotalQuestions,
                           value: '$total',
-                          color: AppColors.primary,
+                          color: AppColors.primaryFor(Theme.of(context).brightness),
                         ),
                       ],
                     ),
@@ -579,13 +579,13 @@ class _QuizPageState extends State<QuizPage> {
                           questions.length,
                         ),
                         style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.textSecondary,
+                          color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                         ),
                       ),
                       Text(
                         l10n.quizAnswered(answeredCount, questions.length),
                         style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.textSecondary,
+                          color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                         ),
                       ),
                     ],
@@ -599,8 +599,8 @@ class _QuizPageState extends State<QuizPage> {
                       backgroundColor: Theme.of(
                         context,
                       ).colorScheme.outlineVariant,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        AppColors.primary,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        AppColors.primaryFor(Theme.of(context).brightness),
                       ),
                     ),
                   ),

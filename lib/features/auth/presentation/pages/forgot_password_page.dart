@@ -29,7 +29,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.info_outline, size: 48, color: AppColors.primary),
+              Icon(Icons.info_outline, size: 48, color: AppColors.primaryFor(Theme.of(context).brightness)),
               const SizedBox(height: 16),
               Text(
                 l10n.forgotPasswordTitle,
@@ -39,7 +39,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               const SizedBox(height: 12),
               Text(
                 l10n.forgotPasswordDescription,
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondaryFor(Theme.of(context).brightness)),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),

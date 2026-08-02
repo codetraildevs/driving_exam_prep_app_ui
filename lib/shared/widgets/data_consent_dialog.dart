@@ -98,8 +98,8 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDark ? Colors.white : AppColors.textPrimary;
-    final subtextColor = isDark ? Colors.white70 : AppColors.textSecondary;
+    final textColor = AppColors.textPrimaryFor(Theme.of(context).brightness);
+    final subtextColor = AppColors.textSecondaryFor(Theme.of(context).brightness);
     final cardColor = isDark ? AppColors.surfaceDark2 : AppColors.neutral100;
 
     return FadeTransition(
@@ -349,7 +349,7 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.3),
+                            color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.3),
                             blurRadius: 12,
                             offset: const Offset(0, 4),
                           ),
@@ -436,10 +436,10 @@ class _DataItem extends StatelessWidget {
               width: 36,
               height: 36,
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
+                color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, size: 18, color: AppColors.primary),
+              child: Icon(icon, size: 18, color: AppColors.primaryFor(Theme.of(context).brightness)),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -482,7 +482,7 @@ class _InlinePrivacyPolicyPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.consentReadPolicy),
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.primaryFor(Theme.of(context).brightness),
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -499,16 +499,18 @@ class _InlinePrivacyPolicyPage extends StatelessWidget {
               ),
             const SizedBox(height: 20),
             _section(
+              context,
               l10n.privacyDataCollection,
               l10n.privacyDataCollectionBody,
             ),
-            _section(l10n.privacyDataUsage, l10n.privacyDataUsageBody),
+            _section(context, l10n.privacyDataUsage, l10n.privacyDataUsageBody),
             _section(
+              context,
               l10n.privacyDataProtection,
               l10n.privacyDataProtectionBody,
             ),
-            _section(l10n.privacyDataSharing, l10n.privacyDataSharingBody),
-            _section(l10n.privacyUserRights, l10n.privacyUserRightsBody),
+            _section(context, l10n.privacyDataSharing, l10n.privacyDataSharingBody),
+            _section(context, l10n.privacyUserRights, l10n.privacyUserRightsBody),
             const SizedBox(height: 32),
             ],
           ),
@@ -517,7 +519,7 @@ class _InlinePrivacyPolicyPage extends StatelessWidget {
     );
   }
 
-  Widget _section(String title, String body) {
+  Widget _section(BuildContext context, String title, String body) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
@@ -525,7 +527,9 @@ class _InlinePrivacyPolicyPage extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppTextStyles.heading6.copyWith(color: AppColors.primary),
+            style: AppTextStyles.heading6.copyWith(
+              color: AppColors.primaryFor(Theme.of(context).brightness),
+            ),
           ),
           const SizedBox(height: 8),
           Text(body, style: AppTextStyles.bodySmall.copyWith(height: 1.6)),

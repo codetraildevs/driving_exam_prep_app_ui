@@ -38,7 +38,7 @@ class AboutPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(22),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.3),
+                            color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.3),
                             blurRadius: 20,
                             offset: const Offset(0, 8),
                           ),
@@ -82,7 +82,7 @@ class AboutPage extends StatelessWidget {
                           child: _FeatureChip(
                             icon: Icons.quiz_rounded,
                             label: l10n.aboutFeaturePractice,
-                            color: AppColors.primary,
+                            color: AppColors.primaryFor(Theme.of(context).brightness),
                             cs: cs,
                           ),
                         ),
@@ -167,14 +167,14 @@ class _InfoCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.06),
+        color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.12)),
+        border: Border.all(color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.12)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: AppColors.primary, size: 22),
+          Icon(icon, color: AppColors.primaryFor(Theme.of(context).brightness), size: 22),
           const SizedBox(width: 12),
           Expanded(
             child: Text(

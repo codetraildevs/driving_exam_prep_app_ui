@@ -138,7 +138,7 @@ class _PracticePageState extends ConsumerState<PracticePage> {
                           Text(
                             _error!,
                             style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.textSecondary,
+                              color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -253,7 +253,7 @@ class _ExamCard extends StatelessWidget {
                   // Exam image or fallback icon
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: _buildExamImage(),
+                    child: _buildExamImage(context),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -268,7 +268,7 @@ class _ExamCard extends StatelessWidget {
                         Text(
                           l10n.examQuestions(exam.questions.length),
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textSecondary,
+                            color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                           ),
                         ),
                       ],
@@ -277,9 +277,9 @@ class _ExamCard extends StatelessWidget {
                   if (isLocked)
                     const Icon(Icons.lock, color: AppColors.textTertiary)
                   else
-                    const Icon(
+                    Icon(
                       Icons.chevron_right,
-                      color: AppColors.textSecondary,
+                      color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                     ),
                 ],
               ),
@@ -314,32 +314,36 @@ class _ExamCard extends StatelessWidget {
     );
   }
 
-  Widget _buildExamImage() {
+  Widget _buildExamImage(BuildContext context) {
     if (exam.examImgUrl.isNotEmpty) {
       return Image.asset(
         exam.examImgUrl,
         width: 64,
         height: 64,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => _buildFallbackIcon(),
+        errorBuilder: (_, __, ___) => _buildFallbackIcon(context),
       );
     }
-    return _buildFallbackIcon();
+    return _buildFallbackIcon(context);
   }
 
-  Widget _buildFallbackIcon() {
+  Widget _buildFallbackIcon(BuildContext context) {
     return Container(
       width: 64,
       height: 64,
       decoration: BoxDecoration(
         color: exam.isFree
             ? AppColors.success.withValues(alpha: 0.15)
-            : AppColors.primary.withValues(alpha: 0.1),
+            : AppColors.primaryFor(
+                Theme.of(context).brightness,
+              ).withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Icon(
         exam.isFree ? Icons.lock_open : Icons.quiz,
-        color: exam.isFree ? AppColors.success : AppColors.primary,
+        color: exam.isFree
+            ? AppColors.success
+            : AppColors.primaryFor(Theme.of(context).brightness),
         size: 32,
       ),
     );

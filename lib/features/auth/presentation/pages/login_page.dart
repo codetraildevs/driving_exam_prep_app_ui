@@ -266,7 +266,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             supportDisplay1.replaceAll(' ', ''),
                             style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.primary,
+                              color: AppColors.primaryFor(Theme.of(context).brightness),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -280,7 +280,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             supportDisplay2.replaceAll(' ', ''),
                             style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.primary,
+                              color: AppColors.primaryFor(Theme.of(context).brightness),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -309,8 +309,8 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
+                          borderSide: BorderSide(
+                            color: AppColors.primaryFor(Theme.of(context).brightness),
                             width: 2,
                           ),
                         ),
@@ -330,7 +330,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: ElevatedButton(
                             onPressed: isLoading ? null : _handleLogin,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
+                              backgroundColor: AppColors.primaryFor(Theme.of(context).brightness),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(14),
                               ),
@@ -364,7 +364,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             l10n.loginSignUp,
                             style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.primary,
+                              color: AppColors.primaryFor(Theme.of(context).brightness),
                               fontWeight: FontWeight.bold,
                             ),
                           ),

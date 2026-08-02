@@ -497,7 +497,7 @@ class _ExamResultPageState extends State<ExamResultPage>
                                 _ActionButton(
                                   icon: Icons.bar_chart_rounded,
                                   label: l10n.progressTitle,
-                                  color: AppColors.textSecondary,
+                                  color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                                   filled: false,
                                   outlined: false,
                                   onTap: () => context.go('/progress'),
@@ -506,7 +506,7 @@ class _ExamResultPageState extends State<ExamResultPage>
                                 _ActionButton(
                                   icon: Icons.ios_share_rounded,
                                   label: l10n.examShareResult,
-                                  color: AppColors.textSecondary,
+                                  color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                                   filled: false,
                                   outlined: false,
                                   onTap: () => _shareResult(context, l10n),
@@ -779,7 +779,7 @@ class _StatsGrid extends StatelessWidget {
               child: Text(
                 '${l10n.examPassingScore}: 70%',
                 style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                 ),
               ),
             ),
@@ -825,7 +825,7 @@ class _Chip extends StatelessWidget {
             Text(
               label,
               style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.textSecondaryFor(Theme.of(context).brightness),
               ),
               textAlign: TextAlign.center,
             ),

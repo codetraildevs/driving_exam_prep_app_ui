@@ -136,7 +136,7 @@ class _ExamPageState extends State<ExamPage> {
     final progress = (_currentQuestion + 1) / examQuestions.length;
     final timeColor = _remainingSeconds < 300
         ? AppColors.error
-        : AppColors.primary;
+        : AppColors.primaryFor(Theme.of(context).brightness);
 
     return Scaffold(
       appBar: AppBar(
@@ -204,8 +204,8 @@ class _ExamPageState extends State<ExamPage> {
                         backgroundColor: Theme.of(
                           context,
                         ).colorScheme.outlineVariant,
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          AppColors.primary,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          AppColors.primaryFor(Theme.of(context).brightness),
                         ),
                       ),
                     ),
@@ -260,8 +260,8 @@ class _ExamPageState extends State<ExamPage> {
                                 );
                               }
                             } else if (isSelected && !_answered) {
-                              borderColor = AppColors.primary;
-                              backgroundColor = AppColors.primary.withValues(
+                              borderColor = AppColors.primaryFor(Theme.of(context).brightness);
+                              backgroundColor = AppColors.primaryFor(Theme.of(context).brightness).withValues(
                                 alpha: 0.05,
                               );
                             }

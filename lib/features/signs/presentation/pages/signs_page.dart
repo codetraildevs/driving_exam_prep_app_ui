@@ -144,7 +144,7 @@ class _SignsPageState extends State<SignsPage> {
                   _loadSigns();
                 });
               },
-              selectedColor: AppColors.primary,
+              selectedColor: AppColors.primaryFor(Theme.of(context).brightness),
               labelStyle: TextStyle(
                 color: isSelected
                     ? AppColors.textInverse
@@ -152,7 +152,7 @@ class _SignsPageState extends State<SignsPage> {
               ),
               side: BorderSide(
                 color: isSelected
-                    ? AppColors.primary
+                    ? AppColors.primaryFor(Theme.of(context).brightness)
                     : Theme.of(context).colorScheme.outline,
               ),
             ),
@@ -200,7 +200,7 @@ class _SignsPageState extends State<SignsPage> {
                 Text(
                   AppLocalizations.of(context).signsNotFound,
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                   ),
                 ),
               ],

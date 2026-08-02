@@ -137,9 +137,9 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                                 icon: const Icon(Icons.phone_iphone_outlined, size: 18),
                                 label: Text(l10n.languageSelectDeviceLanguage),
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: AppColors.primary,
+                                  foregroundColor: AppColors.primaryFor(Theme.of(context).brightness),
                                   side: BorderSide(
-                                      color: AppColors.primary
+                                      color: AppColors.primaryFor(Theme.of(context).brightness)
                                           .withValues(alpha: 0.18)),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
@@ -212,14 +212,14 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           elevation: 6,
           // Gradient via Material's elevation + primary color; emulate gradient with Container
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.primaryFor(Theme.of(context).brightness),
         ),
         child: Ink(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                AppColors.primary,
-                AppColors.primary.withValues(alpha: 0.1)
+                AppColors.primaryFor(Theme.of(context).brightness),
+                AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1)
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -328,13 +328,13 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
               Text(
                 l10n.languageSelectHelpContent,
                 style: AppTextStyles.bodySmall
-                    .copyWith(color: AppColors.textSecondary),
+                    .copyWith(color: AppColors.textSecondaryFor(Theme.of(context).brightness)),
               ),
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: () => Navigator.pop(ctx),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
+                  backgroundColor: AppColors.primaryFor(Theme.of(context).brightness),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
                 ),
@@ -391,10 +391,10 @@ class _CreativeLanguageCard extends StatelessWidget {
     // Visual scale when selected for a lively interaction.
     final scale = isSelected ? 1.02 : 1.0;
     final borderColor =
-        isSelected ? AppColors.primary : AppColors.neutral200;
+        isSelected ? AppColors.primaryFor(Theme.of(context).brightness) : AppColors.neutral200;
     final bgColor = isSelected
-        ? AppColors.primary.withValues(alpha: 0.06)
-        : AppColors.surface;
+        ? AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.06)
+        : AppColors.surfaceFor(Theme.of(context).brightness);
 
     return Semantics(
       selected: isSelected,
@@ -414,7 +414,7 @@ class _CreativeLanguageCard extends StatelessWidget {
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.08),
+                      color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.08),
                       blurRadius: 12,
                       offset: const Offset(0, 6),
                     )
@@ -453,14 +453,14 @@ class _CreativeLanguageCard extends StatelessWidget {
                       name,
                       style: AppTextStyles.labelLarge.copyWith(
                         fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
-                        color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                        color: isSelected ? AppColors.primaryFor(Theme.of(context).brightness) : AppColors.textPrimaryFor(Theme.of(context).brightness),
                       ),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       tagline,
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                       ),
                     ),
                   ],
@@ -473,7 +473,7 @@ class _CreativeLanguageCard extends StatelessWidget {
                   return ScaleTransition(scale: anim, child: child);
                 },
                 child: isSelected
-                    ? const Icon(Icons.check_circle, color: AppColors.primary, key: ValueKey('sel'))
+                    ? Icon(Icons.check_circle, color: AppColors.primaryFor(Theme.of(context).brightness), key: ValueKey('sel'))
                     : const Icon(Icons.chevron_right, color: AppColors.neutral500, key: ValueKey('unsel')),
               ),
             ],
@@ -526,7 +526,7 @@ Future<Locale?> showLanguageSelectorDialog(BuildContext context) {
                     return RadioListTile<String>(
                       title: Text(name),
                       value: code,
-                      activeColor: AppColors.primary,
+                      activeColor: AppColors.primaryFor(Theme.of(context).brightness),
                     );
                   }).toList(),
                 ),

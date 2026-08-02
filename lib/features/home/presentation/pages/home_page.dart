@@ -219,7 +219,7 @@ class _CompactAccessCard extends ConsumerWidget {
             border: Border.all(
               color: hasAccess
                   ? AppColors.success.withValues(alpha: 0.3)
-                  : AppColors.primary.withValues(alpha: 0.3),
+                  : AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.3),
             ),
             boxShadow: [
               BoxShadow(
@@ -288,7 +288,7 @@ class _CompactAccessCard extends ConsumerWidget {
                           ? l10n.homePaymentTier(tierLabel)
                           : l10n.subscriptionSubtitle,
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                         fontSize: 11,
                       ),
                     ),
@@ -307,7 +307,7 @@ class _CompactAccessCard extends ConsumerWidget {
                 },
                 style: FilledButton.styleFrom(
                   backgroundColor: hasAccess
-                      ? AppColors.primary
+                      ? AppColors.primaryFor(Theme.of(context).brightness)
                       : AppColors.accent,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 14,
@@ -386,7 +386,7 @@ class _ResponsiveServicesGrid extends StatelessWidget {
         imageAsset: 'assets/images/practices_image.webp',
         title: l10n.homePractices,
         subtitle: l10n.homePracticesSubtitle,
-        color: AppColors.primary,
+        color: AppColors.primaryFor(Theme.of(context).brightness),
         onTap: () => context.push('/practice'),
       ),
       _ServiceItem.asset(
@@ -554,7 +554,7 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
                   Text(
                     item.subtitle,
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                       fontSize: 11,
                     ),
                     textAlign: TextAlign.center,

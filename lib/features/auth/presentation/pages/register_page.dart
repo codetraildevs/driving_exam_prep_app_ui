@@ -272,7 +272,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: Text(
                             supportDisplay1.replaceAll(' ', ''),
                             style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.primary,
+                              color: AppColors.primaryFor(Theme.of(context).brightness),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -286,7 +286,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: Text(
                             supportDisplay2.replaceAll(' ', ''),
                             style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.primary,
+                              color: AppColors.primaryFor(Theme.of(context).brightness),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -314,8 +314,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
+                          borderSide: BorderSide(
+                            color: AppColors.primaryFor(Theme.of(context).brightness),
                             width: 2,
                           ),
                         ),
@@ -343,8 +343,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
-                          borderSide: const BorderSide(
-                            color: AppColors.primary,
+                          borderSide: BorderSide(
+                            color: AppColors.primaryFor(Theme.of(context).brightness),
                             width: 2,
                           ),
                         ),
@@ -359,7 +359,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     //   children: [
                     //     Checkbox(
                     //       value: _agreedToTerms,
-                    //       activeColor: AppColors.primary,
+                    //       activeColor: AppColors.primaryFor(Theme.of(context).brightness),
                     //       onChanged: (value) {
                     //         setState(() {
                     //           _agreedToTerms = value ?? false;
@@ -391,7 +391,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             onPressed:
                                 isLoading ? null : _handleRegister,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
+                              backgroundColor: AppColors.primaryFor(Theme.of(context).brightness),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(14),
                               ),
@@ -423,7 +423,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: Text(
                             l10n.registerLogIn,
                             style: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.primary,
+                              color: AppColors.primaryFor(Theme.of(context).brightness),
                               fontWeight: FontWeight.bold,
                             ),
                           ),

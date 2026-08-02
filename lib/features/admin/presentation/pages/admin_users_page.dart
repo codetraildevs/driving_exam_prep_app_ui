@@ -827,7 +827,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                           child: Text(
                             '${l10n.adminTotalUsers}: $_totalUsers',
                             style: AppTextStyles.labelSmall.copyWith(
-                              color: AppColors.textSecondary,
+                              color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                             ),
                           ),
                         ),
@@ -969,7 +969,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
             Text(
               label,
               style: TextStyle(
-                color: selected ? primary : AppColors.textSecondary,
+                color: selected ? primary : AppColors.textSecondaryFor(Theme.of(context).brightness),
                 fontSize: 12,
                 fontWeight: selected ? FontWeight.bold : FontWeight.normal,
               ),
@@ -1128,7 +1128,7 @@ class _UserCard extends StatelessWidget {
                         Text(
                           phone,
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textSecondary,
+                            color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                           ),
                         ),
                         Text(
@@ -1149,7 +1149,7 @@ class _UserCard extends StatelessWidget {
                     Text(
                       lang,
                       style: AppTextStyles.labelSmall.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                       ),
                     ),
                   ],
@@ -1172,7 +1172,7 @@ class _UserCard extends StatelessWidget {
                 if (calledAt.isNotEmpty)
                   _badge(
                     '📞 ${calledAt.split('T')[0]}',
-                    AppColors.textSecondary,
+                    AppColors.textSecondaryFor(Theme.of(context).brightness),
                   ),
               ],
             ),
@@ -1182,7 +1182,7 @@ class _UserCard extends StatelessWidget {
               Text(
                 '${l10n.subscriptionExpires(user['accessExpiresAt'].toString().split('T')[0])} • ${user['paymentTier'] ?? ''}',
                 style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                 ),
               ),
             ],

@@ -39,7 +39,7 @@ class ExamIntroPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.2),
+                        color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.2),
                         blurRadius: 16,
                         offset: const Offset(0, 8),
                       ),
@@ -138,7 +138,7 @@ class ExamIntroPage extends StatelessWidget {
                   child: Text(
                     l10n.commonCancel,
                     style: AppTextStyles.buttonMedium.copyWith(
-                      color: AppColors.primary,
+                      color: AppColors.primaryFor(Theme.of(context).brightness),
                     ),
                   ),
                 ),
@@ -171,10 +171,10 @@ class ExamIntroPage extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
+              color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: AppColors.primary),
+            child: Icon(icon, color: AppColors.primaryFor(Theme.of(context).brightness)),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -186,7 +186,7 @@ class ExamIntroPage extends StatelessWidget {
                 Text(
                   description,
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                   ),
                 ),
               ],

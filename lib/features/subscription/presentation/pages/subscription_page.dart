@@ -117,7 +117,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     Text(
                       l10n.subscriptionCurrency,
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -219,7 +219,7 @@ class _ActiveAccessBanner extends StatelessWidget {
                         )[0],
                       ),
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                       ),
                     ),
                   ),
@@ -245,10 +245,10 @@ class _SectionHeader extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: AppColors.primary.withValues(alpha: 0.1),
+            color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(icon, color: AppColors.primary, size: 18),
+          child: Icon(icon, color: AppColors.primaryFor(Theme.of(context).brightness), size: 18),
         ),
         const SizedBox(width: 10),
         Text(title, style: AppTextStyles.heading5),
@@ -300,14 +300,14 @@ class _NeedHelpCard extends StatelessWidget {
               _ContactButton(
                 icon: Icons.phone_rounded,
                 label: l10n.paymentCallNumber,
-                color: AppColors.primary,
+                color: AppColors.primaryFor(Theme.of(context).brightness),
                 onTap: onCall,
               ),
               const SizedBox(height: 10),
               _ContactButton(
                 icon: Icons.phone_rounded,
                 label: l10n.paymentCallTigoNumber,
-                color: AppColors.textSecondary,
+                color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                 onTap: onTigoCall,
               ),
 
@@ -405,7 +405,7 @@ class _PlanCard extends StatelessWidget {
           color: theme.colorScheme.surface,
           border: Border.all(
             color: isSelected
-                ? AppColors.primary
+                ? AppColors.primaryFor(Theme.of(context).brightness)
                 : theme.colorScheme.outline.withValues(alpha: 0.2),
             width: isSelected ? 2 : 1,
           ),
@@ -431,8 +431,8 @@ class _PlanCard extends StatelessWidget {
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: isSelected
-                            ? AppColors.primary
-                            : AppColors.textSecondary.withValues(alpha: 0.4),
+                            ? AppColors.primaryFor(Theme.of(context).brightness)
+                            : AppColors.textSecondaryFor(Theme.of(context).brightness).withValues(alpha: 0.4),
                         width: 2,
                       ),
                     ),
@@ -441,9 +441,9 @@ class _PlanCard extends StatelessWidget {
                             child: Container(
                               width: 12,
                               height: 12,
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: AppColors.primary,
+                                color: AppColors.primaryFor(Theme.of(context).brightness),
                               ),
                             ),
                           )
@@ -459,14 +459,14 @@ class _PlanCard extends StatelessWidget {
                         Text(
                           l10n.subscriptionDays(days),
                           style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textSecondary,
+                            color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                           ),
                         ),
                       ],
                     ),
                   ),
                   if (isSelected)
-                    const Icon(Icons.check_circle, color: AppColors.primary),
+                    Icon(Icons.check_circle, color: AppColors.primaryFor(Theme.of(context).brightness)),
                 ],
               ),
             ),
@@ -515,14 +515,14 @@ class _TrafficRulesSupportCard extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppColors.primary, AppColors.primary.withValues(alpha: 0.8)],
+          colors: [AppColors.primaryFor(Theme.of(context).brightness), AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.8)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.3),
+            color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.3),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),

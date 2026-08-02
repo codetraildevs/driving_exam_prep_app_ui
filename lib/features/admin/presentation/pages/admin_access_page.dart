@@ -623,7 +623,7 @@ class _AccessCodesTabState extends State<_AccessCodesTab> {
             Text(
               label,
               style: TextStyle(
-                color: selected ? primary : AppColors.textSecondary,
+                color: selected ? primary : AppColors.textSecondaryFor(Theme.of(context).brightness),
                 fontSize: 12,
                 fontWeight: selected ? FontWeight.bold : FontWeight.normal,
               ),
@@ -750,10 +750,10 @@ class _AccessCodeCard extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Icon(
+                  child: Icon(
                     Icons.copy,
                     size: 16,
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                   ),
                 ),
                 const Spacer(),
@@ -784,16 +784,16 @@ class _AccessCodeCard extends StatelessWidget {
             if (userName.isNotEmpty || userPhone.isNotEmpty)
               Row(
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.person_outline,
                     size: 14,
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                   ),
                   const SizedBox(width: 6),
                   Text(
                     userName.isNotEmpty ? userName : userPhone,
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                     ),
                   ),
                   if (userPhone.isNotEmpty && userName.isNotEmpty) ...[
@@ -815,12 +815,13 @@ class _AccessCodeCard extends StatelessWidget {
               spacing: 12,
               children: [
                 if (tier.isNotEmpty)
-                  _info(Icons.workspace_premium, tier.replaceAll('_', ' ')),
+                  _info(context, Icons.workspace_premium, tier.replaceAll('_', ' ')),
                 if (amount != null)
-                  _info(Icons.payment, l10n.priceRwf(amount.toString())),
-                if (created.isNotEmpty) _info(Icons.calendar_today, created),
+                  _info(context, Icons.payment, l10n.priceRwf(amount.toString())),
+                if (created.isNotEmpty) _info(context, Icons.calendar_today, created),
                 if (expires.isNotEmpty)
                   _info(
+                    context,
                     Icons.access_time,
                     expires,
                     color: _isExpired ? AppColors.error : null,
@@ -867,15 +868,25 @@ class _AccessCodeCard extends StatelessWidget {
     );
   }
 
-  Widget _info(IconData icon, String text, {Color? color}) => Row(
+  Widget _info(
+    BuildContext context,
+    IconData icon,
+    String text, {
+    Color? color,
+  }) => Row(
     mainAxisSize: MainAxisSize.min,
     children: [
-      Icon(icon, size: 12, color: color ?? AppColors.textSecondary),
+      Icon(
+        icon,
+        size: 12,
+        color: color ?? AppColors.textSecondaryFor(Theme.of(context).brightness),
+      ),
       const SizedBox(width: 4),
       Text(
         text,
         style: AppTextStyles.labelSmall.copyWith(
-          color: color ?? AppColors.textSecondary,
+          color:
+              color ?? AppColors.textSecondaryFor(Theme.of(context).brightness),
         ),
       ),
     ],
@@ -1389,7 +1400,7 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
             Text(
               label,
               style: TextStyle(
-                color: selected ? primary : AppColors.textSecondary,
+                color: selected ? primary : AppColors.textSecondaryFor(Theme.of(context).brightness),
                 fontSize: 12,
                 fontWeight: selected ? FontWeight.bold : FontWeight.normal,
               ),
@@ -1487,7 +1498,7 @@ class _GrantUserCard extends StatelessWidget {
                   Text(
                     phone,
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                     ),
                   ),
                   Row(

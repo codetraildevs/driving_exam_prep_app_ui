@@ -85,4 +85,27 @@ class AppColors {
   /// Returns the theme-appropriate primary gradient.
   static LinearGradient primaryGradientFor(Brightness brightness) =>
       brightness == Brightness.dark ? primaryGradientDark : primaryGradient;
+
+  // ── Brightness-aware semantic helpers ────────────────────────────────
+  // Widgets that hardcode light-theme colors (textSecondary, primary,
+  // surface, etc.) become unreadable in dark mode. These helpers return the
+  // dark-mode-appropriate value so the same widget code works in both themes.
+
+  /// Secondary text (subtitles/hints): mid-gray in light, brighter gray in
+  /// dark so it stays legible on dark surfaces (was #6B7280 ≈ 3:1 contrast).
+  static Color textSecondaryFor(Brightness brightness) =>
+      brightness == Brightness.dark ? neutral400 : textSecondary;
+
+  /// Primary text: near-black in light, light gray in dark.
+  static Color textPrimaryFor(Brightness brightness) =>
+      brightness == Brightness.dark ? neutral200 : textPrimary;
+
+  /// Primary brand color: deep navy in light, brighter blue in dark so icons
+  /// and accents remain visible on dark surfaces.
+  static Color primaryFor(Brightness brightness) =>
+      brightness == Brightness.dark ? primaryLight : primary;
+
+  /// Card/surface background: white in light, dark slate in dark.
+  static Color surfaceFor(Brightness brightness) =>
+      brightness == Brightness.dark ? surfaceDark : surface;
 }

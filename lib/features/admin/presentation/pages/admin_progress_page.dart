@@ -141,7 +141,7 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
                                     title: l10n.progressTotalAttempts,
                                     value: '${_results.length}',
                                     icon: Icons.quiz,
-                                    color: AppColors.primary,
+                                    color: AppColors.primaryFor(Theme.of(context).brightness),
                                   ),
                                 ),
                                 const SizedBox(width: 12),
@@ -200,7 +200,7 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
                                       style: TextStyle(
                                         color: i < 3
                                             ? AppColors.warning
-                                            : AppColors.textSecondary,
+                                            : AppColors.textSecondaryFor(Theme.of(context).brightness),
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -214,7 +214,7 @@ class _AdminProgressPageState extends State<AdminProgressPage> {
                                         ? '$examTitle • $date'
                                         : date,
                                     style: AppTextStyles.bodySmall.copyWith(
-                                      color: AppColors.textSecondary,
+                                      color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                                     ),
                                   ),
                                   trailing: Container(
@@ -294,7 +294,7 @@ class _StatCard extends StatelessWidget {
           Text(
             title,
             style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.textSecondary,
+              color: AppColors.textSecondaryFor(Theme.of(context).brightness),
             ),
           ),
         ],

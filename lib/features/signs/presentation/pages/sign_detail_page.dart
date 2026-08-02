@@ -119,7 +119,7 @@ class _SignDetailPageState extends State<SignDetailPage> {
                     Container(
                       height: 200,
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.1),
+                        color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: Theme.of(
@@ -140,13 +140,13 @@ class _SignDetailPageState extends State<SignDetailPage> {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.1),
+                        color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         sign.category,
                         style: AppTextStyles.labelMedium.copyWith(
-                          color: AppColors.primary,
+                          color: AppColors.primaryFor(Theme.of(context).brightness),
                         ),
                       ),
                     ),
@@ -159,7 +159,7 @@ class _SignDetailPageState extends State<SignDetailPage> {
                     Text(
                       sign.description,
                       style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textSecondary,
+                        color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                       ),
                     ),
                     const SizedBox(height: 32),
@@ -172,10 +172,10 @@ class _SignDetailPageState extends State<SignDetailPage> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.05),
+                          color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.05),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: AppColors.primary.withValues(alpha: 0.2),
+                            color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.2),
                           ),
                         ),
                         child: Text(

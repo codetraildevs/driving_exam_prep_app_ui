@@ -63,22 +63,22 @@ class PrivacyPolicyPage extends StatelessWidget {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.08),
+                        color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.policy_rounded,
-                            color: AppColors.primary,
+                            color: AppColors.primaryFor(Theme.of(context).brightness),
                             size: 18,
                           ),
                           const SizedBox(width: 8),
                           Text(
                             l10n.privacyLastUpdated,
                             style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.primary,
+                              color: AppColors.primaryFor(Theme.of(context).brightness),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -168,10 +168,10 @@ class _PolicyCard extends StatelessWidget {
                 height: 32,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
+                  color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(icon, color: AppColors.primary, size: 18),
+                child: Icon(icon, color: AppColors.primaryFor(Theme.of(context).brightness), size: 18),
               ),
               const SizedBox(width: 12),
               Expanded(child: Text(title, style: AppTextStyles.heading6)),

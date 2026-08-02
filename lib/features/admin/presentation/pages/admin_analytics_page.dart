@@ -115,7 +115,7 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: AppColors.primary,
+              primary: AppColors.primaryFor(Theme.of(context).brightness),
               onPrimary: AppColors.textInverse,
             ),
           ),
@@ -171,7 +171,7 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
   }
 
   Color get _barColor =>
-      _isLowEngagement ? AppColors.warning : AppColors.primary;
+      _isLowEngagement ? AppColors.warning : AppColors.primaryFor(Theme.of(context).brightness);
 
   Color get _barColorLight =>
       _isLowEngagement ? AppColors.warningLight : AppColors.primaryLight;
@@ -194,7 +194,7 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
       expandedHeight: 150,
       pinned: true,
       floating: false,
-      backgroundColor: AppColors.primary,
+      backgroundColor: AppColors.primaryFor(Theme.of(context).brightness),
       elevation: 0,
       // Desktop: hamburger opens the shell drawer.
       leading: isDesktop(context) ? const AppMenuButton() : null,
@@ -293,7 +293,7 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
               Text(
                 _error!,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: AppColors.textSecondary),
+                style: TextStyle(color: AppColors.textSecondaryFor(Theme.of(context).brightness)),
               ),
               const SizedBox(height: 24),
               ElevatedButton.icon(
@@ -386,7 +386,7 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+          border: Border.all(color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.3)),
           boxShadow: [
             BoxShadow(
               color: Theme.of(context).shadowColor.withValues(alpha: 0.06),
@@ -400,12 +400,12 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
+                color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.calendar_month,
-                color: AppColors.primary,
+                color: AppColors.primaryFor(Theme.of(context).brightness),
                 size: 18,
               ),
             ),
@@ -414,11 +414,11 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Date Range',
                     style: TextStyle(
                       fontSize: 11,
-                      color: AppColors.textSecondary,
+                      color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -436,20 +436,20 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
+                  color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   '$dayCount days',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
+                    color: AppColors.primaryFor(Theme.of(context).brightness),
                   ),
                 ),
               ),
             const SizedBox(width: 8),
-            const Icon(Icons.arrow_drop_down, color: AppColors.textSecondary),
+            Icon(Icons.arrow_drop_down, color: AppColors.textSecondaryFor(Theme.of(context).brightness)),
           ],
         ),
       ),
@@ -465,7 +465,7 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
             value: _totalExams.toString(),
             subtitle: 'Completed',
             icon: Icons.quiz_rounded,
-            color: AppColors.primary,
+            color: AppColors.primaryFor(Theme.of(context).brightness),
           ),
         ),
         const SizedBox(width: 12),
@@ -505,7 +505,7 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
               _isLowEngagement ? 'Low activity' : 'Active',
               style: TextStyle(
                 fontSize: 11,
-                color: _isLowEngagement ? _barColor : AppColors.primary,
+                color: _isLowEngagement ? _barColor : AppColors.primaryFor(Theme.of(context).brightness),
               ),
             ),
           ],
@@ -539,9 +539,9 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
                   days.isEmpty
                       ? 'No data for the selected period.'
                       : 'Showing ${days.length} day${days.length == 1 ? "" : "s"} · ${_rawDailyStats.length} active day${_rawDailyStats.length == 1 ? "" : "s"}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -555,17 +555,17 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
 
   Widget _buildChart(List<Map<String, dynamic>> days) {
     if (days.isEmpty) {
-      return const SizedBox(
+      return SizedBox(
         height: 180,
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.bar_chart, size: 48, color: AppColors.textTertiary),
-              SizedBox(height: 8),
+              const Icon(Icons.bar_chart, size: 48, color: AppColors.textTertiary),
+              const SizedBox(height: 8),
               Text(
                 'No exam data for this period',
-                style: TextStyle(color: AppColors.textSecondary),
+                style: TextStyle(color: AppColors.textSecondaryFor(Theme.of(context).brightness)),
               ),
             ],
           ),
@@ -665,7 +665,7 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
                                 fontWeight: FontWeight.bold,
                                 color: _isLowEngagement
                                     ? _barColor
-                                    : AppColors.primary,
+                                    : AppColors.primaryFor(Theme.of(context).brightness),
                               ),
                             )
                           : const SizedBox.shrink(),
@@ -697,7 +697,7 @@ class _AdminAnalyticsPageState extends State<AdminAnalyticsPage>
                                 fontSize: 8,
                                 color: isEmpty
                                     ? AppColors.textTertiary
-                                    : AppColors.textSecondary,
+                                    : AppColors.textSecondaryFor(Theme.of(context).brightness),
                               ),
                               overflow: TextOverflow.clip,
                               maxLines: 1,
@@ -776,9 +776,9 @@ class _StatCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.textSecondary,
+                    color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),

@@ -215,8 +215,8 @@ class _MainLayoutState extends State<MainLayout> {
       leading: Icon(selected ? selectedIcon : icon),
       title: Text(label),
       selected: selected,
-      selectedColor: AppColors.primary,
-      selectedTileColor: AppColors.primary.withValues(alpha: 0.08),
+      selectedColor: AppColors.primaryFor(Theme.of(context).brightness),
+      selectedTileColor: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.08),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       onTap: () {
         Navigator.of(context).pop(); // close the drawer

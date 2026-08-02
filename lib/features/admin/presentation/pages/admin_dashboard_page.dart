@@ -167,7 +167,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
       expandedHeight: 140,
       pinned: true,
       floating: false,
-      backgroundColor: AppColors.primary,
+      backgroundColor: AppColors.primaryFor(Theme.of(context).brightness),
       elevation: 0,
       // Desktop: hamburger opens the shell drawer.
       leading: isDesktop(context) ? const AppMenuButton() : null,
@@ -408,8 +408,8 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                 icon: Icons.people,
                 title: l10n.adminManageUsers,
                 description: l10n.adminManageUsersDesc,
-                gradientColors: const [
-                  AppColors.primary,
+                gradientColors: [
+                  AppColors.primaryFor(Theme.of(context).brightness),
                   AppColors.primaryLight,
                 ],
                 onTap: () => context.push('/admin/users'),
@@ -421,7 +421,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                 icon: Icons.key_rounded,
                 title: l10n.adminAccess,
                 description: l10n.adminAccessCodesDesc,
-                gradientColors: const [AppColors.primary, Color(0xFF4ADE80)],
+                gradientColors: [AppColors.primaryFor(Theme.of(context).brightness), Color(0xFF4ADE80)],
                 onTap: () => context.push('/admin/access'),
               ),
             ),
@@ -452,7 +452,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
             icon: Icons.people,
             value: '$_totalUsers',
             label: l10n.adminTotalUsers,
-            color: AppColors.primary,
+            color: AppColors.primaryFor(Theme.of(context).brightness),
           ),
         ),
         const SizedBox(width: 12),
@@ -493,7 +493,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
             lang: 'Kinyarwanda',
             count: byLang['rw']!,
             total: total,
-            color: AppColors.primary,
+            color: AppColors.primaryFor(Theme.of(context).brightness),
           ),
           const SizedBox(height: 10),
           _LangRow(
@@ -641,7 +641,7 @@ class _StatTile extends StatelessWidget {
           Text(
             label,
             style: AppTextStyles.labelSmall.copyWith(
-              color: AppColors.textSecondary,
+              color: AppColors.textSecondaryFor(Theme.of(context).brightness),
             ),
             textAlign: TextAlign.center,
           ),
@@ -678,7 +678,7 @@ class _LangRow extends StatelessWidget {
           child: Text(
             lang,
             style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.textSecondary,
+              color: AppColors.textSecondaryFor(Theme.of(context).brightness),
             ),
           ),
         ),

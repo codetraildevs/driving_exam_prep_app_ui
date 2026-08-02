@@ -616,10 +616,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
                           Text(
                             l10n.profileAccount,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.textSecondary,
+                              color: AppColors.textSecondaryFor(Theme.of(context).brightness),
                             ),
                           ),
                           const SizedBox(height: 12),
@@ -1114,7 +1114,7 @@ class _InfoCard extends StatelessWidget {
             Text(
               title!,
               style: AppTextStyles.labelLarge.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.textSecondaryFor(Theme.of(context).brightness),
               ),
             ),
             const SizedBox(height: 10),
@@ -1153,7 +1153,7 @@ class _InfoRow extends StatelessWidget {
             child: Text(
               label,
               style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.textSecondaryFor(Theme.of(context).brightness),
               ),
             ),
           ),
@@ -1163,7 +1163,7 @@ class _InfoRow extends StatelessWidget {
                 value,
                 style: AppTextStyles.bodySmall.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: valueColor ?? AppColors.textPrimary,
+                  color: valueColor ?? AppColors.textPrimaryFor(Theme.of(context).brightness),
                 ),
                 textAlign: TextAlign.right,
               ),
