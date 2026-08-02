@@ -12,6 +12,7 @@ import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../shared/subscription/subscription_notifier.dart';
 import '../../../../shared/widgets/app_menu_button.dart';
+import '../../../../shared/widgets/interactive_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../config/app_config.dart';
@@ -89,39 +90,15 @@ class HomePage extends StatelessWidget {
 // COMPACT HEADER — shorter, gradient, with greeting and optional right icon
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// The type of icon shown in the right section of [_CompactHeader].
-enum CompactHeaderIconType {
-  /// Notification bell with optional badge.
-  notification,
-
-  /// Refresh/reload icon.
-  refresh,
-
-  /// No icon (empty right section).
-  none,
-}
-
 class _CompactHeader extends StatelessWidget {
   final AppLocalizations l10n;
   final String userName;
   final String phoneNumber;
 
-  /// Type of icon to show on the right. Defaults to [CompactHeaderIconType.notification].
-  final CompactHeaderIconType iconType;
-
-  /// Action to perform when the right icon is tapped.
-  final VoidCallback? onIconTap;
-
-  /// Whether to show a badge dot on the notification icon.
-  final bool showBadge;
-
   const _CompactHeader({
     required this.l10n,
     required this.userName,
     required this.phoneNumber,
-    this.iconType = CompactHeaderIconType.notification,
-    this.onIconTap,
-    this.showBadge = false,
   });
 
   @override
@@ -182,36 +159,6 @@ class _CompactHeader extends StatelessWidget {
               ],
             ),
           ),
-
-          // Right: optional icon
-          // if (iconType != CompactHeaderIconType.none)
-          //   Stack(
-          //     children: [
-          //       IconButton(
-          //         icon: Icon(
-          //           iconType == CompactHeaderIconType.refresh
-          //               ? Icons.refresh_rounded
-          //               : Icons.notifications_outlined,
-          //           color: AppColors.textInverse,
-          //           size: 26,
-          //         ),
-          //         onPressed: onIconTap,
-          //       ),
-          //       if (showBadge && iconType == CompactHeaderIconType.notification)
-          //         Positioned(
-          //           right: 10,
-          //           top: 10,
-          //           child: Container(
-          //             width: 8,
-          //             height: 8,
-          //             decoration: const BoxDecoration(
-          //               color: AppColors.error,
-          //               shape: BoxShape.circle,
-          //             ),
-          //           ),
-          //         ),
-          //     ],
-          //   ),
         ],
       ),
     );
@@ -499,8 +446,6 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
   late final Animation<double> _scaleAnim;
   late final Animation<double> _fadeAnim;
 
-  bool _pressed = false;
-
   @override
   void initState() {
     super.initState();
@@ -537,15 +482,12 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
       opacity: _fadeAnim,
       child: ScaleTransition(
         scale: _scaleAnim,
-        child: GestureDetector(
-          onTapDown: (_) => setState(() => _pressed = true),
-          onTapUp: (_) {
-            setState(() => _pressed = false);
-            item.onTap();
-          },
-          onTapCancel: () => setState(() => _pressed = false),
-          child: AnimatedScale(
-            scale: _pressed ? 0.95 : 1.0,
+        child: InteractiveCard(
+          onTap: item.onTap,
+          builder: (context, cardState) => AnimatedScale(
+            scale: cardState.pressed
+                ? 0.95
+                : (cardState.hovered ? 1.03 : 1.0),
             duration: const Duration(milliseconds: 120),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -554,11 +496,16 @@ class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: item.color.withValues(alpha: 0.08),
-                    blurRadius: 10,
+                    color: item.color.withValues(
+                      alpha: cardState.hovered ? 0.18 : 0.08,
+                    ),
+                    blurRadius: cardState.hovered ? 18 : 10,
                     offset: const Offset(0, 4),
                   ),
                 ],
+                border: cardState.focused
+                    ? Border.all(color: item.color, width: 2)
+                    : null,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

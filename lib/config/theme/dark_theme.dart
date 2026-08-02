@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_text_styles.dart';
+import 'web_page_transitions.dart';
 
 /// Dark theme for the Traffic Rules App.
 /// Uses a comfortable dark palette that avoids eye-straining high contrast.
@@ -40,6 +42,8 @@ ThemeData buildDarkTheme() {
   return ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
+    // Subtle fade/slide page transitions on web; native transitions on mobile.
+    pageTransitionsTheme: kIsWeb ? webPageTransitionsTheme() : null,
     scaffoldBackgroundColor: background,
     primaryColor: AppColors.primaryLight,
     colorScheme: const ColorScheme(

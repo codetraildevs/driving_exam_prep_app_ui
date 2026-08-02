@@ -101,7 +101,9 @@ Future<ThemeMode> _loadSavedTheme() async {
         return ThemeMode.system;
     }
   }
-  return ThemeMode.light;
+  // No explicit user choice yet — follow the OS (light/dark) so first-time
+  // visitors on a dark OS get a dark app instead of a bright flash.
+  return ThemeMode.system;
 }
 
 class TrafficRulesApp extends ConsumerStatefulWidget {

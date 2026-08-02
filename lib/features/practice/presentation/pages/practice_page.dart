@@ -8,6 +8,8 @@ import '../../../../shared/locale/locale_notifier.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/subscription/subscription_notifier.dart';
 import '../../../../shared/widgets/app_page_header.dart';
+import '../../../../shared/widgets/interactive_card.dart';
+import '../../../../shared/widgets/skeleton.dart';
 import '../../../exam/data/models/exam_model.dart';
 import '../../../exam/data/repositories/exam_repository.dart';
 
@@ -62,6 +64,28 @@ class _PracticePageState extends ConsumerState<PracticePage> {
     }
   }
 
+  /// Skeleton grid shown while exams load — mirrors the real grid's columns
+  /// and card height so there's no layout jump when content arrives.
+  Widget _buildSkeletonGrid() {
+    return ConstrainedContent(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final crossAxisCount =
+              constraints.maxWidth >= AppContentWidths.medium
+              ? 3
+              : (constraints.maxWidth >= AppContentWidths.gridDense ? 2 : 1);
+          return SkeletonCardGrid(
+            crossAxisCount: crossAxisCount,
+            itemCount: 6,
+            mainAxisExtent: 100,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+          );
+        },
+      ),
+    );
+  }
+
   void _onExamTap(BuildContext context, Exam exam, int index) {
     final subscription = ref.read(subscriptionProvider);
     if (exam.isFree || subscription.hasActiveAccess) {
@@ -99,7 +123,7 @@ class _PracticePageState extends ConsumerState<PracticePage> {
             child: SafeArea(
               top: false,
               child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
+                  ? _buildSkeletonGrid()
                   : _error != null
                   ? Center(
                       child: Column(
@@ -194,24 +218,32 @@ class _ExamCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InteractiveCard(
       onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          border: Border.all(
-            color: exam.isFree
-                ? AppColors.success.withValues(alpha: 0.4)
-                : AppColors.neutral200,
-          ),
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
-              blurRadius: 8,
+      builder: (context, cardState) => AnimatedScale(
+        scale: cardState.pressed ? 0.97 : (cardState.hovered ? 1.02 : 1.0),
+        duration: const Duration(milliseconds: 120),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            border: Border.all(
+              color: cardState.focused
+                  ? Theme.of(context).colorScheme.primary
+                  : exam.isFree
+                  ? AppColors.success.withValues(alpha: 0.4)
+                  : AppColors.neutral200,
+              width: cardState.focused ? 2 : 1,
             ),
-          ],
-        ),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).shadowColor.withValues(
+                  alpha: cardState.hovered ? 0.14 : 0.05,
+                ),
+                blurRadius: cardState.hovered ? 16 : 8,
+              ),
+            ],
+          ),
         child: Stack(
           children: [
             Padding(
@@ -276,6 +308,7 @@ class _ExamCard extends StatelessWidget {
                 ),
               ),
           ],
+        ),
         ),
       ),
     );

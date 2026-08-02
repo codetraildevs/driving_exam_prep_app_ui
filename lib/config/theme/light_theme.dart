@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_text_styles.dart';
+import 'web_page_transitions.dart';
 
 /// Light theme for the Traffic Rules App.
 /// Uses the app's primary blue branding colours on a white/grey background.
@@ -8,6 +10,8 @@ ThemeData buildLightTheme() {
   return ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
+    // Subtle fade/slide page transitions on web; native transitions on mobile.
+    pageTransitionsTheme: kIsWeb ? webPageTransitionsTheme() : null,
     scaffoldBackgroundColor: AppColors.background,
     primaryColor: AppColors.primary,
     colorScheme: const ColorScheme.light(

@@ -59,22 +59,29 @@ class LandingPage extends StatelessWidget {
                 ],
               ),
             ),
-            child: isMobile
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _heroText(isMobile, l10n),
-                      const SizedBox(height: 20),
-                      _heroButtons(context, l10n),
-                    ],
-                  )
-                : Row(
-                    children: [
-                      Expanded(child: _heroText(false, l10n)),
-                      const SizedBox(width: 60),
-                      Expanded(child: _heroButtons(context, l10n)),
-                    ],
-                  ),
+            // The gradient stays full-bleed; the content is capped so the
+            // hero doesn't stretch edge-to-edge on ultra-wide monitors.
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1200),
+                child: isMobile
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _heroText(isMobile, l10n),
+                          const SizedBox(height: 20),
+                          _heroButtons(context, l10n),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          Expanded(child: _heroText(false, l10n)),
+                          const SizedBox(width: 60),
+                          Expanded(child: _heroButtons(context, l10n)),
+                        ],
+                      ),
+              ),
+            ),
           ),
         ),
         const Positioned(
@@ -153,18 +160,21 @@ class LandingPage extends StatelessWidget {
         horizontal: isMobile ? 16 : 60,
         vertical: isMobile ? 12 : 24,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (!isMobile) ...[
-            Text(
-              l10n.landingWhyUseApp,
-              style: AppTextStyles.heading2,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-          ],
-          Wrap(
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (!isMobile) ...[
+                Text(
+                  l10n.landingWhyUseApp,
+                  style: AppTextStyles.heading2,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+              ],
+              Wrap(
             spacing: isMobile ? 10 : 16,
             runSpacing: isMobile ? 10 : 16,
             alignment: WrapAlignment.center,
@@ -189,7 +199,9 @@ class LandingPage extends StatelessWidget {
               ),
             ],
           ),
-        ],
+            ],
+          ),
+        ),
       ),
     );
   }

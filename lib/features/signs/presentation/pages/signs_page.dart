@@ -6,6 +6,8 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
+import '../../../../shared/widgets/interactive_card.dart';
+import '../../../../shared/widgets/skeleton.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../data/models/sign_model.dart';
 import '../../data/repositories/signs_repository.dart';
@@ -165,7 +167,23 @@ class _SignsPageState extends State<SignsPage> {
       future: _signsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          // Shimmer skeleton matching the real grid's column count.
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final crossAxisCount =
+                  constraints.maxWidth >= AppContentWidths.medium
+                  ? 4
+                  : (constraints.maxWidth >= AppContentWidths.gridDense
+                        ? 3
+                        : 2);
+              return SkeletonCardGrid(
+                crossAxisCount: crossAxisCount,
+                itemCount: 8,
+                mainAxisExtent: 180,
+                padding: const EdgeInsets.all(16),
+              );
+            },
+          );
         }
 
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -229,26 +247,36 @@ class _SignsPageState extends State<SignsPage> {
           builder: (context, snapshot) {
             final isLearned = snapshot.data ?? false;
 
-            return GestureDetector(
+            return InteractiveCard(
               onTap: () => context.push('/signs/${sign.id}'),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  border: Border.all(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.outline.withValues(alpha: 0.5),
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).shadowColor.withValues(alpha: 0.05),
-                      blurRadius: 8,
+              builder: (context, cardState) => AnimatedScale(
+                scale: cardState.pressed
+                    ? 0.97
+                    : (cardState.hovered ? 1.02 : 1.0),
+                duration: const Duration(milliseconds: 120),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    border: Border.all(
+                      color: cardState.focused
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(
+                              context,
+                            ).colorScheme.outline.withValues(alpha: 0.5),
+                      width: cardState.focused ? 2 : 1,
                     ),
-                  ],
-                ),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(
+                          context,
+                        ).shadowColor.withValues(
+                          alpha: cardState.hovered ? 0.14 : 0.05,
+                        ),
+                        blurRadius: cardState.hovered ? 16 : 8,
+                      ),
+                    ],
+                  ),
                 child: Column(
                   children: [
                     Expanded(
@@ -310,6 +338,7 @@ class _SignsPageState extends State<SignsPage> {
                     ),
                   ],
                 ),
+              ),
               ),
             );
           },
