@@ -162,21 +162,38 @@ async function connect() {
         apiCalls.add(`${r.method} ${r.url}`);
       }
     } else if (msg.method === 'Network.responseReceived') {
-      // Capture the register response body (201) so we can self-delete the
-      // throwaway account at the end of the run. OPTIONS preflight returns
-      // 2xx but not 201, so it can't match by mistake.
+      // Best-effort fast path: capture the register response body (201) so we
+      // can self-delete the throwaway account at the end of the run. OPTIONS
+      // preflight returns 2xx but never 201, so it can't match by mistake.
+      // NOTE: the body can be evicted by the immediate navigation to /home,
+      // so failure here is expected sometimes — captureCredsFromPage() (reads
+      // localStorage after login) is the reliable path and runs as fallback.
       const { requestId, response } = msg.params;
       const url = response?.url || '';
       if (!cleanupCreds && response?.status === 201 && /\/api\/auth\/register/.test(url)) {
         send('Network.getResponseBody', { requestId }).then((m) => {
           try {
-            const data = JSON.parse(m.result?.body || '{}').data;
-            if (data?.id && data?.token) {
+            const raw = m.result?.body;
+            if (!raw) {
+              console.log('  ⚠️  register response body not available via CDP — will use localStorage capture');
+              return;
+            }
+            const json = m.result?.base64Encoded
+              ? JSON.parse(Buffer.from(raw, 'base64').toString('utf8'))
+              : JSON.parse(raw);
+            const data = json.data;
+            // Re-check the guard: a late-resolving getResponseBody must not
+            // clobber creds already captured via localStorage.
+            if (!cleanupCreds && data?.id && data?.token) {
               cleanupCreds = { id: data.id, token: data.token, phone: data.phoneNumber };
               console.log(`  📝 captured throwaway account for auto-cleanup (${data.phoneNumber})`);
             }
-          } catch (_) {}
-        }).catch(() => {});
+          } catch (_) {
+            console.log('  ⚠️  could not parse register response for auto-cleanup — will use localStorage capture');
+          }
+        }).catch(() => {
+          console.log('  ⚠️  CDP register capture failed — will use localStorage capture');
+        });
       }
     }
   };
@@ -461,6 +478,16 @@ async function testRegistration(sem) {
   );
   if (onHome) {
     console.log(`  THROWAWAY ACCOUNT PHONE: ${phone} — auto-cleanup will delete it at the end of the run (printed as a manual fallback).`);
+    // Grab self-delete credentials from localStorage (deterministic; CDP body
+    // capture races the navigation to /home). Poll briefly in case the app is
+    // still persisting the session.
+    for (let i = 0; i < 10 && !cleanupCreds; i++) {
+      if (await captureCredsFromPage()) break;
+      await sleep(1000);
+    }
+    if (!cleanupCreds) {
+      console.log('  ⚠️  creds not in localStorage yet — will retry once more at cleanup time');
+    }
   }
   return { sem, phone };
 }
@@ -551,13 +578,54 @@ async function main() {
   await finish();
 }
 
+// shared_preferences on web persists to localStorage under 'flutter.'-prefixed
+// keys. Scanning localStorage for the access token + cached user is NOT subject
+// to the CDP response-body race (the app has already logged in at this point),
+// so this is the reliable way to get self-delete credentials.
+async function captureCredsFromPage() {
+  if (cleanupCreds) return true;
+  const res = await evalJs(`(() => {
+    const all = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k) all[k] = localStorage.getItem(k);
+    }
+    const raw = (v) => {
+      try { return JSON.parse(v); } catch (_) { return v; }
+    };
+    let token, id, phone;
+    for (const [k, v] of Object.entries(all)) {
+      if (!token && /token/i.test(k) && !/refresh/i.test(k)) token = raw(v);
+      if (!id && /user/i.test(k)) {
+        try {
+          let u = raw(v);
+          if (typeof u === 'string') u = raw(u); // double-encoded JSON string
+          id = u?.id || u?.userId;
+          phone = u?.phoneNumber || u?.phone;
+        } catch (_) {}
+      }
+    }
+    return { token: token || undefined, id: id || undefined, phone: phone || undefined };
+  })()`);
+  const c = res.value;
+  if (c?.token && c?.id) {
+    cleanupCreds = { id: c.id, token: c.token, phone: c.phone };
+    console.log(`  📝 captured throwaway account for auto-cleanup from localStorage (${c.phone || 'phone unknown'})`);
+    return true;
+  }
+  return false;
+}
+
 // Delete the throwaway account created in step 3 using its own token
 // (backend allows self-deletion via DELETE /api/users/:id). Best-effort:
 // never fails the run, prints a manual fallback phone if it can't.
 async function cleanupAccount() {
   if (!cleanupCreds) {
-    console.log('\n⚠️  No throwaway account captured — nothing to auto-cleanup.');
-    return;
+    console.log('\n⚠️  No throwaway account captured yet — retrying via localStorage...');
+    if (!(await captureCredsFromPage())) {
+      console.log('⚠️  No throwaway account captured — nothing to auto-cleanup.');
+      return;
+    }
   }
   const { id, token, phone } = cleanupCreds;
   console.log(`\n🧹 Auto-cleanup: deleting throwaway account ${phone}…`);
