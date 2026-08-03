@@ -15,6 +15,11 @@ class InteractiveCard extends StatefulWidget {
   /// When false the card is inert: no cursor, focus, or activation.
   final bool enabled;
 
+  /// When true (and [enabled]) the card still reports hover/focus feedback
+  /// even without an [onTap] — used for informational cards that lift on
+  /// hover but don't navigate. Keyboard activation stays inert without a tap.
+  final bool hoverFeedback;
+
   final Widget Function(BuildContext context, InteractiveCardState state)
   builder;
 
@@ -22,6 +27,7 @@ class InteractiveCard extends StatefulWidget {
     super.key,
     this.onTap,
     this.enabled = true,
+    this.hoverFeedback = false,
     required this.builder,
   });
 
@@ -57,32 +63,38 @@ class InteractiveCardState extends State<InteractiveCard> {
 
   @override
   Widget build(BuildContext context) {
-    final interactive = widget.enabled && widget.onTap != null;
+    final tappable = widget.enabled && widget.onTap != null;
+    final interactive = tappable || (widget.enabled && widget.hoverFeedback);
     return FocusableActionDetector(
       focusNode: _focusNode,
       enabled: interactive,
-      mouseCursor: interactive
+      mouseCursor: tappable
           ? SystemMouseCursors.click
           : SystemMouseCursors.basic,
       onShowFocusHighlight: (v) => setState(() => _focused = v),
       onShowHoverHighlight: (v) => setState(() => _hovered = v),
       actions: {
-        // Keyboard activation (Enter / Space while focused).
-        ActivateIntent: CallbackAction<ActivateIntent>(
-          onInvoke: (_) {
-            _activate();
-            return null;
-          },
-        ),
+        // Keyboard activation (Enter / Space while focused) — only when the
+        // card actually has a tap action.
+        if (tappable)
+          ActivateIntent: CallbackAction<ActivateIntent>(
+            onInvoke: (_) {
+              _activate();
+              return null;
+            },
+          ),
       },
       child: GestureDetector(
-        // Pointer activation + pressed feedback (mouse & touch).
-        onTapDown: (_) => setState(() => _pressed = true),
-        onTapUp: (_) {
-          setState(() => _pressed = false);
-          _activate();
-        },
-        onTapCancel: () => setState(() => _pressed = false),
+        // Pointer activation + pressed feedback (mouse & touch) — only when
+        // the card has a tap action; informational cards ignore taps.
+        onTapDown: tappable ? (_) => setState(() => _pressed = true) : null,
+        onTapUp: tappable
+            ? (_) {
+                setState(() => _pressed = false);
+                _activate();
+              }
+            : null,
+        onTapCancel: tappable ? () => setState(() => _pressed = false) : null,
         child: widget.builder(context, this),
       ),
     );

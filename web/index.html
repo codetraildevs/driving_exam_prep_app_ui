@@ -19,6 +19,13 @@
   <meta name="robots" content="index, follow">
   <meta name="language" content="English, French, Kinyarwanda">
 
+  <!-- Canonical URL (live domain) -->
+  <link rel="canonical" href="https://learn-traffic-rules-cbbd1.web.app/">
+
+  <!-- Performance: warm the API connection before Flutter needs it -->
+  <link rel="preconnect" href="https://backendapi.rwandatraffic.rw" crossorigin>
+  <link rel="dns-prefetch" href="https://backendapi.rwandatraffic.rw">
+
   <!-- Theme Color -->
   <meta name="theme-color" content="#00039E">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -28,17 +35,21 @@
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://trafficrules.rwanda.app">
+  <meta property="og:url" content="https://learn-traffic-rules-cbbd1.web.app/">
+  <meta property="og:site_name" content="Rwanda Traffic Rule">
   <meta property="og:title" content="Rwanda Traffic Rule — Driving Licence Practice Tests">
   <meta property="og:description" content="Learn Rwanda traffic rules and practice theory questions for the driving licence test. Real exam simulations, road signs library, and progress tracking.">
-  <meta property="og:image" content="icons/Icon-512.png">
+  <meta property="og:image" content="https://learn-traffic-rules-cbbd1.web.app/icons/Icon-512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:image:alt" content="Rwanda Traffic Rule app icon">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://trafficrules.rwanda.app">
+  <meta property="twitter:url" content="https://learn-traffic-rules-cbbd1.web.app/">
   <meta property="twitter:title" content="Rwanda Traffic Rule — Driving Licence Practice Tests">
   <meta property="twitter:description" content="Learn Rwanda traffic rules and practice theory questions for the driving licence test.">
-  <meta property="twitter:image" content="icons/Icon-512.png">
+  <meta property="twitter:image" content="https://learn-traffic-rules-cbbd1.web.app/icons/Icon-512.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
@@ -86,6 +97,35 @@
       background: linear-gradient(135deg, #00039E 0%, #3B82F6 100%);
       z-index: 9999;
       transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    /* Dark-OS visitors get a dark splash instead of a light flash. The
+       in-app dark theme uses the same #0F0F23 base, so this stays seamless. */
+    @media (prefers-color-scheme: dark) {
+      html, body {
+        background: #0F0F23;
+      }
+
+      #loading-splash {
+        background: linear-gradient(160deg, #0F0F23 0%, #1E293B 100%);
+      }
+
+      .splash-title {
+        color: #E5E7EB;
+      }
+
+      .splash-subtitle {
+        color: rgba(229, 231, 235, 0.75);
+      }
+
+      .splash-icon {
+        background: rgba(59, 130, 246, 0.18);
+      }
+
+      .splash-spinner {
+        border-color: rgba(229, 231, 235, 0.2);
+        border-top-color: #E5E7EB;
+      }
     }
 
     #loading-splash.fade-out {

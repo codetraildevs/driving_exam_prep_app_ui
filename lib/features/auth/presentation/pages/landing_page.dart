@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../../shared/widgets/interactive_card.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -220,71 +221,83 @@ class LandingPage extends StatelessWidget {
     String desc,
     bool isMobile,
   ) {
-    return Container(
-      width: isMobile ? 100 : 320,
-      padding: EdgeInsets.all(isMobile ? 12 : 24),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceFor(Theme.of(context).brightness),
-        borderRadius: BorderRadius.circular(isMobile ? 16 : 24),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).shadowColor.withValues(alpha: 0.08),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+    // Informational cards: hover lift + pointer cursor so desktop visitors
+    // get the same responsive feel as the home service cards, without a tap
+    // action (they simply describe the app's features).
+    return InteractiveCard(
+      hoverFeedback: true,
+      builder: (context, cardState) => AnimatedScale(
+        scale: cardState.hovered ? 1.03 : 1.0,
+        duration: const Duration(milliseconds: 120),
+        child: Container(
+          width: isMobile ? 100 : 320,
+          padding: EdgeInsets.all(isMobile ? 12 : 24),
+          decoration: BoxDecoration(
+            color: AppColors.surfaceFor(Theme.of(context).brightness),
+            borderRadius: BorderRadius.circular(isMobile ? 16 : 24),
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).shadowColor.withValues(
+                  alpha: cardState.hovered ? 0.14 : 0.08,
+                ),
+                blurRadius: cardState.hovered ? 26 : 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
+            border: Border.all(
+              color: AppColors.primaryFor(
+                Theme.of(context).brightness,
+              ).withValues(alpha: 0.05),
+            ),
           ),
-        ],
-        border: Border.all(
-          color: AppColors.primaryFor(
-            Theme.of(context).brightness,
-          ).withValues(alpha: 0.05),
+          child: isMobile
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(icon, size: 24, color: AppColors.primaryFor(Theme.of(context).brightness)),
+                    const SizedBox(height: 6),
+                    Text(
+                      title,
+                      style: AppTextStyles.labelMedium.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(icon, size: 28, color: AppColors.primaryFor(Theme.of(context).brightness)),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      title,
+                      style: AppTextStyles.heading3.copyWith(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      desc,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textSecondaryFor(Theme.of(context).brightness),
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
         ),
       ),
-      child: isMobile
-          ? Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(icon, size: 24, color: AppColors.primaryFor(Theme.of(context).brightness)),
-                const SizedBox(height: 6),
-                Text(
-                  title,
-                  style: AppTextStyles.labelMedium.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryFor(Theme.of(context).brightness).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(icon, size: 28, color: AppColors.primaryFor(Theme.of(context).brightness)),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  title,
-                  style: AppTextStyles.heading3.copyWith(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  desc,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textSecondaryFor(Theme.of(context).brightness),
-                    height: 1.5,
-                  ),
-                ),
-              ],
-            ),
     );
   }
 }

@@ -28,7 +28,7 @@ function findChrome() {
 const CHROME = findChrome();
 if (!CHROME) { console.error('❌ Chrome not found.'); process.exit(2); }
 
-const URL = 'https://learn-traffic-rules-cbbd1.web.app';
+const URL = process.env.E2E_URL || 'https://learn-traffic-rules-cbbd1.web.app';
 const PORT = 9344;
 const userData = mkdtempSync(join(tmpdir(), 'cdp-inter-'));
 const shotDir = process.env.E2E_SCREENSHOT_DIR || tmpdir();
@@ -158,7 +158,9 @@ async function screenshot(name) {
     writeFileSync(file, Buffer.from(shot.result.data, 'base64'));
     console.log(`  📸 saved ${file}`);
   }
+  return shot.result?.data ?? '';
 }
+
 
 async function themeColor() {
   const r = await evalJs(`document.querySelector('meta[name="theme-color"]')?.content ?? '(none)'`);
@@ -233,7 +235,24 @@ async function testBootAndRegister() {
   let sem = await enableAccessibilityAndBoot();
   const getStarted = await findByText(sem, 'get started');
   const loginBtn = await findByText(sem, 'log in');
-  record('Landing page renders', !!(getStarted || loginBtn), getStarted ? 'Get Started visible' : 'Log In visible');
+  // A4: the browser tab title should reflect the route (web only).
+  const titleNow = await evalJs(`document.title`);
+  record('Tab title reflects landing route', (titleNow.value || '').includes('Get Started') || (titleNow.value || '').includes('Rwanda'), `title="${titleNow.value}"`);
+
+
+  // A6: landing feature cards lift on hover — compare hovered vs resting render.
+  const featCard = sem.find((s) => /learn|practice|track/i.test(s.text) && s.role !== 'button')
+    || sem.find((s) => /learn the rules|practice exams|track your/i.test(s.text));
+  if (featCard) {
+    await hoverAt(featCard.x, featCard.y); await sleep(1200);
+    const hov = await screenshot('i1b_landing_hover');
+    await hoverAt(20, 20); await sleep(1200);
+    const rest = await screenshot('i1c_landing_rest');
+    const changed = !!hov && !!rest && hov !== rest;
+    record('Landing feature-card hover lift', changed, changed ? `hover bytes=${hov.length}, rest=${rest.length}` : 'no pixel change');
+  } else {
+    record('Landing feature-card hover lift', false, 'no feature card found');
+  }
   await screenshot('i1_landing');
 
   // Go to login → Sign Up → register throwaway account.
@@ -280,6 +299,9 @@ async function testBootAndRegister() {
     if (onHome) break;
   }
   record('Registration → home page', onHome, onHome ? `phone=${phone}` : 'still not on home');
+  // A4: after landing on /home the tab title should be "Home — Rwanda Traffic Rule".
+  const homeTitle = await evalJs(`document.title`);
+  record('Tab title updates on route change', (homeTitle.value || '').includes('Home'), `title="${homeTitle.value}"`);
   await screenshot('i2_home');
   for (let i = 0; i < 6 && !cleanupCreds; i++) { if (await captureCredsFromPage()) break; await sleep(1000); }
   return sem;
@@ -331,10 +353,18 @@ async function testPracticeAndSubscription(sem) {
   const hasGrid = texts.some((t) => /questions|FREE|Exam/i.test(t));
   record('Practice page exam grid loads', hasGrid, hasGrid ? 'free badges visible' : 'no exam cards');
 
-  // Hover an exam card.
+  // Hover an exam card: capture the hovered render, then move the pointer
+  // away and capture the resting render. A visual hover state must change
+  // the pixels, so the two PNGs must differ in size.
   const examCard = sem.find((s) => /questions/i.test(s.text));
-  if (examCard) { await hoverAt(examCard.x, examCard.y); await sleep(1000); await screenshot('i5_practice_hover'); }
-  await screenshot('i6_practice');
+  if (examCard) {
+    await hoverAt(examCard.x, examCard.y); await sleep(1200);
+    const hovered = await screenshot('i5_practice_hover');
+    await hoverAt(20, 20); await sleep(1200);
+    const resting = await screenshot('i6_practice');
+    const changed = !!hovered && !!resting && hovered !== resting;
+    record('Exam card hover visual feedback', changed, changed ? `hover bytes=${hovered.length}, rest=${resting.length}` : 'no pixel change');
+  }
 
   // Tap a paid exam → subscription page.
   const paidCard = sem.find((s) => /questions/i.test(s.text) && !/FREE/i.test(s.text) && s.role === 'button')

@@ -8,6 +8,7 @@ import 'package:traffic_rule_in_rwanda/features/practice/presentation/pages/prac
 import 'package:traffic_rule_in_rwanda/l10n/generated/app_localizations.dart';
 import 'package:traffic_rule_in_rwanda/shared/locale/fallback_localizations.dart';
 import 'package:traffic_rule_in_rwanda/shared/locale/locale_notifier.dart';
+import 'package:traffic_rule_in_rwanda/shared/responsive/responsive_layout.dart';
 
 Widget _buildApp() {
   return const ProviderScope(
@@ -56,6 +57,11 @@ int _gridColumns(WidgetTester tester) {
   return delegate.crossAxisCount;
 }
 
+/// Width of the practice grid, which stretches inside the capped column.
+double _gridWidth(WidgetTester tester) {
+  return tester.getSize(find.byType(GridView)).width;
+}
+
 void main() {
   setUp(() {
     SharedPreferences.setMockInitialValues({});
@@ -83,6 +89,36 @@ void main() {
       await _pumpPractice(tester, const Size(400, 800));
 
       expect(_gridColumns(tester), 1);
+    });
+  });
+
+  group('PracticePage responsive content', () {
+    testWidgets('desktop width caps content at AppContentWidths.wide', (
+      tester,
+    ) async {
+      await _seedExamCache(tester);
+      await _pumpPractice(tester, const Size(1400, 900));
+
+      expect(find.byType(GridView), findsOneWidget);
+      final constrained = tester
+          .widgetList<ConstrainedContent>(find.byType(ConstrainedContent))
+          .toList();
+      expect(constrained, isNotEmpty);
+      for (final c in constrained) {
+        expect(c.maxWidth, AppContentWidths.wide);
+      }
+
+      // The grid is capped at ~1200px instead of stretching to 1400px.
+      expect(_gridWidth(tester), closeTo(AppContentWidths.wide, 8));
+    });
+
+    testWidgets('mobile width lets content fill the screen', (tester) async {
+      await _seedExamCache(tester);
+      await _pumpPractice(tester, const Size(400, 800));
+
+      // No cap below the wide width — the grid fills the padded window.
+      expect(_gridWidth(tester), lessThanOrEqualTo(400));
+      expect(_gridWidth(tester), greaterThan(300));
     });
   });
 }

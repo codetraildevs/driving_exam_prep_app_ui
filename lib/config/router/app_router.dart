@@ -32,6 +32,8 @@ import '../../features/profile/presentation/pages/my_certificates_page.dart';
 import '../../features/subscription/presentation/pages/subscription_page.dart';
 import '../../features/admin/presentation/pages/admin_dashboard_page.dart';
 import '../../shared/responsive/responsive_layout.dart';
+import '../../shared/platform/browser_title_stub.dart'
+    if (dart.library.js_interop) '../../shared/platform/browser_title_web.dart';
 import '../../features/admin/presentation/pages/admin_users_page.dart';
 import '../../features/admin/presentation/pages/admin_access_page.dart';
 import '../../features/admin/presentation/pages/admin_progress_page.dart';
@@ -57,11 +59,40 @@ class AppRouter {
     this.cachedUserRole,
     this.restoredRoute,
   }) {
-    // Save current route to persistent storage whenever navigation occurs.
+    // Save current route to persistent storage whenever navigation occurs,
+    // and keep the browser tab title in sync with the current page (web).
     router.routerDelegate.addListener(() {
       final String location = router.routerDelegate.currentConfiguration.uri.toString();
       LastRouteSession().saveRoute(location);
+      setBrowserTitle(_tabTitleFor(location));
     });
+  }
+
+  /// Maps a route path to a short page name used in the browser tab title.
+  /// Falls back to the app name for shell/root pages.
+  static String _tabTitleFor(String location) {
+    final page = switch (location) {
+      '/language-select' => 'Choose Language',
+      '/landing' => 'Get Started',
+      '/login' => 'Log In',
+      '/register' => 'Sign Up',
+      '/forgot-password' => 'Reset Password',
+      '/home' => 'Home',
+      '/settings' => 'Settings',
+      '/about' => 'About',
+      '/privacy-policy' => 'Privacy Policy',
+      '/terms-of-service' => 'Terms of Service',
+      '/certificates' => 'My Certificates',
+      '/subscription' => 'Subscription',
+      _ => '',
+    };
+    if (page.isNotEmpty) return '$page — Rwanda Traffic Rule';
+    if (location.startsWith('/practice')) return 'Practice — Rwanda Traffic Rule';
+    if (location.startsWith('/exam')) return 'Exam — Rwanda Traffic Rule';
+    if (location.startsWith('/progress')) return 'Progress — Rwanda Traffic Rule';
+    if (location.startsWith('/profile')) return 'Profile — Rwanda Traffic Rule';
+    if (location.startsWith('/admin')) return 'Admin — Rwanda Traffic Rule';
+    return 'Rwanda Traffic Rule';
   }
 
   static final GlobalKey<NavigatorState> rootNavigatorKey =
