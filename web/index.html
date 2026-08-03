@@ -55,24 +55,6 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
   <link rel="manifest" href="manifest.json">
 
-  <script>
-    // Keep the browser chrome color in sync with the OS color scheme until
-    // Flutter boots (the app overrides it when the user picks a theme).
-    function rtrSyncSystemThemeColor() {
-      var dark = window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', dark ? '#0F0F23' : '#00039E');
-    }
-    rtrSyncSystemThemeColor();
-    if (window.matchMedia) {
-      window.matchMedia('(prefers-color-scheme: dark)')
-        .addEventListener('change', rtrSyncSystemThemeColor);
-    }
-  </script>
-
-
-
   <style>
     /* ── Loading splash – shown until Flutter engine boots ── */
     html, body {
@@ -97,35 +79,6 @@
       background: linear-gradient(135deg, #00039E 0%, #3B82F6 100%);
       z-index: 9999;
       transition: opacity 0.4s ease, visibility 0.4s ease;
-    }
-
-    /* Dark-OS visitors get a dark splash instead of a light flash. The
-       in-app dark theme uses the same #0F0F23 base, so this stays seamless. */
-    @media (prefers-color-scheme: dark) {
-      html, body {
-        background: #0F0F23;
-      }
-
-      #loading-splash {
-        background: linear-gradient(160deg, #0F0F23 0%, #1E293B 100%);
-      }
-
-      .splash-title {
-        color: #E5E7EB;
-      }
-
-      .splash-subtitle {
-        color: rgba(229, 231, 235, 0.75);
-      }
-
-      .splash-icon {
-        background: rgba(59, 130, 246, 0.18);
-      }
-
-      .splash-spinner {
-        border-color: rgba(229, 231, 235, 0.2);
-        border-top-color: #E5E7EB;
-      }
     }
 
     #loading-splash.fade-out {

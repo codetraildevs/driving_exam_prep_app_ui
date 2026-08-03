@@ -54,10 +54,12 @@ class _QuizPageState extends State<QuizPage> {
   void initState() {
     super.initState();
 
-    // Protect exam content from screenshots/screen recording
-    ScreenProtector.preventScreenshotOn();
+    // Protect exam content from screenshots/screen recording. The native
+    // screen-protection plugins are Android-only; on web/desktop/tests the
+    // channels are not registered, so errors are swallowed (fire-and-forget
+    // would otherwise surface MissingPluginException in the console).
+    _setScreenProtection(true);
     //  ScreenProtector.protectDataOn(); // Use this if needed for protecting data in background
-    _securityChannel.invokeMethod('secureScreenOn');
   }
 
   @override
@@ -117,10 +119,39 @@ class _QuizPageState extends State<QuizPage> {
   void dispose() {
     _timer?.cancel();
     // Re-enable screenshots when leaving the quiz
-    ScreenProtector.preventScreenshotOff();
+    _setScreenProtection(false);
     // ScreenProtector.protectDataOff();
-    _securityChannel.invokeMethod('secureScreenOff');
     super.dispose();
+  }
+
+  /// Best-effort screen protection. Only supported by the native Android
+  /// plugins; on other platforms (web, desktop) the channels are missing, so
+  /// any failure is caught and ignored to keep the quiz flow working.
+  Future<void> _setScreenProtection(bool on) async {
+    try {
+      if (on) {
+        await ScreenProtector.preventScreenshotOn();
+      } else {
+        await ScreenProtector.preventScreenshotOff();
+      }
+    } on MissingPluginException {
+      // Android-only plugin not registered on this platform — ignore.
+    } on PlatformException {
+      // Plugin rejected the call — ignore (best-effort feature).
+    } catch (_) {
+      // Defensive: never break the quiz flow over screen protection.
+    }
+    try {
+      await _securityChannel.invokeMethod(
+        on ? 'secureScreenOn' : 'secureScreenOff',
+      );
+    } on MissingPluginException {
+      // Custom security channel not registered on this platform — ignore.
+    } on PlatformException {
+      // Plugin rejected the call — ignore (best-effort feature).
+    } catch (_) {
+      // Defensive: never break the quiz flow over screen protection.
+    }
   }
 
   String get _formattedTime {
