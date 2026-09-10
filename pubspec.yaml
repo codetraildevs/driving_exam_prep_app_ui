@@ -40,7 +40,6 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # Security
-  screen_protector: ^1.5.3
 
   # Code Generation
   json_annotation: ^4.11.0

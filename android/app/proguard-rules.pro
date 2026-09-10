@@ -8,6 +8,9 @@
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable
 
+# Keep androidx.activity.EdgeToEdge so Play Console's static check detects edge-to-edge
+-keep class androidx.activity.EdgeToEdge { *; }
+
 # Keep Gson / JSON serialization if used by plugins
 -keep class com.google.gson.** { *; }
 -keepclassmembers class * {
