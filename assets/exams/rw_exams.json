@@ -1932,7 +1932,7 @@
           "questionImgUrl": ""
         },
         {
-          "question": "6. Utegereje gukata iburyo kwiherezo ry’umuhandA. ukingirijwe nimodoka ihagaze. Niki wakora?",
+          "question": "6. Utegereje gukata iburyo kwiherezo ry’umuhanda. ukingirijwe nimodoka ihagaze. Niki wakora?",
           "option1": "A. Guhagarara hanyuma ukagenda gake gake witonze kugezaho ureba nezA.",
           "option2": "B. Kwihuta wegera imbere aho ushobora kureba ugafunga ikindi cyerekezo.",
           "option3": "C. Gutegereza abanyamaguru bakakumenyesha ko ntakibazo wakatA.",
@@ -2108,7 +2108,7 @@
           "option3": "C. Umuvuduko ntarengwa wemewe",
           "option4": "D. Nta gisubizo cy’ukuri kirimo",
           "correctAnswer": "A. Iherezo ry’ibibuzwa byose mu karere ku binyabiziga bigenda",
-          "questionImgUrl": "assets/images/ex11q4.webp"
+          "questionImgUrl": "assets/images/q234.webp"
         },
         {
           "question": "5. Ibyapa bitegeka bikozwe muyihe shusho?",
@@ -3508,7 +3508,7 @@
           "questionImgUrl": ""
         },
         {
-          "question": "14. Ibyapa by’inyongera bishobora kumenyeshA.",
+          "question": "14. Ibyapa by’inyongera bishobora kumenyesha.",
           "option1": "A. ibitegetswe byihariye gusa",
           "option2": "B. ubugerure cyangwa amarengamategeko rusange cyangwa ibibujijwe ndetse n’ibitegetswe byihariye",
           "option3": "C. a na b ni ibisubizo by’ukuri",
