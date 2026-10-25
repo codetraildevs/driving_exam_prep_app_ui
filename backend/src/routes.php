@@ -17,6 +17,11 @@ return [
     ['POST', '/api/auth/logout', 'authLogout'],
     ['POST', '/api/auth/refresh', 'authRefresh'],
 
+    ['GET', '/api/whatsapp-groups', 'whatsappGroups'],
+    ['POST', '/api/whatsapp-groups', 'whatsappGroups'],
+    ['PUT', '/api/whatsapp-groups/:id', 'whatsappGroups'],
+    ['DELETE', '/api/whatsapp-groups/:id', 'whatsappGroups'],
+
     // Users
     ['GET', '/api/users/:id', 'getUser'],
     ['GET', '/api/users', 'listUsers'],
@@ -87,3 +92,4 @@ return [
     ['GET', '/api/notifications', 'getNotifications'],
     ['POST', '/api/notifications', 'createNotification'],
 ];
+

@@ -161,6 +161,15 @@ class SecurityUtils
     /**
      * Validate phone number format (basic)
      */
+    public static function normalizePhone(string $phone): string
+    {
+        $phone = preg_replace('/[\s()\-]/', '', trim($phone));
+        if (preg_match('/^(?:\+?250|0)?(7[2389]\d{7})$/', $phone, $match)) {
+            return '0' . $match[1];
+        }
+        return $phone;
+    }
+
     public static function isValidPhone($phone)
     {
         // Remove common separators and validate length
@@ -203,3 +212,4 @@ class SecurityUtils
 }
 
 SecurityUtils::init();
+

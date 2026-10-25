@@ -225,6 +225,7 @@ class ApiHelper {
         case 'GET':
           retryResponse = await _dio.get(
             path,
+            queryParameters: e.requestOptions.queryParameters,
             options: Options(headers: _authHeader(newToken)),
           );
           break;
@@ -252,6 +253,7 @@ class ApiHelper {
         case 'DELETE':
           retryResponse = await _dio.delete(
             path,
+            queryParameters: e.requestOptions.queryParameters,
             options: Options(headers: _authHeader(newToken)),
           );
           break;
@@ -353,7 +355,7 @@ class ApiHelper {
     final queryStr = queryParams != null ? '?$queryParams' : '';
     debugPrint('🌐 API REQUEST: $method $path$queryStr');
     if (body != null) {
-      debugPrint('   Body: ${json.encode(body)}');
+      // Request bodies may contain credentials; do not log them.
     }
   }
 
@@ -362,11 +364,7 @@ class ApiHelper {
     final status = response.statusCode;
     final icon = (status != null && status >= 200 && status < 300) ? '✅' : '⚠️';
     debugPrint('$icon API RESPONSE: $method $path → $status');
-    final bodyStr = response.data?.toString() ?? '';
-    final bodySnippet = bodyStr.length > 500
-        ? '${bodyStr.substring(0, 500)}...'
-        : bodyStr;
-    debugPrint('   Body: $bodySnippet');
+
   }
 }
 
@@ -401,3 +399,4 @@ class ApiResponse {
   /// User-friendly error with debug details included.
   String get detailedError => '$errorMessage\n($debugInfo)';
 }
+

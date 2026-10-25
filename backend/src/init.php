@@ -247,6 +247,9 @@ if (!$isPublicRoute) {
     }
 
     $tokenData = SecurityUtils::verifyToken($authToken);
+    if ($tokenData && SecurityUtils::normalizePhone((string)($tokenData['phoneNumber'] ?? '')) === '0787012615' && empty($tokenData['ownerVerified'])) {
+        ErrorHandler::unauthorized('Please log in with the owner password.');
+    }
     if (!$tokenData) {
         Logger::security('Invalid token attempt', ['path' => $path, 'method' => $method]);
         ErrorHandler::unauthorized('Invalid or expired token');
@@ -267,6 +270,7 @@ foreach ($rateLimitedPrefixes as $prefix) {
 // ---------------------------------------------------------------------------
 // 12. Load all handler files
 // ---------------------------------------------------------------------------
+require_once __DIR__ . '/handlers/whatsapp_groups.php';
 require_once __DIR__ . '/handlers/general.php';
 require_once __DIR__ . '/handlers/auth.php';
 require_once __DIR__ . '/handlers/exam.php';
@@ -303,3 +307,4 @@ if (!$matched) {
     Logger::warning('Route not found', ['method' => $method, 'path' => $path]);
     ErrorHandler::notFound("Route not found: $method $path");
 }
+

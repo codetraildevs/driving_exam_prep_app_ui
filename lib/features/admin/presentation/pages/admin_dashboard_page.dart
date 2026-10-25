@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../../../../shared/widgets/whatsapp_groups_page.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -428,6 +429,13 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
           ],
         ),
         const SizedBox(height: 12),
+        _ActionCard(
+          icon: Icons.groups,
+          title: 'WhatsApp',
+          description: l10n.joinGroup,
+          gradientColors: const [AppColors.primary, AppColors.primaryLight],
+          onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const WhatsappGroupsPage(manage: true))),
+        ),
         // Row 2: Manage Exams (full width — primary action)
         // _ActionCardWide(
         //   icon: Icons.quiz_rounded,
@@ -709,3 +717,4 @@ class _LangRow extends StatelessWidget {
     );
   }
 }
+

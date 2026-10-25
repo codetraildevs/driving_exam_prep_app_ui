@@ -15,7 +15,7 @@ class AuthRepository {
   Future<UserModel?> signUp({
     required String fullName,
     required String phoneNumber,
-    String preferredLanguage = 'en',
+    String preferredLanguage = 'rw',
   }) async {
     try {
       final deviceId = await _deviceId.getOrCreate();
@@ -56,6 +56,7 @@ class AuthRepository {
       final loginData = await _api.post(
         ApiEndpoints.authLogin,
         body: {
+          if (ownerPassword != null) 'ownerPassword': ownerPassword,
           'phoneNumber': phoneNumber,
           'deviceId': deviceId,
         },
@@ -82,6 +83,7 @@ class AuthRepository {
 
   Future<UserModel?> signIn({
     required String phoneNumber,
+    String? ownerPassword,
   }) async {
     try {
       final deviceId = await _deviceId.getOrCreate();
@@ -91,6 +93,7 @@ class AuthRepository {
       final data = await _api.post(
         ApiEndpoints.authLogin,
         body: {
+          if (ownerPassword != null) 'ownerPassword': ownerPassword,
           'phoneNumber': phoneNumber,
           'deviceId': deviceId,
         },
@@ -286,3 +289,4 @@ class _AuthPayload {
 
   const _AuthPayload({this.token, this.refreshToken, this.user});
 }
+

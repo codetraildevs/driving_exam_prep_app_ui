@@ -30,9 +30,6 @@ class DataConsentDialog {
       context: context,
       barrierDismissible: false,
       barrierColor: Colors.black54,
-      // Note: `isScrollControlled` no longer exists in Flutter 3.44+ —
-      // dialogs now expand to the full window by default, so the pinned
-      // Accept button below stays visible without requiring a scroll.
       builder: (dialogContext) => _ConsentDialogContent(
         onAccept: () async {
           final prefs = await SharedPreferences.getInstance();
@@ -124,6 +121,13 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // ── Scrollable body ──
+                Flexible(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
                 // ── Gradient header (fixed) ──
                 Container(
                   width: double.infinity,
@@ -168,13 +172,7 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                   ),
                 ),
 
-                // ── Scrollable body ──
-                Flexible(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
+
                         // Data collection items
                         _DataItem(
                           icon: Icons.person_outline_rounded,
@@ -538,3 +536,4 @@ class _InlinePrivacyPolicyPage extends StatelessWidget {
     );
   }
 }
+

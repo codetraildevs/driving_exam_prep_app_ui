@@ -27,9 +27,10 @@ function adminListUsers($conn, $params): void
     if (!empty($search)) {
         $conditions[] = '(u.fullName LIKE ? OR u.phoneNumber LIKE ?)';
         $like = '%' . $search . '%';
+        $phoneLike = '%' . ltrim(SecurityUtils::normalizePhone($search), '0') . '%';
         $bindTypes .= 'ss';
         $bindValues[] = $like;
-        $bindValues[] = $like;
+        $bindValues[] = $phoneLike;
     }
 
     if ($hasAccess === 'true' || $hasAccess === '1') {
@@ -391,3 +392,4 @@ function adminAnalytics($conn, $params): void
         ],
     ], 200);
 }
+

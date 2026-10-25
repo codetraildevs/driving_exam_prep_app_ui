@@ -14,15 +14,17 @@ class SignUpEvent extends AuthEvent {
   const SignUpEvent({
     required this.fullName,
     required this.phoneNumber,
-    this.preferredLanguage = 'en',
+    this.preferredLanguage = 'rw',
   });
 }
 
 class SignInEvent extends AuthEvent {
   final String phoneNumber;
+  final String? ownerPassword;
 
   const SignInEvent({
     required this.phoneNumber,
+    this.ownerPassword,
   });
 }
 
@@ -44,3 +46,4 @@ class DeleteAccountEvent extends AuthEvent {
   final String userId;
   const DeleteAccountEvent({required this.userId});
 }
+

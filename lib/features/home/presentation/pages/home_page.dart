@@ -13,7 +13,7 @@ import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../shared/subscription/subscription_notifier.dart';
 import '../../../../shared/widgets/app_menu_button.dart';
 import '../../../../shared/widgets/interactive_card.dart';
-import 'package:url_launcher/url_launcher.dart';
+import '../../../../shared/widgets/whatsapp_groups_page.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../config/app_config.dart';
 
@@ -42,6 +42,7 @@ class HomePage extends StatelessWidget {
         body: Column(
           children: [
             _CompactHeader(l10n: l10n, userName: userName),
+            const Padding(padding: EdgeInsets.fromLTRB(16, 14, 16, 0), child: _CompactAccessCard()),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 32),
@@ -51,7 +52,6 @@ class HomePage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const _CompactAccessCard(),
                       const SizedBox(height: 20),
                       Text(
                         l10n.homeServices,
@@ -159,7 +159,7 @@ class _CompactAccessCard extends ConsumerWidget {
     int totalDays = 180;
     if (hasAccess && expiresAt != null) {
       // Clamp to a large value to avoid overflow — display handles "999+ days" gracefully.
-      daysLeft = expiresAt.difference(DateTime.now()).inDays.clamp(0, 9999);
+      daysLeft = (expiresAt.difference(DateTime.now()).inSeconds / Duration.secondsPerDay).ceil().clamp(0, 9999);
       // Guess total days from tier label if available.
       final tier = sub.paymentTier ?? '';
       if (tier.contains('1_MONTH')) {
@@ -226,8 +226,8 @@ class _CompactAccessCard extends ConsumerWidget {
                       ),
                     ),
                     Center(
-                      child: Icon(
-                        hasAccess ? Icons.check : Icons.lock_outline,
+                      child: hasAccess ? Text(daysLeft > 999 ? '999+' : '$daysLeft', style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.success)) : Icon(
+                        Icons.lock_outline,
                         color: hasAccess
                             ? AppColors.success
                             : Theme.of(
@@ -254,8 +254,6 @@ class _CompactAccessCard extends ConsumerWidget {
                         fontWeight: FontWeight.w600,
                         fontSize: 13,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -271,38 +269,10 @@ class _CompactAccessCard extends ConsumerWidget {
                 ),
               ),
 
-              // CTA chip
-              FilledButton(
-                onPressed: () {
-                  if (hasAccess) {
-                    context.push('/practice');
-                  } else {
-                    context.push('/subscription');
-                  }
-                },
-                style: FilledButton.styleFrom(
-                  backgroundColor: hasAccess
-                      ? AppColors.primary
-                      : AppColors.accent,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 8,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  minimumSize: Size.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  hasAccess
-                      ? l10n.homeContinueLearning
-                      : l10n.subscriptionRequestAccess,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textInverse,
-                  ),
-                ),
+              IconButton(
+                tooltip: hasAccess ? l10n.homeContinueLearning : l10n.subscriptionRequestAccess,
+                onPressed: () => context.push(hasAccess ? '/practice' : '/subscription'),
+                icon: const Icon(Icons.arrow_forward),
               ),
             ],
           ),
@@ -369,13 +339,7 @@ class _ResponsiveServicesGrid extends StatelessWidget {
         title: l10n.joinGroup,
         subtitle: l10n.joinGroupSubtitle,
         color: AppColors.accent,
-        onTap: () {
-          launchUrl(
-            Uri.parse(
-              'https://chat.whatsapp.com/JHfdbKSYVFz1s5jlTKfpcm?mode=gi_t',
-            ),
-          );
-        },
+        onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const WhatsappGroupsPage())),
       ),
       _ServiceItem.icon(
         icon: Icons.show_chart_rounded,
@@ -574,3 +538,4 @@ class _ServiceItem {
     required this.onTap,
   }) : icon = null;
 }
+

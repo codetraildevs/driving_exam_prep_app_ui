@@ -131,6 +131,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final user = await _authRepository.signIn(
         phoneNumber: event.phoneNumber,
+        ownerPassword: event.ownerPassword,
       );
 
       if (user != null) {
@@ -189,3 +190,4 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 }
+

@@ -259,12 +259,12 @@ class ApiClient {
   void _debugRequest(String method, String path, {Object? body, Map<String, dynamic>? queryParameters}) {
     if (!kDebugMode) return;
     final queryStr = queryParameters != null ? '?$queryParameters' : '';
-    debugPrint('[API][REQ] $method $path$queryStr body=${_compact(body)}');
+    debugPrint('[API][REQ] $method $path$queryStr');
   }
 
   void _debugResponse(String method, String path, Response res) {
     if (!kDebugMode) return;
-    debugPrint('[API][RES] $method $path status=${res.statusCode} body=${_compact(res.data)}');
+    debugPrint('[API][RES] $method $path status=${res.statusCode}');
   }
 
   String _compact(Object? value) {
@@ -273,3 +273,4 @@ class ApiClient {
     return '${text.substring(0, 400)}...';
   }
 }
+

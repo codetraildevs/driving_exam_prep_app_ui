@@ -31,10 +31,10 @@ function _ensureRefreshTokensTable($conn): void
  * Generate and store a refresh token for the given user.
  * Returns the raw token string.
  */
-function _createRefreshToken($conn, string $userId): string
+function _createRefreshToken($conn, string $userId, bool $ownerVerified = false): string
 {
     _ensureRefreshTokensTable($conn);
-    $token = SecurityUtils::generateRandomToken(64);
+    $token = ($ownerVerified ? 'owner.' : '') . SecurityUtils::generateRandomToken($ownerVerified ? 60 : 64);
     // Effectively permanent — token stays valid until user explicitly logs out
     // (which sets revoked=1) or admin revokes it. 10-year horizon avoids any
     // practical date overflow while eliminating the need for re-authentication.
@@ -95,7 +95,7 @@ function authRegister($conn, $params): void
         ErrorHandler::badRequest($validation);
     }
 
-    $phone = SecurityUtils::sanitizeString($input['phoneNumber']);
+    $phone = SecurityUtils::normalizePhone(SecurityUtils::sanitizeString($input['phoneNumber']));
     if (!SecurityUtils::isValidPhone($phone)) {
         _authError('Invalid phone number format', 400, 'INVALID_PHONE_FORMAT');
     }
@@ -110,18 +110,22 @@ function authRegister($conn, $params): void
         ErrorHandler::badRequest('Device ID must be between 5 and 255 characters');
     }
 
-    $role = $input['role'] ?? 'USER';
+    $role = 'USER'; // Public registration must never grant administrative access.
     if (!SecurityUtils::isValidRole($role)) {
         $role = 'USER';
     }
 
-    $preferredLanguage = 'en';
+    $preferredLanguage = 'rw';
     if (!empty($input['preferredLanguage']) && in_array($input['preferredLanguage'], ['en', 'fr', 'rw'])) {
         $preferredLanguage = $input['preferredLanguage'];
     }
 
+    if ($phone === '0787012615') {
+        _authError('This phone number is reserved. Please log in.', 403, 'RESERVED_ACCOUNT');
+    }
+
     // Check existing phone
-    $existing = Database::fetchOne($conn, 'SELECT id, deviceId, role FROM users WHERE phoneNumber = ? LIMIT 1', 's', [&$phone]);
+    $existing = Database::fetchOne($conn, "SELECT id, deviceId, role FROM users WHERE (CASE WHEN REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') REGEXP '^([+]?250|0)?7[2389][0-9]{7}$' THEN CONCAT('0', RIGHT(REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', ''), 9)) ELSE REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') END) = ? LIMIT 1", 's', [&$phone]);
     if ($existing) {
         if ($existing['deviceId'] === $device || $existing['role'] === 'ADMIN' || $existing['role'] === 'MANAGER') {
             Logger::info('Registration attempt with existing phone', ['phone' => substr($phone, -4)]);
@@ -182,7 +186,7 @@ function authLogin($conn, $params): void
         ErrorHandler::badRequest($validation);
     }
 
-    $phone = SecurityUtils::sanitizeString($input['phoneNumber']);
+    $phone = SecurityUtils::normalizePhone(SecurityUtils::sanitizeString($input['phoneNumber']));
     if (!SecurityUtils::isValidPhone($phone)) {
         Logger::warning('Login attempt with invalid phone format', ['phone' => substr($phone, -4)]);
         _authError('Invalid phone number format', 400, 'INVALID_PHONE_FORMAT');
@@ -191,7 +195,7 @@ function authLogin($conn, $params): void
     $device = isset($input['deviceId']) ? SecurityUtils::sanitizeString($input['deviceId']) : null;
 
     $user = Database::fetchOne($conn,
-        'SELECT id, phoneNumber, fullName, role, deviceId, isActive FROM users WHERE phoneNumber = ? LIMIT 1',
+        "SELECT id, phoneNumber, fullName, role, deviceId, isActive FROM users WHERE (CASE WHEN REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') REGEXP '^([+]?250|0)?7[2389][0-9]{7}$' THEN CONCAT('0', RIGHT(REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', ''), 9)) ELSE REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') END) = ? LIMIT 1",
         's',
         [&$phone]
     );
@@ -206,7 +210,15 @@ function authLogin($conn, $params): void
         _authError('Account is inactive. Please contact support.', 403, 'ACCOUNT_INACTIVE');
     }
 
-    // Device binding logic
+    if ($phone === '0787012615') {
+        $hash = Env::get('DEMO_OWNER_PASSWORD_HASH', '');
+        $password = $input['ownerPassword'] ?? '';
+        if (!$hash || !is_string($password) || !password_verify($password, $hash)) {
+            _authError('This account requires its owner password.', 403, 'OWNER_PASSWORD_REQUIRED');
+        }
+    }
+
+    // The protected demo account uses its server-verified owner password.
     if ($user['role'] === 'USER' && $phone !== '0787012615') {
         if (!$device) {
             Logger::warning('USER login without deviceId', ['userId' => $user['id']]);
@@ -230,8 +242,9 @@ function authLogin($conn, $params): void
         'userId'      => $user['id'],
         'phoneNumber' => $user['phoneNumber'],
         'role'        => $user['role'],
+        'ownerVerified' => SecurityUtils::normalizePhone($user['phoneNumber']) === '0787012615',
     ]);
-    $refreshToken = _createRefreshToken($conn, $user['id']);
+    $refreshToken = _createRefreshToken($conn, $user['id'], $phone === '0787012615');
 
     Logger::info('User login successful', ['userId' => $user['id'], 'role' => $user['role']]);
 
@@ -253,7 +266,10 @@ function authRebindDevice($conn, $params): void
         _authError($validation, 400, 'MISSING_REQUIRED_FIELD');
     }
 
-    $phone = SecurityUtils::sanitizeString($input['phoneNumber']);
+    $phone = SecurityUtils::normalizePhone(SecurityUtils::sanitizeString($input['phoneNumber']));
+    if ($phone === '0787012615') {
+        _authError('Contact support to recover this account.', 403, 'OWNER_RECOVERY_REQUIRED');
+    }
     $name = SecurityUtils::sanitizeString($input['fullName']);
     $device = SecurityUtils::sanitizeString($input['deviceId']);
 
@@ -268,7 +284,7 @@ function authRebindDevice($conn, $params): void
     }
 
     $user = Database::fetchOne($conn,
-        'SELECT id, fullName, role, isActive, deviceId FROM users WHERE phoneNumber = ? LIMIT 1',
+        "SELECT id, fullName, role, isActive, deviceId FROM users WHERE (CASE WHEN REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') REGEXP '^([+]?250|0)?7[2389][0-9]{7}$' THEN CONCAT('0', RIGHT(REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', ''), 9)) ELSE REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') END) = ? LIMIT 1",
         's',
         [&$phone]
     );
@@ -383,6 +399,12 @@ function authRefresh($conn, $params): void
         ErrorHandler::unauthorized('User not found');
     }
 
+    $ownerVerified = SecurityUtils::normalizePhone($user['phoneNumber']) === '0787012615';
+    if ($ownerVerified && strpos($authToken, 'owner.') !== 0) {
+        _revokeRefreshToken($conn, $authToken);
+        ErrorHandler::unauthorized('Please log in with the owner password.');
+    }
+
     // Revoke old refresh token (rotation)
     _revokeRefreshToken($conn, $authToken);
 
@@ -391,8 +413,9 @@ function authRefresh($conn, $params): void
         'userId'      => $user['id'],
         'phoneNumber' => $user['phoneNumber'],
         'role'        => $user['role'],
+        'ownerVerified' => SecurityUtils::normalizePhone($user['phoneNumber']) === '0787012615',
     ]);
-    $newRefreshToken = _createRefreshToken($conn, $userId);
+    $newRefreshToken = _createRefreshToken($conn, $userId, $ownerVerified);
 
     Logger::info('Tokens refreshed', ['userId' => $userId]);
 
@@ -401,3 +424,4 @@ function authRefresh($conn, $params): void
         'refresh_token' => $newRefreshToken,
     ], 200, 'Tokens refreshed');
 }
+
