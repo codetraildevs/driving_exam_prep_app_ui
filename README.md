@@ -268,6 +268,17 @@ assets/exams/
    flutter run
    ```
 
+### Code Generation (build_runner)
+
+Generated `*.g.dart` files are **not tracked** (see `.gitignore`) — they are rebuilt locally, so regenerated code never causes merge conflicts.
+
+```bash
+# After cloning, pulling, or changing any @JsonSerializable model
+dart run build_runner build
+```
+
+Run it whenever a file declaring `part '*.g.dart'` changes: `user_model.dart`, `exam_model.dart`, `exam_question.dart`, `sign_model.dart`. `flutter analyze` and `flutter test` fail with "Target of URI doesn't exist" until the generated part is present.
+
 ### Building for Production
 
 **Android:**
@@ -315,6 +326,57 @@ flutter build appbundle --release
 flutter build apk --release
 # → build/app/outputs/flutter-apk/app-release.apk
 ```
+
+### 🚀 Release & Tag Workflow
+
+**Version format** — `pubspec.yaml` holds `version: <name>+<code>`, e.g. `version: 1.1.9+16`:
+
+- `<name>` — user-visible version shown on the store listing (`1.1.9`)
+- `<code>` — Android `versionCode`; **Google Play rejects any upload that reuses a code**, so it must increase on every release
+
+**Checklist**
+
+1. Start from `main`:
+   ```bash
+   git checkout main
+   git pull
+   ```
+2. Bump `<name>+<code>` in `pubspec.yaml` and commit it alone, e.g. `1.1.9+16` → `1.2.0+17`:
+   ```bash
+   git commit -am "chore: bump version to 1.2.0+17 for Play Store release"
+   ```
+3. Regenerate and verify before building:
+   ```bash
+   flutter pub get
+   dart run build_runner build
+   flutter analyze
+   flutter test
+   ```
+4. Build the signed bundle (requires `android/key.properties` + keystore, see above):
+   ```bash
+   flutter build appbundle --release
+   ```
+5. Upload the `.aab`, roll out, and once the release is live tag the exact commit that was built:
+   ```bash
+   git tag -a v1.2.0 -m "v1.2.0+17 - Play Store production release"
+   git push origin main
+   git push origin v1.2.0
+   ```
+
+**Tag rules**
+
+- One annotated tag per shipped version, named `v<name>` — the build number is dropped (`v1.1.9` for `1.1.9+16`).
+- Tag the commit whose `pubspec.yaml` carries that version — `git show v1.1.9:pubspec.yaml` must report `version: 1.1.9+16`.
+- Never move, reuse or delete a published tag, and never tag a build that was not uploaded: the tag list must remain an ordered, faithful record of production releases.
+- Milestones that are not app releases (web, backend) must not take a version-number tag — use a descriptive name instead.
+
+**Shipped releases**
+
+| Tag | `pubspec.yaml` version | Notes |
+|-----|------------------------|-------|
+| `v1.1.4+11` | 1.1.4+11 | Plugin upgrades, Android 15+ compatibility |
+| `v1.1.8` | 1.1.8+15 | APK size reduction, Sentry removal, Impeller, edge-to-edge |
+| `v1.1.9` | 1.1.9+16 | Play Console compliance (AGP 9.0.1, `screen_protector` removed) — live at 100% rollout |
 
 ## Key Dependencies
 
