@@ -133,7 +133,9 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
       configuration: widget.paymentConfiguration,
     ) != null);
     final amount = subscriptionPrice(_examLanguage, _duration);
-    final formattedAmount = NumberFormat('#,##0', l10n.localeName).format(amount);
+    // intl does not ship number symbols for rw; use comma grouping for RWF.
+    final numberLocale = l10n.localeName.startsWith('fr') ? 'fr' : 'en';
+    final formattedAmount = NumberFormat('#,##0', numberLocale).format(amount);
     final showActive = subscription.hasActiveAccess &&
         (subscription.expiresAt == null || subscription.expiresAt!.isAfter(DateTime.now()));
 
