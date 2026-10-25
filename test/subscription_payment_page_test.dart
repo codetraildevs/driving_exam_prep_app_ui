@@ -57,6 +57,13 @@ void main() {
   for (final language in ['rw', 'fr', 'en']) {
     testWidgets('localized payment page has no overflow at large text: $language', (tester) async {
       await pumpPage(tester, language: language, scale: 1.6);
+      final cards = ['1_MONTH', '3_MONTHS', '6_MONTHS']
+          .map((tier) => tester.getRect(find.byKey(ValueKey('plan-$tier')))).toList();
+      expect(cards[0].top, cards[1].top);
+      expect(cards[1].top, cards[2].top);
+      expect(cards[0].right, lessThan(cards[1].left));
+      expect(cards[1].right, lessThan(cards[2].left));
+      expect(cards[0].width, closeTo(cards[2].width, 0.01));
       await tapKey(tester, 'payment-method-momoPay');
       expect(find.text('*182*8*1*123456*${language == 'rw' ? 3000 : 5000}#'), findsOneWidget);
       expect(tester.takeException(), isNull);
@@ -88,6 +95,15 @@ void main() {
     expect(find.byKey(const ValueKey('payment-ussd')), findsNothing);
     expect(find.byKey(const ValueKey('copy-payment-code')), findsNothing);
     expect(tester.widget<FilledButton>(find.byKey(const ValueKey('pay-now'))).onPressed, isNull);
+  });
+  testWidgets('configured app destinations enable PAY NOW for each method', (tester) async {
+    await pumpPage(tester, config: PaymentConfiguration.environment);
+    for (final method in PaymentMethod.values) {
+      await tapKey(tester, 'payment-method-${method.name}');
+      expect(tester.widget<FilledButton>(find.byKey(const ValueKey('pay-now'))).onPressed, isNotNull);
+      expect(find.byKey(const ValueKey('payment-ussd')), findsOneWidget);
+      expect(find.byKey(const ValueKey('payment-validation')), findsNothing);
+    }
   });
   testWidgets('copy preserves delimiters and reports clipboard failure', (tester) async {
     await pumpPage(tester);

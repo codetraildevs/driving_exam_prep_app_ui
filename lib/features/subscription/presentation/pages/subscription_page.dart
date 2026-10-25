@@ -185,13 +185,23 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    ...plans.map(
-                      (plan) => _PlanCard(
-                        plan: plan,
-                        selectedTier: _duration.tier,
-                        onSelect: _preparing ? null : (tier) => setState(() =>
-                          _duration = SubscriptionDuration.values.firstWhere((value) => value.tier == tier)),
-                        l10n: l10n,
+                    IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          for (var index = 0; index < plans.length; index++) ...[
+                            if (index > 0) const SizedBox(width: 8),
+                            Expanded(
+                              child: _PlanCard(
+                                plan: plans[index],
+                                selectedTier: _duration.tier,
+                                onSelect: _preparing ? null : (tier) => setState(() =>
+                                  _duration = SubscriptionDuration.values.firstWhere((value) => value.tier == tier)),
+                                l10n: l10n,
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -523,18 +533,28 @@ class _PlanCard extends StatelessWidget {
           child: InkWell(key: ValueKey('plan-$tier'),
             onTap: onSelect == null ? null : () => onSelect!(tier),
             borderRadius: BorderRadius.circular(16),
-            child: Padding(padding: const EdgeInsets.all(12), child: Row(children: [
-              Icon(selected ? Icons.radio_button_checked : Icons.radio_button_off,
-                color: selected ? AppColors.primary : AppColors.textSecondary),
-              const SizedBox(width: 12),
-              Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(plan['label'] as String, style: AppTextStyles.heading6),
-                Text(l10n.subscriptionDays(plan['durationDays'] as int), style: AppTextStyles.bodySmall),
-                if (plan['popular'] == true) Text(l10n.subscriptionPopular,
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.success, fontWeight: FontWeight.w600)),
-              ])),
-              if (selected) const Icon(Icons.check_circle, color: AppColors.primary),
-            ])),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(selected ? Icons.radio_button_checked : Icons.radio_button_off,
+                    color: selected ? AppColors.primary : AppColors.textSecondary),
+                  const SizedBox(height: 8),
+                  Text(plan['label'] as String, style: AppTextStyles.heading6,
+                    textAlign: TextAlign.center),
+                  const SizedBox(height: 4),
+                  Text(l10n.subscriptionDays(plan['durationDays'] as int),
+                    style: AppTextStyles.bodySmall, textAlign: TextAlign.center),
+                  if (plan['popular'] == true) ...[
+                    const SizedBox(height: 4),
+                    Text(l10n.subscriptionPopular, textAlign: TextAlign.center,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.success, fontWeight: FontWeight.w600)),
+                  ],
+                ],
+              ),
+            ),
           ),
         ),
       ),

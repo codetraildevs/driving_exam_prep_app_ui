@@ -1,6 +1,5 @@
-/// Payment destinations are intentionally unset. Configure these through
-/// --dart-define or supply a configuration when constructing SubscriptionPage.
-/// Existing support contacts are not payment destinations.
+/// Owner-provided payment destinations. Build-time dart-defines can override
+/// these defaults; an explicitly empty override disables that payment method.
 class PaymentConfiguration {
   final String momoPayCode;
   final String mtnNumber;
@@ -13,8 +12,8 @@ class PaymentConfiguration {
   });
 
   static const environment = PaymentConfiguration(
-    momoPayCode: String.fromEnvironment('MOMO_PAY_CODE'),
-    mtnNumber: String.fromEnvironment('MTN_NUMBER'),
-    tigoNumber: String.fromEnvironment('TIGO_NUMBER'),
+    momoPayCode: String.fromEnvironment('MOMO_PAY_CODE', defaultValue: '329494'),
+    mtnNumber: String.fromEnvironment('MTN_NUMBER', defaultValue: '0788659575'),
+    tigoNumber: String.fromEnvironment('TIGO_NUMBER', defaultValue: '0728877442'),
   );
 }

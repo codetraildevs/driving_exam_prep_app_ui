@@ -4,7 +4,7 @@ The access page retains its existing typography, colors, support links and activ
 
 ## Configuration
 
-`lib/config/payment_config.dart` defines `momoPayCode`, `mtnNumber` and `tigoNumber`. All default to empty. Provide your real values using `MOMO_PAY_CODE`, `MTN_NUMBER`, and `TIGO_NUMBER` build-time dart-defines, or inject a `PaymentConfiguration` into `SubscriptionPage`.
+`lib/config/payment_config.dart` defines `momoPayCode`, `mtnNumber` and `tigoNumber`. The app environment configuration uses the owner's supplied destinations. The plain constructor remains empty for explicit unavailable-configuration states. Override the app values using `MOMO_PAY_CODE`, `MTN_NUMBER`, and `TIGO_NUMBER` build-time dart-defines, or inject a `PaymentConfiguration` into `SubscriptionPage`.
 
 Destinations contain digits only: MoMo merchant codes accept 4–12 digits (not all zero); telephone destinations accept Rwanda local `07…` or country-code `2507…` format. Spaces, USSD delimiters and placeholder text are rejected. These are formatting checks, not provider/account verification. Do not place provider secrets in the Flutter app. Existing support contact numbers are deliberately not used as payment configuration.
 
