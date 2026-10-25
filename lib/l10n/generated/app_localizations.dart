@@ -86,6 +86,9 @@ abstract class AppLocalizations {
   String get dashboardComingSoon;
   String get dashboardUnderDevelopment;
 
+  String get dashboardExamsLocked;
+  String get dashboardRequestExamAccess;
+
   final String localeName;
 
   static AppLocalizations of(BuildContext context) {

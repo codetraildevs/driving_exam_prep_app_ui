@@ -1623,4 +1623,9 @@ class AppLocalizationsRw extends AppLocalizations {
   @override
   String get dashboardUnderDevelopment => 'Iyi serivisi iracyatunganywa.';
 
+  @override
+  String get dashboardExamsLocked => 'Ibizamini ntibifunguye';
+
+  @override
+  String get dashboardRequestExamAccess => 'Kanda hano usabe ko ibizamini bifunguka';
 }

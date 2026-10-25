@@ -1490,5 +1490,9 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "dashboardExamsLocked": "Exams are locked",
+  "dashboardRequestExamAccess": "Tap here to request exam access"
+
 }

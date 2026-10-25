@@ -1976,5 +1976,9 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "dashboardExamsLocked": "Les examens sont verrouillés",
+  "dashboardRequestExamAccess": "Appuyez ici pour demander l’accès aux examens"
+
 }

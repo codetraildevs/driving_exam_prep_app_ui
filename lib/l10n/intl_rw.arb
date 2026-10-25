@@ -1976,5 +1976,9 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "dashboardExamsLocked": "Ibizamini ntibifunguye",
+  "dashboardRequestExamAccess": "Kanda hano usabe ko ibizamini bifunguka"
+
 }

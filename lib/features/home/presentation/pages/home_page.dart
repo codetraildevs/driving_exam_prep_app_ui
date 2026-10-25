@@ -329,9 +329,15 @@ class _SubscriptionBanner extends ConsumerWidget {
     final active = sub.hasActiveAccess && !expired;
     final days = active && expiry != null ? (expiry.difference(now).inSeconds / Duration.secondsPerDay).ceil().clamp(0, 99999).toInt() : null;
     final loading = !sub.hasLoaded && !sub.hasError;
+    final noAccess = sub.hasLoaded && !active && !expired;
+    final colors = Theme.of(context).colorScheme;
+    final badgeColor = active ? ink : colors.secondaryContainer;
+    final badgeTextColor = active
+        ? (Theme.of(context).brightness == Brightness.dark ? _indigo : Colors.white)
+        : colors.onSecondaryContainer;
     final title = loading ? l10n.dashboardLoading : sub.hasError && !sub.hasLoaded ? l10n.dashboardSubscriptionUnavailable :
       active ? days != null ? l10n.homeAccessActive(days) : l10n.subscriptionAccessActive :
-      expired ? l10n.dashboardExpired : l10n.subscriptionNoPlan;
+      expired ? l10n.dashboardExpired : l10n.dashboardRequestExamAccess;
     final tier = sub.paymentTier;
     final duration = switch (tier) {
       '1_MONTH' => l10n.subscriptionMonth1,
@@ -339,23 +345,24 @@ class _SubscriptionBanner extends ConsumerWidget {
       '6_MONTH' || '6_MONTHS' => l10n.subscriptionMonth6,
       _ => l10n.dashboardDurationUnavailable,
     };
-    return Semantics(button: true, label: '$title. ${l10n.dashboardDuration(duration)}',
+    final detail = noAccess ? l10n.dashboardExamsLocked : l10n.dashboardDuration(duration);
+    return Semantics(button: true, label: '$title. $detail',
       child: Material(color: surface, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),
         side: BorderSide(color: ink, width: 1.2)), clipBehavior: Clip.antiAlias,
         child: InkWell(onTap: () => context.push('/subscription'),
           child: Padding(padding: const EdgeInsets.all(14), child: Row(children: [
             Container(width: 70, height: 70, alignment: Alignment.center,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: ink, border: Border.all(color: ink, width: 2)),
-              child: loading ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) :
+              decoration: BoxDecoration(shape: BoxShape.circle, color: badgeColor, border: Border.all(color: badgeColor, width: 2)),
+              child: loading ? SizedBox(width: 22, height: 22, child: CircularProgressIndicator(color: badgeTextColor, strokeWidth: 2)) :
                 Padding(padding: const EdgeInsets.all(8), child: FittedBox(fit: BoxFit.scaleDown,
                   child: Text(days != null ? l10n.subscriptionDays(days) : expired ? l10n.subscriptionDays(0) : '—',
-                    textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? _indigo : Colors.white, fontSize: 14, fontWeight: FontWeight.w800)))),
+                    textAlign: TextAlign.center, style: TextStyle(color: badgeTextColor, fontSize: 14, fontWeight: FontWeight.w800)))),
             ),
             const SizedBox(width: 14),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(title, style: TextStyle(color: ink, fontSize: 14, height: 1.35, fontWeight: FontWeight.w700)),
               const SizedBox(height: 5),
-              Text(l10n.dashboardDuration(duration), style: TextStyle(color: ink.withValues(alpha: 0.8), fontSize: 12)),
+              Text(detail, style: TextStyle(color: ink.withValues(alpha: 0.8), fontSize: 12)),
               if (sub.hasError && sub.hasLoaded) Text(l10n.dashboardCached, style: TextStyle(color: ink, fontSize: 11)),
               if (sub.isLoading && sub.hasLoaded) const Padding(padding: EdgeInsets.only(top: 6), child: LinearProgressIndicator(minHeight: 2)),
             ])),

@@ -1628,4 +1628,9 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get dashboardUnderDevelopment => 'Cette fonctionnalité est en cours de développement.';
 
+  @override
+  String get dashboardExamsLocked => 'Les examens sont verrouillés';
+
+  @override
+  String get dashboardRequestExamAccess => 'Appuyez ici pour demander l’accès aux examens';
 }
