@@ -197,8 +197,8 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                   Padding(padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: LayoutBuilder(builder: (context, constraints) {
                     final cardWidth = (constraints.maxWidth - 12) / 2;
-                    final labelStyle = TextStyle(fontSize: 15, height: 1.25, fontWeight: FontWeight.w700,
-                      color: ink);
+                    final labelStyle = TextStyle(fontSize: 13, height: 1.25, fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.onSurface);
                     final detailStyle = TextStyle(fontSize: 11, height: 1.35, color: ink.withValues(alpha: 0.85));
                     double height = 130;
                     for (final item in items) {
@@ -211,7 +211,7 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                         painter.dispose();
                         return result;
                       }
-                      height = math.max(height, 86 + measure(item.title, labelStyle) +
+                      height = math.max(height, 94 + measure(item.title, labelStyle) +
                         (item.subtitle.isEmpty ? 0 : 6 + measure(item.subtitle, detailStyle)));
                     }
                     return GridView.builder(
@@ -222,6 +222,17 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                       itemCount: items.length,
                       itemBuilder: (context, index) {
                         final item = items[index];
+                        final imageAsset = switch (item.id) {
+                          'practice' => 'assets/images/practices_image.webp',
+                          'whatsapp' => 'assets/images/whatsapp_logo.webp',
+                          _ => null,
+                        };
+                        final cardColor = switch (item.id) {
+                          'whatsapp' => AppColors.accent,
+                          'progress' => AppColors.success,
+                          'share' => AppColors.primaryLight,
+                          _ => AppColors.primary,
+                        };
                         return Semantics(button: true, label: [item.title, item.subtitle].where((s) => s.isNotEmpty).join('. '),
                           onTap: () => item.onTap(context),
                           child: ExcludeSemantics(child: InteractiveCard(
@@ -229,11 +240,19 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                             builder: (context, state) => AnimatedContainer(
                               duration: const Duration(milliseconds: 120),
                               padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(color: surface, borderRadius: BorderRadius.circular(18),
-                                border: Border.all(color: ink.withValues(alpha: state.focused ? 1 : 0.65), width: state.focused ? 3 : 1.2),
-                                boxShadow: [BoxShadow(color: ink.withValues(alpha: state.hovered ? 0.12 : 0.05), blurRadius: 12, offset: const Offset(0, 4))]),
+                              decoration: BoxDecoration(color: surface, borderRadius: BorderRadius.circular(16),
+                                border: state.focused ? Border.all(color: cardColor, width: 2) : null,
+                                boxShadow: [BoxShadow(color: cardColor.withValues(alpha: state.hovered ? 0.18 : 0.08), blurRadius: state.hovered ? 18 : 10, offset: const Offset(0, 4))]),
                               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                Icon(item.icon, size: 34, color: ink),
+                                Container(
+                                  width: 42, height: 42,
+                                  decoration: BoxDecoration(color: cardColor.withValues(alpha: 0.12),
+                                    borderRadius: BorderRadius.circular(12)),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: imageAsset == null ? Icon(item.icon, size: 22, color: cardColor) :
+                                    Image.asset(imageAsset, width: 42, height: 42, fit: BoxFit.contain,
+                                      errorBuilder: (_, __, ___) => Icon(item.icon, size: 22, color: cardColor)),
+                                ),
                                 const SizedBox(height: 10),
                                 Text(item.title, textAlign: TextAlign.center, style: labelStyle),
                                 if (item.subtitle.isNotEmpty) ...[
