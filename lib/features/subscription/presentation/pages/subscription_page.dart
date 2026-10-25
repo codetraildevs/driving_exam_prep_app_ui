@@ -28,7 +28,12 @@ class SubscriptionPage extends ConsumerStatefulWidget {
 }
 
 class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
-  ExamLanguage _examLanguage = ExamLanguage.rw;
+  ExamLanguage get _examLanguage =>
+      switch (Localizations.localeOf(context).languageCode) {
+        'en' => ExamLanguage.en,
+        'fr' => ExamLanguage.fr,
+        _ => ExamLanguage.rw,
+      };
   SubscriptionDuration _duration = SubscriptionDuration.threeMonths;
   PaymentMethod? _paymentMethod;
   bool _preparing = false;
@@ -167,26 +172,6 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                       const SizedBox(height: 10),
                     ],
 
-                    Text(l10n.paymentExamLanguage, style: AppTextStyles.heading5),
-                    const SizedBox(height: 4),
-                    Text(l10n.paymentExamLanguageHint, style: AppTextStyles.bodySmall),
-                    const SizedBox(height: 8),
-                    Wrap(spacing: 8, runSpacing: 8, children: ExamLanguage.values.map((language) {
-                      final name = switch (language) {
-                        ExamLanguage.rw => 'Kinyarwanda',
-                        ExamLanguage.en => 'English',
-                        ExamLanguage.fr => 'Français',
-                      };
-                      return ChoiceChip(
-                        key: ValueKey('exam-language-${language.name}'),
-                        label: Text(name), selected: _examLanguage == language,
-                        onSelected: _preparing ? null : (_) => setState(() => _examLanguage = language),
-                        selectedColor: AppColors.primary.withValues(alpha: 0.12),
-                        side: BorderSide(color: _examLanguage == language ? AppColors.primary : Theme.of(context).colorScheme.outline.withValues(alpha: 0.3)),
-                        materialTapTargetSize: MaterialTapTargetSize.padded,
-                      );
-                    }).toList()),
-                    const SizedBox(height: 16),
                     // ── Plan selection ──
                     Text(
                       l10n.subscriptionChoosePlan,

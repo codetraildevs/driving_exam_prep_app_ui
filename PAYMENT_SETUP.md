@@ -1,6 +1,6 @@
 # Subscription payment preparation
 
-The access page retains its existing typography, colors, support links and active-access banner. Its exam-language selection is separate from the app locale. The local payment preparation model and `/api/pricing` use the requested nine prices.
+The access page retains its existing typography, colors, support links and active-access banner. Pricing and payment details automatically use the current app language (Kinyarwanda, English or French); there is no separate exam-language selector. Changing the app language recalculates the price and USSD code while keeping the selected plan and payment method. The local payment preparation model and `/api/pricing` use the requested nine prices.
 
 ## Configuration
 
@@ -10,7 +10,7 @@ Destinations contain digits only: MoMo merchant codes accept 4–12 digits (not 
 
 ## Integration point
 
-Implement `prepareSubscriptionPayment` in `lib/features/subscription/domain/payment_preparation.dart`. It receives selected exam language, duration in months, method, integer amount, and the exact USSD string. The page freezes selection while this handler runs. The current function does nothing and the UI explicitly says payment initiation is not connected; it does not call a payment API, launch the dialer, verify payment, or activate access.
+Implement `prepareSubscriptionPayment` in `lib/features/subscription/domain/payment_preparation.dart`. It receives the exam language derived from the current app language, duration in months, method, integer amount, and the exact USSD string. The page freezes selection while this handler runs. The current function does nothing and the UI explicitly says payment initiation is not connected; it does not call a payment API, launch the dialer, verify payment, or activate access.
 
 When integrating a real payment service, calculate/validate prices on your server and use verified server-side payment events to grant access. Remove or replace the preparation-only feedback when connecting your implementation.
 

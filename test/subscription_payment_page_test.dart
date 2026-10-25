@@ -23,6 +23,7 @@ Future<void> pumpPage(WidgetTester tester, {
   PaymentPreparationHandler handler = prepareSubscriptionPayment,
   String language = 'en',
   double scale = 1,
+  ValueNotifier<Locale>? appLocale,
 }) async {
   SharedPreferences.setMockInitialValues({});
   GoogleFonts.config.allowRuntimeFetching = false;
@@ -34,13 +35,15 @@ Future<void> pumpPage(WidgetTester tester, {
     tester.view.resetDevicePixelRatio();
   });
   await tester.pumpWidget(ProviderScope(overrides: [subscriptionProvider.overrideWith(_Subscription.new)],
-    child: MaterialApp(locale: Locale(language), supportedLocales: LocaleNotifier.supportedLocales,
+    child: ValueListenableBuilder<Locale>(
+      valueListenable: appLocale ?? ValueNotifier(Locale(language)),
+      builder: (context, locale, _) => MaterialApp(locale: locale, supportedLocales: LocaleNotifier.supportedLocales,
       localizationsDelegates: const [AppLocalizations.delegate, GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate, GlobalWidgetsLocalizations.delegate,
         FallbackMaterialLocalizationsDelegate(), FallbackCupertinoLocalizationsDelegate()],
       builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(scale)), child: child!),
       home: SubscriptionPage(paymentConfiguration: config, paymentHandler: handler),
-    ),
+    )),
   ));
   await tester.pumpAndSettle();
 }
@@ -55,21 +58,28 @@ void main() {
     testWidgets('localized payment page has no overflow at large text: $language', (tester) async {
       await pumpPage(tester, language: language, scale: 1.6);
       await tapKey(tester, 'payment-method-momoPay');
-      expect(find.text('*182*8*1*123456*3000#'), findsOneWidget);
+      expect(find.text('*182*8*1*123456*${language == 'rw' ? 3000 : 5000}#'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   }
-  testWidgets('exam language is independent from English interface and drives live amount', (tester) async {
-    await pumpPage(tester);
-    expect(find.text('Amount to pay: 3,000 RWF'), findsOneWidget);
-    await tapKey(tester, 'exam-language-en');
+  testWidgets('app language updates price and code while retaining plan and method', (tester) async {
+    final locale = ValueNotifier(const Locale('en'));
+    addTearDown(locale.dispose);
+    await pumpPage(tester, appLocale: locale);
+    expect(find.byKey(const ValueKey('exam-language-en')), findsNothing);
+    expect(find.text('Amount to pay: 5,000 RWF'), findsOneWidget);
     await tapKey(tester, 'plan-1_MONTH');
-    expect(find.text('Amount to pay: 4,000 RWF'), findsOneWidget);
     await tapKey(tester, 'payment-method-mtn');
+    expect(find.text('Amount to pay: 4,000 RWF'), findsOneWidget);
     expect(find.text('*182*1*1*0780000001*4000#'), findsOneWidget);
-    await tapKey(tester, 'exam-language-rw');
-    expect(find.text('Amount to pay: 1,500 RWF'), findsOneWidget);
+    locale.value = const Locale('rw');
+    await tester.pumpAndSettle();
+    expect(tester.widget<Text>(find.byKey(const ValueKey('payment-amount'))).data, contains('1,500 RWF'));
     expect(find.text('*182*1*1*0780000001*1500#'), findsOneWidget);
+    locale.value = const Locale('fr');
+    await tester.pumpAndSettle();
+    expect(find.text('*182*1*1*0780000001*4000#'), findsOneWidget);
+    expect(tester.widget<FilledButton>(find.byKey(const ValueKey('pay-now'))).onPressed, isNotNull);
   });
   testWidgets('missing configuration never shows a code or enables payment', (tester) async {
     await pumpPage(tester, config: const PaymentConfiguration());
@@ -93,7 +103,7 @@ void main() {
     addTearDown(() => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.platform, null));
     await tapKey(tester, 'payment-method-momoPay');
     await tapKey(tester, 'copy-payment-code');
-    expect(copied, '*182*8*1*123456*3000#');
+    expect(copied, '*182*8*1*123456*5000#');
     expect(find.text('Code copied'), findsOneWidget);
     await tester.pump(const Duration(seconds: 5));
     fail = true;
@@ -105,13 +115,12 @@ void main() {
     await pumpPage(tester, handler: ({required examLanguage, required durationMonths, required paymentMethod, required amount, required ussdCode}) async {
       captured = {'language': examLanguage, 'months': durationMonths, 'method': paymentMethod, 'amount': amount, 'code': ussdCode};
     });
-    await tapKey(tester, 'exam-language-fr');
     await tapKey(tester, 'plan-6_MONTHS');
     await tapKey(tester, 'payment-method-tigo');
     expect(find.text('Amount to pay: 6,000 RWF'), findsOneWidget);
     expect(find.text('*182*1*1*0720000001*6000#'), findsOneWidget);
     await tapKey(tester, 'pay-now');
-    expect(captured, {'language': ExamLanguage.fr, 'months': 6, 'method': PaymentMethod.tigo, 'amount': 6000, 'code': '*182*1*1*0720000001*6000#'});
+    expect(captured, {'language': ExamLanguage.en, 'months': 6, 'method': PaymentMethod.tigo, 'amount': 6000, 'code': '*182*1*1*0720000001*6000#'});
     final container = ProviderScope.containerOf(tester.element(find.byType(SubscriptionPage)));
     expect(container.read(subscriptionProvider).hasActiveAccess, isFalse);
     expect(find.textContaining('no payment has been confirmed'), findsOneWidget);
