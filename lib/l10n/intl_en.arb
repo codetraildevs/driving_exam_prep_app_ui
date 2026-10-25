@@ -1528,5 +1528,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "dashboardGazetteSubtitle": "Road rules",
+  "dashboardIremboSubtitle": "Online services"
 }

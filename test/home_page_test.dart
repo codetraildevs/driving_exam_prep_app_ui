@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,6 +40,7 @@ Future<void> _pump(WidgetTester tester, {
   DashboardNotices notices = const DashboardNotices([]),
 }) async {
   SharedPreferences.setMockInitialValues({});
+  GoogleFonts.config.allowRuntimeFetching = false;
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
   final now = DateTime.now();
@@ -92,6 +95,15 @@ void main() {
           if (row > 0) expect(positions[row * 2].dy, greaterThan(positions[row * 2 - 2].dy));
         }
         expect(tester.getSize(find.byType(GridView)).width, lessThanOrEqualTo(720));
+        final l10n = AppLocalizations.of(tester.element(find.byType(HomePage)));
+        for (final text in [l10n.dashboardGazetteSubtitle, l10n.dashboardIremboSubtitle,
+          l10n.homeProgressSubtitle, l10n.homeShareAppSubtitle]) {
+          expect(find.text(text), findsOneWidget);
+        }
+        final help = find.byKey(const ValueKey('dashboard-help'));
+        expect(tester.getTopLeft(help).dy,
+          greaterThan(tester.getBottomLeft(find.byKey(const ValueKey('shortcut-progress'))).dy));
+        expect(find.text(l10n.subscriptionNeedHelp), findsOneWidget);
         expect(tester.takeException(), isNull);
       });
     }
@@ -152,4 +164,30 @@ void main() {
     expect(find.text('Test notice'), findsOneWidget);
     expect(find.text('Details'), findsOneWidget);
   });
+  testWidgets('dashboard support opens the existing phone and WhatsApp destinations', (tester) async {
+    final urls = <String>[];
+    const channel = MethodChannel('plugins.flutter.io/url_launcher');
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, (call) async {
+      if (call.method == 'launch') {
+        urls.add((call.arguments as Map)['url'] as String);
+        return true;
+      }
+      return null;
+    });
+    addTearDown(() => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, null));
+    await _pump(tester, language: 'en');
+    final l10n = AppLocalizations.of(tester.element(find.byType(HomePage)));
+    for (final label in [l10n.paymentCallNumber, l10n.paymentCallTigoNumber, l10n.paymentWhatsApp]) {
+      final target = find.text(label);
+      await tester.ensureVisible(target);
+      await tester.tap(target);
+      await tester.pumpAndSettle();
+    }
+    expect(urls.take(2), ['tel:0788659575', 'tel:0728877442']);
+    final whatsapp = Uri.parse(urls.last);
+    expect(whatsapp.host, 'wa.me');
+    expect(whatsapp.path, '/250788659575');
+    expect(whatsapp.queryParameters['text'], l10n.paymentWhatsAppMessage);
+  });
+
 }

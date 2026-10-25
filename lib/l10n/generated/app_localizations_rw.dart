@@ -1687,4 +1687,10 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get paymentVerifyRecipient => 'Mbere yo kwemeza kwishyura, genzura ko izina ry\'uwakira amafaranga rigaragara kuri telefoni yawe rihuye n\'iryanditse hano. Niba bidahuye, ntukomeze.';
+
+  @override
+  String get dashboardGazetteSubtitle => 'Amategeko y\'umuhanda';
+
+  @override
+  String get dashboardIremboSubtitle => 'Serivisi kuri interineti';
 }

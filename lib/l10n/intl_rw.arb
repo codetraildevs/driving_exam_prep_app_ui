@@ -2014,5 +2014,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "dashboardGazetteSubtitle": "Amategeko y'umuhanda",
+  "dashboardIremboSubtitle": "Serivisi kuri interineti"
 }

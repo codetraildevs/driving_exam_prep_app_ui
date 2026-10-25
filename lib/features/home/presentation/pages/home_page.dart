@@ -14,6 +14,7 @@ import '../../../../shared/locale/locale_notifier.dart';
 import '../../../../shared/subscription/subscription_notifier.dart';
 import '../../../../shared/widgets/app_menu_button.dart';
 import '../../../../shared/widgets/interactive_card.dart';
+import '../../../../shared/widgets/need_help_section.dart';
 import '../../../../shared/widgets/whatsapp_groups_page.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../data/models/dashboard_notices.dart';
@@ -140,10 +141,10 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
     final items = <_Shortcut>[
       _Shortcut('practice', Icons.fact_check_outlined, l10n.homePractices, l10n.homePracticesSubtitle, (_) => context.push('/practice')),
       _Shortcut('whatsapp', Icons.chat_outlined, l10n.dashboardWhatsapp, l10n.joinGroupSubtitle, (_) => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const WhatsappGroupsPage()))),
-      _Shortcut('gazette', Icons.menu_book_outlined, l10n.dashboardGazette, '', (_) => _comingSoon(l10n.dashboardGazette)),
-      _Shortcut('irembo', Icons.account_balance_outlined, 'Irembo', '', (_) => _comingSoon('Irembo')),
-      _Shortcut('progress', Icons.insights_rounded, l10n.homeProgress, '', (_) => context.push('/progress')),
-      _Shortcut('share', Icons.share_outlined, l10n.dashboardShare, '', _share),
+      _Shortcut('gazette', Icons.menu_book_outlined, l10n.dashboardGazette, l10n.dashboardGazetteSubtitle, (_) => _comingSoon(l10n.dashboardGazette)),
+      _Shortcut('irembo', Icons.account_balance_outlined, 'Irembo', l10n.dashboardIremboSubtitle, (_) => _comingSoon('Irembo')),
+      _Shortcut('progress', Icons.insights_rounded, l10n.homeProgress, l10n.homeProgressSubtitle, (_) => context.push('/progress')),
+      _Shortcut('share', Icons.share_outlined, l10n.dashboardShare, l10n.homeShareAppSubtitle, _share),
     ];
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -265,6 +266,9 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                       },
                     );
                   })),
+                  const SizedBox(height: 20),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: NeedHelpSection(key: ValueKey('dashboard-help'))),
                 ]),
               )),
             ),

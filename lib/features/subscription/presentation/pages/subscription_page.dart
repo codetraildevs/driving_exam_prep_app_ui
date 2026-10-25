@@ -4,16 +4,14 @@ import 'package:intl/intl.dart';
 import '../../../../config/payment_config.dart';
 import '../../domain/payment_preparation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/subscription/subscription_notifier.dart';
 import '../../../../shared/widgets/app_page_header.dart';
+import '../../../../shared/widgets/need_help_section.dart';
 
-const _kHelpNumber = '0788659575';
-const _kTigoCashNumber = '0728877442';
 
 class SubscriptionPage extends ConsumerStatefulWidget {
   final PaymentConfiguration paymentConfiguration;
@@ -115,29 +113,6 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
         'popular': false,
       },
     ];
-  }
-
-  Future<void> _callNumber() async {
-    final uri = Uri(scheme: 'tel', path: _kHelpNumber);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
-  }
-
-  Future<void> _callTigoNumber() async {
-    final uri = Uri(scheme: 'tel', path: _kTigoCashNumber);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
-  }
-
-  Future<void> _openWhatsApp(String message) async {
-    final uri = Uri.parse(
-      'https://wa.me/250${_kHelpNumber.substring(1)}?text=${Uri.encodeComponent(message)}',
-    );
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    }
   }
 
   @override
@@ -323,19 +298,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                     _TrafficRulesSupportCard(l10n: l10n),
                     const SizedBox(height: 20),
 
-                    // ── Need Help ──
-                    _SectionHeader(
-                      icon: Icons.headset_mic_rounded,
-                      title: l10n.subscriptionNeedHelp,
-                    ),
-                    const SizedBox(height: 10),
-                    _NeedHelpCard(
-                      l10n: l10n,
-                      onCall: _callNumber,
-                      onTigoCall: _callTigoNumber,
-                      onWhatsApp: () =>
-                          _openWhatsApp(l10n.paymentWhatsAppMessage),
-                    ),
+                    const NeedHelpSection(),
 
                     const SizedBox(height: 32),
                   ],
@@ -443,120 +406,6 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
-
-class _NeedHelpCard extends StatelessWidget {
-  final AppLocalizations l10n;
-  final VoidCallback onCall;
-  final VoidCallback onTigoCall;
-  final VoidCallback onWhatsApp;
-
-  const _NeedHelpCard({
-    required this.l10n,
-    required this.onCall,
-    required this.onTigoCall,
-    required this.onWhatsApp,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: theme.shadowColor.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Action buttons
-          Column(
-            children: [
-              _ContactButton(
-                icon: Icons.phone_rounded,
-                label: l10n.paymentCallNumber,
-                color: AppColors.primary,
-                onTap: onCall,
-              ),
-              const SizedBox(height: 10),
-              _ContactButton(
-                icon: Icons.phone_rounded,
-                label: l10n.paymentCallTigoNumber,
-                color: AppColors.textSecondary,
-                onTap: onTigoCall,
-              ),
-
-              const SizedBox(height: 10),
-              _ContactButton(
-                icon: Icons.chat_rounded,
-                label: l10n.paymentWhatsApp,
-                color: const Color(0xFF25D366),
-                onTap: onWhatsApp,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ContactButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _ContactButton({
-    required this.icon,
-    required this.label,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: color.withValues(alpha: 0.08),
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, size: 18, color: color),
-              const SizedBox(width: 6),
-              Flexible(
-                child: Text(
-                  label,
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class _PlanCard extends StatelessWidget {
   final Map<String, dynamic> plan;

@@ -2014,5 +2014,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "dashboardGazetteSubtitle": "Code de la route",
+  "dashboardIremboSubtitle": "Services en ligne"
 }

@@ -3105,6 +3105,10 @@ abstract class AppLocalizations {
 
   /// Reminder to verify the recipient before confirming payment.
   String get paymentVerifyRecipient;
+
+  String get dashboardGazetteSubtitle;
+
+  String get dashboardIremboSubtitle;
 }
 
 class _AppLocalizationsDelegate
