@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../config/app_config.dart';
+import '../../../../config/theme/app_colors.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/language_selector_page.dart';
 import '../../../../shared/locale/locale_notifier.dart';
@@ -17,9 +18,7 @@ import '../../../../shared/widgets/whatsapp_groups_page.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../data/models/dashboard_notices.dart';
 
-const _indigo = Color(0xFF29265C);
-const _coral = Color(0xFFB64038);
-const _paper = Color(0xFFF8F5F0);
+const _indigo = AppColors.primary;
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -135,9 +134,9 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
     final locale = ref.watch(localeProvider).effectiveLocale;
     final notices = user == null ? null : ref.watch(dashboardNoticesProvider(user.id));
     final dark = Theme.of(context).brightness == Brightness.dark;
-    final ink = dark ? const Color(0xFFE1DFFF) : _indigo;
+    final ink = dark ? AppColors.primaryLight : AppColors.primary;
     final surface = dark ? Theme.of(context).colorScheme.surface : Colors.white;
-    final background = dark ? Theme.of(context).scaffoldBackgroundColor : _paper;
+    final background = Theme.of(context).scaffoldBackgroundColor;
     final items = <_Shortcut>[
       _Shortcut('practice', Icons.fact_check_outlined, l10n.homePractices, l10n.homePracticesSubtitle, (_) => context.push('/practice')),
       _Shortcut('whatsapp', Icons.chat_outlined, l10n.dashboardWhatsapp, l10n.joinGroupSubtitle, (_) => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const WhatsappGroupsPage()))),
@@ -157,39 +156,49 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
             onRefresh: _refresh,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
+              padding: const EdgeInsets.only(bottom: 24),
               child: Center(child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 720),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 24),
+                    decoration: BoxDecoration(
+                      gradient: AppColors.primaryGradientFor(Theme.of(context).brightness),
+                      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(28)),
+                    ),
+                    child:
                   Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Expanded(flex: 5, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      AppMenuButton(color: ink),
-                      Text(l10n.dashboardWelcome, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: ink)),
+                      const AppMenuButton(),
+                      Text(l10n.dashboardWelcome, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: Colors.white)),
                       const SizedBox(height: 6),
                       Text(user?.name.trim().isNotEmpty == true ? user!.name : l10n.dashboardProfileUnavailable,
-                        style: TextStyle(fontSize: 21, height: 1.25, fontWeight: FontWeight.w800, color: ink)),
+                        style: TextStyle(fontSize: 21, height: 1.25, fontWeight: FontWeight.w800, color: Colors.white)),
                       const SizedBox(height: 5),
                       if (user != null && user.phoneNumber.isNotEmpty)
-                        Text(user.phoneNumber, style: TextStyle(fontSize: 13, color: ink.withValues(alpha: 0.8))),
+                        Text(user.phoneNumber, style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.85))),
                     ])),
                     const SizedBox(width: 12),
                     Expanded(flex: 4, child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                       _HeaderControl(icon: Icons.translate, label: l10n.settingsLanguage.toUpperCase(),
                         value: LocaleNotifier.localeNames[locale.languageCode] ?? locale.languageCode,
-                        ink: ink, surface: surface, onTap: _language),
+                        ink: Colors.white, surface: Colors.white.withValues(alpha: 0.12), onTap: _language),
                       const SizedBox(height: 8),
                       _HeaderControl(icon: Icons.notifications_none_rounded, label: l10n.dashboardNotices,
-                        unread: notices?.asData?.value.unreadCount ?? 0, ink: ink, surface: surface,
+                        unread: notices?.asData?.value.unreadCount ?? 0, ink: Colors.white, surface: Colors.white.withValues(alpha: 0.12),
                         onTap: user == null ? null : () => _notices(user.id)),
                     ])),
                   ]),
+                  ),
                   const SizedBox(height: 18),
-                  _SubscriptionBanner(ink: ink, surface: surface),
+                  Padding(padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: _SubscriptionBanner(ink: ink, surface: surface)),
                   const SizedBox(height: 18),
-                  LayoutBuilder(builder: (context, constraints) {
+                  Padding(padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: LayoutBuilder(builder: (context, constraints) {
                     final cardWidth = (constraints.maxWidth - 12) / 2;
                     final labelStyle = TextStyle(fontSize: 15, height: 1.25, fontWeight: FontWeight.w700,
-                      color: dark ? const Color(0xFFFFAAA0) : _coral);
+                      color: ink);
                     final detailStyle = TextStyle(fontSize: 11, height: 1.35, color: ink.withValues(alpha: 0.85));
                     double height = 130;
                     for (final item in items) {
@@ -236,7 +245,7 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                         );
                       },
                     );
-                  }),
+                  })),
                 ]),
               )),
             ),
