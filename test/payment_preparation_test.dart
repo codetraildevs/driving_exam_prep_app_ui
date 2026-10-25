@@ -3,7 +3,7 @@ import 'package:traffic_rule_in_rwanda/config/payment_config.dart';
 import 'package:traffic_rule_in_rwanda/features/subscription/domain/payment_preparation.dart';
 
 // Synthetic destinations for unit tests only, never production defaults.
-const fixture = PaymentConfiguration(momoPayCode: '123456', mtnNumber: '0780000001', tigoNumber: '0720000001');
+const fixture = PaymentConfiguration(momoPayCode: '329494', mtnNumber: '0788659575', tigoNumber: '0728877442');
 void main() {
   for (final language in ExamLanguage.values) {
     final expected = language == ExamLanguage.rw ? [1500, 3000, 5000] : [4000, 5000, 6000];
