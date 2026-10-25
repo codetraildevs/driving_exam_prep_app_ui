@@ -3100,14 +3100,28 @@ abstract class AppLocalizations {
   /// **'Unable to prepare payment. Please try again.'**
   String get paymentPreparationFailed;
 
-  /// Expected recipient for the selected payment method.
+  /// Expected recipient name for the selected payment method
+  ///
+  /// In en, this message translates to:
+  /// **'{method} registered to: {name}'**
   String paymentRecipient(String name, String method);
 
-  /// Reminder to verify the recipient before confirming payment.
+  /// No description provided for @paymentVerifyRecipient.
+  ///
+  /// In en, this message translates to:
+  /// **'Before confirming payment, check that the recipient name on your phone matches the name shown here. If it does not match, do not proceed.'**
   String get paymentVerifyRecipient;
 
+  /// No description provided for @dashboardGazetteSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Road rules'**
   String get dashboardGazetteSubtitle;
 
+  /// No description provided for @dashboardIremboSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Online services'**
   String get dashboardIremboSubtitle;
 }
 

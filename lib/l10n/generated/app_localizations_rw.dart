@@ -1683,10 +1683,13 @@ class AppLocalizationsRw extends AppLocalizations {
       'Ntibishobotse gutegura ubwishyu. Ongera ugerageze.';
 
   @override
-  String paymentRecipient(String name, String method) => '$method ibaruye kuri: $name';
+  String paymentRecipient(String name, String method) {
+    return '$method ibaruye kuri: $name';
+  }
 
   @override
-  String get paymentVerifyRecipient => 'Mbere yo kwemeza kwishyura, genzura ko izina ry\'uwakira amafaranga rigaragara kuri telefoni yawe rihuye n\'iryanditse hano. Niba bidahuye, ntukomeze.';
+  String get paymentVerifyRecipient =>
+      'Mbere yo kwemeza kwishyura, genzura ko izina ry\'uwakira amafaranga rigaragara kuri telefoni yawe rihuye n\'iryanditse hano. Niba bidahuye, ntukomeze.';
 
   @override
   String get dashboardGazetteSubtitle => 'Amategeko y\'umuhanda';

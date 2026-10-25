@@ -1657,10 +1657,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Unable to prepare payment. Please try again.';
 
   @override
-  String paymentRecipient(String name, String method) => '$method registered to: $name';
+  String paymentRecipient(String name, String method) {
+    return '$method registered to: $name';
+  }
 
   @override
-  String get paymentVerifyRecipient => 'Before confirming payment, check that the recipient name on your phone matches the name shown here. If it does not match, do not proceed.';
+  String get paymentVerifyRecipient =>
+      'Before confirming payment, check that the recipient name on your phone matches the name shown here. If it does not match, do not proceed.';
 
   @override
   String get dashboardGazetteSubtitle => 'Road rules';
