@@ -227,9 +227,7 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                       const SizedBox(height: 8),
                       _HeaderControl(icon: Icons.notifications_none_rounded, label: l10n.dashboardNotices,
                         unread: notices?.asData?.value.unreadCount ?? 0, ink: Colors.white, surface: Colors.white.withValues(alpha: 0.12),
-                        onTap: () => _instructions(user?.id),
-                        onRefresh: () => _refresh(showFeedback: true), refreshing: _refreshing,
-                        refreshLabel: l10n.dashboardRefresh),
+                        onTap: () => _instructions(user?.id)),
                     ])),
                   ]),
                   ),
@@ -339,12 +337,12 @@ class _HeaderControl extends StatelessWidget {
   final Color ink;
   final Color surface;
   final VoidCallback? onTap;
-  final VoidCallback onRefresh;
+  final VoidCallback? onRefresh;
   final bool refreshing;
-  final String refreshLabel;
+  final String? refreshLabel;
   const _HeaderControl({required this.icon, required this.label, this.value, this.flag, this.unread = 0,
     required this.ink, required this.surface, required this.onTap,
-    required this.onRefresh, required this.refreshing, required this.refreshLabel});
+    this.onRefresh, this.refreshing = false, this.refreshLabel});
 
   @override
   Widget build(BuildContext context) => Row(children: [
@@ -372,8 +370,14 @@ class _HeaderControl extends StatelessWidget {
       ])),
     ]),
     )),
-    IconButton(
+    if (onRefresh != null) IconButton.outlined(
+      key: const ValueKey('dashboard-refresh'),
       tooltip: refreshLabel,
+      style: IconButton.styleFrom(
+        backgroundColor: surface,
+        side: BorderSide(color: ink.withValues(alpha: 0.5)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
       onPressed: refreshing ? null : onRefresh,
       color: ink,
       constraints: const BoxConstraints(minWidth: 48, minHeight: 48),

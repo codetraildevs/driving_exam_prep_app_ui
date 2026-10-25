@@ -207,7 +207,8 @@ void main() {
     final container = ProviderScope.containerOf(tester.element(find.byType(HomePage)));
     expect(container.read(subscriptionProvider).hasActiveAccess, isFalse);
     final refresh = find.byTooltip('Refresh app access');
-    expect(refresh, findsNWidgets(2));
+    expect(refresh, findsOneWidget);
+    expect(find.byKey(const ValueKey('dashboard-refresh')), findsOneWidget);
     await tester.tap(refresh.first);
     await tester.pumpAndSettle();
     expect(container.read(subscriptionProvider).hasActiveAccess, isTrue);
