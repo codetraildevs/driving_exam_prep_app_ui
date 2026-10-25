@@ -105,7 +105,7 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
     if (!mounted) return;
     await showDialog<void>(context: context, builder: (ctx) => AlertDialog(
       title: Text(l10n.dashboardShare),
-      content: SelectableText(AppConfig.playStoreUrl),
+      content: const SelectableText(AppConfig.playStoreUrl),
       actions: [
         TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.commonCancel)),
         FilledButton.icon(icon: const Icon(Icons.copy_outlined), label: Text(l10n.dashboardCopyLink), onPressed: () async {
@@ -195,14 +195,14 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                     for (final item in items) {
                       double measure(String text, TextStyle style) {
                         if (text.isEmpty) return 0;
-                        final painter = TextPainter(text: TextSpan(text: text, style: style),
+                        final painter = TextPainter(text: TextSpan(text: text, style: DefaultTextStyle.of(context).style.merge(style)),
                           textDirection: Directionality.of(context), textScaler: MediaQuery.textScalerOf(context))
-                          ..layout(maxWidth: math.max(1.0, cardWidth - 24));
+                          ..layout(maxWidth: math.max(1.0, cardWidth - 30));
                         final result = painter.height;
                         painter.dispose();
                         return result;
                       }
-                      height = math.max(height, 80 + measure(item.title, labelStyle) +
+                      height = math.max(height, 86 + measure(item.title, labelStyle) +
                         (item.subtitle.isEmpty ? 0 : 6 + measure(item.subtitle, detailStyle)));
                     }
                     return GridView.builder(
