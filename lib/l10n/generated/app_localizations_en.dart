@@ -1667,4 +1667,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboardIremboSubtitle => 'Online services';
+
+  @override
+  String get guideTitle => 'Instructions';
+
+  @override
+  String get guideWelcome => 'Welcome to RWANDA TRAFFIC RULE';
+
+  @override
+  String get guideAboutTitle => '1. About the app';
+
+  @override
+  String get guideAboutBody => 'RWANDA TRAFFIC RULE helps you learn road rules and prepare for the provisional driving licence exam through practice questions.';
+
+  @override
+  String get guideUseTitle => '2. How to use the app';
+
+  @override
+  String get guideUseBody => '1. On your first visit, register using your full name and phone number.\n\n2. If you already have an account, choose Sign in and enter your registered phone number. Follow any additional sign-in prompts.\n\n3. Open Practice from the dashboard and choose an exam. Exams marked free are available without paid access; locked exams require active access.\n\n4. Choose an answer and review the feedback. Green indicates a correct answer; red indicates an incorrect answer. Continue to the next question, finish the exam to see your score, and use Progress to review your results.';
+
+  @override
+  String get guideExamTitle => '3. Preparing for the computer-based exam';
+
+  @override
+  String get guideExamBody => 'Use practice questions to learn how to read questions and choose answers on a screen. Follow the instructions shown during your official exam, including how to move between questions and submit your answers.\n\nPractice feedback helps you learn. The official exam may use different questions, timing and feedback; this app does not guarantee identical exam content.';
+
+  @override
+  String get guidePaymentTitle => '4. Payment and exam access';
+
+  @override
+  String get guidePaymentBody => '1. Tap the access banner on the dashboard or a locked practice exam to open Practice Exam Access.\n\n2. Choose 1, 3 or 6 months. The app initially selects 1 month in Kinyarwanda and 3 months in English or French. The amount in RWF updates when you change the plan; pricing follows the app language.\n\n3. MoMo Pay is selected first. You can switch to MTN or Tigo. Check the account name shown: Alexis for MoMo Pay, or NSHIMIYIMANA Alexis for MTN and Tigo. Compare it with the name your phone displays before confirming payment.\n\n4. Tap PAY NOW to copy the complete USSD code and open the dialer. Complete the payment on your phone. The copy icon beside the code also lets you copy and dial it manually.\n\n5. After paying, use the call or WhatsApp buttons under Need Help to request activation for the phone number registered in the app. Opening the dialer or copying a code does not activate the exams.\n\n6. Once an administrator has assigned active access to your account, return to the dashboard with an internet connection and tap a circular refresh arrow. The access banner updates and the paid practice exams become available. You do not need to enter the access code on this page. The app also checks on opening the dashboard, returning to the app and periodically while the dashboard is active.\n\n7. If exams remain locked, confirm that support used your registered phone number and that your access has not expired. Contact support using the buttons below.';
+
+  @override
+  String get guideOpenAccess => 'View plans and pay';
+
+  @override
+  String get dashboardRefresh => 'Refresh app access';
+
+  @override
+  String get dashboardRefreshDone => 'Access status refreshed.';
+
+  @override
+  String get dashboardRefreshFailed => 'Could not refresh access. Check your internet connection and try again.';
 }

@@ -1693,4 +1693,46 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get dashboardIremboSubtitle => 'Serivisi kuri interineti';
+
+  @override
+  String get guideTitle => 'AMABWIRIZA';
+
+  @override
+  String get guideWelcome => 'Ikaze kuri RWANDA TRAFFIC RULE';
+
+  @override
+  String get guideAboutTitle => '1. Ubusobanuro bw’application';
+
+  @override
+  String get guideAboutBody => 'RWANDA TRAFFIC RULE ni application yigisha amategeko y’umuhanda kandi igufasha kwitegura ikizamini cy’uruhushya rw’agateganyo rwo gutwara ibinyabiziga ukoresheje ibibazo by’imyitozo.';
+
+  @override
+  String get guideUseTitle => '2. Uko application ikora';
+
+  @override
+  String get guideUseBody => '1. Iyo ukoresheje application bwa mbere, banza wiyandikishe ukoresheje amazina yawe yose na nimero ya telefoni.\n\n2. Niba usanzwe ufite konti, kanda Injira, wandike nimero ya telefoni wiyandikishijeho, hanyuma ukurikize amabwiriza yo kwinjira.\n\n3. Kuri dashboard, kanda Imyitozo uhitemo ikizamini. Ibizamini byanditseho ko ari ubuntu ntibisaba kwishyura; ibifunze bisaba uburenganzira bwo kubikora.\n\n4. Hitamo igisubizo usome ibisobanuro. Icyatsi kigaragaza igisubizo cy’ukuri, umutuku ukagaragaza ikitari cyo. Komeza ku kibazo gikurikira, usoze ikizamini ubone amanota. Kanda Iterambere urebe uko witwaye.';
+
+  @override
+  String get guideExamTitle => '3. Kwitegura ikizamini kuri mudasobwa';
+
+  @override
+  String get guideExamBody => 'Ibibazo by’imyitozo bigufasha kumenyera gusoma ibibazo no guhitamo ibisubizo kuri ekara. Mu kizamini nyirizina, kurikiza amabwiriza uhabwa yo kujya ku kibazo gikurikira no gusoza ikizamini.\n\nIbisobanuro by’ibisubizo bigufasha kwiga. Ibibazo, igihe n’uburyo bwo kugaragaza ibisubizo mu kizamini nyirizina bishobora gutandukana n’ibyo muri iyi application; ntabwo twemeza ko ibibazo byose bizaba bimwe.';
+
+  @override
+  String get guidePaymentTitle => '4. Kwishyura kugira ngo ibizamini bifunguke';
+
+  @override
+  String get guidePaymentBody => '1. Kuri dashboard, kanda ahanditse ibijyanye n’uburenganzira bwo gukora ibizamini cyangwa ukande ikizamini gifunze. Urahita ufungura urupapuro rwo kwishyura ibizamini.\n\n2. Hitamo ukwezi 1, amezi 3 cyangwa amezi 6. Mu Kinyarwanda, ukwezi 1 ni ko kubanza gutoranywa; mu Cyongereza no mu Gifaransa habanza amezi 3. Amafaranga muri RWF ahinduka uko uhindura igihe; igiciro gishingira ku rurimi rwa application.\n\n3. MoMo Pay iba yatoranyijwe. Ushobora guhindura ugahitamo MTN cyangwa Tigo. Genzura izina ryanditse: Alexis kuri MoMo Pay, cyangwa NSHIMIYIMANA Alexis kuri MTN na Tigo. Mbere yo kwemeza, reba ko rihuye n’iryerekanywe kuri telefoni yawe.\n\n4. Kanda ahanditse Kanda hano wishyure. Kode ya USSD yose irakopororwa, telefoni ikagufungurira aho uyikubita. Soza kwishyura kuri telefoni. Ushobora no gukanda agashushondanga ko gukoporora kari iruhande rwa kode, ukayikubita ubwawe.\n\n5. Umaze kwishyura, koresha buto zo guhamagara cyangwa WhatsApp ziri mu gice cy’ubufasha, usabe gufungurirwa ukoresheje nimero ya telefoni wiyandikishijeho. Gufungura aho ukubitira kode cyangwa kuyikoporora ntibihita bifungura ibizamini.\n\n6. Umuyobozi namara gushyira uburenganzira bukora kuri konti yawe, subira kuri dashboard ufite interineti, ukande akambi k’uruziga. Amakuru y’uburenganzira arahinduka, ibizamini byishyurwa bifunguke. Ntukeneye kwandika kode kuri uru rupapuro. Application inagenzura uburenganzira iyo ufunguye dashboard, iyo uyigarutsemo, ndetse ikanabigenzura buri gihe dashboard iri gukoreshwa.\n\n7. Niba ibizamini bikigufungiye, genzura ko ubufasha bwakoresheje nimero wiyandikishijeho kandi ko uburenganzira butararangira. Koresha buto zikurikira ubaze ubufasha.';
+
+  @override
+  String get guideOpenAccess => 'Reba ibiciro wishyure';
+
+  @override
+  String get dashboardRefresh => 'Ongera ugenzure uburenganzira';
+
+  @override
+  String get dashboardRefreshDone => 'Uburenganzira bwongeye kugenzurwa.';
+
+  @override
+  String get dashboardRefreshFailed => 'Ntibyashobotse kugenzura uburenganzira. Reba interineti wongere ugerageze.';
 }
