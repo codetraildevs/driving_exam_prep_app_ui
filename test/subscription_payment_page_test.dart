@@ -127,6 +127,8 @@ void main() {
     expect(find.text('Could not copy the code. Please try again or copy it manually.'), findsOneWidget);
   });
   testWidgets('handler receives displayed values without activating a subscription', (tester) async {
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.platform, (_) async => null);
+    addTearDown(() => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.platform, null));
     Map<String, Object>? captured;
     await pumpPage(tester, handler: ({required examLanguage, required durationMonths, required paymentMethod, required amount, required ussdCode}) async {
       captured = {'language': examLanguage, 'months': durationMonths, 'method': paymentMethod, 'amount': amount, 'code': ussdCode};
@@ -166,7 +168,8 @@ void main() {
     await tapKey(tester, 'pay-now');
     expect(copied, '*182*8*1*123456*5000#');
     expect(Uri.parse(launched!).scheme, 'tel');
-    expect(Uri.parse(launched!).path, copied);
+    expect(Uri.decodeComponent(Uri.parse(launched!).path), copied);
+    expect(Uri.parse(launched!).fragment, isEmpty);
     final container = ProviderScope.containerOf(tester.element(find.byType(SubscriptionPage)));
     expect(container.read(subscriptionProvider).hasActiveAccess, isFalse);
     await tester.pump(const Duration(seconds: 5));
