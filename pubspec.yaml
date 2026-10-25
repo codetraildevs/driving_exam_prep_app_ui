@@ -26,7 +26,7 @@ dependencies:
 
   # UI & Design
   google_fonts: ^6.1.0
-  pdfrx: 2.1.5
+  pdfrx: 2.4.8
 
   # Local Storage
   shared_preferences: ^2.2.0
