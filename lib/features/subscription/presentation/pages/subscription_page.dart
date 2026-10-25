@@ -35,7 +35,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
         _ => ExamLanguage.rw,
       };
   SubscriptionDuration _duration = SubscriptionDuration.threeMonths;
-  PaymentMethod? _paymentMethod;
+  PaymentMethod? _paymentMethod = PaymentMethod.momoPay;
   bool _preparing = false;
   bool _initialPlanSelected = false;
 

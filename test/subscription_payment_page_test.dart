@@ -72,7 +72,7 @@ void main() {
       expect(cards[0].right, lessThan(cards[1].left));
       expect(cards[1].right, lessThan(cards[2].left));
       expect(cards[0].width, closeTo(cards[2].width, 0.01));
-      await tapKey(tester, 'payment-method-momoPay');
+      expect(tester.widget<ChoiceChip>(find.byKey(const ValueKey('payment-method-momoPay'))).selected, isTrue);
       expect(find.text('*182*8*1*123456*${language == 'rw' ? 1500 : 5000}#'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
