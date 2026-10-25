@@ -139,7 +139,7 @@ void main() {
     expect(find.text('No active plan'), findsNothing);
   });
 
-  for (final id in ['gazette', 'irembo']) {
+  for (final id in ['irembo']) {
     testWidgets('$id opens the localized coming-soon page', (tester) async {
       await _pump(tester, language: 'fr');
       final card = find.byKey(ValueKey('shortcut-$id'));
@@ -246,5 +246,17 @@ void main() {
       expect(find.text('route-subscription'), findsOneWidget);
     });
   }
+
+  testWidgets('gazette shortcut opens local document resources', (tester) async {
+    await _pump(tester, language: 'en');
+    final card = find.byKey(const ValueKey('shortcut-gazette'));
+    await tester.ensureVisible(card);
+    await tester.tap(card);
+    await tester.pumpAndSettle();
+    expect(find.text('Resources'), findsOneWidget);
+    expect(find.byKey(const ValueKey('resource-gazette')), findsOneWidget);
+    expect(find.byKey(const ValueKey('resource-roadSigns')), findsOneWidget);
+    expect(find.text('Coming soon'), findsNothing);
+  });
 
 }

@@ -1738,4 +1738,40 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get dashboardRefreshFailed => 'Ntibyashobotse kugenzura uburenganzira. Reba interineti wongere ugerageze.';
+
+  @override
+  String get resourcesTitle => 'Inyandiko';
+
+  @override
+  String get resourcesDescription => 'Soma igazeti n’ibyapa muri application. Izi nyandiko zirimo kandi zisomwa nta interineti; zigumana ururimi zanditswemo.';
+
+  @override
+  String get resourcesGazette => 'Igazeti';
+
+  @override
+  String get resourcesRoadSigns => 'Ibyapa';
+
+  @override
+  String get resourcesOfflinePdf => 'PDF • Soma nta interineti';
+
+  @override
+  String get resourcesReadError => 'Ntibyashobotse gufungura iyi nyandiko. Ongera ugerageze.';
+
+  @override
+  String get resourcesPreviousPage => 'Urupapuro rubanza';
+
+  @override
+  String get resourcesNextPage => 'Urupapuro rukurikira';
+
+  @override
+  String get resourcesZoomOut => 'Gabanya';
+
+  @override
+  String get resourcesZoomIn => 'Ongera ubunini';
+
+  @override
+  String get resourcesLoading => 'Inyandiko irimo gufunguka…';
+
+  @override
+  String resourcesPageCount(int page, int total) => 'Urupapuro $page kuri $total';
 }

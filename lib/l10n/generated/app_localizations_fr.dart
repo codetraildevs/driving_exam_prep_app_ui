@@ -1746,4 +1746,40 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dashboardRefreshFailed => 'Impossible d’actualiser l’accès. Vérifiez votre connexion Internet et réessayez.';
+
+  @override
+  String get resourcesTitle => 'Documents';
+
+  @override
+  String get resourcesDescription => 'Consultez le Journal officiel et les panneaux routiers dans l’application. Les documents sont inclus pour une lecture hors ligne et conservent leur langue d’origine.';
+
+  @override
+  String get resourcesGazette => 'Journal officiel';
+
+  @override
+  String get resourcesRoadSigns => 'Panneaux routiers';
+
+  @override
+  String get resourcesOfflinePdf => 'PDF • Lecture hors ligne';
+
+  @override
+  String get resourcesReadError => 'Impossible d’ouvrir ce document. Réessayez.';
+
+  @override
+  String get resourcesPreviousPage => 'Page précédente';
+
+  @override
+  String get resourcesNextPage => 'Page suivante';
+
+  @override
+  String get resourcesZoomOut => 'Réduire';
+
+  @override
+  String get resourcesZoomIn => 'Agrandir';
+
+  @override
+  String get resourcesLoading => 'Chargement du document…';
+
+  @override
+  String resourcesPageCount(int page, int total) => 'Page $page sur $total';
 }

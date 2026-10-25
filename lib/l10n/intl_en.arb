@@ -1544,5 +1544,27 @@
   "guideOpenAccess": "View plans and pay",
   "dashboardRefresh": "Refresh app access",
   "dashboardRefreshDone": "Access status refreshed.",
-  "dashboardRefreshFailed": "Could not refresh access. Check your internet connection and try again."
+  "dashboardRefreshFailed": "Could not refresh access. Check your internet connection and try again.",
+"resourcesTitle": "Resources",
+  "resourcesDescription": "Read the Gazette and road signs inside the app. Documents are included for offline reading and keep their original language.",
+  "resourcesGazette": "Gazette",
+  "resourcesRoadSigns": "Road signs",
+  "resourcesOfflinePdf": "PDF • Read offline",
+  "resourcesReadError": "This document could not be opened. Try again.",
+  "resourcesPreviousPage": "Previous page",
+  "resourcesNextPage": "Next page",
+  "resourcesZoomOut": "Zoom out",
+  "resourcesZoomIn": "Zoom in",
+  "resourcesLoading": "Loading document…",
+  "resourcesPageCount": "Page {page} of {total}",
+  "@resourcesPageCount": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

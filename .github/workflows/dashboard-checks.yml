@@ -4,6 +4,9 @@ on:
     branches: [feat/app-updates-1.2.0]
     paths:
       - 'lib/**'
+      - 'pubspec.yaml'
+      - 'pubspec.lock'
+      - 'assets/files/**'
       - 'test/**'
       - 'backend/src/handlers/access_codes.php'
       - 'backend/src/handlers/pricing.php'
@@ -21,9 +24,13 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
+      - uses: actions/upload-artifact@v4
+        with:
+          name: resolved-dependencies
+          path: pubspec.lock
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter gen-l10n
-      - run: flutter analyze lib/ test/home_page_test.dart test/dashboard_notices_test.dart test/payment_preparation_test.dart test/subscription_payment_page_test.dart --no-fatal-infos --no-fatal-warnings
-      - run: flutter test test/home_page_test.dart test/dashboard_notices_test.dart test/payment_preparation_test.dart test/subscription_payment_page_test.dart
+      - run: flutter analyze lib/ test/home_page_test.dart test/dashboard_notices_test.dart test/payment_preparation_test.dart test/subscription_payment_page_test.dart test/resources_page_test.dart --no-fatal-infos --no-fatal-warnings
+      - run: flutter test test/home_page_test.dart test/dashboard_notices_test.dart test/payment_preparation_test.dart test/subscription_payment_page_test.dart test/resources_page_test.dart
       - run: php -l backend/src/handlers/access_codes.php
       - run: php -l backend/src/handlers/pricing.php

@@ -3151,6 +3151,30 @@ abstract class AppLocalizations {
   String get dashboardRefreshDone;
 
   String get dashboardRefreshFailed;
+
+  String get resourcesTitle;
+
+  String get resourcesDescription;
+
+  String get resourcesGazette;
+
+  String get resourcesRoadSigns;
+
+  String get resourcesOfflinePdf;
+
+  String get resourcesReadError;
+
+  String get resourcesPreviousPage;
+
+  String get resourcesNextPage;
+
+  String get resourcesZoomOut;
+
+  String get resourcesZoomIn;
+
+  String get resourcesLoading;
+
+  String resourcesPageCount(int page, int total);
 }
 
 class _AppLocalizationsDelegate

@@ -2030,5 +2030,27 @@
   "guideOpenAccess": "Voir les offres et payer",
   "dashboardRefresh": "Actualiser l’accès",
   "dashboardRefreshDone": "État de l’accès actualisé.",
-  "dashboardRefreshFailed": "Impossible d’actualiser l’accès. Vérifiez votre connexion Internet et réessayez."
+  "dashboardRefreshFailed": "Impossible d’actualiser l’accès. Vérifiez votre connexion Internet et réessayez.",
+"resourcesTitle": "Documents",
+  "resourcesDescription": "Consultez le Journal officiel et les panneaux routiers dans l’application. Les documents sont inclus pour une lecture hors ligne et conservent leur langue d’origine.",
+  "resourcesGazette": "Journal officiel",
+  "resourcesRoadSigns": "Panneaux routiers",
+  "resourcesOfflinePdf": "PDF • Lecture hors ligne",
+  "resourcesReadError": "Impossible d’ouvrir ce document. Réessayez.",
+  "resourcesPreviousPage": "Page précédente",
+  "resourcesNextPage": "Page suivante",
+  "resourcesZoomOut": "Réduire",
+  "resourcesZoomIn": "Agrandir",
+  "resourcesLoading": "Chargement du document…",
+  "resourcesPageCount": "Page {page} sur {total}",
+  "@resourcesPageCount": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -26,6 +26,7 @@ dependencies:
 
   # UI & Design
   google_fonts: ^6.1.0
+  pdfrx: 2.1.5
 
   # Local Storage
   shared_preferences: ^2.2.0
@@ -67,6 +68,7 @@ flutter:
     - assets/animations/
     - assets/exams/
     - assets/icons/
+    - assets/files/
   fonts:
     - family: Poppins
       fonts:

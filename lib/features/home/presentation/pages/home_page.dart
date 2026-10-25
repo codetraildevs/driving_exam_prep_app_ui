@@ -19,6 +19,7 @@ import '../../../../shared/widgets/whatsapp_groups_page.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../data/models/dashboard_notices.dart';
 import 'instructions_page.dart';
+import '../../../resources/presentation/pages/resources_page.dart';
 import '../../../exam/data/repositories/exam_repository.dart';
 
 const _indigo = AppColors.primary;
@@ -172,7 +173,7 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
     final items = <_Shortcut>[
       _Shortcut('practice', Icons.fact_check_outlined, l10n.homePractices, l10n.homePracticesSubtitle, (_) => context.push('/practice')),
       _Shortcut('whatsapp', Icons.chat_outlined, l10n.dashboardWhatsapp, l10n.joinGroupSubtitle, (_) => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const WhatsappGroupsPage()))),
-      _Shortcut('gazette', Icons.menu_book_outlined, l10n.dashboardGazette, l10n.dashboardGazetteSubtitle, (_) => _comingSoon(l10n.dashboardGazette)),
+      _Shortcut('gazette', Icons.menu_book_outlined, l10n.dashboardGazette, l10n.dashboardGazetteSubtitle, (_) => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const ResourcesPage()))),
       _Shortcut('irembo', Icons.account_balance_outlined, 'Irembo', l10n.dashboardIremboSubtitle, (_) => _comingSoon('Irembo')),
       _Shortcut('progress', Icons.insights_rounded, l10n.homeProgress, l10n.homeProgressSubtitle, (_) => context.push('/progress')),
       _Shortcut('share', Icons.share_outlined, l10n.dashboardShare, l10n.homeShareAppSubtitle, _share),

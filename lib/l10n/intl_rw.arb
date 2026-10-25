@@ -2030,5 +2030,27 @@
   "guideOpenAccess": "Reba ibiciro wishyure",
   "dashboardRefresh": "Ongera ugenzure uburenganzira",
   "dashboardRefreshDone": "Uburenganzira bwongeye kugenzurwa.",
-  "dashboardRefreshFailed": "Ntibyashobotse kugenzura uburenganzira. Reba interineti wongere ugerageze."
+  "dashboardRefreshFailed": "Ntibyashobotse kugenzura uburenganzira. Reba interineti wongere ugerageze.",
+"resourcesTitle": "Inyandiko",
+  "resourcesDescription": "Soma igazeti n’ibyapa muri application. Izi nyandiko zirimo kandi zisomwa nta interineti; zigumana ururimi zanditswemo.",
+  "resourcesGazette": "Igazeti",
+  "resourcesRoadSigns": "Ibyapa",
+  "resourcesOfflinePdf": "PDF • Soma nta interineti",
+  "resourcesReadError": "Ntibyashobotse gufungura iyi nyandiko. Ongera ugerageze.",
+  "resourcesPreviousPage": "Urupapuro rubanza",
+  "resourcesNextPage": "Urupapuro rukurikira",
+  "resourcesZoomOut": "Gabanya",
+  "resourcesZoomIn": "Ongera ubunini",
+  "resourcesLoading": "Inyandiko irimo gufunguka…",
+  "resourcesPageCount": "Urupapuro {page} kuri {total}",
+  "@resourcesPageCount": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

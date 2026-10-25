@@ -1712,4 +1712,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboardRefreshFailed => 'Could not refresh access. Check your internet connection and try again.';
+
+  @override
+  String get resourcesTitle => 'Resources';
+
+  @override
+  String get resourcesDescription => 'Read the Gazette and road signs inside the app. Documents are included for offline reading and keep their original language.';
+
+  @override
+  String get resourcesGazette => 'Gazette';
+
+  @override
+  String get resourcesRoadSigns => 'Road signs';
+
+  @override
+  String get resourcesOfflinePdf => 'PDF • Read offline';
+
+  @override
+  String get resourcesReadError => 'This document could not be opened. Try again.';
+
+  @override
+  String get resourcesPreviousPage => 'Previous page';
+
+  @override
+  String get resourcesNextPage => 'Next page';
+
+  @override
+  String get resourcesZoomOut => 'Zoom out';
+
+  @override
+  String get resourcesZoomIn => 'Zoom in';
+
+  @override
+  String get resourcesLoading => 'Loading document…';
+
+  @override
+  String resourcesPageCount(int page, int total) => 'Page $page of $total';
 }
