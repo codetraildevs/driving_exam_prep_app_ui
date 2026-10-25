@@ -330,11 +330,10 @@ class _SubscriptionBanner extends ConsumerWidget {
     final days = active && expiry != null ? (expiry.difference(now).inSeconds / Duration.secondsPerDay).ceil().clamp(0, 99999).toInt() : null;
     final loading = !sub.hasLoaded && !sub.hasError;
     final noAccess = sub.hasLoaded && !active && !expired;
-    final colors = Theme.of(context).colorScheme;
-    final badgeColor = active ? ink : colors.secondaryContainer;
+    final badgeColor = active ? ink : AppColors.primaryLight;
     final badgeTextColor = active
         ? (Theme.of(context).brightness == Brightness.dark ? _indigo : Colors.white)
-        : colors.onSecondaryContainer;
+        : AppColors.neutral900;
     final title = loading ? l10n.dashboardLoading : sub.hasError && !sub.hasLoaded ? l10n.dashboardSubscriptionUnavailable :
       active ? days != null ? l10n.homeAccessActive(days) : l10n.subscriptionAccessActive :
       expired ? l10n.dashboardExpired : l10n.dashboardRequestExamAccess;
@@ -351,7 +350,7 @@ class _SubscriptionBanner extends ConsumerWidget {
         side: BorderSide(color: ink, width: 1.2)), clipBehavior: Clip.antiAlias,
         child: InkWell(onTap: () => context.push('/subscription'),
           child: Padding(padding: const EdgeInsets.all(14), child: Row(children: [
-            Container(width: 70, height: 70, alignment: Alignment.center,
+            Container(width: 54, height: 54, alignment: Alignment.center,
               decoration: BoxDecoration(shape: BoxShape.circle, color: badgeColor, border: Border.all(color: badgeColor, width: 2)),
               child: loading ? SizedBox(width: 22, height: 22, child: CircularProgressIndicator(color: badgeTextColor, strokeWidth: 2)) :
                 Padding(padding: const EdgeInsets.all(8), child: FittedBox(fit: BoxFit.scaleDown,
