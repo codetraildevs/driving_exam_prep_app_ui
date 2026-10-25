@@ -66,6 +66,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
     final l10n = AppLocalizations.of(context);
     setState(() => _preparing = true);
     try {
+      await Clipboard.setData(ClipboardData(text: payment.ussdCode));
       await widget.paymentHandler(
         examLanguage: payment.examLanguage,
         durationMonths: payment.duration.months,
@@ -73,9 +74,9 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
         amount: payment.amount,
         ussdCode: payment.ussdCode,
       );
-      _feedback(l10n.paymentIntegrationPending);
+      _feedback(l10n.paymentCodeCopied);
     } catch (_) {
-      _feedback(l10n.paymentPreparationFailed);
+      _feedback('${l10n.paymentPreparationFailed} ${l10n.paymentUssdInstruction}');
     } finally {
       if (mounted) setState(() => _preparing = false);
     }

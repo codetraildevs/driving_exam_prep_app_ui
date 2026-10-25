@@ -10,9 +10,9 @@ Destinations contain digits only: MoMo merchant codes accept 4–12 digits (not 
 
 ## Integration point
 
-Implement `prepareSubscriptionPayment` in `lib/features/subscription/domain/payment_preparation.dart`. It receives the exam language derived from the current app language, duration in months, method, integer amount, and the exact USSD string. The page freezes selection while this handler runs. The current function does nothing and the UI explicitly says payment initiation is not connected; it does not call a payment API, launch the dialer, verify payment, or activate access.
+`prepareSubscriptionPayment` in `lib/features/subscription/domain/payment_preparation.dart` opens the prepared USSD code in the phone dialer. PAY NOW first copies the full code to the clipboard, then opens the dialer; the user completes the payment on their phone. If opening the dialer fails, the code remains available to copy and dial manually. The page freezes selections during initiation. Opening the dialer never verifies payment or grants access.
 
-When integrating a real payment service, calculate/validate prices on your server and use verified server-side payment events to grant access. Remove or replace the preparation-only feedback when connecting your implementation.
+When integrating a real payment service, calculate/validate prices on your server and use verified server-side payment events to grant access. The current feedback confirms copying only, never payment success.
 
 The only backend edit is `backend/src/handlers/pricing.php`, aligning English/French 1-month and 6-month prices to 4,000 and 6,000 RWF. Upload it when deploying this change.
 

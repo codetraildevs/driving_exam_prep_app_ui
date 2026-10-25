@@ -1,3 +1,4 @@
+import 'package:url_launcher/url_launcher.dart';
 import '../../../config/payment_config.dart';
 
 enum ExamLanguage { en, fr, rw }
@@ -59,8 +60,8 @@ typedef PaymentPreparationHandler = Future<void> Function({
   required String ussdCode,
 });
 
-/// Integration boundary only. No network request, dialer launch, success message,
-/// subscription mutation or payment verification is performed here.
+/// Opens the prepared USSD request in the phone dialer for user confirmation.
+/// Opening the dialer does not verify payment or activate subscription access.
 Future<void> prepareSubscriptionPayment({
   required ExamLanguage examLanguage,
   required int durationMonths,
@@ -68,5 +69,10 @@ Future<void> prepareSubscriptionPayment({
   required int amount,
   required String ussdCode,
 }) async {
-  // TODO: Implement payment initiation using the selected payment details.
+  final uri = Uri(scheme: 'tel', path: ussdCode);
+  final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+  if (!opened) {
+    throw StateError('The phone dialer could not be opened.');
+  }
+  // TODO: Implement server-side payment verification before granting access.
 }

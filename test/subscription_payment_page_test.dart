@@ -139,6 +139,42 @@ void main() {
     expect(captured, {'language': ExamLanguage.en, 'months': 6, 'method': PaymentMethod.tigo, 'amount': 6000, 'code': '*182*1*1*0720000001*6000#'});
     final container = ProviderScope.containerOf(tester.element(find.byType(SubscriptionPage)));
     expect(container.read(subscriptionProvider).hasActiveAccess, isFalse);
-    expect(find.textContaining('no payment has been confirmed'), findsOneWidget);
+    expect(find.text('Code copied'), findsOneWidget);
   });
+  testWidgets('PAY NOW copies the full code and opens the dialer without granting access', (tester) async {
+    String? copied;
+    String? launched;
+    bool allowLaunch = true;
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
+      if (call.method == 'Clipboard.setData') copied = (call.arguments as Map)['text'] as String;
+      return null;
+    });
+    const launcher = MethodChannel('plugins.flutter.io/url_launcher');
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(launcher, (call) async {
+      if (call.method == 'launch') {
+        launched = (call.arguments as Map)['url'] as String;
+        return allowLaunch;
+      }
+      return null;
+    });
+    addTearDown(() {
+      tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.platform, null);
+      tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(launcher, null);
+    });
+    await pumpPage(tester);
+    await tapKey(tester, 'payment-method-momoPay');
+    await tapKey(tester, 'pay-now');
+    expect(copied, '*182*8*1*123456*5000#');
+    expect(Uri.parse(launched!).scheme, 'tel');
+    expect(Uri.parse(launched!).path, copied);
+    final container = ProviderScope.containerOf(tester.element(find.byType(SubscriptionPage)));
+    expect(container.read(subscriptionProvider).hasActiveAccess, isFalse);
+    await tester.pump(const Duration(seconds: 5));
+    allowLaunch = false;
+    await tapKey(tester, 'pay-now');
+    expect(find.textContaining('Copy this code and dial it on your phone'), findsWidgets);
+    expect(container.read(subscriptionProvider).hasActiveAccess, isFalse);
+    expect(tester.widget<FilledButton>(find.byKey(const ValueKey('pay-now'))).onPressed, isNotNull);
+  });
+
 }
