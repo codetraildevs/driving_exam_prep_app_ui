@@ -44,3 +44,6 @@ terms-and-conditions.md
 RELEASE_NOTES_*.md
 .flutter-plugins-dependencies
 
+# json_serializable generated files (regenerated via build_runner)
+*.g.dart
+

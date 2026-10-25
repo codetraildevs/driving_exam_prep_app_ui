@@ -285,6 +285,37 @@ flutter build web --release
 flutter build ios --release
 ```
 
+### 🔐 Release Signing (Play Store)
+
+Release builds are signed automatically — `android/app/build.gradle.kts` reads the signing config from `android/key.properties` and loads the keystore it points to.
+
+**Where the real credentials live (never committed to git):**
+
+| Item | Location | Notes |
+|------|----------|-------|
+| Signing config | `android/key.properties` | Git-ignored — contains store/key passwords + alias |
+| Release keystore | `android/app/driveprep-release.jks` | Git-ignored — the actual signing key |
+| Template | `android/key.properties.example` | Tracked — copy & fill in on a new machine |
+
+**Set up signing on a new machine:**
+1. Restore `android/key.properties` and the `.jks` keystore from your secure backup (password manager / private drive — **not** this repo).
+2. Verify the file layout matches the table above (`storeFile` is resolved relative to `android/app/`).
+3. Confirm git ignores them: `git check-ignore android/key.properties android/app/driveprep-release.jks`
+
+> ⚠️ **If the keystore is lost, Google Play will not let you update the app** (unless Play App Signing with an upload key reset is configured). Keep an offline backup of the `.jks` and its passwords.
+
+### Build release artifacts
+
+```bash
+# Play Store bundle
+flutter build appbundle --release
+# → build/app/outputs/bundle/release/app-release.aab
+
+# Fat APK for direct install/testing (all ABIs)
+flutter build apk --release
+# → build/app/outputs/flutter-apk/app-release.apk
+```
+
 ## Key Dependencies
 
 - **flutter_bloc** (9.0.0): State management

@@ -62,6 +62,10 @@ android {
     }
 }
 
+dependencies {
+    implementation("androidx.activity:activity-ktx:1.13.0")
+}
+
 // Kotlin JVM target — migrated from deprecated kotlinOptions per Flutter's
 // built-in Kotlin migration guide:
 // https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers

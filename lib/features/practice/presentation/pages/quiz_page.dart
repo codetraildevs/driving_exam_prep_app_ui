@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import 'package:screen_protector/screen_protector.dart';
 import '../../../../shared/locale/locale_notifier.dart';
 import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/network/offline_cache.dart';
@@ -46,17 +45,13 @@ class _QuizPageState extends State<QuizPage> {
   static const int _totalSeconds = 1200;
   int _secondsLeft = _totalSeconds;
   Timer? _timer;
-  static const _securityChannel = MethodChannel(
-    'com.driveprep.rwanda/security',
-  );
+  static const _securityChannel = MethodChannel('com.trafficrules.rwanda.app/security');
 
   @override
   void initState() {
     super.initState();
 
     // Protect exam content from screenshots/screen recording
-    ScreenProtector.preventScreenshotOn();
-    //  ScreenProtector.protectDataOn(); // Use this if needed for protecting data in background
     _securityChannel.invokeMethod('secureScreenOn');
   }
 
@@ -117,8 +112,6 @@ class _QuizPageState extends State<QuizPage> {
   void dispose() {
     _timer?.cancel();
     // Re-enable screenshots when leaving the quiz
-    ScreenProtector.preventScreenshotOff();
-    // ScreenProtector.protectDataOff();
     _securityChannel.invokeMethod('secureScreenOff');
     super.dispose();
   }

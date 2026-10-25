@@ -3,18 +3,15 @@ package com.trafficrules.rwanda.app
 import android.os.Bundle
 import android.provider.Settings
 import android.view.WindowManager
-import androidx.core.view.WindowCompat
-import io.flutter.embedding.android.FlutterActivity
+import androidx.activity.enableEdgeToEdge
+import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.security.MessageDigest
 
-class MainActivity : FlutterActivity() {
+class MainActivity : FlutterFragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Opt into edge-to-edge rendering for Android 15+ compatibility.
-        // This makes the system bars transparent and lets Flutter handle
-        // insets via MediaQuery, preventing the Play Store warning.
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
     }
 
