@@ -2002,12 +2002,15 @@
       }
     }
   },
-  "paymentRecipient": "Uwakira amafaranga: {name}",
+  "paymentRecipient": "{method} ibaruye kuri: {name}",
   "paymentVerifyRecipient": "Mbere yo kwemeza kwishyura, genzura ko izina ry'uwakira amafaranga rigaragara kuri telefoni yawe rihuye n'iryanditse hano. Niba bidahuye, ntukomeze.",
   "@paymentRecipient": {
     "description": "Expected recipient name for the selected payment method",
     "placeholders": {
       "name": {
+        "type": "String"
+      },
+      "method": {
         "type": "String"
       }
     }

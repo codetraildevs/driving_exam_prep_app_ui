@@ -151,6 +151,12 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
       PaymentMethod.mtn || PaymentMethod.tigo => 'NSHIMIYIMANA Alexis',
       null => null,
     };
+    final recipientMethod = switch (_paymentMethod) {
+      PaymentMethod.momoPay => 'mtn momo pay',
+      PaymentMethod.mtn => 'MTN momo',
+      PaymentMethod.tigo => 'Tigo Cash',
+      null => '',
+    };
     final hasConfiguredMethod = PaymentMethod.values.any((method) => PreparedPayment.tryCreate(
       examLanguage: _examLanguage, duration: _duration, method: method,
       configuration: widget.paymentConfiguration,
@@ -261,7 +267,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(l10n.paymentRecipient(recipient),
+                              Text(l10n.paymentRecipient(recipient, recipientMethod),
                                 key: const ValueKey('payment-recipient'),
                                 style: AppTextStyles.heading6),
                               const SizedBox(height: 4),

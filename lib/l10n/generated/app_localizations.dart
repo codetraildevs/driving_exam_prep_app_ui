@@ -3101,7 +3101,7 @@ abstract class AppLocalizations {
   String get paymentPreparationFailed;
 
   /// Expected recipient for the selected payment method.
-  String paymentRecipient(String name);
+  String paymentRecipient(String name, String method);
 
   /// Reminder to verify the recipient before confirming payment.
   String get paymentVerifyRecipient;

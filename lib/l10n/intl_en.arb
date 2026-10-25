@@ -1516,12 +1516,15 @@
       }
     }
   },
-  "paymentRecipient": "Recipient: {name}",
+  "paymentRecipient": "{method} registered to: {name}",
   "paymentVerifyRecipient": "Before confirming payment, check that the recipient name on your phone matches the name shown here. If it does not match, do not proceed.",
   "@paymentRecipient": {
     "description": "Expected recipient name for the selected payment method",
     "placeholders": {
       "name": {
+        "type": "String"
+      },
+      "method": {
         "type": "String"
       }
     }
