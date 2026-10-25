@@ -18,6 +18,8 @@ import '../../../../shared/widgets/need_help_section.dart';
 import '../../../../shared/widgets/whatsapp_groups_page.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../data/models/dashboard_notices.dart';
+import 'instructions_page.dart';
+import '../../../exam/data/repositories/exam_repository.dart';
 
 const _indigo = AppColors.primary;
 
@@ -29,13 +31,20 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver {
   Timer? _clock;
+  bool _refreshing = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _clock = Timer.periodic(const Duration(minutes: 1), (_) {
-      if (mounted) setState(() {});
+      if (mounted) {
+        setState(() {});
+        if (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) unawaited(_refresh());
+      }
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) unawaited(_refresh());
     });
   }
 
@@ -54,11 +63,33 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
     }
   }
 
-  Future<void> _refresh() async {
+  Future<void> _refresh({bool showFeedback = false}) async {
+    if (_refreshing) return;
     final auth = context.read<AuthBloc>().state;
     if (auth is! AuthAuthenticated) return;
-    ref.invalidate(dashboardNoticesProvider(auth.user.id));
-    await ref.read(subscriptionProvider.notifier).refreshStatus(auth.user.id);
+    setState(() => _refreshing = true);
+    try {
+      ExamRepository().clearCache();
+      ref.invalidate(dashboardNoticesProvider(auth.user.id));
+      await ref.read(subscriptionProvider.notifier).refreshStatus(auth.user.id);
+      if (!mounted) return;
+      if (showFeedback) {
+        final l10n = AppLocalizations.of(context);
+        _message(ref.read(subscriptionProvider).hasError
+          ? l10n.dashboardRefreshFailed : l10n.dashboardRefreshDone);
+      }
+    } catch (_) {
+      if (mounted && showFeedback) _message(AppLocalizations.of(context).dashboardRefreshFailed);
+    } finally {
+      if (mounted) setState(() => _refreshing = false);
+    }
+  }
+
+  void _instructions(String? userId) {
+    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => InstructionsPage(
+      onShare: _share,
+      onNotices: userId == null ? null : () => _notices(userId),
+    )));
   }
 
   Future<void> _language() async {
@@ -154,7 +185,7 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
         body: SafeArea(
           bottom: false,
           child: RefreshIndicator(
-            onRefresh: _refresh,
+            onRefresh: () => _refresh(showFeedback: true),
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.only(bottom: 24),
@@ -183,11 +214,21 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                     Expanded(flex: 4, child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                       _HeaderControl(icon: Icons.translate, label: l10n.settingsLanguage.toUpperCase(),
                         value: LocaleNotifier.localeNames[locale.languageCode] ?? locale.languageCode,
-                        ink: Colors.white, surface: Colors.white.withValues(alpha: 0.12), onTap: _language),
+                        flag: switch (locale.languageCode) {
+                          'rw' => '🇷🇼',
+                          'fr' => '🇫🇷',
+                          'en' => '🇬🇧',
+                          _ => null,
+                        },
+                        ink: Colors.white, surface: Colors.white.withValues(alpha: 0.12), onTap: _language,
+                        onRefresh: () => _refresh(showFeedback: true), refreshing: _refreshing,
+                        refreshLabel: l10n.dashboardRefresh),
                       const SizedBox(height: 8),
                       _HeaderControl(icon: Icons.notifications_none_rounded, label: l10n.dashboardNotices,
                         unread: notices?.asData?.value.unreadCount ?? 0, ink: Colors.white, surface: Colors.white.withValues(alpha: 0.12),
-                        onTap: user == null ? null : () => _notices(user.id)),
+                        onTap: () => _instructions(user?.id),
+                        onRefresh: () => _refresh(showFeedback: true), refreshing: _refreshing,
+                        refreshLabel: l10n.dashboardRefresh),
                     ])),
                   ]),
                   ),
@@ -292,30 +333,54 @@ class _HeaderControl extends StatelessWidget {
   final IconData icon;
   final String label;
   final String? value;
+  final String? flag;
   final int unread;
   final Color ink;
   final Color surface;
   final VoidCallback? onTap;
-  const _HeaderControl({required this.icon, required this.label, this.value, this.unread = 0,
-    required this.ink, required this.surface, required this.onTap});
+  final VoidCallback onRefresh;
+  final bool refreshing;
+  final String refreshLabel;
+  const _HeaderControl({required this.icon, required this.label, this.value, this.flag, this.unread = 0,
+    required this.ink, required this.surface, required this.onTap,
+    required this.onRefresh, required this.refreshing, required this.refreshLabel});
 
   @override
-  Widget build(BuildContext context) => OutlinedButton(
+  Widget build(BuildContext context) => Row(children: [
+    Expanded(child: OutlinedButton(
     onPressed: onTap,
     style: OutlinedButton.styleFrom(foregroundColor: ink, backgroundColor: surface,
-      minimumSize: const Size(48, 48), padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 8),
+      minimumSize: const Size(48, 48), padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
       side: BorderSide(color: ink.withValues(alpha: 0.5)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-    child: Column(children: [
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Badge(isLabelVisible: unread > 0, label: Text('$unread'),
-          child: Icon(icon, size: 17)),
-        const SizedBox(width: 6),
-        Flexible(child: Text(label, textAlign: TextAlign.center, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800))),
-      ]),
-      if (value != null) ...[const SizedBox(height: 4), Text(value!, textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600))],
+    child: Row(children: [
+      Expanded(child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Wrap(alignment: WrapAlignment.center, crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 4, runSpacing: 2, children: [
+          Badge(isLabelVisible: unread > 0, label: Text('$unread'),
+            child: flag == null
+              ? Icon(icon, size: 15)
+              : ExcludeSemantics(child: Text(flag!,
+                  key: const ValueKey('dashboard-language-flag'),
+                  textScaler: TextScaler.noScaling,
+                  style: const TextStyle(fontSize: 17, height: 1)))),
+          Text(label, textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800)),
+        ]),
+        if (value != null) ...[const SizedBox(height: 2), Text(value!, textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600))],
+      ])),
     ]),
-  );
+    )),
+    IconButton(
+      tooltip: refreshLabel,
+      onPressed: refreshing ? null : onRefresh,
+      color: ink,
+      constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+      icon: refreshing
+        ? SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: ink))
+        : const Icon(Icons.refresh_rounded, size: 22),
+    ),
+  ]);
 }
 
 class _SubscriptionBanner extends ConsumerWidget {

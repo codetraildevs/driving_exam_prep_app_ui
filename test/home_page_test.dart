@@ -18,11 +18,16 @@ import 'package:traffic_rule_in_rwanda/shared/subscription/subscription_notifier
 
 class _Subscription extends SubscriptionNotifier {
   final SubscriptionState initial;
-  _Subscription(this.initial);
+  final SubscriptionState? refreshed;
+  int calls = 0;
+  _Subscription(this.initial, this.refreshed);
   @override
   SubscriptionState build() => initial;
   @override
-  Future<void> refreshStatus(String userId) async {}
+  Future<void> refreshStatus(String userId) async {
+    calls++;
+    if (calls > 1 && refreshed != null) state = refreshed!;
+  }
 }
 
 class _Locale extends LocaleNotifier {
@@ -38,6 +43,7 @@ Future<void> _pump(WidgetTester tester, {
   double scale = 1,
   SubscriptionState sub = const SubscriptionState(hasLoaded: true),
   DashboardNotices notices = const DashboardNotices([]),
+  SubscriptionState? refreshed,
 }) async {
   SharedPreferences.setMockInitialValues({});
   GoogleFonts.config.allowRuntimeFetching = false;
@@ -60,7 +66,7 @@ Future<void> _pump(WidgetTester tester, {
   });
   await tester.pumpWidget(BlocProvider<AuthBloc>.value(value: bloc,
     child: ProviderScope(overrides: [
-      subscriptionProvider.overrideWith(() => _Subscription(sub)),
+      subscriptionProvider.overrideWith(() => _Subscription(sub, refreshed)),
       localeProvider.overrideWith(() => _Locale(language)),
       dashboardNoticesProvider('u1').overrideWith((ref) async => notices),
     ], child: Consumer(builder: (context, ref, _) => MaterialApp.router(
@@ -161,6 +167,10 @@ void main() {
     expect(find.text('1'), findsOneWidget);
     await tester.tap(find.text('NOTICES'));
     await tester.pumpAndSettle();
+    final notifications = find.text('Notifications');
+    await tester.ensureVisible(notifications);
+    await tester.tap(notifications);
+    await tester.pumpAndSettle();
     expect(find.text('Test notice'), findsOneWidget);
     expect(find.text('Details'), findsOneWidget);
   });
@@ -189,5 +199,52 @@ void main() {
     expect(whatsapp.path, '/250788659575');
     expect(whatsapp.queryParameters['text'], l10n.paymentWhatsAppMessage);
   });
+
+  testWidgets('refresh arrows recheck shared access without navigating away', (tester) async {
+    await _pump(tester, language: 'en', refreshed: SubscriptionState(
+      hasLoaded: true, hasActiveAccess: true,
+      expiresAt: DateTime.now().add(const Duration(days: 30)), paymentTier: '1_MONTH'));
+    final container = ProviderScope.containerOf(tester.element(find.byType(HomePage)));
+    expect(container.read(subscriptionProvider).hasActiveAccess, isFalse);
+    final refresh = find.byTooltip('Refresh app access');
+    expect(refresh, findsNWidgets(2));
+    await tester.tap(refresh.first);
+    await tester.pumpAndSettle();
+    expect(container.read(subscriptionProvider).hasActiveAccess, isTrue);
+    expect(find.text('Duration: 1 Month'), findsOneWidget);
+    expect(find.text('Access status refreshed.'), findsOneWidget);
+    expect(find.byType(HomePage), findsOneWidget);
+  });
+
+  testWidgets('failed refresh reports failure and retains known access', (tester) async {
+    await _pump(tester, language: 'en',
+      sub: const SubscriptionState(hasLoaded: true, hasActiveAccess: true),
+      refreshed: const SubscriptionState(hasLoaded: true, hasActiveAccess: true, hasError: true));
+    await tester.tap(find.byTooltip('Refresh app access').last);
+    await tester.pumpAndSettle();
+    expect(find.text('Could not refresh access. Check your internet connection and try again.'), findsOneWidget);
+    final container = ProviderScope.containerOf(tester.element(find.byType(HomePage)));
+    expect(container.read(subscriptionProvider).hasActiveAccess, isTrue);
+  });
+
+  for (final language in ['rw', 'fr', 'en']) {
+    testWidgets('instructions page is localized and readable in $language', (tester) async {
+      await _pump(tester, language: language, size: const Size(320, 740), scale: 1.6);
+      final l10n = AppLocalizations.of(tester.element(find.byType(HomePage)));
+      await tester.tap(find.text(l10n.dashboardNotices));
+      await tester.pumpAndSettle();
+      expect(find.text(l10n.guideWelcome), findsOneWidget);
+      for (final title in [l10n.guideAboutTitle, l10n.guideUseTitle, l10n.guideExamTitle,
+        l10n.guidePaymentTitle, l10n.guideOpenAccess]) {
+        final target = find.text(title);
+        await tester.ensureVisible(target);
+        expect(target, findsOneWidget);
+      }
+      expect(tester.takeException(), isNull);
+      await tester.tap(find.text(l10n.guideOpenAccess));
+      await tester.pumpAndSettle();
+      expect(find.text('route-subscription'), findsOneWidget);
+    });
+  }
 
 }

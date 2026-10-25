@@ -3123,6 +3123,34 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Online services'**
   String get dashboardIremboSubtitle;
+
+  String get guideTitle;
+
+  String get guideWelcome;
+
+  String get guideAboutTitle;
+
+  String get guideAboutBody;
+
+  String get guideUseTitle;
+
+  String get guideUseBody;
+
+  String get guideExamTitle;
+
+  String get guideExamBody;
+
+  String get guidePaymentTitle;
+
+  String get guidePaymentBody;
+
+  String get guideOpenAccess;
+
+  String get dashboardRefresh;
+
+  String get dashboardRefreshDone;
+
+  String get dashboardRefreshFailed;
 }
 
 class _AppLocalizationsDelegate

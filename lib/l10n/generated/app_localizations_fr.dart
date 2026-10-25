@@ -1704,4 +1704,46 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dashboardIremboSubtitle => 'Services en ligne';
+
+  @override
+  String get guideTitle => 'Instructions';
+
+  @override
+  String get guideWelcome => 'Bienvenue sur RWANDA TRAFFIC RULE';
+
+  @override
+  String get guideAboutTitle => '1. À propos de l’application';
+
+  @override
+  String get guideAboutBody => 'RWANDA TRAFFIC RULE vous aide à apprendre le code de la route et à préparer l’examen du permis provisoire grâce à des questions d’entraînement.';
+
+  @override
+  String get guideUseTitle => '2. Comment utiliser l’application';
+
+  @override
+  String get guideUseBody => '1. Lors de votre première visite, inscrivez-vous avec votre nom complet et votre numéro de téléphone.\n\n2. Si vous avez déjà un compte, choisissez Se connecter et saisissez votre numéro enregistré. Suivez les éventuelles étapes supplémentaires de connexion.\n\n3. Ouvrez Entraînement depuis l’accueil et choisissez un examen. Les examens gratuits sont accessibles sans abonnement ; les examens verrouillés nécessitent un accès actif.\n\n4. Choisissez une réponse et consultez la correction. Le vert indique une bonne réponse et le rouge une mauvaise réponse. Passez à la question suivante, terminez l’examen pour voir votre score et consultez vos résultats dans Progression.';
+
+  @override
+  String get guideExamTitle => '3. Préparer l’examen sur ordinateur';
+
+  @override
+  String get guideExamBody => 'Les questions d’entraînement vous habituent à lire les questions et à choisir des réponses à l’écran. Pendant l’examen officiel, suivez les consignes pour passer d’une question à l’autre et soumettre vos réponses.\n\nLes corrections vous aident à apprendre. Les questions, la durée et les corrections de l’examen officiel peuvent différer ; cette application ne garantit pas un contenu identique.';
+
+  @override
+  String get guidePaymentTitle => '4. Paiement et accès aux examens';
+
+  @override
+  String get guidePaymentBody => '1. Appuyez sur la bannière d’accès de l’accueil ou sur un examen verrouillé pour ouvrir la page d’accès aux examens.\n\n2. Choisissez 1, 3 ou 6 mois. L’application sélectionne d’abord 1 mois en kinyarwanda et 3 mois en anglais ou en français. Le montant en RWF change avec la durée ; le tarif dépend de la langue de l’application.\n\n3. MoMo Pay est sélectionné par défaut. Vous pouvez choisir MTN ou Tigo. Vérifiez le titulaire affiché : Alexis pour MoMo Pay, ou NSHIMIYIMANA Alexis pour MTN et Tigo. Comparez ce nom avec celui affiché sur votre téléphone avant de confirmer.\n\n4. Appuyez sur PAYER MAINTENANT pour copier le code USSD complet et ouvrir le composeur. Terminez le paiement sur votre téléphone. L’icône de copie permet aussi de copier le code et de le composer manuellement.\n\n5. Après le paiement, utilisez les boutons d’appel ou WhatsApp de la rubrique Besoin d’aide pour demander l’activation avec votre numéro enregistré dans l’application. Ouvrir le composeur ou copier le code n’active pas les examens.\n\n6. Une fois l’accès actif attribué à votre compte par un administrateur, revenez à l’accueil avec Internet et appuyez sur une flèche circulaire. La bannière se met à jour et les examens payants deviennent accessibles. Aucun code n’est à saisir sur cette page. L’application vérifie aussi l’accès à l’ouverture de l’accueil, à votre retour dans l’application et régulièrement lorsque l’accueil est actif.\n\n7. Si les examens restent verrouillés, vérifiez que l’assistance a utilisé votre numéro enregistré et que l’accès n’a pas expiré. Contactez l’assistance avec les boutons ci-dessous.';
+
+  @override
+  String get guideOpenAccess => 'Voir les offres et payer';
+
+  @override
+  String get dashboardRefresh => 'Actualiser l’accès';
+
+  @override
+  String get dashboardRefreshDone => 'État de l’accès actualisé.';
+
+  @override
+  String get dashboardRefreshFailed => 'Impossible d’actualiser l’accès. Vérifiez votre connexion Internet et réessayez.';
 }
