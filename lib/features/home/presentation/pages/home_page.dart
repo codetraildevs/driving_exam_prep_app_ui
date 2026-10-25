@@ -354,16 +354,17 @@ class _HeaderControl extends StatelessWidget {
       side: BorderSide(color: ink.withValues(alpha: 0.5)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
     child: Row(children: [
       Expanded(child: Column(mainAxisSize: MainAxisSize.min, children: [
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Wrap(alignment: WrapAlignment.center, crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 4, runSpacing: 2, children: [
           Badge(isLabelVisible: unread > 0, label: Text('$unread'),
             child: flag == null
               ? Icon(icon, size: 15)
               : ExcludeSemantics(child: Text(flag!,
                   key: const ValueKey('dashboard-language-flag'),
+                  textScaler: TextScaler.noScaling,
                   style: const TextStyle(fontSize: 17, height: 1)))),
-          const SizedBox(width: 4),
-          Flexible(child: Text(label, textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800))),
+          Text(label, textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800)),
         ]),
         if (value != null) ...[const SizedBox(height: 2), Text(value!, textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600))],
