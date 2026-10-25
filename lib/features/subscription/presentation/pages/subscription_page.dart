@@ -526,7 +526,7 @@ class _PlanCard extends StatelessWidget {
     final tier = plan['tier'] as String;
     final selected = selectedTier == tier;
     final theme = Theme.of(context);
-    return Padding(padding: const EdgeInsets.only(bottom: 8),
+    return Padding(padding: const EdgeInsets.only(bottom: 6),
       child: Semantics(selected: selected, button: true,
         child: Material(color: theme.colorScheme.surface,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16),
@@ -535,20 +535,20 @@ class _PlanCard extends StatelessWidget {
             onTap: onSelect == null ? null : () => onSelect!(tier),
             borderRadius: BorderRadius.circular(16),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(selected ? Icons.radio_button_checked : Icons.radio_button_off,
                     color: selected ? AppColors.primary : AppColors.textSecondary),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 2),
                   Text(plan['label'] as String, style: AppTextStyles.heading6,
                     textAlign: TextAlign.center),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   Text(l10n.subscriptionDays(plan['durationDays'] as int),
                     style: AppTextStyles.bodySmall, textAlign: TextAlign.center),
                   if (plan['popular'] == true) ...[
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     Text(l10n.subscriptionPopular, textAlign: TextAlign.center,
                       style: AppTextStyles.bodySmall.copyWith(
                         color: AppColors.success, fontWeight: FontWeight.w600)),
