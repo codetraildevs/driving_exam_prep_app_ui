@@ -1991,7 +1991,7 @@
   "paymentCodeCopied": "Kode yakoporowe",
   "paymentCopyFailed": "Kode ntiyakoporowe. Ongera ugerageze cyangwa uyikoporore ubwawe.",
   "paymentUssdInstruction": "Koporora iyi kode uyikoreshe kuri telefoni yawe kugira ngo wishyure.",
-  "paymentPayNow": "ISHYURA UBU",
+  "paymentPayNow": "Kanda hano wishyure",
   "paymentIntegrationPending": "Amakuru yo kwishyura yateguwe. Uburyo bwo gutangiza ubwishyu ntiburahuzwa; nta bwishyu bwemejwe.",
   "paymentPreparationFailed": "Ntibishobotse gutegura ubwishyu. Ongera ugerageze.",
   "@paymentAmountToPay": {

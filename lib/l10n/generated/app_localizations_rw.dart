@@ -1672,7 +1672,7 @@ class AppLocalizationsRw extends AppLocalizations {
       'Koporora iyi kode uyikoreshe kuri telefoni yawe kugira ngo wishyure.';
 
   @override
-  String get paymentPayNow => 'ISHYURA UBU';
+  String get paymentPayNow => 'Kanda hano wishyure';
 
   @override
   String get paymentIntegrationPending =>

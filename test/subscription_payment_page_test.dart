@@ -57,6 +57,14 @@ void main() {
   for (final language in ['rw', 'fr', 'en']) {
     testWidgets('localized payment page has no overflow at large text: $language', (tester) async {
       await pumpPage(tester, language: language, scale: 1.6);
+      final initialTier = language == 'rw' ? '1_MONTH' : '3_MONTHS';
+      final selectedCard = find.ancestor(
+        of: find.byKey(ValueKey('plan-$initialTier')),
+        matching: find.byWidgetPredicate((widget) =>
+          widget is Semantics && widget.properties.selected == true),
+      );
+      expect(selectedCard, findsOneWidget);
+      if (language == 'rw') expect(find.text('Kanda hano wishyure'), findsOneWidget);
       final cards = ['1_MONTH', '3_MONTHS', '6_MONTHS']
           .map((tier) => tester.getRect(find.byKey(ValueKey('plan-$tier')))).toList();
       expect(cards[0].top, cards[1].top);
@@ -65,7 +73,7 @@ void main() {
       expect(cards[1].right, lessThan(cards[2].left));
       expect(cards[0].width, closeTo(cards[2].width, 0.01));
       await tapKey(tester, 'payment-method-momoPay');
-      expect(find.text('*182*8*1*123456*${language == 'rw' ? 3000 : 5000}#'), findsOneWidget);
+      expect(find.text('*182*8*1*123456*${language == 'rw' ? 1500 : 5000}#'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   }

@@ -37,6 +37,18 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
   SubscriptionDuration _duration = SubscriptionDuration.threeMonths;
   PaymentMethod? _paymentMethod;
   bool _preparing = false;
+  bool _initialPlanSelected = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialPlanSelected) {
+      _duration = _examLanguage == ExamLanguage.rw
+          ? SubscriptionDuration.oneMonth
+          : SubscriptionDuration.threeMonths;
+      _initialPlanSelected = true;
+    }
+  }
 
   PreparedPayment? get _prepared => PreparedPayment.tryCreate(
     examLanguage: _examLanguage, duration: _duration, method: _paymentMethod,
@@ -237,27 +249,23 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                         Text(l10n.paymentNotConfigured, key: const ValueKey('payment-validation'), style: AppTextStyles.bodySmall),
                     ] else ...[
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface,
                           border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
-                          borderRadius: BorderRadius.circular(16)),
-                        child: LayoutBuilder(builder: (context, constraints) {
-                          final code = Semantics(label: l10n.paymentUssdLabel,
+                          borderRadius: BorderRadius.circular(12)),
+                        child: Row(children: [
+                          Expanded(child: Semantics(label: l10n.paymentUssdLabel,
                             child: SelectableText(payment.ussdCode, key: const ValueKey('payment-ussd'),
-                              style: AppTextStyles.bodyLarge));
-                          final copy = TextButton.icon(
+                              style: AppTextStyles.bodyLarge))),
+                          const SizedBox(width: 4),
+                          IconButton(
                             key: const ValueKey('copy-payment-code'),
+                            tooltip: l10n.paymentCopyCode,
                             onPressed: _preparing ? null : _copyCode,
-                            icon: const Icon(Icons.copy_outlined), label: Text(l10n.paymentCopyCode),
-                            style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
-                          );
-                          if (constraints.maxWidth < 420 || MediaQuery.textScalerOf(context).scale(1) > 1.3) {
-                            return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                              code, const SizedBox(height: 4), Align(alignment: Alignment.centerRight, child: copy),
-                            ]);
-                          }
-                          return Row(children: [Expanded(child: code), const SizedBox(width: 8), copy]);
-                        }),
+                            icon: const Icon(Icons.copy_outlined, size: 20),
+                            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                          ),
+                        ]),
                       ),
                       const SizedBox(height: 8),
                       Text(l10n.paymentUssdInstruction, style: AppTextStyles.bodySmall),
