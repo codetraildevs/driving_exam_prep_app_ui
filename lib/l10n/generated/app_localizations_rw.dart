@@ -1681,4 +1681,10 @@ class AppLocalizationsRw extends AppLocalizations {
   @override
   String get paymentPreparationFailed =>
       'Ntibishobotse gutegura ubwishyu. Ongera ugerageze.';
+
+  @override
+  String paymentRecipient(String name) => 'Uwakira amafaranga: $name';
+
+  @override
+  String get paymentVerifyRecipient => 'Mbere yo kwemeza kwishyura, genzura ko izina ry\'uwakira amafaranga rigaragara kuri telefoni yawe rihuye n\'iryanditse hano. Niba bidahuye, ntukomeze.';
 }

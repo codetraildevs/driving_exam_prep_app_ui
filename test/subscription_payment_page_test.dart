@@ -74,6 +74,17 @@ void main() {
       expect(cards[0].width, closeTo(cards[2].width, 0.01));
       expect(tester.widget<ChoiceChip>(find.byKey(const ValueKey('payment-method-momoPay'))).selected, isTrue);
       expect(find.text('*182*8*1*123456*${language == 'rw' ? 1500 : 5000}#'), findsOneWidget);
+      final l10n = AppLocalizations.of(tester.element(find.byType(SubscriptionPage)));
+      expect(find.text(l10n.paymentRecipient('Alexis')), findsOneWidget);
+      expect(find.text(l10n.paymentVerifyRecipient), findsOneWidget);
+      for (final method in ['mtn', 'tigo']) {
+        await tapKey(tester, 'payment-method-$method');
+        expect(find.text(l10n.paymentRecipient('NSHIMIYIMANA Alexis')), findsOneWidget);
+        expect(find.text(l10n.paymentRecipient('Alexis')), findsNothing);
+        expect(tester.takeException(), isNull);
+      }
+      await tapKey(tester, 'payment-method-momoPay');
+      expect(find.text(l10n.paymentRecipient('Alexis')), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   }

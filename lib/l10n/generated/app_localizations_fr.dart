@@ -1689,4 +1689,10 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get paymentPreparationFailed =>
       'Impossible de préparer le paiement. Veuillez réessayer.';
+
+  @override
+  String paymentRecipient(String name) => 'Bénéficiaire : $name';
+
+  @override
+  String get paymentVerifyRecipient => 'Avant de confirmer le paiement, vérifiez que le nom du bénéficiaire affiché sur votre téléphone correspond au nom indiqué ici. Sinon, ne poursuivez pas.';
 }

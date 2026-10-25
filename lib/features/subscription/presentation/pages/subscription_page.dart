@@ -146,6 +146,11 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
     final subscription = ref.watch(subscriptionProvider);
     final plans = _getPlans(l10n);
     final payment = _prepared;
+    final recipient = switch (_paymentMethod) {
+      PaymentMethod.momoPay => 'Alexis',
+      PaymentMethod.mtn || PaymentMethod.tigo => 'NSHIMIYIMANA Alexis',
+      null => null,
+    };
     final hasConfiguredMethod = PaymentMethod.values.any((method) => PreparedPayment.tryCreate(
       examLanguage: _examLanguage, duration: _duration, method: method,
       configuration: widget.paymentConfiguration,
@@ -243,6 +248,32 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                       );
                     }).toList()),
                     const SizedBox(height: 12),
+                    if (recipient != null) ...[
+                      Semantics(
+                        liveRegion: true,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.06),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(l10n.paymentRecipient(recipient),
+                                key: const ValueKey('payment-recipient'),
+                                style: AppTextStyles.heading6),
+                              const SizedBox(height: 4),
+                              Text(l10n.paymentVerifyRecipient,
+                                key: const ValueKey('payment-recipient-caution'),
+                                style: AppTextStyles.bodySmall),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
                     if (payment == null) ...[
                       if (_paymentMethod == null) Text(l10n.paymentChooseMethod, style: AppTextStyles.bodySmall),
                       if (_paymentMethod != null || !hasConfiguredMethod)

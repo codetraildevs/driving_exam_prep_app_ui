@@ -3099,6 +3099,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unable to prepare payment. Please try again.'**
   String get paymentPreparationFailed;
+
+  /// Expected recipient for the selected payment method.
+  String paymentRecipient(String name);
+
+  /// Reminder to verify the recipient before confirming payment.
+  String get paymentVerifyRecipient;
 }
 
 class _AppLocalizationsDelegate
