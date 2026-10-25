@@ -110,7 +110,8 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _promptRecovery(String phoneNumber) async {
     if (_isRecoveryDialogOpen || !mounted) return;
     _isRecoveryDialogOpen = true;
-    final nameController = TextEditingController();
+    // The TextField owns its controller until the dialog finishes unmounting.
+    var recoveryName = '';
     try {
       final confirmed = await showDialog<bool>(
         context: context,
@@ -118,6 +119,7 @@ class _LoginPageState extends State<LoginPage> {
         builder: (ctx) {
           return AlertDialog(
             title: const Text('Recover account on this device'),
+            scrollable: true,
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -126,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 12),
                 TextField(
-                  controller: nameController,
+                  onChanged: (value) => recoveryName = value,
                   textCapitalization: TextCapitalization.words,
                   decoration: const InputDecoration(
                     labelText: 'Full name',
@@ -149,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (confirmed == true && mounted) {
-        final fullName = nameController.text.trim();
+        final fullName = recoveryName.trim();
         if (fullName.length < 2) {
           _showError('Please enter your full name to recover this account.');
           return;
@@ -162,7 +164,6 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     } finally {
-      nameController.dispose();
       _isRecoveryDialogOpen = false;
     }
   }
