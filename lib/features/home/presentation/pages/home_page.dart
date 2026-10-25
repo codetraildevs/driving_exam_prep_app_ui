@@ -183,6 +183,12 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                     Expanded(flex: 4, child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                       _HeaderControl(icon: Icons.translate, label: l10n.settingsLanguage.toUpperCase(),
                         value: LocaleNotifier.localeNames[locale.languageCode] ?? locale.languageCode,
+                        flag: switch (locale.languageCode) {
+                          'rw' => '🇷🇼',
+                          'fr' => '🇫🇷',
+                          'en' => '🇬🇧',
+                          _ => null,
+                        },
                         ink: Colors.white, surface: Colors.white.withValues(alpha: 0.12), onTap: _language),
                       const SizedBox(height: 8),
                       _HeaderControl(icon: Icons.notifications_none_rounded, label: l10n.dashboardNotices,
@@ -292,28 +298,38 @@ class _HeaderControl extends StatelessWidget {
   final IconData icon;
   final String label;
   final String? value;
+  final String? flag;
   final int unread;
   final Color ink;
   final Color surface;
   final VoidCallback? onTap;
-  const _HeaderControl({required this.icon, required this.label, this.value, this.unread = 0,
+  const _HeaderControl({required this.icon, required this.label, this.value, this.flag, this.unread = 0,
     required this.ink, required this.surface, required this.onTap});
 
   @override
   Widget build(BuildContext context) => OutlinedButton(
     onPressed: onTap,
     style: OutlinedButton.styleFrom(foregroundColor: ink, backgroundColor: surface,
-      minimumSize: const Size(48, 48), padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 8),
+      minimumSize: const Size(48, 48), padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
       side: BorderSide(color: ink.withValues(alpha: 0.5)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-    child: Column(children: [
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Badge(isLabelVisible: unread > 0, label: Text('$unread'),
-          child: Icon(icon, size: 17)),
-        const SizedBox(width: 6),
-        Flexible(child: Text(label, textAlign: TextAlign.center, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800))),
-      ]),
-      if (value != null) ...[const SizedBox(height: 4), Text(value!, textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600))],
+    child: Row(children: [
+      Expanded(child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Badge(isLabelVisible: unread > 0, label: Text('$unread'),
+            child: flag == null
+              ? Icon(icon, size: 15)
+              : ExcludeSemantics(child: Text(flag!,
+                  key: const ValueKey('dashboard-language-flag'),
+                  style: const TextStyle(fontSize: 17, height: 1)))),
+          const SizedBox(width: 4),
+          Flexible(child: Text(label, textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800))),
+        ]),
+        if (value != null) ...[const SizedBox(height: 2), Text(value!, textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600))],
+      ])),
+      const SizedBox(width: 4),
+      const ExcludeSemantics(child: Icon(Icons.change_circle_outlined, size: 16)),
     ]),
   );
 }
