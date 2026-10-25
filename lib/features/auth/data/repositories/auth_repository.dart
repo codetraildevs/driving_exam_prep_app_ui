@@ -56,7 +56,6 @@ class AuthRepository {
       final loginData = await _api.post(
         ApiEndpoints.authLogin,
         body: {
-          if (ownerPassword != null) 'ownerPassword': ownerPassword,
           'phoneNumber': phoneNumber,
           'deviceId': deviceId,
         },
