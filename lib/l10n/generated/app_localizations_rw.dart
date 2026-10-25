@@ -1566,6 +1566,7 @@ class AppLocalizationsRw extends AppLocalizations {
   @override
   String get consentIndependentBody =>
       'Iyi ni porogaramu y\'uburezi yigenga. Ntabwo yunganirwa, ishyigikirwa cyangwa ihagarariye urwego rwa leta cyangwa Polisi y\'u Rwanda.';
+
   @override
   String get dashboardWelcome => 'Murakaza neza';
 
@@ -1588,7 +1589,8 @@ class AppLocalizationsRw extends AppLocalizations {
   String get dashboardLoading => 'Turimo gushaka amakuru y’uburenganzira…';
 
   @override
-  String get dashboardSubscriptionUnavailable => 'Amakuru y’uburenganzira ntaboneka. Manura urupapuro wongere ugerageze.';
+  String get dashboardSubscriptionUnavailable =>
+      'Amakuru y’uburenganzira ntaboneka. Manura urupapuro wongere ugerageze.';
 
   @override
   String get dashboardExpired => 'Uburenganzira bwo kwiga bwararangiye';
@@ -1597,13 +1599,17 @@ class AppLocalizationsRw extends AppLocalizations {
   String get dashboardDurationUnavailable => 'Ntibizwi';
 
   @override
-  String dashboardDuration(String duration) => 'Igihe: $duration';
+  String dashboardDuration(String duration) {
+    return 'Igihe: $duration';
+  }
 
   @override
-  String get dashboardCached => 'Amakuru yabitswe · manura urupapuro uyavugurure';
+  String get dashboardCached =>
+      'Amakuru yabitswe · manura urupapuro uyavugurure';
 
   @override
-  String get dashboardNoticesUnavailable => 'Amabwiriza ntaboneka ubu. Ongera ugerageze nyuma.';
+  String get dashboardNoticesUnavailable =>
+      'Amabwiriza ntaboneka ubu. Ongera ugerageze nyuma.';
 
   @override
   String get dashboardNoNotices => 'Nta mabwiriza arahari';
@@ -1627,15 +1633,20 @@ class AppLocalizationsRw extends AppLocalizations {
   String get dashboardExamsLocked => 'Ibizamini ntibifunguye';
 
   @override
-  String get dashboardRequestExamAccess => 'Kanda hano usabe ko ibizamini bifunguka';
+  String get dashboardRequestExamAccess =>
+      'Kanda hano usabe ko ibizamini bifunguka';
+
   @override
   String get paymentExamLanguage => 'Ururimi rw’ibizamini';
 
   @override
-  String get paymentExamLanguageHint => 'Hitamo ururimi rw’ibizamini. Ibi ntibihindura ururimi rwa porogaramu.';
+  String get paymentExamLanguageHint =>
+      'Hitamo ururimi rw’ibizamini. Ibi ntibihindura ururimi rwa porogaramu.';
 
   @override
-  String paymentAmountToPay(String amount) => 'Amafaranga yo kwishyura: $amount RWF';
+  String paymentAmountToPay(String amount) {
+    return 'Amafaranga yo kwishyura: $amount RWF';
+  }
 
   @override
   String get paymentMethodLabel => 'Uburyo bwo kwishyura';
@@ -1653,18 +1664,21 @@ class AppLocalizationsRw extends AppLocalizations {
   String get paymentCodeCopied => 'Kode yakoporowe';
 
   @override
-  String get paymentCopyFailed => 'Kode ntiyakoporowe. Ongera ugerageze cyangwa uyikoporore ubwawe.';
+  String get paymentCopyFailed =>
+      'Kode ntiyakoporowe. Ongera ugerageze cyangwa uyikoporore ubwawe.';
 
   @override
-  String get paymentUssdInstruction => 'Koporora iyi kode uyikoreshe kuri telefoni yawe kugira ngo wishyure.';
+  String get paymentUssdInstruction =>
+      'Koporora iyi kode uyikoreshe kuri telefoni yawe kugira ngo wishyure.';
 
   @override
   String get paymentPayNow => 'ISHYURA UBU';
 
   @override
-  String get paymentIntegrationPending => 'Amakuru yo kwishyura yateguwe. Uburyo bwo gutangiza ubwishyu ntiburahuzwa; nta bwishyu bwemejwe.';
+  String get paymentIntegrationPending =>
+      'Amakuru yo kwishyura yateguwe. Uburyo bwo gutangiza ubwishyu ntiburahuzwa; nta bwishyu bwemejwe.';
 
   @override
-  String get paymentPreparationFailed => 'Ntibishobotse gutegura ubwishyu. Ongera ugerageze.';
-
+  String get paymentPreparationFailed =>
+      'Ntibishobotse gutegura ubwishyu. Ongera ugerageze.';
 }

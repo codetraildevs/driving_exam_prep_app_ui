@@ -66,43 +66,6 @@ abstract class AppLocalizations {
   AppLocalizations(String locale)
     : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
-  String get dashboardWelcome;
-  String get dashboardNotices;
-  String get dashboardWhatsapp;
-  String get dashboardGazette;
-  String get dashboardShare;
-  String get dashboardProfileUnavailable;
-  String get dashboardLoading;
-  String get dashboardSubscriptionUnavailable;
-  String get dashboardExpired;
-  String get dashboardDurationUnavailable;
-  String dashboardDuration(String duration);
-  String get dashboardCached;
-  String get dashboardNoticesUnavailable;
-  String get dashboardNoNotices;
-  String get dashboardCopyLink;
-  String get dashboardLinkCopied;
-  String get dashboardOpenFailed;
-  String get dashboardComingSoon;
-  String get dashboardUnderDevelopment;
-
-  String get dashboardExamsLocked;
-  String get dashboardRequestExamAccess;
-
-  String get paymentExamLanguage;
-  String get paymentExamLanguageHint;
-  String paymentAmountToPay(String amount);
-  String get paymentMethodLabel;
-  String get paymentNotConfigured;
-  String get paymentUssdLabel;
-  String get paymentCopyCode;
-  String get paymentCodeCopied;
-  String get paymentCopyFailed;
-  String get paymentUssdInstruction;
-  String get paymentPayNow;
-  String get paymentIntegrationPending;
-  String get paymentPreparationFailed;
-
   final String localeName;
 
   static AppLocalizations of(BuildContext context) {
@@ -2932,6 +2895,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This is an independent educational tool. It is NOT affiliated with, endorsed by, or representing any government entity or the Rwanda National Police.'**
   String get consentIndependentBody;
+
+  /// No description provided for @dashboardWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get dashboardWelcome;
+
+  /// No description provided for @dashboardNotices.
+  ///
+  /// In en, this message translates to:
+  /// **'NOTICES'**
+  String get dashboardNotices;
+
+  /// No description provided for @dashboardWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp Group'**
+  String get dashboardWhatsapp;
+
+  /// No description provided for @dashboardGazette.
+  ///
+  /// In en, this message translates to:
+  /// **'NEW GAZETTE'**
+  String get dashboardGazette;
+
+  /// No description provided for @dashboardShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share App'**
+  String get dashboardShare;
+
+  /// No description provided for @dashboardProfileUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile unavailable'**
+  String get dashboardProfileUnavailable;
+
+  /// No description provided for @dashboardLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading subscription…'**
+  String get dashboardLoading;
+
+  /// No description provided for @dashboardSubscriptionUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription unavailable. Pull down to retry.'**
+  String get dashboardSubscriptionUnavailable;
+
+  /// No description provided for @dashboardExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your learning access has expired'**
+  String get dashboardExpired;
+
+  /// No description provided for @dashboardDurationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get dashboardDurationUnavailable;
+
+  /// Subscription duration displayed in the dashboard banner
+  ///
+  /// In en, this message translates to:
+  /// **'Duration: {duration}'**
+  String dashboardDuration(String duration);
+
+  /// No description provided for @dashboardCached.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved status · pull down to refresh'**
+  String get dashboardCached;
+
+  /// No description provided for @dashboardNoticesUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are unavailable right now. Please try again later.'**
+  String get dashboardNoticesUnavailable;
+
+  /// No description provided for @dashboardNoNotices.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get dashboardNoNotices;
+
+  /// No description provided for @dashboardCopyLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy link'**
+  String get dashboardCopyLink;
+
+  /// No description provided for @dashboardLinkCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied'**
+  String get dashboardLinkCopied;
+
+  /// No description provided for @dashboardOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to complete this action. Please try again.'**
+  String get dashboardOpenFailed;
+
+  /// No description provided for @dashboardComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get dashboardComingSoon;
+
+  /// No description provided for @dashboardUnderDevelopment.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is under development.'**
+  String get dashboardUnderDevelopment;
+
+  /// No description provided for @dashboardExamsLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Exams are locked'**
+  String get dashboardExamsLocked;
+
+  /// No description provided for @dashboardRequestExamAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap here to request exam access'**
+  String get dashboardRequestExamAccess;
+
+  /// No description provided for @paymentExamLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam language'**
+  String get paymentExamLanguage;
+
+  /// No description provided for @paymentExamLanguageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the language of your exams. This does not change the app language.'**
+  String get paymentExamLanguageHint;
+
+  /// Formatted amount due in RWF
+  ///
+  /// In en, this message translates to:
+  /// **'Amount to pay: {amount} RWF'**
+  String paymentAmountToPay(String amount);
+
+  /// No description provided for @paymentMethodLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment method'**
+  String get paymentMethodLabel;
+
+  /// No description provided for @paymentNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment details are not configured yet.'**
+  String get paymentNotConfigured;
+
+  /// No description provided for @paymentUssdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment USSD code'**
+  String get paymentUssdLabel;
+
+  /// No description provided for @paymentCopyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy code'**
+  String get paymentCopyCode;
+
+  /// No description provided for @paymentCodeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Code copied'**
+  String get paymentCodeCopied;
+
+  /// No description provided for @paymentCopyFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not copy the code. Please try again or copy it manually.'**
+  String get paymentCopyFailed;
+
+  /// No description provided for @paymentUssdInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy this code and dial it on your phone to make your payment.'**
+  String get paymentUssdInstruction;
+
+  /// No description provided for @paymentPayNow.
+  ///
+  /// In en, this message translates to:
+  /// **'PAY NOW'**
+  String get paymentPayNow;
+
+  /// No description provided for @paymentIntegrationPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment details are prepared. Payment initiation is not connected yet; no payment has been confirmed.'**
+  String get paymentIntegrationPending;
+
+  /// No description provided for @paymentPreparationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to prepare payment. Please try again.'**
+  String get paymentPreparationFailed;
 }
 
 class _AppLocalizationsDelegate

@@ -1571,6 +1571,7 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get consentIndependentBody =>
       'Ceci est un outil éducatif indépendant. Il n\'est PAS affilié, approuvé ou représentant d\'une entité gouvernementale ou de la Police Nationale du Rwanda.';
+
   @override
   String get dashboardWelcome => 'Bienvenue';
 
@@ -1593,7 +1594,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardLoading => 'Chargement de l’abonnement…';
 
   @override
-  String get dashboardSubscriptionUnavailable => 'Abonnement indisponible. Faites glisser vers le bas pour réessayer.';
+  String get dashboardSubscriptionUnavailable =>
+      'Abonnement indisponible. Faites glisser vers le bas pour réessayer.';
 
   @override
   String get dashboardExpired => 'Votre accès aux cours a expiré';
@@ -1602,13 +1604,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardDurationUnavailable => 'Non disponible';
 
   @override
-  String dashboardDuration(String duration) => 'Durée : $duration';
+  String dashboardDuration(String duration) {
+    return 'Durée : $duration';
+  }
 
   @override
-  String get dashboardCached => 'État enregistré · faites glisser pour actualiser';
+  String get dashboardCached =>
+      'État enregistré · faites glisser pour actualiser';
 
   @override
-  String get dashboardNoticesUnavailable => 'Les notifications sont indisponibles pour le moment. Réessayez plus tard.';
+  String get dashboardNoticesUnavailable =>
+      'Les notifications sont indisponibles pour le moment. Réessayez plus tard.';
 
   @override
   String get dashboardNoNotices => 'Aucune notification pour le moment';
@@ -1620,33 +1626,41 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardLinkCopied => 'Lien copié';
 
   @override
-  String get dashboardOpenFailed => 'Impossible de terminer cette action. Réessayez.';
+  String get dashboardOpenFailed =>
+      'Impossible de terminer cette action. Réessayez.';
 
   @override
   String get dashboardComingSoon => 'Bientôt disponible';
 
   @override
-  String get dashboardUnderDevelopment => 'Cette fonctionnalité est en cours de développement.';
+  String get dashboardUnderDevelopment =>
+      'Cette fonctionnalité est en cours de développement.';
 
   @override
   String get dashboardExamsLocked => 'Les examens sont verrouillés';
 
   @override
-  String get dashboardRequestExamAccess => 'Appuyez ici pour demander l’accès aux examens';
+  String get dashboardRequestExamAccess =>
+      'Appuyez ici pour demander l’accès aux examens';
+
   @override
   String get paymentExamLanguage => 'Langue des examens';
 
   @override
-  String get paymentExamLanguageHint => 'Choisissez la langue de vos examens. Cela ne change pas la langue de l’application.';
+  String get paymentExamLanguageHint =>
+      'Choisissez la langue de vos examens. Cela ne change pas la langue de l’application.';
 
   @override
-  String paymentAmountToPay(String amount) => 'Montant à payer : $amount RWF';
+  String paymentAmountToPay(String amount) {
+    return 'Montant à payer : $amount RWF';
+  }
 
   @override
   String get paymentMethodLabel => 'Mode de paiement';
 
   @override
-  String get paymentNotConfigured => 'Les coordonnées de paiement ne sont pas encore configurées.';
+  String get paymentNotConfigured =>
+      'Les coordonnées de paiement ne sont pas encore configurées.';
 
   @override
   String get paymentUssdLabel => 'Code USSD de paiement';
@@ -1658,18 +1672,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get paymentCodeCopied => 'Code copié';
 
   @override
-  String get paymentCopyFailed => 'Impossible de copier le code. Réessayez ou copiez-le manuellement.';
+  String get paymentCopyFailed =>
+      'Impossible de copier le code. Réessayez ou copiez-le manuellement.';
 
   @override
-  String get paymentUssdInstruction => 'Copiez ce code et composez-le sur votre téléphone pour effectuer le paiement.';
+  String get paymentUssdInstruction =>
+      'Copiez ce code et composez-le sur votre téléphone pour effectuer le paiement.';
 
   @override
   String get paymentPayNow => 'PAYER MAINTENANT';
 
   @override
-  String get paymentIntegrationPending => 'Les détails du paiement sont prêts. Le paiement n’est pas encore intégré ; aucun paiement n’a été confirmé.';
+  String get paymentIntegrationPending =>
+      'Les détails du paiement sont prêts. Le paiement n’est pas encore intégré ; aucun paiement n’a été confirmé.';
 
   @override
-  String get paymentPreparationFailed => 'Impossible de préparer le paiement. Veuillez réessayer.';
-
+  String get paymentPreparationFailed =>
+      'Impossible de préparer le paiement. Veuillez réessayer.';
 }
