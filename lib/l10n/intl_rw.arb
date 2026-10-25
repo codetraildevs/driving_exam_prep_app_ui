@@ -1949,5 +1949,32 @@
                     },
     "@exitAppNo":  {
                        "description":  "Cancel exit button"
-                   }
+                   },
+  "dashboardWelcome": "Murakaza neza",
+  "dashboardNotices": "AMABWIRIZA",
+  "dashboardWhatsapp": "WhatsApp Group",
+  "dashboardGazette": "IGAZETI NSHYA",
+  "dashboardShare": "Sangiza App",
+  "dashboardProfileUnavailable": "Amakuru ya konti ntaboneka",
+  "dashboardLoading": "Turimo gushaka amakuru y’uburenganzira…",
+  "dashboardSubscriptionUnavailable": "Amakuru y’uburenganzira ntaboneka. Manura urupapuro wongere ugerageze.",
+  "dashboardExpired": "Uburenganzira bwo kwiga bwararangiye",
+  "dashboardDurationUnavailable": "Ntibizwi",
+  "dashboardDuration": "Igihe: {duration}",
+  "dashboardCached": "Amakuru yabitswe · manura urupapuro uyavugurure",
+  "dashboardNoticesUnavailable": "Amabwiriza ntaboneka ubu. Ongera ugerageze nyuma.",
+  "dashboardNoNotices": "Nta mabwiriza arahari",
+  "dashboardCopyLink": "Koporora ihuza",
+  "dashboardLinkCopied": "Ihuza ryakoporowe",
+  "dashboardOpenFailed": "Ntibishobotse. Ongera ugerageze.",
+  "dashboardComingSoon": "Biraza vuba",
+  "dashboardUnderDevelopment": "Iyi serivisi iracyatunganywa.",
+  "@dashboardDuration": {
+    "description": "Subscription duration displayed in the dashboard banner",
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  }
 }

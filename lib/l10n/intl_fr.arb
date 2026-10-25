@@ -1949,5 +1949,32 @@
                     },
     "@exitAppNo":  {
                        "description":  "Cancel exit button"
-                   }
+                   },
+  "dashboardWelcome": "Bienvenue",
+  "dashboardNotices": "NOTIFICATIONS",
+  "dashboardWhatsapp": "Groupe WhatsApp",
+  "dashboardGazette": "NOUVEAU JOURNAL OFFICIEL",
+  "dashboardShare": "Partager l’application",
+  "dashboardProfileUnavailable": "Profil indisponible",
+  "dashboardLoading": "Chargement de l’abonnement…",
+  "dashboardSubscriptionUnavailable": "Abonnement indisponible. Faites glisser vers le bas pour réessayer.",
+  "dashboardExpired": "Votre accès aux cours a expiré",
+  "dashboardDurationUnavailable": "Non disponible",
+  "dashboardDuration": "Durée : {duration}",
+  "dashboardCached": "État enregistré · faites glisser pour actualiser",
+  "dashboardNoticesUnavailable": "Les notifications sont indisponibles pour le moment. Réessayez plus tard.",
+  "dashboardNoNotices": "Aucune notification pour le moment",
+  "dashboardCopyLink": "Copier le lien",
+  "dashboardLinkCopied": "Lien copié",
+  "dashboardOpenFailed": "Impossible de terminer cette action. Réessayez.",
+  "dashboardComingSoon": "Bientôt disponible",
+  "dashboardUnderDevelopment": "Cette fonctionnalité est en cours de développement.",
+  "@dashboardDuration": {
+    "description": "Subscription duration displayed in the dashboard banner",
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  }
 }

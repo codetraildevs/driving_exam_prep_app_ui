@@ -1566,4 +1566,61 @@ class AppLocalizationsRw extends AppLocalizations {
   @override
   String get consentIndependentBody =>
       'Iyi ni porogaramu y\'uburezi yigenga. Ntabwo yunganirwa, ishyigikirwa cyangwa ihagarariye urwego rwa leta cyangwa Polisi y\'u Rwanda.';
+  @override
+  String get dashboardWelcome => 'Murakaza neza';
+
+  @override
+  String get dashboardNotices => 'AMABWIRIZA';
+
+  @override
+  String get dashboardWhatsapp => 'WhatsApp Group';
+
+  @override
+  String get dashboardGazette => 'IGAZETI NSHYA';
+
+  @override
+  String get dashboardShare => 'Sangiza App';
+
+  @override
+  String get dashboardProfileUnavailable => 'Amakuru ya konti ntaboneka';
+
+  @override
+  String get dashboardLoading => 'Turimo gushaka amakuru y’uburenganzira…';
+
+  @override
+  String get dashboardSubscriptionUnavailable => 'Amakuru y’uburenganzira ntaboneka. Manura urupapuro wongere ugerageze.';
+
+  @override
+  String get dashboardExpired => 'Uburenganzira bwo kwiga bwararangiye';
+
+  @override
+  String get dashboardDurationUnavailable => 'Ntibizwi';
+
+  @override
+  String dashboardDuration(String duration) => 'Igihe: $duration';
+
+  @override
+  String get dashboardCached => 'Amakuru yabitswe · manura urupapuro uyavugurure';
+
+  @override
+  String get dashboardNoticesUnavailable => 'Amabwiriza ntaboneka ubu. Ongera ugerageze nyuma.';
+
+  @override
+  String get dashboardNoNotices => 'Nta mabwiriza arahari';
+
+  @override
+  String get dashboardCopyLink => 'Koporora ihuza';
+
+  @override
+  String get dashboardLinkCopied => 'Ihuza ryakoporowe';
+
+  @override
+  String get dashboardOpenFailed => 'Ntibishobotse. Ongera ugerageze.';
+
+  @override
+  String get dashboardComingSoon => 'Biraza vuba';
+
+  @override
+  String get dashboardUnderDevelopment => 'Iyi serivisi iracyatunganywa.';
+
 }

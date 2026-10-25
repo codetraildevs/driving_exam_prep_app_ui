@@ -3,129 +3,153 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traffic_rule_in_rwanda/features/auth/data/models/user_model.dart';
 import 'package:traffic_rule_in_rwanda/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:traffic_rule_in_rwanda/features/home/data/models/dashboard_notices.dart';
 import 'package:traffic_rule_in_rwanda/features/home/presentation/pages/home_page.dart';
 import 'package:traffic_rule_in_rwanda/l10n/generated/app_localizations.dart';
 import 'package:traffic_rule_in_rwanda/shared/locale/fallback_localizations.dart';
 import 'package:traffic_rule_in_rwanda/shared/locale/locale_notifier.dart';
-import 'package:traffic_rule_in_rwanda/shared/responsive/responsive_layout.dart';
+import 'package:traffic_rule_in_rwanda/shared/subscription/subscription_notifier.dart';
 
-UserModel _user() {
-  final now = DateTime.now();
-  return UserModel(
-    id: 'u1',
-    name: 'Test Driver',
-    phoneNumber: '0788123456',
-    role: 'USER',
-    createdAt: now,
-    updatedAt: now,
-  );
+class _Subscription extends SubscriptionNotifier {
+  final SubscriptionState initial;
+  _Subscription(this.initial);
+  @override
+  SubscriptionState build() => initial;
+  @override
+  Future<void> refreshStatus(String userId) async {}
 }
 
-Widget _buildApp(AuthBloc bloc) {
-  return BlocProvider<AuthBloc>.value(
-    value: bloc,
-    child: const ProviderScope(
-      child: MaterialApp(
-        locale: Locale('en'),
-        supportedLocales: LocaleNotifier.supportedLocales,
-        localizationsDelegates: [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          FallbackMaterialLocalizationsDelegate(),
-          FallbackCupertinoLocalizationsDelegate(),
-        ],
-        home: HomePage(),
-      ),
-    ),
-  );
+class _Locale extends LocaleNotifier {
+  final String code;
+  _Locale(this.code);
+  @override
+  LocaleState build() => LocaleState(locale: Locale(code));
 }
 
-Future<void> _pumpHome(WidgetTester tester, Size size) async {
+Future<void> _pump(WidgetTester tester, {
+  Size size = const Size(390, 844),
+  String language = 'rw',
+  double scale = 1,
+  SubscriptionState sub = const SubscriptionState(hasLoaded: true),
+  DashboardNotices notices = const DashboardNotices([]),
+}) async {
+  SharedPreferences.setMockInitialValues({});
   tester.view.physicalSize = size;
-  tester.view.devicePixelRatio = 1.0;
-  addTearDown(() {
+  tester.view.devicePixelRatio = 1;
+  final now = DateTime.now();
+  final bloc = AuthBloc()..emit(AuthAuthenticated(UserModel(id: 'u1', name: 'Test Driver',
+    phoneNumber: '0788123456', createdAt: now, updatedAt: now)));
+  final router = GoRouter(initialLocation: '/home', routes: [
+    GoRoute(path: '/home', builder: (_, __) => const HomePage()),
+    for (final path in ['practice', 'progress', 'subscription'])
+      GoRoute(path: '/$path', builder: (_, __) => Scaffold(body: Text('route-$path'))),
+  ]);
+  addTearDown(() async {
+    await tester.pumpWidget(const SizedBox.shrink());
+    router.dispose();
+    await bloc.close();
     tester.view.resetPhysicalSize();
     tester.view.resetDevicePixelRatio();
   });
-
-  final bloc = AuthBloc()..emit(AuthAuthenticated(_user()));
-  addTearDown(() => bloc.close());
-
-  await tester.pumpWidget(_buildApp(bloc));
-  // Let the subscription prefs load and the staggered card entrance
-  // animations (up to 80ms * index + 400ms) settle.
-  for (int i = 0; i < 12; i++) {
-    await tester.pump(const Duration(milliseconds: 100));
-  }
-}
-
-/// Width of the services grid, which stretches to the capped content width —
-/// a good proxy for how wide the home content is.
-double _gridWidth(WidgetTester tester) {
-  return tester.getSize(find.byType(GridView)).width;
-}
-
-/// Number of service card columns the responsive grid is configured with.
-int _gridColumns(WidgetTester tester) {
-  final grid = tester.widget<GridView>(find.byType(GridView));
-  final delegate =
-      grid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount;
-  return delegate.crossAxisCount;
+  await tester.pumpWidget(BlocProvider<AuthBloc>.value(value: bloc,
+    child: ProviderScope(overrides: [
+      subscriptionProvider.overrideWith(() => _Subscription(sub)),
+      localeProvider.overrideWith(() => _Locale(language)),
+      dashboardNoticesProvider('u1').overrideWith((ref) async => notices),
+    ], child: Consumer(builder: (context, ref, _) => MaterialApp.router(
+      routerConfig: router,
+      locale: ref.watch(localeProvider).effectiveLocale,
+      supportedLocales: LocaleNotifier.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate, GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate, GlobalWidgetsLocalizations.delegate,
+        FallbackMaterialLocalizationsDelegate(), FallbackCupertinoLocalizationsDelegate(),
+      ],
+      builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(scale)), child: child!),
+    ))),
+  ));
+  await tester.pumpAndSettle();
 }
 
 void main() {
-  setUp(() {
-    // SubscriptionNotifier + AuthBloc touch SharedPreferences asynchronously.
-    SharedPreferences.setMockInitialValues({});
+  for (final size in [const Size(320, 640), const Size(390, 844), const Size(1200, 900)]) {
+    for (final language in ['rw', 'en', 'fr']) {
+      testWidgets('six ordered cards and profile at $size in $language', (tester) async {
+        await _pump(tester, size: size, language: language);
+        final grid = tester.widget<GridView>(find.byType(GridView));
+        expect((grid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount).crossAxisCount, 2);
+        expect(find.text('Test Driver'), findsOneWidget);
+        expect(find.text('0788123456'), findsOneWidget);
+        final ids = ['practice', 'whatsapp', 'gazette', 'irembo', 'progress', 'share'];
+        final positions = ids.map((id) => tester.getTopLeft(find.byKey(ValueKey('shortcut-$id')))).toList();
+        for (var row = 0; row < 3; row++) {
+          expect(positions[row * 2].dy, positions[row * 2 + 1].dy);
+          expect(positions[row * 2].dx, lessThan(positions[row * 2 + 1].dx));
+          if (row > 0) expect(positions[row * 2].dy, greaterThan(positions[row * 2 - 2].dy));
+        }
+        expect(tester.getSize(find.byType(GridView)).width, lessThanOrEqualTo(720));
+        expect(tester.takeException(), isNull);
+      });
+    }
+  }
+
+  testWidgets('large text has no overflow on a narrow screen', (tester) async {
+    await _pump(tester, size: const Size(320, 640), language: 'fr', scale: 2);
+    expect(tester.takeException(), isNull);
   });
 
-  group('HomePage responsive content', () {
-    testWidgets(
-      'desktop width caps content at AppContentWidths.wide and centers it',
-      (tester) async {
-        await _pumpHome(tester, const Size(1400, 900));
+  testWidgets('active access rounds a partial day up and translates the tier', (tester) async {
+    await _pump(tester, language: 'en', sub: SubscriptionState(hasLoaded: true,
+      hasActiveAccess: true, expiresAt: DateTime.now().add(const Duration(hours: 2)), paymentTier: '1_MONTH'));
+    expect(find.text('1 days'), findsOneWidget);
+    expect(find.text('Duration: 1 Month'), findsOneWidget);
+  });
 
-        // The single ConstrainedContent on the home page uses the wide preset.
-        expect(find.byType(ConstrainedContent), findsOneWidget);
-        final constrained = tester
-            .widget<ConstrainedContent>(find.byType(ConstrainedContent));
-        expect(constrained.maxWidth, AppContentWidths.wide);
+  testWidgets('expired access is not rendered as active', (tester) async {
+    await _pump(tester, language: 'en', sub: SubscriptionState(hasLoaded: true,
+      hasActiveAccess: true, expiresAt: DateTime.now().subtract(const Duration(seconds: 1))));
+    expect(find.text('Your learning access has expired'), findsOneWidget);
+  });
 
-        // The services grid is capped at ~1200px instead of stretching to the
-        // full 1400px window.
-        expect(_gridWidth(tester), closeTo(AppContentWidths.wide, 8));
+  testWidgets('missing subscription and unavailable status are different', (tester) async {
+    await _pump(tester, language: 'en', sub: const SubscriptionState(hasError: true));
+    expect(find.textContaining('Subscription unavailable.'), findsOneWidget);
+    expect(find.text('No active plan'), findsNothing);
+  });
 
-        // Wide screens show all four services in a single row.
-        expect(_gridColumns(tester), 4);
-      },
-    );
-
-    testWidgets('mobile width lets content fill the screen', (tester) async {
-      await _pumpHome(tester, const Size(400, 800));
-
-      // No cap below the wide width — the grid fills the padded window
-      // (16px padding each side).
-      expect(_gridWidth(tester), lessThanOrEqualTo(400));
-      expect(_gridWidth(tester), greaterThan(300));
-
-      // Phones use two columns.
-      expect(_gridColumns(tester), 2);
+  for (final id in ['gazette', 'irembo']) {
+    testWidgets('$id opens the localized coming-soon page', (tester) async {
+      await _pump(tester, language: 'fr');
+      final card = find.byKey(ValueKey('shortcut-$id'));
+      await tester.ensureVisible(card);
+      await tester.tap(card);
+      await tester.pumpAndSettle();
+      expect(find.text('Bientôt disponible'), findsOneWidget);
+      expect(find.text('Cette fonctionnalité est en cours de développement.'), findsOneWidget);
     });
+  }
 
-    testWidgets('does not expose the account phone number in the header', (
-      tester,
-    ) async {
-      await _pumpHome(tester, const Size(400, 800));
+  testWidgets('practice preserves the existing route', (tester) async {
+    await _pump(tester);
+    final card = find.byKey(const ValueKey('shortcut-practice'));
+    await tester.ensureVisible(card);
+    await tester.tap(card);
+    await tester.pumpAndSettle();
+    expect(find.text('route-practice'), findsOneWidget);
+  });
 
-      // The dashboard previously printed the signed-in phone number under the
-      // greeting, which leaked it into Play Store screenshots.
-      expect(find.text('0788123456'), findsNothing);
-      expect(find.textContaining('0788'), findsNothing);
-    });
+  testWidgets('notifications display real unread data', (tester) async {
+    await _pump(tester, language: 'en', notices: const DashboardNotices([
+      DashboardNotice(title: 'Test notice', body: 'Details', unread: true),
+    ]));
+    expect(find.text('1'), findsOneWidget);
+    await tester.tap(find.text('NOTICES'));
+    await tester.pumpAndSettle();
+    expect(find.text('Test notice'), findsOneWidget);
+    expect(find.text('Details'), findsOneWidget);
   });
 }

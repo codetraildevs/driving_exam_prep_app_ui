@@ -242,6 +242,16 @@ function getAccessCodeStatus($conn, $params): void
             'code'            => $row['code'],
         ], 200);
     } else {
-        respond(['hasActiveAccess' => false], 200);
+        $expired = Database::fetchOne(
+            $conn,
+            'SELECT expiresAt, paymentTier FROM access_codes WHERE userId = ? AND expiresAt <= NOW() ORDER BY expiresAt DESC LIMIT 1',
+            's',
+            [&$userId]
+        );
+        respond([
+            'hasActiveAccess' => false,
+            'expiresAt' => $expired['expiresAt'] ?? null,
+            'paymentTier' => $expired['paymentTier'] ?? null,
+        ], 200);
     }
 }

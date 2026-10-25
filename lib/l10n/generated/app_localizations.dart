@@ -66,6 +66,26 @@ abstract class AppLocalizations {
   AppLocalizations(String locale)
     : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
+  String get dashboardWelcome;
+  String get dashboardNotices;
+  String get dashboardWhatsapp;
+  String get dashboardGazette;
+  String get dashboardShare;
+  String get dashboardProfileUnavailable;
+  String get dashboardLoading;
+  String get dashboardSubscriptionUnavailable;
+  String get dashboardExpired;
+  String get dashboardDurationUnavailable;
+  String dashboardDuration(String duration);
+  String get dashboardCached;
+  String get dashboardNoticesUnavailable;
+  String get dashboardNoNotices;
+  String get dashboardCopyLink;
+  String get dashboardLinkCopied;
+  String get dashboardOpenFailed;
+  String get dashboardComingSoon;
+  String get dashboardUnderDevelopment;
+
   final String localeName;
 
   static AppLocalizations of(BuildContext context) {

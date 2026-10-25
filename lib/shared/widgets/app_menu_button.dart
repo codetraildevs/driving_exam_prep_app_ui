@@ -9,7 +9,8 @@ import 'app_drawer_scope.dart';
 /// Hidden on mobile (where the bottom navigation bar is used) and whenever no
 /// [AppDrawerScope] is registered above it (e.g. pushed pages).
 class AppMenuButton extends StatelessWidget {
-  const AppMenuButton({super.key});
+  final Color color;
+  const AppMenuButton({super.key, this.color = AppColors.textInverse});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class AppMenuButton extends StatelessWidget {
     final scope = AppDrawerScope.maybeOf(context);
     if (scope == null) return const SizedBox.shrink();
     return IconButton(
-      icon: const Icon(Icons.menu, color: AppColors.textInverse),
+      icon: Icon(Icons.menu, color: color),
       tooltip: AppLocalizations.of(context).commonMenu,
       onPressed: scope.openDrawer,
     );

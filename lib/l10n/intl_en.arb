@@ -1463,5 +1463,32 @@
   "consentItemCacheDetail": "App works without internet",
   "consentSecurityNote": "Your data is stored securely and never sold to third parties.",
   "consentIndependentTitle": "Independent Content",
-  "consentIndependentBody": "This is an independent educational tool. It is NOT affiliated with, endorsed by, or representing any government entity or the Rwanda National Police."
+  "consentIndependentBody": "This is an independent educational tool. It is NOT affiliated with, endorsed by, or representing any government entity or the Rwanda National Police.",
+  "dashboardWelcome": "Welcome back",
+  "dashboardNotices": "NOTICES",
+  "dashboardWhatsapp": "WhatsApp Group",
+  "dashboardGazette": "NEW GAZETTE",
+  "dashboardShare": "Share App",
+  "dashboardProfileUnavailable": "Profile unavailable",
+  "dashboardLoading": "Loading subscription…",
+  "dashboardSubscriptionUnavailable": "Subscription unavailable. Pull down to retry.",
+  "dashboardExpired": "Your learning access has expired",
+  "dashboardDurationUnavailable": "Not available",
+  "dashboardDuration": "Duration: {duration}",
+  "dashboardCached": "Saved status · pull down to refresh",
+  "dashboardNoticesUnavailable": "Notifications are unavailable right now. Please try again later.",
+  "dashboardNoNotices": "No notifications yet",
+  "dashboardCopyLink": "Copy link",
+  "dashboardLinkCopied": "Link copied",
+  "dashboardOpenFailed": "Unable to complete this action. Please try again.",
+  "dashboardComingSoon": "Coming soon",
+  "dashboardUnderDevelopment": "This feature is under development.",
+  "@dashboardDuration": {
+    "description": "Subscription duration displayed in the dashboard banner",
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  }
 }

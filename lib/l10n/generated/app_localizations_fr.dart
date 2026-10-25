@@ -1571,4 +1571,61 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get consentIndependentBody =>
       'Ceci est un outil éducatif indépendant. Il n\'est PAS affilié, approuvé ou représentant d\'une entité gouvernementale ou de la Police Nationale du Rwanda.';
+  @override
+  String get dashboardWelcome => 'Bienvenue';
+
+  @override
+  String get dashboardNotices => 'NOTIFICATIONS';
+
+  @override
+  String get dashboardWhatsapp => 'Groupe WhatsApp';
+
+  @override
+  String get dashboardGazette => 'NOUVEAU JOURNAL OFFICIEL';
+
+  @override
+  String get dashboardShare => 'Partager l’application';
+
+  @override
+  String get dashboardProfileUnavailable => 'Profil indisponible';
+
+  @override
+  String get dashboardLoading => 'Chargement de l’abonnement…';
+
+  @override
+  String get dashboardSubscriptionUnavailable => 'Abonnement indisponible. Faites glisser vers le bas pour réessayer.';
+
+  @override
+  String get dashboardExpired => 'Votre accès aux cours a expiré';
+
+  @override
+  String get dashboardDurationUnavailable => 'Non disponible';
+
+  @override
+  String dashboardDuration(String duration) => 'Durée : $duration';
+
+  @override
+  String get dashboardCached => 'État enregistré · faites glisser pour actualiser';
+
+  @override
+  String get dashboardNoticesUnavailable => 'Les notifications sont indisponibles pour le moment. Réessayez plus tard.';
+
+  @override
+  String get dashboardNoNotices => 'Aucune notification pour le moment';
+
+  @override
+  String get dashboardCopyLink => 'Copier le lien';
+
+  @override
+  String get dashboardLinkCopied => 'Lien copié';
+
+  @override
+  String get dashboardOpenFailed => 'Impossible de terminer cette action. Réessayez.';
+
+  @override
+  String get dashboardComingSoon => 'Bientôt disponible';
+
+  @override
+  String get dashboardUnderDevelopment => 'Cette fonctionnalité est en cours de développement.';
+
 }

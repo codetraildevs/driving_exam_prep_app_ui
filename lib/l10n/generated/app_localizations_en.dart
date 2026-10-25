@@ -1541,4 +1541,61 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get consentIndependentBody =>
       'This is an independent educational tool. It is NOT affiliated with, endorsed by, or representing any government entity or the Rwanda National Police.';
+  @override
+  String get dashboardWelcome => 'Welcome back';
+
+  @override
+  String get dashboardNotices => 'NOTICES';
+
+  @override
+  String get dashboardWhatsapp => 'WhatsApp Group';
+
+  @override
+  String get dashboardGazette => 'NEW GAZETTE';
+
+  @override
+  String get dashboardShare => 'Share App';
+
+  @override
+  String get dashboardProfileUnavailable => 'Profile unavailable';
+
+  @override
+  String get dashboardLoading => 'Loading subscription…';
+
+  @override
+  String get dashboardSubscriptionUnavailable => 'Subscription unavailable. Pull down to retry.';
+
+  @override
+  String get dashboardExpired => 'Your learning access has expired';
+
+  @override
+  String get dashboardDurationUnavailable => 'Not available';
+
+  @override
+  String dashboardDuration(String duration) => 'Duration: $duration';
+
+  @override
+  String get dashboardCached => 'Saved status · pull down to refresh';
+
+  @override
+  String get dashboardNoticesUnavailable => 'Notifications are unavailable right now. Please try again later.';
+
+  @override
+  String get dashboardNoNotices => 'No notifications yet';
+
+  @override
+  String get dashboardCopyLink => 'Copy link';
+
+  @override
+  String get dashboardLinkCopied => 'Link copied';
+
+  @override
+  String get dashboardOpenFailed => 'Unable to complete this action. Please try again.';
+
+  @override
+  String get dashboardComingSoon => 'Coming soon';
+
+  @override
+  String get dashboardUnderDevelopment => 'This feature is under development.';
+
 }
