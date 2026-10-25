@@ -1603,4 +1603,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboardRequestExamAccess => 'Tap here to request exam access';
+  @override
+  String get paymentExamLanguage => 'Exam language';
+
+  @override
+  String get paymentExamLanguageHint => 'Choose the language of your exams. This does not change the app language.';
+
+  @override
+  String paymentAmountToPay(String amount) => 'Amount to pay: $amount RWF';
+
+  @override
+  String get paymentMethodLabel => 'Payment method';
+
+  @override
+  String get paymentNotConfigured => 'Payment details are not configured yet.';
+
+  @override
+  String get paymentUssdLabel => 'Payment USSD code';
+
+  @override
+  String get paymentCopyCode => 'Copy code';
+
+  @override
+  String get paymentCodeCopied => 'Code copied';
+
+  @override
+  String get paymentCopyFailed => 'Could not copy the code. Please try again or copy it manually.';
+
+  @override
+  String get paymentUssdInstruction => 'Copy this code and dial it on your phone to make your payment.';
+
+  @override
+  String get paymentPayNow => 'PAY NOW';
+
+  @override
+  String get paymentIntegrationPending => 'Payment details are prepared. Payment initiation is not connected yet; no payment has been confirmed.';
+
+  @override
+  String get paymentPreparationFailed => 'Unable to prepare payment. Please try again.';
+
 }

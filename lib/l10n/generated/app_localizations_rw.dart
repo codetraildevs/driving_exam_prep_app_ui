@@ -1628,4 +1628,43 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get dashboardRequestExamAccess => 'Kanda hano usabe ko ibizamini bifunguka';
+  @override
+  String get paymentExamLanguage => 'Ururimi rw’ibizamini';
+
+  @override
+  String get paymentExamLanguageHint => 'Hitamo ururimi rw’ibizamini. Ibi ntibihindura ururimi rwa porogaramu.';
+
+  @override
+  String paymentAmountToPay(String amount) => 'Amafaranga yo kwishyura: $amount RWF';
+
+  @override
+  String get paymentMethodLabel => 'Uburyo bwo kwishyura';
+
+  @override
+  String get paymentNotConfigured => 'Amakuru yo kwishyura ntarashyirwaho.';
+
+  @override
+  String get paymentUssdLabel => 'Kode USSD yo kwishyura';
+
+  @override
+  String get paymentCopyCode => 'Koporora kode';
+
+  @override
+  String get paymentCodeCopied => 'Kode yakoporowe';
+
+  @override
+  String get paymentCopyFailed => 'Kode ntiyakoporowe. Ongera ugerageze cyangwa uyikoporore ubwawe.';
+
+  @override
+  String get paymentUssdInstruction => 'Koporora iyi kode uyikoreshe kuri telefoni yawe kugira ngo wishyure.';
+
+  @override
+  String get paymentPayNow => 'ISHYURA UBU';
+
+  @override
+  String get paymentIntegrationPending => 'Amakuru yo kwishyura yateguwe. Uburyo bwo gutangiza ubwishyu ntiburahuzwa; nta bwishyu bwemejwe.';
+
+  @override
+  String get paymentPreparationFailed => 'Ntibishobotse gutegura ubwishyu. Ongera ugerageze.';
+
 }

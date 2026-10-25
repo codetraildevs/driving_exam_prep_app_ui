@@ -1633,4 +1633,43 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dashboardRequestExamAccess => 'Appuyez ici pour demander l’accès aux examens';
+  @override
+  String get paymentExamLanguage => 'Langue des examens';
+
+  @override
+  String get paymentExamLanguageHint => 'Choisissez la langue de vos examens. Cela ne change pas la langue de l’application.';
+
+  @override
+  String paymentAmountToPay(String amount) => 'Montant à payer : $amount RWF';
+
+  @override
+  String get paymentMethodLabel => 'Mode de paiement';
+
+  @override
+  String get paymentNotConfigured => 'Les coordonnées de paiement ne sont pas encore configurées.';
+
+  @override
+  String get paymentUssdLabel => 'Code USSD de paiement';
+
+  @override
+  String get paymentCopyCode => 'Copier le code';
+
+  @override
+  String get paymentCodeCopied => 'Code copié';
+
+  @override
+  String get paymentCopyFailed => 'Impossible de copier le code. Réessayez ou copiez-le manuellement.';
+
+  @override
+  String get paymentUssdInstruction => 'Copiez ce code et composez-le sur votre téléphone pour effectuer le paiement.';
+
+  @override
+  String get paymentPayNow => 'PAYER MAINTENANT';
+
+  @override
+  String get paymentIntegrationPending => 'Les détails du paiement sont prêts. Le paiement n’est pas encore intégré ; aucun paiement n’a été confirmé.';
+
+  @override
+  String get paymentPreparationFailed => 'Impossible de préparer le paiement. Veuillez réessayer.';
+
 }

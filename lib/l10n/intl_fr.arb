@@ -1979,6 +1979,28 @@
   },
 
   "dashboardExamsLocked": "Les examens sont verrouillés",
-  "dashboardRequestExamAccess": "Appuyez ici pour demander l’accès aux examens"
+  "dashboardRequestExamAccess": "Appuyez ici pour demander l’accès aux examens",
+
+  "paymentExamLanguage": "Langue des examens",
+  "paymentExamLanguageHint": "Choisissez la langue de vos examens. Cela ne change pas la langue de l’application.",
+  "paymentAmountToPay": "Montant à payer : {amount} RWF",
+  "paymentMethodLabel": "Mode de paiement",
+  "paymentNotConfigured": "Les coordonnées de paiement ne sont pas encore configurées.",
+  "paymentUssdLabel": "Code USSD de paiement",
+  "paymentCopyCode": "Copier le code",
+  "paymentCodeCopied": "Code copié",
+  "paymentCopyFailed": "Impossible de copier le code. Réessayez ou copiez-le manuellement.",
+  "paymentUssdInstruction": "Copiez ce code et composez-le sur votre téléphone pour effectuer le paiement.",
+  "paymentPayNow": "PAYER MAINTENANT",
+  "paymentIntegrationPending": "Les détails du paiement sont prêts. Le paiement n’est pas encore intégré ; aucun paiement n’a été confirmé.",
+  "paymentPreparationFailed": "Impossible de préparer le paiement. Veuillez réessayer.",
+  "@paymentAmountToPay": {
+    "description": "Formatted amount due in RWF",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 
 }

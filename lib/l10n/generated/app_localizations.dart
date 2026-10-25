@@ -89,6 +89,20 @@ abstract class AppLocalizations {
   String get dashboardExamsLocked;
   String get dashboardRequestExamAccess;
 
+  String get paymentExamLanguage;
+  String get paymentExamLanguageHint;
+  String paymentAmountToPay(String amount);
+  String get paymentMethodLabel;
+  String get paymentNotConfigured;
+  String get paymentUssdLabel;
+  String get paymentCopyCode;
+  String get paymentCodeCopied;
+  String get paymentCopyFailed;
+  String get paymentUssdInstruction;
+  String get paymentPayNow;
+  String get paymentIntegrationPending;
+  String get paymentPreparationFailed;
+
   final String localeName;
 
   static AppLocalizations of(BuildContext context) {

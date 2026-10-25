@@ -1979,6 +1979,28 @@
   },
 
   "dashboardExamsLocked": "Ibizamini ntibifunguye",
-  "dashboardRequestExamAccess": "Kanda hano usabe ko ibizamini bifunguka"
+  "dashboardRequestExamAccess": "Kanda hano usabe ko ibizamini bifunguka",
+
+  "paymentExamLanguage": "Ururimi rw’ibizamini",
+  "paymentExamLanguageHint": "Hitamo ururimi rw’ibizamini. Ibi ntibihindura ururimi rwa porogaramu.",
+  "paymentAmountToPay": "Amafaranga yo kwishyura: {amount} RWF",
+  "paymentMethodLabel": "Uburyo bwo kwishyura",
+  "paymentNotConfigured": "Amakuru yo kwishyura ntarashyirwaho.",
+  "paymentUssdLabel": "Kode USSD yo kwishyura",
+  "paymentCopyCode": "Koporora kode",
+  "paymentCodeCopied": "Kode yakoporowe",
+  "paymentCopyFailed": "Kode ntiyakoporowe. Ongera ugerageze cyangwa uyikoporore ubwawe.",
+  "paymentUssdInstruction": "Koporora iyi kode uyikoreshe kuri telefoni yawe kugira ngo wishyure.",
+  "paymentPayNow": "ISHYURA UBU",
+  "paymentIntegrationPending": "Amakuru yo kwishyura yateguwe. Uburyo bwo gutangiza ubwishyu ntiburahuzwa; nta bwishyu bwemejwe.",
+  "paymentPreparationFailed": "Ntibishobotse gutegura ubwishyu. Ongera ugerageze.",
+  "@paymentAmountToPay": {
+    "description": "Formatted amount due in RWF",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 
 }

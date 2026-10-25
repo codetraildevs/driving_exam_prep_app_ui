@@ -1493,6 +1493,28 @@
   },
 
   "dashboardExamsLocked": "Exams are locked",
-  "dashboardRequestExamAccess": "Tap here to request exam access"
+  "dashboardRequestExamAccess": "Tap here to request exam access",
+
+  "paymentExamLanguage": "Exam language",
+  "paymentExamLanguageHint": "Choose the language of your exams. This does not change the app language.",
+  "paymentAmountToPay": "Amount to pay: {amount} RWF",
+  "paymentMethodLabel": "Payment method",
+  "paymentNotConfigured": "Payment details are not configured yet.",
+  "paymentUssdLabel": "Payment USSD code",
+  "paymentCopyCode": "Copy code",
+  "paymentCodeCopied": "Code copied",
+  "paymentCopyFailed": "Could not copy the code. Please try again or copy it manually.",
+  "paymentUssdInstruction": "Copy this code and dial it on your phone to make your payment.",
+  "paymentPayNow": "PAY NOW",
+  "paymentIntegrationPending": "Payment details are prepared. Payment initiation is not connected yet; no payment has been confirmed.",
+  "paymentPreparationFailed": "Unable to prepare payment. Please try again.",
+  "@paymentAmountToPay": {
+    "description": "Formatted amount due in RWF",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
 
 }

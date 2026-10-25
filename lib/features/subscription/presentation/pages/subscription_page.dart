@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import '../../../../config/payment_config.dart';
+import '../../domain/payment_preparation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../../../shared/locale/locale_notifier.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/subscription/subscription_notifier.dart';
 import '../../../../shared/widgets/app_page_header.dart';
@@ -12,18 +15,68 @@ import '../../../../shared/widgets/app_page_header.dart';
 const _kHelpNumber = '0788659575';
 const _kTigoCashNumber = '0728877442';
 
-class SubscriptionPage extends StatefulWidget {
-  const SubscriptionPage({Key? key}) : super(key: key);
+class SubscriptionPage extends ConsumerStatefulWidget {
+  final PaymentConfiguration paymentConfiguration;
+  final PaymentPreparationHandler paymentHandler;
+  const SubscriptionPage({super.key,
+    this.paymentConfiguration = PaymentConfiguration.environment,
+    this.paymentHandler = prepareSubscriptionPayment,
+  });
 
   @override
-  State<SubscriptionPage> createState() => _SubscriptionPageState();
+  ConsumerState<SubscriptionPage> createState() => _SubscriptionPageState();
 }
 
-class _SubscriptionPageState extends State<SubscriptionPage> {
-  String? _loadingTier;
-  String _selectedTier = '3_MONTHS'; // Default to popular plan
+class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
+  ExamLanguage _examLanguage = ExamLanguage.rw;
+  SubscriptionDuration _duration = SubscriptionDuration.threeMonths;
+  PaymentMethod? _paymentMethod;
+  bool _preparing = false;
 
-  List<Map<String, dynamic>> _getPlans(String langCode, AppLocalizations l10n) {
+  PreparedPayment? get _prepared => PreparedPayment.tryCreate(
+    examLanguage: _examLanguage, duration: _duration, method: _paymentMethod,
+    configuration: widget.paymentConfiguration,
+  );
+
+  void _feedback(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  Future<void> _copyCode() async {
+    final payment = _prepared;
+    if (payment == null) return;
+    final l10n = AppLocalizations.of(context);
+    try {
+      await Clipboard.setData(ClipboardData(text: payment.ussdCode));
+      _feedback(l10n.paymentCodeCopied);
+    } catch (_) {
+      _feedback(l10n.paymentCopyFailed);
+    }
+  }
+
+  Future<void> _handlePayNow() async {
+    final payment = _prepared;
+    if (payment == null || _preparing) return;
+    final l10n = AppLocalizations.of(context);
+    setState(() => _preparing = true);
+    try {
+      await widget.paymentHandler(
+        examLanguage: payment.examLanguage,
+        durationMonths: payment.duration.months,
+        paymentMethod: payment.method,
+        amount: payment.amount,
+        ussdCode: payment.ussdCode,
+      );
+      _feedback(l10n.paymentIntegrationPending);
+    } catch (_) {
+      _feedback(l10n.paymentPreparationFailed);
+    } finally {
+      if (mounted) setState(() => _preparing = false);
+    }
+  }
+
+  List<Map<String, dynamic>> _getPlans(AppLocalizations l10n) {
     return [
       {
         'tier': '1_MONTH',
@@ -72,13 +125,17 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final container = ProviderScope.containerOf(context, listen: false);
-    final langCode = container
-        .read(localeProvider)
-        .effectiveLocale
-        .languageCode;
-    final subscription = container.read(subscriptionProvider);
-    final plans = _getPlans(langCode, l10n);
+    final subscription = ref.watch(subscriptionProvider);
+    final plans = _getPlans(l10n);
+    final payment = _prepared;
+    final hasConfiguredMethod = PaymentMethod.values.any((method) => PreparedPayment.tryCreate(
+      examLanguage: _examLanguage, duration: _duration, method: method,
+      configuration: widget.paymentConfiguration,
+    ) != null);
+    final amount = subscriptionPrice(_examLanguage, _duration);
+    final formattedAmount = NumberFormat('#,##0', l10n.localeName).format(amount);
+    final showActive = subscription.hasActiveAccess &&
+        (subscription.expiresAt == null || subscription.expiresAt!.isAfter(DateTime.now()));
 
     return Scaffold(
       body: Column(
@@ -100,7 +157,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // ── Active subscription banner ──
-                    if (subscription.hasActiveAccess) ...[
+                    if (showActive) ...[
                       _ActiveAccessBanner(
                         l10n: l10n,
                         subscription: subscription,
@@ -108,6 +165,26 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                       const SizedBox(height: 10),
                     ],
 
+                    Text(l10n.paymentExamLanguage, style: AppTextStyles.heading5),
+                    const SizedBox(height: 4),
+                    Text(l10n.paymentExamLanguageHint, style: AppTextStyles.bodySmall),
+                    const SizedBox(height: 8),
+                    Wrap(spacing: 8, runSpacing: 8, children: ExamLanguage.values.map((language) {
+                      final name = switch (language) {
+                        ExamLanguage.rw => 'Kinyarwanda',
+                        ExamLanguage.en => 'English',
+                        ExamLanguage.fr => 'Français',
+                      };
+                      return ChoiceChip(
+                        key: ValueKey('exam-language-${language.name}'),
+                        label: Text(name), selected: _examLanguage == language,
+                        onSelected: _preparing ? null : (_) => setState(() => _examLanguage = language),
+                        selectedColor: AppColors.primary.withValues(alpha: 0.12),
+                        side: BorderSide(color: _examLanguage == language ? AppColors.primary : Theme.of(context).colorScheme.outline.withValues(alpha: 0.3)),
+                        materialTapTargetSize: MaterialTapTargetSize.padded,
+                      );
+                    }).toList()),
+                    const SizedBox(height: 16),
                     // ── Plan selection ──
                     Text(
                       l10n.subscriptionChoosePlan,
@@ -124,15 +201,81 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     ...plans.map(
                       (plan) => _PlanCard(
                         plan: plan,
-                        loadingTier: _loadingTier,
-                        selectedTier: _selectedTier,
-                        onSelect: (tier) =>
-                            setState(() => _selectedTier = tier),
+                        selectedTier: _duration.tier,
+                        onSelect: _preparing ? null : (tier) => setState(() =>
+                          _duration = SubscriptionDuration.values.firstWhere((value) => value.tier == tier)),
                         l10n: l10n,
                       ),
                     ),
                     const SizedBox(height: 4),
 
+                    Semantics(liveRegion: true, child: Text(
+                      l10n.paymentAmountToPay(formattedAmount),
+                      key: const ValueKey('payment-amount'),
+                      style: AppTextStyles.heading5.copyWith(color: AppColors.primary),
+                    )),
+                    const SizedBox(height: 18),
+                    _SectionHeader(icon: Icons.payments_outlined, title: l10n.paymentMethodLabel),
+                    const SizedBox(height: 8),
+                    Wrap(spacing: 8, runSpacing: 8, children: PaymentMethod.values.map((method) {
+                      final name = switch (method) {
+                        PaymentMethod.momoPay => 'MoMo Pay',
+                        PaymentMethod.mtn => 'MTN',
+                        PaymentMethod.tigo => 'Tigo',
+                      };
+                      return ChoiceChip(
+                        key: ValueKey('payment-method-${method.name}'),
+                        label: Text(name), selected: _paymentMethod == method,
+                        onSelected: _preparing ? null : (_) => setState(() => _paymentMethod = method),
+                        selectedColor: AppColors.primary.withValues(alpha: 0.12),
+                        side: BorderSide(color: _paymentMethod == method ? AppColors.primary : Theme.of(context).colorScheme.outline.withValues(alpha: 0.3)),
+                        materialTapTargetSize: MaterialTapTargetSize.padded,
+                      );
+                    }).toList()),
+                    const SizedBox(height: 12),
+                    if (payment == null) ...[
+                      if (_paymentMethod == null) Text(l10n.paymentChooseMethod, style: AppTextStyles.bodySmall),
+                      if (_paymentMethod != null || !hasConfiguredMethod)
+                        Text(l10n.paymentNotConfigured, key: const ValueKey('payment-validation'), style: AppTextStyles.bodySmall),
+                    ] else ...[
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface,
+                          border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                          borderRadius: BorderRadius.circular(16)),
+                        child: LayoutBuilder(builder: (context, constraints) {
+                          final code = Semantics(label: l10n.paymentUssdLabel,
+                            child: SelectableText(payment.ussdCode, key: const ValueKey('payment-ussd'),
+                              style: AppTextStyles.bodyLarge));
+                          final copy = TextButton.icon(
+                            key: const ValueKey('copy-payment-code'),
+                            onPressed: _preparing ? null : _copyCode,
+                            icon: const Icon(Icons.copy_outlined), label: Text(l10n.paymentCopyCode),
+                            style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+                          );
+                          if (constraints.maxWidth < 420 || MediaQuery.textScalerOf(context).scale(1) > 1.3) {
+                            return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                              code, const SizedBox(height: 4), Align(alignment: Alignment.centerRight, child: copy),
+                            ]);
+                          }
+                          return Row(children: [Expanded(child: code), const SizedBox(width: 8), copy]);
+                        }),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(l10n.paymentUssdInstruction, style: AppTextStyles.bodySmall),
+                    ],
+                    const SizedBox(height: 16),
+                    FilledButton(
+                      key: const ValueKey('pay-now'),
+                      onPressed: payment == null || _preparing ? null : _handlePayNow,
+                      style: FilledButton.styleFrom(backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white, minimumSize: const Size.fromHeight(52),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
+                      child: _preparing ? const SizedBox(width: 22, height: 22,
+                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) : Text(l10n.paymentPayNow),
+                    ),
+                    const SizedBox(height: 20),
                     // ── Learning Support Message ──
                     _TrafficRulesSupportCard(l10n: l10n),
                     const SizedBox(height: 20),
@@ -251,13 +394,12 @@ class _SectionHeader extends StatelessWidget {
           child: Icon(icon, color: AppColors.primary, size: 18),
         ),
         const SizedBox(width: 10),
-        Text(title, style: AppTextStyles.heading5),
+        Expanded(child: Text(title, style: AppTextStyles.heading5)),
       ],
     );
   }
 }
 
-// _UssdCodeCard removed for Play Store compliance.
 
 class _NeedHelpCard extends StatelessWidget {
   final AppLocalizations l10n;
@@ -375,129 +517,38 @@ class _ContactButton extends StatelessWidget {
 
 class _PlanCard extends StatelessWidget {
   final Map<String, dynamic> plan;
-  final String? loadingTier;
   final String selectedTier;
-  final ValueChanged<String> onSelect;
+  final ValueChanged<String>? onSelect;
   final AppLocalizations l10n;
 
-  const _PlanCard({
-    required this.plan,
-    required this.loadingTier,
-    required this.selectedTier,
-    required this.onSelect,
-    required this.l10n,
-  });
+  const _PlanCard({required this.plan, required this.selectedTier, required this.onSelect, required this.l10n});
 
   @override
   Widget build(BuildContext context) {
     final tier = plan['tier'] as String;
-    final label = plan['label'] as String;
-    final days = plan['durationDays'] as int;
-    final isPopular = plan['popular'] as bool;
-    final isSelected = selectedTier == tier;
+    final selected = selectedTier == tier;
     final theme = Theme.of(context);
-
-    return GestureDetector(
-      onTap: () => onSelect(tier),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 4),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          border: Border.all(
-            color: isSelected
-                ? AppColors.primary
-                : theme.colorScheme.outline.withValues(alpha: 0.2),
-            width: isSelected ? 2 : 1,
+    return Padding(padding: const EdgeInsets.only(bottom: 8),
+      child: Semantics(selected: selected, button: true,
+        child: Material(color: theme.colorScheme.surface,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16),
+            side: BorderSide(color: selected ? AppColors.primary : theme.colorScheme.outline.withValues(alpha: 0.2), width: selected ? 2 : 1)),
+          child: InkWell(key: ValueKey('plan-$tier'),
+            onTap: onSelect == null ? null : () => onSelect!(tier),
+            borderRadius: BorderRadius.circular(16),
+            child: Padding(padding: const EdgeInsets.all(12), child: Row(children: [
+              Icon(selected ? Icons.radio_button_checked : Icons.radio_button_off,
+                color: selected ? AppColors.primary : AppColors.textSecondary),
+              const SizedBox(width: 12),
+              Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(plan['label'] as String, style: AppTextStyles.heading6),
+                Text(l10n.subscriptionDays(plan['durationDays'] as int), style: AppTextStyles.bodySmall),
+                if (plan['popular'] == true) Text(l10n.subscriptionPopular,
+                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.success, fontWeight: FontWeight.w600)),
+              ])),
+              if (selected) const Icon(Icons.check_circle, color: AppColors.primary),
+            ])),
           ),
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: theme.shadowColor.withValues(alpha: 0.04),
-              blurRadius: 8,
-            ),
-          ],
-        ),
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  // Radio indicator
-                  Container(
-                    width: 22,
-                    height: 22,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: isSelected
-                            ? AppColors.primary
-                            : AppColors.textSecondary.withValues(alpha: 0.4),
-                        width: 2,
-                      ),
-                    ),
-                    child: isSelected
-                        ? Center(
-                            child: Container(
-                              width: 12,
-                              height: 12,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          )
-                        : null,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(label, style: AppTextStyles.heading6),
-                        const SizedBox(height: 2),
-                        Text(
-                          l10n.subscriptionDays(days),
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (isSelected)
-                    const Icon(Icons.check_circle, color: AppColors.primary),
-                ],
-              ),
-            ),
-            // Popular badge
-            if (isPopular)
-              Positioned(
-                top: 0,
-                right: 16,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 3,
-                  ),
-                  decoration: const BoxDecoration(
-                    color: AppColors.success,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8),
-                    ),
-                  ),
-                  child: Text(
-                    l10n.subscriptionPopular,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-          ],
         ),
       ),
     );
