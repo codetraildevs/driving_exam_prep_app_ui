@@ -25,7 +25,7 @@ Widget app(String language, Widget home) => MaterialApp(
 Future<void> waitForPage(WidgetTester tester, String text) async {
   for (var i = 0; i < 100; i++) {
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 100)));
-    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
     if (find.text(text).evaluate().isNotEmpty) return;
   }
   fail('Reader did not display $text');
