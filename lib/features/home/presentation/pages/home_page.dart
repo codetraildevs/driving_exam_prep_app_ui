@@ -196,29 +196,29 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                   const SizedBox(height: 18),
                   Padding(padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: LayoutBuilder(builder: (context, constraints) {
-                    final cardWidth = (constraints.maxWidth - 12) / 2;
+                    final cardWidth = (constraints.maxWidth - 10) / 2;
                     final labelStyle = TextStyle(fontSize: 13, height: 1.25, fontWeight: FontWeight.w600,
                       color: Theme.of(context).colorScheme.onSurface);
                     final detailStyle = TextStyle(fontSize: 11, height: 1.35, color: ink.withValues(alpha: 0.85));
-                    double height = 130;
+                    double height = 108;
                     for (final item in items) {
                       double measure(String text, TextStyle style) {
                         if (text.isEmpty) return 0;
                         final painter = TextPainter(text: TextSpan(text: text, style: DefaultTextStyle.of(context).style.merge(style)),
                           textDirection: Directionality.of(context), textScaler: MediaQuery.textScalerOf(context))
-                          ..layout(maxWidth: math.max(1.0, cardWidth - 30));
+                          ..layout(maxWidth: math.max(1.0, cardWidth - 24));
                         final result = painter.height;
                         painter.dispose();
                         return result;
                       }
-                      height = math.max(height, 94 + measure(item.title, labelStyle) +
-                        (item.subtitle.isEmpty ? 0 : 6 + measure(item.subtitle, detailStyle)));
+                      height = math.max(height, 68 + measure(item.title, labelStyle) +
+                        (item.subtitle.isEmpty ? 0 : 4 + measure(item.subtitle, detailStyle)));
                     }
                     return GridView.builder(
                       key: const ValueKey('dashboard-shortcuts'),
                       shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), padding: EdgeInsets.zero,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
-                        mainAxisSpacing: 12, crossAxisSpacing: 12, mainAxisExtent: height),
+                        mainAxisSpacing: 10, crossAxisSpacing: 10, mainAxisExtent: height),
                       itemCount: items.length,
                       itemBuilder: (context, index) {
                         final item = items[index];
@@ -239,24 +239,24 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                             key: ValueKey('shortcut-${item.id}'), onTap: () => item.onTap(context),
                             builder: (context, state) => AnimatedContainer(
                               duration: const Duration(milliseconds: 120),
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                               decoration: BoxDecoration(color: surface, borderRadius: BorderRadius.circular(16),
                                 border: state.focused ? Border.all(color: cardColor, width: 2) : null,
                                 boxShadow: [BoxShadow(color: cardColor.withValues(alpha: state.hovered ? 0.18 : 0.08), blurRadius: state.hovered ? 18 : 10, offset: const Offset(0, 4))]),
                               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                                 Container(
-                                  width: 42, height: 42,
+                                  width: 36, height: 36,
                                   decoration: BoxDecoration(color: cardColor.withValues(alpha: 0.12),
                                     borderRadius: BorderRadius.circular(12)),
                                   clipBehavior: Clip.antiAlias,
-                                  child: imageAsset == null ? Icon(item.icon, size: 22, color: cardColor) :
-                                    Image.asset(imageAsset, width: 42, height: 42, fit: BoxFit.contain,
-                                      errorBuilder: (_, __, ___) => Icon(item.icon, size: 22, color: cardColor)),
+                                  child: imageAsset == null ? Icon(item.icon, size: 20, color: cardColor) :
+                                    Image.asset(imageAsset, width: 36, height: 36, fit: BoxFit.contain,
+                                      errorBuilder: (_, __, ___) => Icon(item.icon, size: 20, color: cardColor)),
                                 ),
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 6),
                                 Text(item.title, textAlign: TextAlign.center, style: labelStyle),
                                 if (item.subtitle.isNotEmpty) ...[
-                                  const SizedBox(height: 6), Text(item.subtitle, textAlign: TextAlign.center, style: detailStyle),
+                                  const SizedBox(height: 4), Text(item.subtitle, textAlign: TextAlign.center, style: detailStyle),
                                 ],
                               ]),
                             ),
