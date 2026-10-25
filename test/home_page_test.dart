@@ -116,5 +116,16 @@ void main() {
       // Phones use two columns.
       expect(_gridColumns(tester), 2);
     });
+
+    testWidgets('does not expose the account phone number in the header', (
+      tester,
+    ) async {
+      await _pumpHome(tester, const Size(400, 800));
+
+      // The dashboard previously printed the signed-in phone number under the
+      // greeting, which leaked it into Play Store screenshots.
+      expect(find.text('0788123456'), findsNothing);
+      expect(find.textContaining('0788'), findsNothing);
+    });
   });
 }

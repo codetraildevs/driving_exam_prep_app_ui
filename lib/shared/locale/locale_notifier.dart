@@ -7,7 +7,7 @@ class LocaleState {
   final Locale? locale;
   const LocaleState({this.locale});
 
-  Locale get effectiveLocale => locale ?? const Locale('en');
+  Locale get effectiveLocale => locale ?? const Locale('rw');
   bool get hasLocaleSelected => locale != null;
 }
 
@@ -59,11 +59,9 @@ class LocaleNotifier extends Notifier<LocaleState> {
     Iterable<Locale> supported,
   ) {
     if (state.locale != null) return state.locale!;
-    if (deviceLocale != null &&
-        supported.any((l) => l.languageCode == deviceLocale.languageCode)) {
-      return Locale(deviceLocale.languageCode);
-    }
-    return const Locale('en');
+    // Nothing persisted yet: Kinyarwanda is the default regardless of the
+    // device language, matching the app's primary audience.
+    return const Locale('rw');
   }
 }
 

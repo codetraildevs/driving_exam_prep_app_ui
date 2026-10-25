@@ -30,15 +30,6 @@ class HomePage extends StatelessWidget {
       }
       return 'Driver';
     });
-    final phoneNumber = context.select<AuthBloc, String>((bloc) {
-      final state = bloc.state;
-      if (state is AuthAuthenticated &&
-          state.user.phoneNumber.trim().isNotEmpty) {
-        return state.user.phoneNumber.trim();
-      }
-      return '0788 123 456';
-    });
-
     // The shell (MainLayout) owns the exit confirmation; this page must not
     // register its own PopScope or two dialogs would stack on Android back.
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -50,11 +41,7 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         body: Column(
           children: [
-            _CompactHeader(
-              l10n: l10n,
-              userName: userName,
-              phoneNumber: phoneNumber,
-            ),
+            _CompactHeader(l10n: l10n, userName: userName),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 32),
@@ -93,13 +80,8 @@ class HomePage extends StatelessWidget {
 class _CompactHeader extends StatelessWidget {
   final AppLocalizations l10n;
   final String userName;
-  final String phoneNumber;
 
-  const _CompactHeader({
-    required this.l10n,
-    required this.userName,
-    required this.phoneNumber,
-  });
+  const _CompactHeader({required this.l10n, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -148,13 +130,6 @@ class _CompactHeader extends StatelessWidget {
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  phoneNumber,
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textInverse.withValues(alpha: 0.75),
-                    fontSize: 12,
-                  ),
                 ),
               ],
             ),

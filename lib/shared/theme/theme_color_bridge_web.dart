@@ -4,7 +4,7 @@
 import 'dart:html' as html;
 
 /// Updates the browser chrome color (`<meta name="theme-color">`) to match the
-/// active app theme. Pass a hex string like `#00039E` or `#0F0F23`.
+/// active app theme. Pass a hex string like `#602C91` or `#0F0F23`.
 void applyThemeColor(String hexColor) {
   if (hexColor.isEmpty) return;
   final meta = html.document.querySelector('meta[name="theme-color"]');

@@ -136,5 +136,47 @@ void main() {
 
       expect(find.byType(Dialog), findsNothing);
     });
+
+    testWidgets(
+      'Accept button stays visible with 2x text scaling on a short viewport',
+      (tester) async {
+        // Accessibility-sized text on a small phone: the header/footer grow,
+        // so the body must scroll while the Accept button stays pinned.
+        tester.view.physicalSize = const Size(400, 640);
+        tester.view.devicePixelRatio = 1.0;
+        tester.platformDispatcher.textScaleFactorTestValue = 2.0;
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+          tester.platformDispatcher.clearTextScaleFactorTestValue();
+        });
+
+        await tester.pumpWidget(_buildTestApp());
+        await tester.pump();
+        await tester.tap(find.byKey(const Key('open-consent')));
+        await _pumpFrames(tester);
+        await tester.pump(const Duration(milliseconds: 200));
+
+        final dialogFinder = find.byType(Dialog);
+        expect(dialogFinder, findsOneWidget);
+        final l10n = AppLocalizations.of(tester.element(dialogFinder));
+
+        final acceptFinder = find.widgetWithText(
+          ElevatedButton,
+          l10n.consentAccept,
+        );
+        expect(acceptFinder, findsOneWidget);
+        final acceptRect = tester.getRect(acceptFinder);
+        final screenRect =
+            Offset.zero &
+            (tester.view.physicalSize / tester.view.devicePixelRatio);
+        expect(acceptRect.top, greaterThanOrEqualTo(screenRect.top));
+        expect(acceptRect.bottom, lessThanOrEqualTo(screenRect.bottom));
+
+        // The body still overflows, proving the button is pinned rather than
+        // simply visible because everything fits.
+        expect(_hasOverflowingScrollable(tester), isTrue);
+      },
+    );
   });
 }

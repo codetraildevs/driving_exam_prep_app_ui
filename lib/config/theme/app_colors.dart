@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Primary
-  static const Color primary = Color(0xFF00039E); // Match HTML
-  static const Color primaryLight = Color(0xFF3B82F6);
-  static const Color primaryDark = Color(0xFF00027A);
+  // Primary — brand purple, rgb(96, 44, 145)
+  static const Color primary = Color(0xFF602C91);
+  static const Color primaryLight = Color(0xFF9D6FCB);
+  static const Color primaryDark = Color(0xFF46206A);
 
   // Accent
   static const Color accent = Color(0xFFF97316);
@@ -59,15 +59,15 @@ class AppColors {
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF00039E), Color(0xFF3B82F6)],
+    colors: [Color(0xFF602C91), Color(0xFF9D6FCB)],
   );
 
-  /// Dark-mode-friendly gradient that uses brighter blues (starts at #2563EB)
-  /// instead of the very dark navy (#00039E) start of [primaryGradient]
+  /// Dark-mode-friendly gradient that uses brighter purples (starts at #7E4FB0)
+  /// instead of the very dark purple (#602C91) start of [primaryGradient]
   static const LinearGradient primaryGradientDark = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF2563EB), Color(0xFF60A5FA)],
+    colors: [Color(0xFF7E4FB0), Color(0xFFB58BE0)],
   );
 
   static const LinearGradient accentGradient = LinearGradient(

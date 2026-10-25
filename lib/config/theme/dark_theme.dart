@@ -16,7 +16,7 @@ ThemeData buildDarkTheme() {
   const outline = AppColors.neutral700;
   const outlineVariant = AppColors.neutral800;
 
-  // In dark mode use primaryLight (#3B82F6) wherever primary would create
+  // In dark mode use primaryLight (#9D6FCB) wherever primary would create
   // near-black artefacts on dark backgrounds
   const darkPrimary = AppColors.primaryLight;
 

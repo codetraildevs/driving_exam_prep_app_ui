@@ -38,11 +38,10 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
   void initState() {
     super.initState();
 
-    final deviceCode =
-        WidgetsBinding.instance.platformDispatcher.locale.languageCode;
-    final supported =
-        LocaleNotifier.supportedLocales.map((l) => l.languageCode);
-    _selectedCode = supported.contains(deviceCode) ? deviceCode : 'rw';
+    // Fresh installs open with Kinyarwanda preselected. This page is only
+    // shown when no language has been chosen yet, so the device language is
+    // deliberately ignored.
+    _selectedCode = 'rw';
 
     // Car animation: loops left-to-right slowly to give life to the header.
     _carController =

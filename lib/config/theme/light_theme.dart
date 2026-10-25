@@ -5,7 +5,7 @@ import 'app_text_styles.dart';
 import 'web_page_transitions.dart';
 
 /// Light theme for the Traffic Rules App.
-/// Uses the app's primary blue branding colours on a white/grey background.
+/// Uses the app's primary purple branding colours on a white/grey background.
 ThemeData buildLightTheme() {
   return ThemeData(
     useMaterial3: true,

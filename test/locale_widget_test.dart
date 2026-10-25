@@ -17,11 +17,7 @@ Locale _resolveLocale(
   Iterable<Locale> supported,
 ) {
   if (state.locale != null) return state.locale!;
-  if (deviceLocale != null &&
-      supported.any((l) => l.languageCode == deviceLocale.languageCode)) {
-    return Locale(deviceLocale.languageCode);
-  }
-  return const Locale('en');
+  return const Locale('rw');
 }
 
 /// Helper: builds a MaterialApp with the given locale state.
@@ -148,10 +144,10 @@ void main() {
   // LocaleState unit tests — no widget rendering needed
   // ────────────────────────────────────────────────────────────────────────
   group('LocaleState', () {
-    test('defaults to English effective locale when no locale is set', () {
+    test('defaults to Kinyarwanda effective locale when no locale is set', () {
       const state = LocaleState();
       expect(state.hasLocaleSelected, isFalse);
-      expect(state.effectiveLocale, const Locale('en'));
+      expect(state.effectiveLocale, const Locale('rw'));
     });
 
     test('returns hasLocaleSelected = true when a locale is explicitly set', () {
@@ -181,27 +177,26 @@ void main() {
       expect(result, const Locale('rw'));
     });
 
-    test('falls back to supported device locale when no selection is persisted',
-        () {
+    test('defaults to Kinyarwanda when nothing is persisted (device French)', () {
       const state = LocaleState();
       final result = _resolveLocale(
         state,
         const Locale('fr'),
         LocaleNotifier.supportedLocales,
       );
-      // No user selection, device is French (supported) → use French.
-      expect(result, const Locale('fr'));
+      // No user selection → Kinyarwanda wins even if the device is French.
+      expect(result, const Locale('rw'));
     });
 
-    test('falls back to English when device locale is unsupported', () {
+    test('defaults to Kinyarwanda when the device locale is unsupported', () {
       const state = LocaleState();
       final result = _resolveLocale(
         state,
         const Locale('es'), // Spanish is not in supportedLocales
         LocaleNotifier.supportedLocales,
       );
-      // No user selection, device is unsupported → fall back to English.
-      expect(result, const Locale('en'));
+      // No user selection → Kinyarwanda fallback for unsupported devices.
+      expect(result, const Locale('rw'));
     });
   });
 
@@ -232,7 +227,8 @@ void main() {
       expect(find.text('English'), findsOneWidget);
       expect(find.text('Français'), findsOneWidget);
       expect(find.text('Kinyarwanda'), findsOneWidget);
-      expect(find.text('Choose Your Language'), findsOneWidget);
+      // The screen opens in Kinyarwanda, so its title is localized to rw.
+      expect(find.text('Hitamo ururimi rwawe'), findsOneWidget);
     });
 
     // ────────────────────────────────────────────────────────────────────────
@@ -332,10 +328,10 @@ void main() {
     });
 
     // ────────────────────────────────────────────────────────────────────────
-    // 4. Invalid locale stored in SharedPreferences falls back to English
+    // 4. Invalid locale stored in SharedPreferences falls back to Kinyarwanda
     // ────────────────────────────────────────────────────────────────────────
     testWidgets(
-        'Invalid locale code in SharedPreferences falls back to English',
+        'Invalid locale code in SharedPreferences falls back to Kinyarwanda',
         (tester) async {
       // Simulate a stored locale code that is NOT in supportedLocales.
       SharedPreferences.setMockInitialValues({'selected_locale': 'es'});
@@ -353,7 +349,7 @@ void main() {
         reason: 'Spanish is not in the supported locales list',
       );
 
-      // Build with null locale — effectiveLocale is English.
+      // Build with null locale — effectiveLocale is Kinyarwanda.
       await tester.pumpWidget(
         _buildTestApp(
           localeState: const LocaleState(),
@@ -371,10 +367,10 @@ void main() {
       );
       await _pumpFrames(tester);
 
-      // English UI should be shown — the app gracefully handles the invalid
-      // stored code by falling back to English.
-      expect(find.text('Settings'), findsOneWidget);
-      expect(find.text('Continue Learning'), findsOneWidget);
+      // Kinyarwanda UI should be shown — the app gracefully handles the
+      // invalid stored code by falling back to the default language.
+      expect(find.text('Igenamiterere'), findsOneWidget);
+      expect(find.text('Komeza kwiga'), findsOneWidget);
     });
 
     // ────────────────────────────────────────────────────────────────────────
@@ -441,8 +437,8 @@ void main() {
         );
         await _pumpFrames(tester);
 
-        // 2. Language selector is shown with English UI.
-        expect(find.text('Choose Your Language'), findsOneWidget);
+        // 2. Language selector is shown with Kinyarwanda UI.
+        expect(find.text('Hitamo ururimi rwawe'), findsOneWidget);
         expect(find.text('English'), findsOneWidget);
         expect(find.text('Français'), findsOneWidget);
         expect(find.text('Kinyarwanda'), findsOneWidget);
@@ -499,9 +495,9 @@ void main() {
     );
 
     // ────────────────────────────────────────────────────────────────────────
-    // 6. Clearing the persisted locale reverts to English
+    // 6. Clearing the persisted locale reverts to the default language
     // ────────────────────────────────────────────────────────────────────────
-    testWidgets('Deleting persisted locale falls back to English UI',
+    testWidgets('Deleting persisted locale falls back to Kinyarwanda UI',
         (tester) async {
       SharedPreferences.setMockInitialValues({'selected_locale': 'fr'});
 
@@ -530,7 +526,7 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('selected_locale');
 
-      // Rebuild with null locale → effectiveLocale is English.
+      // Rebuild with null locale → effectiveLocale is Kinyarwanda.
       await tester.pumpWidget(
         _buildTestApp(
           localeState: const LocaleState(),
@@ -548,9 +544,9 @@ void main() {
       );
       await _pumpFrames(tester);
 
-      // English UI should be shown after the locale was cleared.
-      expect(find.text('Settings'), findsOneWidget);
-      expect(find.text('Continue Learning'), findsOneWidget);
+      // Kinyarwanda UI should be shown after the locale was cleared.
+      expect(find.text('Igenamiterere'), findsOneWidget);
+      expect(find.text('Komeza kwiga'), findsOneWidget);
     });
   });
 }

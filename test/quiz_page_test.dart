@@ -10,7 +10,8 @@ import 'package:traffic_rule_in_rwanda/shared/locale/fallback_localizations.dart
 import 'package:traffic_rule_in_rwanda/shared/locale/locale_notifier.dart';
 import 'package:traffic_rule_in_rwanda/shared/responsive/responsive_layout.dart';
 
-/// quizId known to exist in `assets/exams/en_exams.json`.
+/// quizId known to exist in both `assets/exams/en_exams.json` and
+/// `assets/exams/rw_exams.json`.
 const _kQuizId = '177';
 
 void _stubChannels(WidgetTester tester) {
@@ -22,7 +23,7 @@ void _stubChannels(WidgetTester tester) {
     (MethodCall call) async => null,
   );
   tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-    const MethodChannel('com.driveprep.rwanda/security'),
+    const MethodChannel('com.trafficrules.rwanda.app/security'),
     (MethodCall call) async => null,
   );
   addTearDown(() {
@@ -31,7 +32,7 @@ void _stubChannels(WidgetTester tester) {
       null,
     );
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('com.driveprep.rwanda/security'),
+      const MethodChannel('com.trafficrules.rwanda.app/security'),
       null,
     );
   });
@@ -57,8 +58,9 @@ Widget _buildApp() {
 
 /// Loads the exams into the (singleton) repository cache using real async so
 /// the page's lookup resolves without asset I/O during fake-async pumping.
+/// The app defaults to Kinyarwanda, so that is the language the page requests.
 Future<void> _seedExamCache(WidgetTester tester) async {
-  await tester.runAsync(() => ExamRepository().loadAllExams('en'));
+  await tester.runAsync(() => ExamRepository().loadAllExams('rw'));
 }
 
 Future<void> _pumpQuiz(WidgetTester tester, Size size) async {

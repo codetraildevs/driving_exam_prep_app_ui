@@ -271,11 +271,13 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                                     color: Colors.amber,
                                   ),
                                   const SizedBox(width: 10),
-                                  Text(
-                                    l10n.consentIndependentTitle,
-                                    style: AppTextStyles.bodySmall.copyWith(
-                                      color: textColor,
-                                      fontWeight: FontWeight.bold,
+                                  Expanded(
+                                    child: Text(
+                                      l10n.consentIndependentTitle,
+                                      style: AppTextStyles.bodySmall.copyWith(
+                                        color: textColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -340,54 +342,56 @@ class _ConsentDialogContentState extends State<_ConsentDialogContent>
                   padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
                   child: SizedBox(
                     width: double.infinity,
-                    height: 52,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: AppColors.primaryGradientFor(
-                          isDark ? Brightness.dark : Brightness.light,
-                        ),
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 52),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: AppColors.primaryGradientFor(
+                            isDark ? Brightness.dark : Brightness.light,
                           ),
-                        ],
-                      ),
-                      child: ElevatedButton(
-                        onPressed: widget.onAccept,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 10,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.check_circle_outline_rounded,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                l10n.consentAccept,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 12,
-                                ),
-                              ),
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.primary.withValues(alpha: 0.3),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
                             ),
                           ],
+                        ),
+                        child: ElevatedButton(
+                          onPressed: widget.onAccept,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 10,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.check_circle_outline_rounded,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  l10n.consentAccept,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -497,19 +501,19 @@ class _InlinePrivacyPolicyPage extends StatelessWidget {
                 l10n.privacyIntro,
                 style: AppTextStyles.bodyMedium.copyWith(height: 1.6),
               ),
-            const SizedBox(height: 20),
-            _section(
-              l10n.privacyDataCollection,
-              l10n.privacyDataCollectionBody,
-            ),
-            _section(l10n.privacyDataUsage, l10n.privacyDataUsageBody),
-            _section(
-              l10n.privacyDataProtection,
-              l10n.privacyDataProtectionBody,
-            ),
-            _section(l10n.privacyDataSharing, l10n.privacyDataSharingBody),
-            _section(l10n.privacyUserRights, l10n.privacyUserRightsBody),
-            const SizedBox(height: 32),
+              const SizedBox(height: 20),
+              _section(
+                l10n.privacyDataCollection,
+                l10n.privacyDataCollectionBody,
+              ),
+              _section(l10n.privacyDataUsage, l10n.privacyDataUsageBody),
+              _section(
+                l10n.privacyDataProtection,
+                l10n.privacyDataProtectionBody,
+              ),
+              _section(l10n.privacyDataSharing, l10n.privacyDataSharingBody),
+              _section(l10n.privacyUserRights, l10n.privacyUserRightsBody),
+              const SizedBox(height: 32),
             ],
           ),
         ),

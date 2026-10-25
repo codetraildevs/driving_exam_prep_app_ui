@@ -1,0 +1,17 @@
+1.on privacy privacy matter pop up modal make sure  "I understand and agree" always visible  means scroll inside content and keep button visible
+2. when app start  by default language to Kinyarwanda instead of English.
+
+3.i want to hide demo account (0787012615) for only this account  and account keep it because is visible  on screenshot which is on playstore. so that no one can login with it expect me.
+
+4 . Change primary to :rgb(96, 44, 145)  and  other colors change this to related to primary:  static const Color primary = Color(0xFF00039E); // Match HTML
+  static const Color primaryLight = Color(0xFF3B82F6);
+  static const Color primaryDark = Color(0xFF00027A);     means that you change in the app color only.
+
+
+  5.When try to login with this number :0739914099  i see "Phone number not registered.Please login first."  and when i go in admin and search that phone i do not find it.
+
+  6.Admin , add way of creating /edit/delete/update groups whatsapp and the group will automatically visible to user page and follow the existing design.
+
+  7. on user dashboard home, Access Active - days left make sure number of day remaining written in circle checkbox  and make plan user have always visible and number of days remaining .
+
+  8.

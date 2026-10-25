@@ -41,7 +41,7 @@ class ThemeNotifier extends Notifier<ThemeMode> {
       case ThemeMode.dark:
         applyThemeColor('#0F0F23');
       case ThemeMode.light:
-        applyThemeColor('#00039E');
+        applyThemeColor('#602C91');
       case ThemeMode.system:
         break; // handled by the page-level JS listener
     }

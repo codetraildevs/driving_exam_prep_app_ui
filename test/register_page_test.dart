@@ -17,18 +17,16 @@ Locale _resolveLocale(
   Iterable<Locale> supported,
 ) {
   if (state.locale != null) return state.locale!;
-  if (deviceLocale != null &&
-      supported.any((l) => l.languageCode == deviceLocale.languageCode)) {
-    return Locale(deviceLocale.languageCode);
-  }
-  return const Locale('en');
+  return const Locale('rw');
 }
 
 /// Helper: builds a MaterialApp.router with BlocProvider + locale setup.
 Widget _buildTestApp({
   required Widget child,
   GoRouter? router,
-  LocaleState localeState = const LocaleState(),
+  // These are form/validation tests, so pin English; locale switching is
+  // covered by locale_widget_test.dart.
+  LocaleState localeState = const LocaleState(locale: Locale('en')),
 }) {
   final effectiveRouter = router ??
       GoRouter(
