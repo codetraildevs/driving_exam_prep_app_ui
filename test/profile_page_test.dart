@@ -72,6 +72,7 @@ Finder _contentContainer(double expectedMaxWidth) {
     matching: find.byWidgetPredicate(
       (w) =>
           w is Container &&
+          w.padding == const EdgeInsets.all(20) &&
           w.constraints is BoxConstraints &&
           (w.constraints as BoxConstraints).maxWidth == expectedMaxWidth,
     ),
