@@ -69,7 +69,35 @@ Future<void> _pumpFrames(WidgetTester tester) async {
 
 
 
+class _RecordingAuthBloc extends AuthBloc {
+  SignInEvent? submitted;
+  @override
+  void add(AuthEvent event) {
+    if (event is SignInEvent) {
+      submitted = event;
+    } else {
+      super.add(event);
+    }
+  }
+}
+
 void main() {
+  testWidgets('demo login submits directly without an Owner password popup', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final bloc = _RecordingAuthBloc();
+    addTearDown(() => bloc.close());
+    await tester.pumpWidget(_buildTestApp(child: BlocProvider<AuthBloc>.value(
+      value: bloc, child: const LoginPage())));
+    await _pumpFrames(tester);
+    await tester.enterText(find.byType(TextField), '0787012615');
+    await tester.ensureVisible(find.text('Continue'));
+    await tester.tap(find.text('Continue'));
+    await _pumpFrames(tester);
+    expect(bloc.submitted?.phoneNumber, '0787012615');
+    expect(find.byType(AlertDialog), findsNothing);
+    expect(find.text('Owner password'), findsNothing);
+  });
+
   group('LoginPage', () {
     setUp(() {
       SharedPreferences.setMockInitialValues({});

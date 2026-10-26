@@ -42,11 +42,13 @@ void _seedDashboardCache() {
   });
 }
 
-Widget _buildApp(AuthBloc bloc) {
+Widget _buildApp(AuthBloc bloc, {String language = 'en', double scale = 1}) {
   return BlocProvider<AuthBloc>.value(
     value: bloc,
-    child: const MaterialApp(
-      locale: Locale('en'),
+    child: MaterialApp(
+      locale: Locale(language),
+      builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(
+        textScaler: TextScaler.linear(scale)), child: child!),
       supportedLocales: LocaleNotifier.supportedLocales,
       localizationsDelegates: [
         AppLocalizations.delegate,
@@ -56,7 +58,7 @@ Widget _buildApp(AuthBloc bloc) {
         FallbackMaterialLocalizationsDelegate(),
         FallbackCupertinoLocalizationsDelegate(),
       ],
-      home: AdminDashboardPage(),
+      home: const AdminDashboardPage(),
     ),
   );
 }
@@ -64,8 +66,9 @@ Widget _buildApp(AuthBloc bloc) {
 Future<void> _pumpDashboard(
   WidgetTester tester,
   AuthBloc bloc,
-  Size size,
-) async {
+  Size size, {
+  String language = 'en', double scale = 1,
+}) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1.0;
   addTearDown(() {
@@ -73,7 +76,7 @@ Future<void> _pumpDashboard(
     tester.view.resetDevicePixelRatio();
   });
 
-  await tester.pumpWidget(_buildApp(bloc));
+  await tester.pumpWidget(_buildApp(bloc, language: language, scale: scale));
   // Let the post-frame _loadData run: cache read + failed API + fade-in.
   for (int i = 0; i < 8; i++) {
     await tester.pump(const Duration(milliseconds: 100));
@@ -93,6 +96,19 @@ double _cappedWidth(WidgetTester tester) {
 }
 
 void main() {
+  for (final language in ['en', 'fr', 'rw']) {
+    testWidgets('admin dashboard is readable on narrow screens in $language', (tester) async {
+      _seedDashboardCache();
+      final bloc = AuthBloc()..emit(AuthAuthenticated(_adminUser()));
+      addTearDown(() => bloc.close());
+      await _pumpDashboard(tester, bloc, const Size(320, 740), language: language, scale: 1.6);
+      expect(find.text('Test Admin'), findsOneWidget);
+      expect(find.text('WhatsApp'), findsOneWidget);
+      expect(find.text('🇷🇼'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   group('AdminDashboardPage responsive content', () {
     testWidgets('desktop width caps content at AppContentWidths.wide', (
       tester,

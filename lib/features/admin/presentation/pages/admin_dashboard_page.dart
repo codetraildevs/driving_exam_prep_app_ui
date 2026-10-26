@@ -23,6 +23,7 @@ class AdminDashboardPage extends StatefulWidget {
 class _AdminDashboardPageState extends State<AdminDashboardPage>
     with SingleTickerProviderStateMixin {
   bool _isLoading = true;
+  bool _requestInFlight = false;
   bool _isOffline = false;
   Map<String, dynamic> _quickStats = {};
   String? _error;
@@ -50,6 +51,8 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
   }
 
   Future<void> _loadData() async {
+    if (_requestInFlight || !mounted) return;
+    _requestInFlight = true;
     final l10n = AppLocalizations.of(context);
     setState(() {
       _isLoading = true;
@@ -75,6 +78,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
               'ts': DateTime.now().toIso8601String(),
             }),
           );
+          if (!mounted) return;
           setState(() {
             _quickStats = stats;
           });
@@ -96,6 +100,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
         }
       }
     } finally {
+      _requestInFlight = false;
       if (mounted) setState(() => _isLoading = false);
     }
   }
@@ -165,7 +170,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     bool innerBoxIsScrolled,
   ) {
     return SliverAppBar(
-      expandedHeight: 140,
+      expandedHeight: 140 + (MediaQuery.textScalerOf(context).scale(24) - 24),
       pinned: true,
       floating: false,
       backgroundColor: AppColors.primary,
@@ -207,9 +212,11 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
             ),
           ),
         IconButton(
-          icon: const Icon(Icons.refresh, color: AppColors.textInverse),
-          onPressed: _loadData,
-          tooltip: 'Refresh',
+          icon: _isLoading
+              ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textInverse))
+              : const Icon(Icons.refresh, color: AppColors.textInverse),
+          onPressed: _isLoading ? null : _loadData,
+          tooltip: l10n.commonRetry,
         ),
         // IconButton(
         //   icon: const Icon(Icons.notifications_none, color: AppColors.textInverse),
@@ -283,36 +290,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
                       ],
                     ),
                   ),
-                  // Active subs badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.success.withValues(alpha: 0.85),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.verified,
-                          color: AppColors.textInverse,
-                          size: 14,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          l10n.adminActiveLabel(_activeSubscriptions),
-                          style: const TextStyle(
-                            color: AppColors.textInverse,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+
                 ],
               ),
             ),
@@ -399,81 +377,78 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
   // Admin Actions grid — 3 actions (NO Courses)
   // ──────────────────────────────────────────────────────────────────────────
   Widget _buildActionsGrid(BuildContext context, AppLocalizations l10n) {
-    return Column(
-      children: [
-        // Row 1: Manage Users | Access Codes
-        Row(
-          children: [
-            Expanded(
-              child: _ActionCard(
-                icon: Icons.people,
-                title: l10n.adminManageUsers,
-                description: l10n.adminManageUsersDesc,
-                gradientColors: const [
-                  AppColors.primary,
-                  AppColors.primaryLight,
-                ],
-                onTap: () => context.push('/admin/users'),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _ActionCard(
-                icon: Icons.key_rounded,
-                title: l10n.adminAccess,
-                description: l10n.adminAccessCodesDesc,
-                gradientColors: const [AppColors.primary, Color(0xFF4ADE80)],
-                onTap: () => context.push('/admin/access'),
-              ),
-            ),
+    final cards = [
+      _ActionCard(icon: Icons.people, title: l10n.adminManageUsers,
+        description: l10n.adminManageUsersDesc,
+        gradientColors: const [AppColors.primary, AppColors.primaryLight],
+        onTap: () => context.push('/admin/users')),
+      _ActionCard(icon: Icons.key_rounded, title: l10n.adminAccess,
+        description: l10n.adminAccessCodesDesc,
+        gradientColors: const [AppColors.primary, Color(0xFF4ADE80)],
+        onTap: () => context.push('/admin/access')),
+      _ActionCard(icon: Icons.groups, title: 'WhatsApp',
+        description: l10n.joinGroup,
+        gradientColors: const [AppColors.primary, AppColors.primaryLight],
+        onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
+          builder: (_) => const WhatsappGroupsPage(manage: true)))),
+    ];
+    return LayoutBuilder(builder: (context, constraints) {
+      final singleColumn = constraints.maxWidth < 340 ||
+          MediaQuery.textScalerOf(context).scale(14) > 20;
+      if (singleColumn) {
+        return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          for (var i = 0; i < cards.length; i++) ...[
+            if (i > 0) const SizedBox(height: 12),
+            cards[i],
           ],
-        ),
+        ]);
+      }
+      if (constraints.maxWidth >= 720) {
+        return IntrinsicHeight(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var i = 0; i < cards.length; i++) ...[
+              if (i > 0) const SizedBox(width: 12),
+              Expanded(child: cards[i]),
+            ],
+          ]));
+      }
+      return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        IntrinsicHeight(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [Expanded(child: cards[0]), const SizedBox(width: 12),
+            Expanded(child: cards[1])])),
         const SizedBox(height: 12),
-        _ActionCard(
-          icon: Icons.groups,
-          title: 'WhatsApp',
-          description: l10n.joinGroup,
-          gradientColors: const [AppColors.primary, AppColors.primaryLight],
-          onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const WhatsappGroupsPage(manage: true))),
-        ),
-        // Row 2: Manage Exams (full width — primary action)
-        // _ActionCardWide(
-        //   icon: Icons.quiz_rounded,
-        //   title: l10n.adminManageExams,
-        //   description: l10n.adminManageExamsDesc,
-        //   accentColor: AppColors.accent,s
-        //   onTap: () => context.push('/admin/progress'),
-        // ),
-      ],
-    );
+        cards[2],
+      ]);
+    });
   }
 
   // ──────────────────────────────────────────────────────────────────────────
   // Quick Stats
   // ──────────────────────────────────────────────────────────────────────────
   Widget _buildQuickStats(AppLocalizations l10n) {
-    // final byLang = _usersByLanguage;
-    return Row(
-      children: [
-        Expanded(
-          child: _StatTile(
-            icon: Icons.people,
-            value: '$_totalUsers',
-            label: l10n.adminTotalUsers,
-            color: AppColors.primary,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _StatTile(
-            icon: Icons.quiz_outlined,
-            value: '$_totalPractices',
-            label: l10n.adminTotalPractices,
-            color: AppColors.accent,
-          ),
-        ),
-      ],
-    );
+    final tiles = [
+      _StatTile(icon: Icons.people, value: '$_totalUsers',
+        label: l10n.adminTotalUsers, color: AppColors.primary),
+      _StatTile(icon: Icons.quiz_outlined, value: '$_totalPractices',
+        label: l10n.adminTotalPractices, color: AppColors.accent),
+      _StatTile(icon: Icons.verified_outlined, value: '$_activeSubscriptions',
+        label: l10n.adminActiveSubscriptions, color: AppColors.success),
+    ];
+    return LayoutBuilder(builder: (context, constraints) {
+      if (constraints.maxWidth < 340 || MediaQuery.textScalerOf(context).scale(14) > 20) {
+        return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          for (var i = 0; i < tiles.length; i++) ...[
+            if (i > 0) const SizedBox(height: 12), tiles[i],
+          ],
+        ]);
+      }
+      return IntrinsicHeight(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (var i = 0; i < tiles.length; i++) ...[
+            if (i > 0) const SizedBox(width: 12), Expanded(child: tiles[i]),
+          ],
+        ]));
+    });
   }
 
   // ──────────────────────────────────────────────────────────────────────────
@@ -497,7 +472,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
       child: Column(
         children: [
           _LangRow(
-            flag: '��🇼',
+            flag: '🇷🇼',
             lang: 'Kinyarwanda',
             count: byLang['rw']!,
             total: total,
@@ -550,9 +525,13 @@ class _ActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(16),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Ink(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -563,7 +542,7 @@ class _ActionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: gradientColors.first.withValues(alpha: 0.3),
+              color: gradientColors.first.withValues(alpha: 0.12),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -603,6 +582,7 @@ class _ActionCard extends StatelessWidget {
           ],
         ),
       ),
+      ),
     );
   }
 }
@@ -623,7 +603,7 @@ class _StatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
@@ -677,44 +657,21 @@ class _LangRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pct = total > 0 ? count / total : 0.0;
-    return Row(
-      children: [
-        Text(flag, style: const TextStyle(fontSize: 18)),
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Row(children: [
+        ExcludeSemantics(child: Text(flag, textScaler: TextScaler.noScaling,
+          style: const TextStyle(fontSize: 18))),
         const SizedBox(width: 10),
-        SizedBox(
-          width: 72,
-          child: Text(
-            lang,
-            style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.textSecondary,
-            ),
-          ),
-        ),
-        Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: LinearProgressIndicator(
-              value: pct.clamp(0.0, 1.0),
-              minHeight: 8,
-              backgroundColor: color.withValues(alpha: 0.1),
-              color: color,
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        SizedBox(
-          width: 28,
-          child: Text(
-            '$count',
-            style: AppTextStyles.labelMedium.copyWith(
-              color: color,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.right,
-          ),
-        ),
-      ],
-    );
+        Expanded(child: Text(lang, style: AppTextStyles.bodySmall.copyWith(
+          color: AppColors.textSecondary))),
+        const SizedBox(width: 12),
+        Text('$count', style: AppTextStyles.labelMedium.copyWith(
+          color: color, fontWeight: FontWeight.bold)),
+      ]),
+      const SizedBox(height: 8),
+      ClipRRect(borderRadius: BorderRadius.circular(6), child: LinearProgressIndicator(
+        value: pct.clamp(0.0, 1.0), minHeight: 6,
+        backgroundColor: color.withValues(alpha: 0.1), color: color)),
+    ]);
   }
 }
-
