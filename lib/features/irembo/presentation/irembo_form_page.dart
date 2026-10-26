@@ -340,7 +340,13 @@ class _IremboFormPageState extends State<IremboFormPage> {
                       FormField<String>(
                         validator: (_) =>
                             _category == null ? l.irRequired : null,
-                        builder: (state) => Column(
+                        builder: (state) => RadioGroup<String>(
+                          groupValue: _category,
+                          onChanged: (v) {
+                            setState(() => _category = v);
+                            state.didChange(v);
+                          },
+                          child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(l.irCategory),
@@ -348,11 +354,6 @@ class _IremboFormPageState extends State<IremboFormPage> {
                               RadioListTile<String>(
                                 title: Text(c),
                                 value: c,
-                                groupValue: _category,
-                                onChanged: (v) {
-                                  setState(() => _category = v);
-                                  state.didChange(v);
-                                },
                               ),
                             if (state.hasError)
                               Text(
@@ -363,11 +364,12 @@ class _IremboFormPageState extends State<IremboFormPage> {
                               ),
                           ],
                         ),
+                        ),
                       ),
                     const SizedBox(height: 16),
                   ],
                   DropdownButtonFormField<String>(
-                    value: _language,
+                    initialValue: _language,
                     isExpanded: true,
                     decoration: InputDecoration(
                       labelText: l.irExamLanguage,

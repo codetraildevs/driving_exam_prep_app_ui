@@ -113,7 +113,7 @@ class _IremboPageState extends State<IremboPage> {
     final l = AppLocalizations.of(context);
     return DropdownButtonFormField<String>(
       key: ValueKey('$key-${_filters[key]}'),
-      value: _filters[key] ?? '',
+      initialValue: _filters[key] ?? '',
       isExpanded: true,
       decoration: InputDecoration(
         labelText: title,

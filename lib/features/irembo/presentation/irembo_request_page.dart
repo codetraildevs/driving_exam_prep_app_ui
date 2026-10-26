@@ -316,7 +316,7 @@ class _IremboRequestPageState extends State<IremboRequestPage> {
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 key: ValueKey('status-$_status'),
-                value: _status,
+                initialValue: _status,
                 isExpanded: true,
                 decoration: InputDecoration(
                   labelText: l.irStatus,
@@ -331,7 +331,7 @@ class _IremboRequestPageState extends State<IremboRequestPage> {
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 key: ValueKey('assigned-$_assigned'),
-                value: _assigned ?? '',
+                initialValue: _assigned ?? '',
                 isExpanded: true,
                 decoration: InputDecoration(
                   labelText: l.irAssigned,
