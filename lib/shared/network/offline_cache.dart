@@ -10,11 +10,18 @@ class OfflineCache {
   OfflineCache._();
 
   static const _prefix = 'offline_cache_';
-  Future<void> _writes = Future.value();
+  Future<void>? _writes;
 
   Future<T> _serial<T>(Future<T> Function() action) {
-    final next = _writes.then((_) => action());
-    _writes = next.then<void>((_) {}, onError: (Object _, StackTrace __) {});
+    final previous = _writes;
+    final next = previous == null
+        ? Future<T>.sync(action)
+        : previous.then((_) => action());
+    final settled = next.then<void>((_) {}, onError: (Object _, StackTrace __) {});
+    _writes = settled;
+    settled.then((_) {
+      if (identical(_writes, settled)) _writes = null;
+    });
     return next;
   }
 
