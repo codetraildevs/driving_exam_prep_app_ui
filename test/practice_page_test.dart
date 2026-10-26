@@ -57,6 +57,15 @@ int _gridColumns(WidgetTester tester) {
 }
 
 void main() {
+  for (final size in [const Size(844, 320), const Size(800, 1280), const Size(1280, 800)]) {
+    testWidgets('page fits landscape and tablet $size', (tester) async {
+      await _seedExamCache(tester);
+      await _pumpPractice(tester, size);
+      expect(find.byType(GridView), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   setUp(() {
     SharedPreferences.setMockInitialValues({});
     ExamRepository().clearCache();

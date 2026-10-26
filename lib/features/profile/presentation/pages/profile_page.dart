@@ -372,7 +372,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     : double.infinity);
 
           final topPadding = MediaQuery.of(context).padding.top;
-          return Column(
+          return SingleChildScrollView(
+            child: Column(
             children: [
               // Curved gradient header with avatar
               Container(
@@ -443,6 +444,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 10),
                     Text(
                       user.name,
+                      textAlign: TextAlign.center,
                       style: AppTextStyles.heading4.copyWith(
                         color: AppColors.textInverse,
                       ),
@@ -493,10 +495,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
 
               // Content
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(bottom: 100),
-                  child: Center(
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24),
+                child: Center(
                     child: Container(
                       constraints: BoxConstraints(maxWidth: maxContentWidth),
                       padding: const EdgeInsets.all(20),
@@ -703,9 +704,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   ),
-                ),
               ),
             ],
+            ),
           );
         },
       ),

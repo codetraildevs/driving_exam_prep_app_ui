@@ -30,13 +30,13 @@ jobs:
           path: pubspec.lock
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter gen-l10n
-      - run: flutter analyze lib/ test/home_page_test.dart test/dashboard_notices_test.dart test/payment_preparation_test.dart test/subscription_payment_page_test.dart test/resources_page_test.dart test/admin_dashboard_page_test.dart test/login_page_test.dart test/whatsapp_groups_page_test.dart --no-fatal-infos --no-fatal-warnings
+      - run: flutter analyze lib/ test/home_page_test.dart test/dashboard_notices_test.dart test/payment_preparation_test.dart test/subscription_payment_page_test.dart test/resources_page_test.dart test/admin_dashboard_page_test.dart test/login_page_test.dart test/whatsapp_groups_page_test.dart test/profile_page_test.dart test/settings_page_test.dart test/practice_page_test.dart test/quiz_page_test.dart test/about_page_test.dart test/privacy_policy_page_test.dart test/terms_of_service_page_test.dart test/my_certificates_page_test.dart test/signs_page_test.dart test/exam_intro_page_test.dart test/exam_page_test.dart test/main_layout_test.dart --no-fatal-infos --no-fatal-warnings
       - name: Prepare PDFium for Flutter tests
         run: |
           mkdir -p "$RUNNER_TEMP/pdfium"
           curl --fail --location --retry 3 'https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F7811/pdfium-linux-x64.tgz' -o "$RUNNER_TEMP/pdfium.tgz"
           tar -xzf "$RUNNER_TEMP/pdfium.tgz" -C "$RUNNER_TEMP/pdfium"
-      - run: flutter test test/home_page_test.dart test/dashboard_notices_test.dart test/payment_preparation_test.dart test/subscription_payment_page_test.dart test/resources_page_test.dart test/admin_dashboard_page_test.dart test/login_page_test.dart test/whatsapp_groups_page_test.dart
+      - run: flutter test test/home_page_test.dart test/dashboard_notices_test.dart test/payment_preparation_test.dart test/subscription_payment_page_test.dart test/resources_page_test.dart test/admin_dashboard_page_test.dart test/login_page_test.dart test/whatsapp_groups_page_test.dart test/profile_page_test.dart test/settings_page_test.dart test/practice_page_test.dart test/quiz_page_test.dart test/about_page_test.dart test/privacy_policy_page_test.dart test/terms_of_service_page_test.dart test/my_certificates_page_test.dart test/signs_page_test.dart test/exam_intro_page_test.dart test/exam_page_test.dart test/main_layout_test.dart
         env:
           PDFIUM_PATH: ${{ runner.temp }}/pdfium/lib/libpdfium.so
       - run: php -l backend/src/handlers/access_codes.php

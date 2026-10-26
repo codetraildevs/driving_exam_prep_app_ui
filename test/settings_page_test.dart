@@ -55,6 +55,15 @@ double _themeCardWidth(WidgetTester tester) {
 }
 
 void main() {
+  for (final size in [const Size(844, 320), const Size(800, 1280), const Size(1280, 800)]) {
+    testWidgets('page fits landscape and tablet $size', (tester) async {
+      
+      await _pumpSettings(tester, size);
+      expect(find.byType(ConstrainedContent), findsWidgets);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   setUp(() {
     SharedPreferences.setMockInitialValues({});
   });

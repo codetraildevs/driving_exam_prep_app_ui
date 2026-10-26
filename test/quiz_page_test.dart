@@ -91,6 +91,15 @@ double _progressWidth(WidgetTester tester) {
 }
 
 void main() {
+  for (final size in [const Size(844, 320), const Size(800, 1280), const Size(1280, 800)]) {
+    testWidgets('page fits landscape and tablet $size', (tester) async {
+      _stubChannels(tester); await _seedExamCache(tester);
+      await _pumpQuiz(tester, size);
+      expect(find.byType(LinearProgressIndicator), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   setUp(() {
     ExamRepository().clearCache();
   });

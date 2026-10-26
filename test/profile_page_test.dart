@@ -24,12 +24,13 @@ UserModel _user() {
   );
 }
 
-Widget _buildApp(AuthBloc bloc) {
+Widget _buildApp(AuthBloc bloc, {String language = 'en', double scale = 1}) {
   return BlocProvider<AuthBloc>.value(
     value: bloc,
-    child: const ProviderScope(
+    child: ProviderScope(
       child: MaterialApp(
-        locale: Locale('en'),
+        locale: Locale(language),
+        builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(scale)), child: child!),
         supportedLocales: LocaleNotifier.supportedLocales,
         localizationsDelegates: [
           AppLocalizations.delegate,
@@ -45,7 +46,7 @@ Widget _buildApp(AuthBloc bloc) {
   );
 }
 
-Future<void> _pumpProfile(WidgetTester tester, AuthBloc bloc, Size size) async {
+Future<void> _pumpProfile(WidgetTester tester, AuthBloc bloc, Size size, {String language = 'en', double scale = 1}) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1.0;
   addTearDown(() {
@@ -53,7 +54,7 @@ Future<void> _pumpProfile(WidgetTester tester, AuthBloc bloc, Size size) async {
     tester.view.resetDevicePixelRatio();
   });
 
-  await tester.pumpWidget(_buildApp(bloc));
+  await tester.pumpWidget(_buildApp(bloc, language: language, scale: scale));
   // Let the auth rebuild + async progress load settle.
   for (int i = 0; i < 5; i++) {
     await tester.pump(const Duration(milliseconds: 50));
@@ -78,6 +79,25 @@ Finder _contentContainer(double expectedMaxWidth) {
 }
 
 void main() {
+  for (final size in [const Size(844, 320), const Size(800, 1280), const Size(1280, 800)]) {
+    for (final language in ['rw', 'en', 'fr']) {
+      testWidgets('profile remains scrollable at $size in $language', (tester) async {
+        final bloc = AuthBloc()..emit(AuthAuthenticated(_user()));
+        addTearDown(() => bloc.close());
+        await _pumpProfile(tester, bloc, size, language: language, scale: 1.6);
+        expect(tester.takeException(), isNull);
+        final l10n = AppLocalizations.of(tester.element(find.byType(ProfilePage)));
+        final signOut = find.text(l10n.profileSignOut);
+        await tester.ensureVisible(signOut);
+        await tester.pumpAndSettle();
+        expect(signOut.hitTestable(), findsOneWidget);
+        expect(tester.takeException(), isNull);
+        // Scrolling to the last action must move the large header out of the way.
+        if (size.height <= 400) expect(find.text('Test Driver').hitTestable(), findsNothing);
+      });
+    }
+  }
+
   setUp(() {
     SharedPreferences.setMockInitialValues({});
   });
