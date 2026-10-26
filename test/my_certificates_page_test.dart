@@ -121,6 +121,7 @@ void main() {
     });
     final pending = Completer<ApiResponse>();
     final bloc = AuthBloc()..emit(AuthAuthenticated(_user()));
+    addTearDown(bloc.close);
     await tester.pumpWidget(_buildApp(bloc, loader: (_) => pending.future));
     for (var i = 0; i < 5; i++) { await tester.pump(const Duration(milliseconds: 20)); }
     final l10n = AppLocalizations.of(tester.element(find.byType(MyCertificatesPage)));
@@ -129,7 +130,6 @@ void main() {
     pending.complete(const ApiResponse(statusCode: 0, data: null, isSuccess: false, debugInfo: 'offline'));
     await tester.pump();
     expect(tester.takeException(), isNull);
-    await bloc.close();
   }, timeout: const Timeout(Duration(seconds: 30)));
 
   setUp(() {
