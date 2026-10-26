@@ -86,6 +86,26 @@ Future<void> _pump(WidgetTester tester, {
 }
 
 void main() {
+  testWidgets('share fallback copies the supplied Play Store link', (tester) async {
+    const url = 'https://play.google.com/store/apps/details?id=com.trafficrules.rwanda.app';
+    String? copied;
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
+      if (call.method == 'Clipboard.setData') copied = (call.arguments as Map)['text'] as String;
+      return null;
+    });
+    addTearDown(() => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.platform, null));
+    await _pump(tester, language: 'en');
+    final card = find.byKey(const ValueKey('shortcut-share'));
+    await tester.ensureVisible(card);
+    await tester.tap(card);
+    await tester.pumpAndSettle();
+    expect(find.text(url), findsOneWidget);
+    final l10n = AppLocalizations.of(tester.element(find.byType(HomePage)));
+    await tester.tap(find.text(l10n.dashboardCopyLink));
+    await tester.pumpAndSettle();
+    expect(copied, url);
+  });
+
   for (final phone in ['0787012615', '+250 787 012 615', '250787012615', '787012615']) {
     testWidgets('demo dashboard keeps name and hides phone $phone', (tester) async {
       await _pump(tester, phone: phone);

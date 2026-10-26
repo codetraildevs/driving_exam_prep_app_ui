@@ -5,7 +5,9 @@ import '../network/api_helper.dart';
 
 class WhatsappGroupsPage extends StatefulWidget {
   final bool manage;
-  const WhatsappGroupsPage({super.key, this.manage = false});
+  // Optional loader keeps loading and retry behavior independently testable.
+  final Future<ApiResponse> Function()? loadGroups;
+  const WhatsappGroupsPage({super.key, this.manage = false, this.loadGroups});
 
   @override
   State<WhatsappGroupsPage> createState() => _WhatsappGroupsPageState();
@@ -23,6 +25,7 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
   List<dynamic> _groups = [];
   bool _loading = true;
   bool _saving = false;
+  bool _requestInFlight = false;
   String? _error;
 
   @override
@@ -32,14 +35,36 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
   }
 
   Future<void> _load() async {
-    final result = await ApiHelper().get('/api/whatsapp-groups');
-    if (!mounted) return;
+    if (_requestInFlight || !mounted) return;
+    _requestInFlight = true;
     setState(() {
-      _loading = false;
-      _error = result.isSuccess ? null : result.errorMessage;
-      if (result.isSuccess) _groups = result.dataList;
+      _loading = true;
+      _error = null;
     });
+    try {
+      final result = await (widget.loadGroups?.call() ??
+          ApiHelper().get('/api/whatsapp-groups'));
+      if (!mounted) return;
+      setState(() {
+        if (result.isSuccess) {
+          _groups = result.dataList;
+        } else {
+          _error = _loadError;
+        }
+      });
+    } catch (_) {
+      if (mounted) setState(() => _error = _loadError);
+    } finally {
+      _requestInFlight = false;
+      if (mounted) setState(() => _loading = false);
+    }
   }
+
+  String get _loadError => _text(
+    'Unable to load WhatsApp groups. Check your internet connection and try again.',
+    'Ntibishobotse kubona amatsinda ya WhatsApp. Reba ko ufite interineti wongere ugerageze.',
+    'Impossible de charger les groupes WhatsApp. Vérifiez votre connexion Internet et réessayez.',
+  );
 
   void _message(String text) {
     if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
@@ -104,13 +129,25 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text(AppLocalizations.of(context).joinGroup), actions: [IconButton(onPressed: _load, icon: const Icon(Icons.refresh))]),
+    appBar: AppBar(title: Text(AppLocalizations.of(context).joinGroup), actions: [IconButton(tooltip: AppLocalizations.of(context).commonRetry,
+      onPressed: _loading || _saving ? null : _load, icon: const Icon(Icons.refresh))]),
     floatingActionButton: widget.manage ? FloatingActionButton(onPressed: _saving ? null : () => _edit(), child: const Icon(Icons.add)) : null,
-    body: _loading ? const Center(child: CircularProgressIndicator()) : RefreshIndicator(
+    body: _loading && _groups.isEmpty ? const Center(child: CircularProgressIndicator()) : RefreshIndicator(
       onRefresh: _load,
       child: ListView(padding: const EdgeInsets.all(16), physics: const AlwaysScrollableScrollPhysics(), children: [
-        if (_saving) const LinearProgressIndicator(),
-        if (_error != null) Text(_error!),
+        if (_saving || _loading) const LinearProgressIndicator(),
+        if (_error != null) Card(child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(_error!),
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              onPressed: _loading ? null : _load,
+              icon: const Icon(Icons.refresh),
+              label: Text(AppLocalizations.of(context).commonRetry),
+            ),
+          ]),
+        )),
         if (_error == null && _groups.isEmpty) Padding(padding: const EdgeInsets.all(24), child: Text(_text('No WhatsApp groups available yet.', 'Nta matsinda ya WhatsApp arahari.', 'Aucun groupe WhatsApp disponible.'))),
         for (final item in _groups) Card(child: ListTile(
           leading: const Icon(Icons.groups),
