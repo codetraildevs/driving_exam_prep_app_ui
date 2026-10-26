@@ -1,7 +1,7 @@
 # Offline study behavior
 
 - A previously signed-in account opens from local storage while online refresh runs in the background. First login and registration still require the server.
-- English, French and Kinyarwanda practice questions and question images are bundled with the app. Gazette and Ibyapa PDFs are bundled and read inside the app.
+- English, French and Kinyarwanda practice questions and the existing available question images are bundled with the app. Gazette and Ibyapa PDFs are bundled and read inside the app.
 - Free practice remains available offline. Paid practice uses the signed-in account's saved, server-verified access until its expiry. A failed request does not erase that access.
 - This update replaces device-wide access flags with per-account records. Connect once after installing the update to populate the verified record for the current account.
 - Completed practice attempts are written to a durable local outbox before upload. Progress and certificates show saved results immediately and retain pending attempts when refreshing from the server.
@@ -19,8 +19,6 @@ The Flutter app must also be rebuilt and installed. Do not upload backend test h
 
 Automated checks cover bundled content, offline persistence, concurrent saves, account-specific synchronization, retries, cached startup, cached certificates, access expiry and MySQL duplicate-delivery handling. Physical-device airplane-mode testing is still recommended before a Play Store release.
 
-## Bundled-content repairs
+## Existing exam content
 
-English traffic-light, right-turn and overtaking-sign references now reuse the correct images already used by their matching French/Kinyarwanda questions. Nonexistent optional illustrations and placeholder image URLs were removed from text questions; no questions or answer keys were removed or changed.
-
-Content-owner review is still needed for the existing broken-white-line question (rw free exam question 20 / exam 12 question 6; en/fr exam 11 question 6): its answer key prohibits crossing, while other questions describe exceptions. Its originally referenced illustration is absent from the repository. This update does not invent a replacement diagram or change the authored answer.
+The original exam JSON files, questions, answer keys and image references are preserved unchanged at the owner's request. The repository already contains 16 distinct missing or placeholder image references; offline tests record these existing gaps and detect additional regressions. All available referenced images are checked for bundled data. Missing content is not fetched from the internet or replaced with invented illustrations. These existing gaps affect the same questions online and offline and require a separate owner-approved content update.
