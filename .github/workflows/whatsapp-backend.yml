@@ -1,0 +1,32 @@
+name: WhatsApp backend checks
+on:
+  push:
+    branches: [feat/app-updates-1.2.0]
+    paths:
+      - 'backend/src/**'
+      - 'backend/tests/whatsapp*'
+      - '.github/workflows/whatsapp-backend.yml'
+permissions:
+  contents: read
+jobs:
+  whatsapp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: test-password
+          MYSQL_ROOT_HOST: '%'
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check PHP syntax
+        run: find backend/src -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Test WhatsApp API against MySQL
+        run: python3 backend/tests/whatsapp_integration.py
