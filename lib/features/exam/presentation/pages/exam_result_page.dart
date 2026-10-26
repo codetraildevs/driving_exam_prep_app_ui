@@ -557,7 +557,11 @@ class _ScoreRing extends StatelessWidget {
           fgColor: Colors.white,
           trackColor: Colors.white.withValues(alpha: 0.1),
         ),
-        child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: SizedBox(width: size - 48,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -572,6 +576,7 @@ class _ScoreRing extends StatelessWidget {
               ),
               Text(
                 label.toUpperCase(),
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.82),
                   fontSize: size * 0.10,
@@ -580,6 +585,8 @@ class _ScoreRing extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          ),
           ),
         ),
       ),

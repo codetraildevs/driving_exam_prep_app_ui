@@ -1,3 +1,4 @@
+import 'package:share_plus_platform_interface/share_plus_platform_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,6 +16,15 @@ import 'package:traffic_rule_in_rwanda/l10n/generated/app_localizations.dart';
 import 'package:traffic_rule_in_rwanda/shared/locale/fallback_localizations.dart';
 import 'package:traffic_rule_in_rwanda/shared/locale/locale_notifier.dart';
 import 'package:traffic_rule_in_rwanda/shared/subscription/subscription_notifier.dart';
+
+class _UnavailableShare extends SharePlatform {
+  String? text;
+  @override
+  Future<ShareResult> share(ShareParams params) async {
+    text = params.text;
+    return const ShareResult('', ShareResultStatus.unavailable);
+  }
+}
 
 class _Subscription extends SubscriptionNotifier {
   final SubscriptionState initial;
@@ -88,6 +98,10 @@ Future<void> _pump(WidgetTester tester, {
 void main() {
   testWidgets('share fallback copies the supplied Play Store link', (tester) async {
     const url = 'https://play.google.com/store/apps/details?id=com.trafficrules.rwanda.app';
+    final originalShare = SharePlatform.instance;
+    final share = _UnavailableShare();
+    SharePlatform.instance = share;
+    addTearDown(() => SharePlatform.instance = originalShare);
     String? copied;
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
       if (call.method == 'Clipboard.setData') copied = (call.arguments as Map)['text'] as String;
@@ -99,6 +113,7 @@ void main() {
     await tester.ensureVisible(card);
     await tester.tap(card);
     await tester.pumpAndSettle();
+    expect(share.text, contains(url));
     expect(find.text(url), findsOneWidget);
     final l10n = AppLocalizations.of(tester.element(find.byType(HomePage)));
     await tester.tap(find.text(l10n.dashboardCopyLink));
