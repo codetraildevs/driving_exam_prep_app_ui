@@ -6,6 +6,7 @@ on:
       - 'backend/src/**'
       - 'backend/tests/whatsapp*'
       - 'backend/tests/demo_auth*'
+      - 'backend/tests/offline_results*'
       - '.github/workflows/whatsapp-backend.yml'
 permissions:
   contents: read
@@ -34,3 +35,6 @@ jobs:
 
       - name: Test demo login and ordinary account restrictions
         run: python3 backend/tests/demo_auth_test.py
+
+      - name: Test offline result retry safety
+        run: python3 backend/tests/offline_results_test.py

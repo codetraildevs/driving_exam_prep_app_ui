@@ -148,8 +148,25 @@ function submitPracticeResult($conn, $params): void
         ErrorHandler::badRequest('Score must be between 0 and 100');
     }
 
-    $id = generateUUID();
+    $clientId = $input['clientResultId'] ?? null;
+    if ($clientId !== null && (!is_string($clientId) ||
+        !preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $clientId))) {
+        ErrorHandler::badRequest('Invalid practice attempt ID');
+    }
+    $id = $clientId ?? generateUUID();
+    if ($clientId !== null) {
+        $existing = Database::fetchOne($conn, 'SELECT id, userId, score, passed FROM exam_results WHERE id = ?', 's', [&$id]);
+        if ($existing) {
+            if ($existing['userId'] !== $userId) ErrorHandler::forbidden('Attempt belongs to another user');
+            respond(['id' => $existing['id'], 'score' => intval($existing['score']), 'passed' => (bool)$existing['passed']], 200, 'Practice result already saved');
+            return;
+        }
+    }
     $now = date('Y-m-d H:i:s');
+    $attemptTime = isset($input['createdAt']) && is_string($input['createdAt'])
+        ? strtotime($input['createdAt']) : false;
+    $completedAt = $attemptTime !== false && $attemptTime >= 946684800 && $attemptTime <= time() + 300
+        ? date('Y-m-d H:i:s', $attemptTime) : $now;
     $answersJson = json_encode([]);
     $qresJson = json_encode([]);
     $isFreeExam = 1;
@@ -157,9 +174,17 @@ function submitPracticeResult($conn, $params): void
     $result = Database::insert($conn,
         'INSERT INTO exam_results (id, userId, examId, score, totalQuestions, correctAnswers, timeSpent, answers, passed, completedAt, isFreeExam, createdAt, updatedAt, questionResults) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         'sssiiiisisiiss',
-        [&$id, &$userId, &$examId, &$score, &$totalQuestions, &$correctAnswers, &$timeSpent, &$answersJson, &$passed, &$now, &$isFreeExam, &$now, &$now, &$qresJson]
+        [&$id, &$userId, &$examId, &$score, &$totalQuestions, &$correctAnswers, &$timeSpent, &$answersJson, &$passed, &$completedAt, &$isFreeExam, &$completedAt, &$now, &$qresJson]
     );
 
+    if (!$result && $clientId !== null) {
+        // Another retry may have inserted the same primary key concurrently.
+        $existing = Database::fetchOne($conn, 'SELECT id, userId, score, passed FROM exam_results WHERE id = ?', 's', [&$id]);
+        if ($existing && $existing['userId'] === $userId) {
+            respond(['id' => $existing['id'], 'score' => intval($existing['score']), 'passed' => (bool)$existing['passed']], 200, 'Practice result already saved');
+            return;
+        }
+    }
     if (!$result) {
         Logger::error('Failed to save practice result', ['userId' => $userId, 'examId' => $examId]);
         ErrorHandler::serverError('Failed to save practice result');

@@ -177,6 +177,7 @@ class AuthRepository {
       );
       if (data is Map<String, dynamic>) {
         final user = UserModel.fromJson(data);
+        if ((await _session.getUser())?.id != userId) return null;
         await _session.setUser(user);
         return user;
       }

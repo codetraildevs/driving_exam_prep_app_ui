@@ -55,97 +55,45 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
   }
 
   Future<void> _load() async {
-    setState(() {
-      _isLoading = true;
-      _error = null;
-    });
-    final authState = context.read<AuthBloc>().state;
-    String? userId;
-    if (authState is AuthAuthenticated) {
-      userId = authState.user.id;
+    if (!mounted) return;
+    setState(() { _isLoading = true; _error = null; });
+    final auth = context.read<AuthBloc>().state;
+    if (auth is! AuthAuthenticated) {
+      setState(() => _isLoading = false);
+      return;
+    }
+    final cache = OfflineCache();
+    final key = cache.examResultsKey(auth.user.id);
+    final cached = await cache.load(key);
+    if (!mounted) return;
+    if (cached is List) {
+      setState(() {
+        _rawResults = cached; _fromCache = true; _isLoading = false;
+        _buildUniqueExams();
+      });
     }
     try {
-      if (userId == null) {
-        setState(() => _error = 'Not authenticated');
-        return;
-      }
-
-      final cache = OfflineCache();
-      final cacheKey = cache.examResultsKey(userId);
-
-      final authBloc = context.read<AuthBloc>();
-      final router = GoRouter.of(context);
-      // Try network first (or use the injected loader in tests).
-      final result = widget.resultsLoader != null
-          ? await widget.resultsLoader!(userId)
-          : await ApiHelper().get('/api/exam-results/$userId');
+      final result = await (widget.resultsLoader != null
+          ? widget.resultsLoader!(auth.user.id)
+          : ApiHelper().get('/api/exam-results/${auth.user.id}'));
+      if (!mounted) return;
       if (result.isSuccess) {
-        // Defensive copy: never sort the caller/API-owned list in place.
-        // (In tests the loader may return an unmodifiable const list.)
-        final list = List<dynamic>.from(result.dataList);
-        // Sort by date DESC explicitly (Latest first)
-        list.sort((a, b) {
-          final daStr = (a['createdAt'] ?? a['completedAt'] ?? '').toString();
-          final dbStr = (b['createdAt'] ?? b['completedAt'] ?? '').toString();
-
-          DateTime? da = DateTime.tryParse(daStr);
-          if (da == null && daStr.length >= 10) {
-            da = DateTime.tryParse(daStr.replaceFirst(' ', 'T'));
-          }
-
-          DateTime? db = DateTime.tryParse(dbStr);
-          if (db == null && dbStr.length >= 10) {
-            db = DateTime.tryParse(dbStr.replaceFirst(' ', 'T'));
-          }
-
-          return (db ?? DateTime(1970)).compareTo(da ?? DateTime(1970));
-        });
-        await cache.save(cacheKey, list);
-        setState(() {
-          _rawResults = list;
-          _fromCache = false;
-        });
-      } else if (result.statusCode == 401) {
+        await cache.save(key, result.dataList);
+        final merged = await cache.load(key);
         if (!mounted) return;
-        authBloc.add(const SignOutEvent());
-        router.go('/login');
-        return;
-      } else {
-        // Fallback to cache
-        final cached = await cache.load(cacheKey);
-        if (cached is List) {
-          setState(() {
-            _rawResults = cached;
-            _fromCache = true;
-          });
-        } else {
-          setState(() => _error = result.errorMessage);
-        }
+        setState(() { _rawResults = merged is List ? merged : []; _fromCache = false; });
+      } else if (cached is! List) {
+        setState(() => _error = AppLocalizations.of(context).errorNetwork);
       }
-    } catch (e) {
-      // Network error → try cache
-      if (userId != null) {
-        try {
-          final cache = OfflineCache();
-          final cached = await cache.load(cache.examResultsKey(userId));
-          if (cached is List) {
-            if (!context.mounted) return;
-            setState(() {
-              _rawResults = cached;
-              _fromCache = true;
-            });
-          } else {
-            setState(() => _error = e.toString());
-          }
-        } catch (_) {
-          setState(() => _error = e.toString());
-        }
-      } else {
-        setState(() => _error = e.toString());
+    } catch (_) {
+      if (mounted && cached is! List) {
+        setState(() => _error = AppLocalizations.of(context).errorNetwork);
       }
     } finally {
-      _buildUniqueExams();
-      setState(() => _isLoading = false);
+      if (mounted) {
+        _buildUniqueExams();
+        setState(() => _isLoading = false);
+      }
     }
   }
 

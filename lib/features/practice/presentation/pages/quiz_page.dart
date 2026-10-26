@@ -10,6 +10,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_notifier.dart';
 import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/network/offline_cache.dart';
+import '../../../../shared/network/sync_service.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -195,29 +196,8 @@ class _QuizPageState extends State<QuizPage> {
 
     final cache = OfflineCache();
 
-    // Append to local exam-results cache so progress/certificates work offline
-    final cacheKey = cache.examResultsKey(userId);
-    try {
-      final existing = await cache.load(cacheKey);
-      final list = (existing is List)
-          ? List<dynamic>.from(existing)
-          : <dynamic>[];
-      list.insert(0, {...body, 'createdAt': DateTime.now().toIso8601String()});
-      await cache.save(cacheKey, list);
-    } catch (_) {}
-
-    // Try API; on failure queue for later sync
-    try {
-      final result = await ApiHelper().post(
-        '/api/practice-results',
-        body: body,
-      );
-      if (!result.isSuccess) {
-        await cache.queuePendingResult(body);
-      }
-    } catch (_) {
-      await cache.queuePendingResult(body);
-    }
+    await cache.queuePendingResult(body);
+    unawaited(SyncService().syncPendingResults());
   }
 
   void _retake() {

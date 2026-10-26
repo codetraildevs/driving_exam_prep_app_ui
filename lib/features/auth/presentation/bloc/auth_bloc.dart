@@ -52,9 +52,10 @@ String _friendlyError(Object e) {
 }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthRepository _authRepository = AuthRepository();
+  final AuthRepository _authRepository;
 
-  AuthBloc() : super(const AuthInitial()) {
+  AuthBloc({AuthRepository? authRepository})
+      : _authRepository = authRepository ?? AuthRepository(), super(const AuthInitial()) {
     on<CheckAuthStatusEvent>(_onCheckAuthStatus);
     on<SignUpEvent>(_onSignUp);
     on<SignInEvent>(_onSignIn);
@@ -68,7 +69,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     try {
-      final hasSession = await _authRepository.isAuthenticated();
+      final initialUser = await _authRepository.getCurrentUser();
+      if (initialUser != null) emit(AuthAuthenticated(initialUser));
+      final hasSession = initialUser != null || await _authRepository.isAuthenticated();
       if (!hasSession) {
         emit(const AuthUnauthenticated());
         return;
@@ -80,6 +83,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (userId != null) {
         final user = await _authRepository.fetchUserProfile(userId);
         if (user != null) {
+          if (await _authRepository.getCurrentUserId() != userId) return;
           emit(AuthAuthenticated(user));
           return;
         }

@@ -10,6 +10,8 @@ import '../../../../shared/widgets/interactive_card.dart';
 import '../../../../shared/widgets/skeleton.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../data/models/sign_model.dart';
+import '../../../resources/domain/study_document.dart';
+import '../../../resources/presentation/pages/document_reader_page.dart';
 import '../../data/repositories/signs_repository.dart';
 
 class SignsPage extends StatefulWidget {
@@ -40,6 +42,7 @@ class _SignsPageState extends State<SignsPage> {
   void _loadCategories() async {
     try {
       final categories = await signsRepo.getCategories();
+      if (!mounted) return;
       setState(() {
         _categories = ['All', ...categories];
         _selectedCategory = 'All';
@@ -85,6 +88,15 @@ class _SignsPageState extends State<SignsPage> {
               maxWidth: AppContentWidths.wide,
               padding: EdgeInsets.zero,
               child: _buildCategoryFilter(),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: OutlinedButton.icon(
+                icon: const Icon(Icons.picture_as_pdf_outlined),
+                label: Text(AppLocalizations.of(context).resourcesRoadSigns),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(
+                  builder: (_) => const DocumentReaderPage(document: StudyDocument.roadSigns))),
+              ),
             ),
             Expanded(
               child: ConstrainedContent(

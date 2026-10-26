@@ -3,12 +3,20 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import '../network/api_helper.dart';
 import '../network/offline_cache.dart';
+import '../session/auth_session.dart';
 
 /// Watches connectivity and syncs pending offline data when back online.
 class SyncService {
   static final SyncService _instance = SyncService._();
   factory SyncService() => _instance;
-  SyncService._();
+  SyncService._() : currentUserId = null, submit = null;
+  SyncService.forTesting({required this.currentUserId, required this.submit});
+  final Future<String?> Function()? currentUserId;
+  final Future<ApiResponse> Function(Map<String, dynamic>)? submit;
+  Future<void>? _syncing;
+
+  Future<String?> _userId() async =>
+      currentUserId != null ? await currentUserId!() : (await AuthSession().getUser())?.id;
 
   final _cache = OfflineCache();
 
@@ -38,7 +46,10 @@ class SyncService {
     // dart:io is stubbed on web — InternetAddress.lookup throws
     // UnsupportedError there. Browsers expose their own online/offline
     // events; keep the default (online) state on web.
-    if (kIsWeb) return;
+    if (kIsWeb) {
+      await syncPendingResults();
+      return;
+    }
 
     final wasOnline = _isOnline;
     try {
@@ -54,11 +65,11 @@ class SyncService {
     }
 
     if (_isOnline != wasOnline) {
-      _onlineController.add(_isOnline);
+      if (!_onlineController.isClosed) _onlineController.add(_isOnline);
     }
 
     // When coming back online, sync pending data
-    if (_isOnline && !wasOnline) {
+    if (_isOnline) {
       await syncPendingResults();
     }
   }
@@ -70,32 +81,28 @@ class SyncService {
   }
 
   /// Sync all pending practice results to the backend.
-  Future<void> syncPendingResults() async {
-    final pending = await _cache.getPendingResults();
-    if (pending.isEmpty) return;
+  Future<void> syncPendingResults() {
+    return _syncing ??= _syncOnce().whenComplete(() => _syncing = null);
+  }
 
-    if (kDebugMode) {
-      debugPrint('[SyncService] Syncing ${pending.length} pending results...');
-    }
-
-    int synced = 0;
-    for (int i = pending.length - 1; i >= 0; i--) {
-      try {
-        final result = await ApiHelper().post(
-          '/api/practice-results',
-          body: pending[i],
-        );
-        if (result.isSuccess) {
-          await _cache.removePendingResult(i);
-          synced++;
-        }
-      } catch (_) {
-        // Will retry on next connectivity change
+  Future<void> _syncOnce() async {
+    try {
+      final userId = await _userId();
+      if (userId == null) return;
+      final pending = (await _cache.getPendingResults())
+          .where((row) => row['userId'] == userId).toList();
+      for (final row in pending) {
+        if (await _userId() != userId) return;
+        final result = await (submit != null
+            ? submit!(row)
+            : ApiHelper().post('/api/practice-results', body: row));
+        if (!result.isSuccess) return; // Keep the outbox; retry on the next check.
+        final serverId = result.data is Map ? result.data['id']?.toString() : null;
+        if (serverId == null || serverId.isEmpty) return;
+        await _cache.acknowledgeResult(row['clientResultId'] as String, userId, serverId);
       }
-    }
-
-    if (kDebugMode && synced > 0) {
-      debugPrint('[SyncService] Synced $synced results successfully');
+    } catch (e) {
+      if (kDebugMode) debugPrint('[SyncService] Results remain queued for retry.');
     }
   }
 }

@@ -57,12 +57,17 @@ class _ProfilePageState extends State<ProfilePage> {
     final cache = OfflineCache();
     final cacheKey = cache.examResultsKey(userId);
     List<dynamic> results = [];
+    final saved = await cache.load(cacheKey);
+    if (!mounted) return;
+    if (saved is List) _applyProgress(saved);
 
     try {
       final res = await ApiHelper().get('/api/exam-results/$userId');
       if (res.isSuccess) {
         results = res.dataList;
         await cache.save(cacheKey, results);
+        final merged = await cache.load(cacheKey);
+        if (merged is List) results = merged;
       } else {
         final cached = await cache.load(cacheKey);
         if (cached is List) results = cached;
@@ -72,6 +77,10 @@ class _ProfilePageState extends State<ProfilePage> {
       if (cached is List) results = cached;
     }
 
+    _applyProgress(results);
+  }
+
+  void _applyProgress(List<dynamic> results) {
     // Deduplicate: latest attempt per examId
     final unique = <String, Map<String, dynamic>>{};
     for (final r in results) {

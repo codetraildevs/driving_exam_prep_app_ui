@@ -2,10 +2,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../network/api_helper.dart';
+import '../session/auth_session.dart';
+import 'dart:convert';
 
 /// Immutable state for the subscription/access status.
 class SubscriptionState {
-  final bool hasActiveAccess;
+  final bool _hasActiveAccess;
+  bool get hasActiveAccess => _hasActiveAccess &&
+      (expiresAt == null || expiresAt!.isAfter(DateTime.now()));
   final DateTime? expiresAt;
   final String? paymentTier;
   final bool isLoading;
@@ -13,13 +17,13 @@ class SubscriptionState {
   final bool hasError;
 
   const SubscriptionState({
-    this.hasActiveAccess = false,
+    bool hasActiveAccess = false,
     this.expiresAt,
     this.paymentTier,
     this.isLoading = false,
     this.hasLoaded = false,
     this.hasError = false,
-  });
+  }) : _hasActiveAccess = hasActiveAccess;
 
   SubscriptionState copyWith({
     bool? hasActiveAccess,
@@ -42,89 +46,75 @@ class SubscriptionState {
 
 /// Riverpod notifier for subscription/access status.
 class SubscriptionNotifier extends Notifier<SubscriptionState> {
-  static const _keyActive = 'access_active';
-  static const _keyExpiresAt = 'access_expires_at';
-  static const _keyTier = 'access_tier';
   int _revision = 0;
+  String? _userId;
   late Future<void> _prefsReady;
+  final Future<ApiResponse> Function(String)? loader;
+  SubscriptionNotifier({this.loader});
 
   @override
   SubscriptionState build() {
-    // Kick off async load from prefs (state will update when complete).
-    _prefsReady = _loadFromPrefs();
+    ref.onDispose(() => ++_revision);
+    _prefsReady = _restoreCurrentUser();
     return const SubscriptionState();
   }
 
-  Future<void> _loadFromPrefs() async {
+  Future<void> _restoreCurrentUser() async {
     final revision = _revision;
-    final prefs = await SharedPreferences.getInstance();
-    if (revision != _revision) return;
-    final active = prefs.getBool(_keyActive) ?? false;
-    final expiresAtStr = prefs.getString(_keyExpiresAt);
-    final tier = prefs.getString(_keyTier);
-
-    var hasActiveAccess = active;
-    DateTime? expiresAt =
-        expiresAtStr != null ? DateTime.tryParse(expiresAtStr) : null;
-
-    if (hasActiveAccess &&
-        expiresAt != null &&
-        expiresAt.isBefore(DateTime.now())) {
-      hasActiveAccess = false;
-    }
-
-    state = SubscriptionState(
-      hasActiveAccess: hasActiveAccess,
-      expiresAt: expiresAt,
-      paymentTier: tier,
-      hasLoaded: prefs.containsKey(_keyActive),
-    );
+    final user = await AuthSession().getUser();
+    if (revision != _revision || user == null) return;
+    await _restore(user.id, revision);
   }
 
-  /// Fetches fresh subscription status from the server.
+  Future<void> _restore(String userId, int revision) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (revision != _revision) return;
+    _userId = userId;
+    final raw = prefs.getString('access_status_$userId');
+    try {
+      final data = raw == null ? null : json.decode(raw) as Map;
+      final expiry = DateTime.tryParse(data?['expiresAt']?.toString() ?? '');
+      state = SubscriptionState(
+        hasActiveAccess: data?['hasActiveAccess'] == true &&
+            expiry != null && expiry.isAfter(DateTime.now()),
+        expiresAt: expiry, paymentTier: data?['paymentTier'] as String?,
+        hasLoaded: data != null,
+      );
+    } catch (_) {
+      state = const SubscriptionState();
+    }
+  }
+
   Future<void> refreshStatus(String userId) async {
     await _prefsReady;
     final revision = ++_revision;
+    if (_userId != userId) {
+      state = const SubscriptionState();
+      await _restore(userId, revision);
+    }
+    if (revision != _revision) return;
     state = state.copyWith(isLoading: true, hasError: false);
-
     try {
-      final result =
-          await ApiHelper().get('/api/access-codes/status', queryParams: {'userId': userId});
-
+      final result = await (loader != null ? loader!(userId) :
+          ApiHelper().get('/api/access-codes/status', queryParams: {'userId': userId}));
       if (revision != _revision) return;
-      if (result.isSuccess && result.data is Map<String, dynamic> && (result.data as Map).containsKey('hasActiveAccess')) {
-        final payload = result.data as Map<String, dynamic>? ?? {};
-
-        final hasActiveAccess = payload['hasActiveAccess'] == true;
-        final expiresAt = payload['expiresAt'] != null
-            ? DateTime.tryParse(payload['expiresAt'])
-            : null;
-        final paymentTier = payload['paymentTier'] as String?;
-
-        state = SubscriptionState(
-          hasActiveAccess: hasActiveAccess,
-          expiresAt: expiresAt,
-          paymentTier: paymentTier,
-          hasLoaded: true,
-        );
-
+      if (result.isSuccess && result.data is Map &&
+          (result.data as Map).containsKey('hasActiveAccess')) {
+        final payload = result.data as Map;
+        final expiry = DateTime.tryParse(payload['expiresAt']?.toString() ?? '');
+        state = SubscriptionState(hasActiveAccess: payload['hasActiveAccess'] == true,
+          expiresAt: expiry, paymentTier: payload['paymentTier'] as String?, hasLoaded: true);
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setBool(_keyActive, hasActiveAccess);
-        if (expiresAt != null) {
-          await prefs.setString(_keyExpiresAt, expiresAt.toIso8601String());
-        } else {
-          await prefs.remove(_keyExpiresAt);
-        }
-        if (paymentTier != null) {
-          await prefs.setString(_keyTier, paymentTier);
-        } else {
-          await prefs.remove(_keyTier);
-        }
+        if (revision != _revision) return;
+        await prefs.setString('access_status_$userId', json.encode({
+          'hasActiveAccess': state.hasActiveAccess,
+          'expiresAt': expiry?.toIso8601String(),
+          'paymentTier': state.paymentTier,
+        }));
       } else {
         state = state.copyWith(hasError: true);
       }
-    } catch (e) {
-      // Retain known data, but identify an unavailable refresh in the UI.
+    } catch (_) {
       if (revision == _revision) state = state.copyWith(hasError: true);
     } finally {
       if (revision == _revision) state = state.copyWith(isLoading: false);
@@ -133,12 +123,13 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
 
   Future<void> clearStatus() async {
     ++_revision;
+    _userId = null;
     state = const SubscriptionState();
-
+    // Discard old unscoped flags; per-account verified records remain isolated.
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_keyActive);
-    await prefs.remove(_keyExpiresAt);
-    await prefs.remove(_keyTier);
+    for (final key in ['access_active', 'access_expires_at', 'access_tier']) {
+      await prefs.remove(key);
+    }
   }
 }
 

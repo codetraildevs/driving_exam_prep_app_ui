@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Simple JSON-based offline cache using SharedPreferences.
@@ -9,19 +10,55 @@ class OfflineCache {
   OfflineCache._();
 
   static const _prefix = 'offline_cache_';
+  Future<void> _writes = Future.value();
+
+  Future<T> _serial<T>(Future<T> Function() action) {
+    final next = _writes.then((_) => action());
+    _writes = next.then<void>((_) {}, onError: (Object _, StackTrace __) {});
+    return next;
+  }
+
+  String _resultId() {
+    final bytes = List<int>.generate(16, (_) => Random.secure().nextInt(256));
+    bytes[6] = (bytes[6] & 15) | 64;
+    bytes[8] = (bytes[8] & 63) | 128;
+    final hex = bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+    return '${hex.substring(0, 8)}-${hex.substring(8, 12)}-${hex.substring(12, 16)}-${hex.substring(16, 20)}-${hex.substring(20)}';
+  }
+
+  List<Map<String, dynamic>> _pending(SharedPreferences prefs) {
+    final raw = prefs.getString(_pendingKey);
+    if (raw == null) return [];
+    return (json.decode(raw) as List).map((e) => Map<String, dynamic>.from(e as Map)).toList();
+  }
+
 
   /// Save data under [key]. Data can be a List or Map.
-  Future<void> save(String key, dynamic data) async {
+  Future<void> save(String key, dynamic data) => _serial(() async {
     final prefs = await SharedPreferences.getInstance();
+    if (key.startsWith('exam_results_') && data is List) {
+      final userId = key.substring('exam_results_'.length);
+      final merged = List<dynamic>.from(data);
+      final ids = merged.whereType<Map>().map((r) => r['id']?.toString()).toSet();
+      for (final row in _pending(prefs).where((r) => r['userId'] == userId)) {
+        if (!ids.contains(row['clientResultId'])) {
+          merged.add({...row, 'id': row['clientResultId']});
+        }
+      }
+      merged.sort((a, b) => (b['createdAt'] ?? b['completedAt'] ?? '').toString()
+          .compareTo((a['createdAt'] ?? a['completedAt'] ?? '').toString()));
+      data = merged;
+    }
     await prefs.setString('$_prefix$key', json.encode(data));
-  }
+  });
 
   /// Load cached data for [key]. Returns null if nothing cached.
   Future<dynamic> load(String key) async {
+    await _writes;
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString('$_prefix$key');
     if (raw == null) return null;
-    return json.decode(raw);
+    try { return json.decode(raw); } catch (_) { return null; }
   }
 
   /// Remove cached data for [key].
@@ -48,39 +85,63 @@ class OfflineCache {
 
   static const _pendingKey = '${_prefix}pending_results';
 
-  /// Queue a practice result for later sync.
-  Future<void> queuePendingResult(Map<String, dynamic> result) async {
+  /// Persist the attempt and its local progress before attempting the network.
+  Future<void> queuePendingResult(Map<String, dynamic> result) => _serial(() async {
     final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_pendingKey);
-    final List<dynamic> pending = raw != null ? json.decode(raw) : [];
-    pending.add(result);
+    final row = {...result};
+    row['clientResultId'] ??= _resultId();
+    row['createdAt'] ??= DateTime.now().toUtc().toIso8601String();
+    final pending = _pending(prefs);
+    if (!pending.any((r) => r['clientResultId'] == row['clientResultId'])) pending.add(row);
+    // The outbox is authoritative: write it before the derived progress cache.
     await prefs.setString(_pendingKey, json.encode(pending));
-  }
+    final key = '$_prefix${examResultsKey(row['userId'] as String)}';
+    List<dynamic> local = [];
+    try { local = json.decode(prefs.getString(key) ?? '[]') as List; } catch (_) {}
+    local.removeWhere((r) => r is Map && r['id'] == row['clientResultId']);
+    local.insert(0, {...row, 'id': row['clientResultId']});
+    await prefs.setString(key, json.encode(local));
+  });
 
-  /// Get all pending results waiting to sync.
-  Future<List<Map<String, dynamic>>> getPendingResults() async {
+  Future<List<Map<String, dynamic>>> getPendingResults() => _serial(() async {
     final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_pendingKey);
-    if (raw == null) return [];
-    final List<dynamic> list = json.decode(raw);
-    return list.cast<Map<String, dynamic>>();
-  }
+    final pending = _pending(prefs);
+    var migrated = false;
+    for (final row in pending) {
+      if (row['clientResultId'] == null) {
+        row['clientResultId'] = _resultId();
+        row['createdAt'] ??= DateTime.now().toUtc().toIso8601String();
+        migrated = true;
+      }
+    }
+    if (migrated) await prefs.setString(_pendingKey, json.encode(pending));
+    return pending;
+  });
 
-  /// Clear all pending results after successful sync.
-  Future<void> clearPendingResults() async {
+  /// Remove only the acknowledged attempt; newly queued attempts are preserved.
+  Future<void> acknowledgeResult(String clientId, String userId, String serverId) => _serial(() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_pendingKey);
-  }
+    final key = '$_prefix${examResultsKey(userId)}';
+    final local = json.decode(prefs.getString(key) ?? '[]') as List;
+    for (final row in local.whereType<Map>()) {
+      if (row['id'] == clientId) row['id'] = serverId;
+    }
+    await prefs.setString(key, json.encode(local));
+    final pending = _pending(prefs)
+      ..removeWhere((r) => r['clientResultId'] == clientId && r['userId'] == userId);
+    await prefs.setString(_pendingKey, json.encode(pending));
+  });
 
-  /// Remove a single pending result by index.
-  Future<void> removePendingResult(int index) async {
+  Future<void> clearPendingResults() => _serial(() async {
+    await (await SharedPreferences.getInstance()).remove(_pendingKey);
+  });
+
+  Future<void> removePendingResult(int index) => _serial(() async {
     final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_pendingKey);
-    if (raw == null) return;
-    final List<dynamic> pending = json.decode(raw);
+    final pending = _pending(prefs);
     if (index >= 0 && index < pending.length) {
       pending.removeAt(index);
       await prefs.setString(_pendingKey, json.encode(pending));
     }
-  }
+  });
 }

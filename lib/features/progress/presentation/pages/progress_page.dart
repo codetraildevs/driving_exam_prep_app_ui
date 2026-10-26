@@ -34,7 +34,7 @@ class _ProgressPageState extends State<ProgressPage>
       duration: const Duration(milliseconds: 900),
     );
     _anim = CurvedAnimation(parent: _animCtrl, curve: Curves.easeOutCubic);
-    _loadResults();
+    WidgetsBinding.instance.addPostFrameCallback((_) { if (mounted) _loadResults(); });
   }
 
   @override
@@ -44,89 +44,35 @@ class _ProgressPageState extends State<ProgressPage>
   }
 
   Future<void> _loadResults() async {
-    setState(() {
-      _isLoading = true;
-      _error = null;
-    });
-    final authState = context.read<AuthBloc>().state;
-    String? userId;
-    if (authState is AuthAuthenticated) {
-      userId = authState.user.id;
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context);
+    final auth = context.read<AuthBloc>().state;
+    if (auth is! AuthAuthenticated) return;
+    final cache = OfflineCache();
+    final key = cache.examResultsKey(auth.user.id);
+    setState(() { _isLoading = true; _error = null; });
+    final cached = await cache.load(key);
+    if (!mounted) return;
+    if (cached is List) {
+      setState(() { _results = cached; _isLoading = false; });
+      _animCtrl.forward(from: 0);
     }
     try {
-      if (userId == null || userId.isEmpty) {
-        setState(() => _error = 'Not authenticated');
-        return;
-      }
-
-      final authBloc = context.read<AuthBloc>();
-      final router = GoRouter.of(context);
-      final cache = OfflineCache();
-      final cacheKey = cache.examResultsKey(userId);
-
-      final result = await ApiHelper().get('/api/exam-results/$userId');
-
+      final result = await ApiHelper().get('/api/exam-results/${auth.user.id}');
+      if (!mounted) return;
       if (result.isSuccess) {
-        // Defensive copy: never sort the API/caller-owned list in place.
-        final results = List<dynamic>.from(result.dataList);
-        // Sort by date DESC explicitly (Latest first)
-        results.sort((a, b) {
-          final daStr = (a['createdAt'] ?? a['completedAt'] ?? '').toString();
-          final dbStr = (b['createdAt'] ?? b['completedAt'] ?? '').toString();
-
-          // Try parsing ISO first, then fallback to MySQL format (replacing space with T)
-          DateTime? da = DateTime.tryParse(daStr);
-          if (da == null && daStr.length >= 10) {
-            da = DateTime.tryParse(daStr.replaceFirst(' ', 'T'));
-          }
-
-          DateTime? db = DateTime.tryParse(dbStr);
-          if (db == null && dbStr.length >= 10) {
-            db = DateTime.tryParse(dbStr.replaceFirst(' ', 'T'));
-          }
-
-          return (db ?? DateTime(1970)).compareTo(da ?? DateTime(1970));
-        });
-        await cache.save(cacheKey, results);
-        setState(() => _results = results);
-        _animCtrl.forward(from: 0);
-      } else if (result.statusCode == 401) {
+        await cache.save(key, result.dataList);
+        final merged = await cache.load(key);
         if (!mounted) return;
-        authBloc.add(const SignOutEvent());
-        router.go('/login');
-      } else {
-        // Fallback to cache
-        final cached = await cache.load(cacheKey);
-        if (cached is List && cached.isNotEmpty) {
-          setState(() => _results = cached);
-          _animCtrl.forward(from: 0);
-        } else {
-          setState(() => _error = result.errorMessage);
-        }
+        setState(() => _results = merged is List ? merged : []);
+        _animCtrl.forward(from: 0);
+      } else if (cached is! List) {
+        setState(() => _error = l10n.errorNetwork);
       }
-    } catch (e) {
-      // Network error → try cache
-      if (userId != null) {
-        try {
-          final cache = OfflineCache();
-          final cached = await cache.load(cache.examResultsKey(userId));
-          if (!context.mounted) return;
-          if (cached is List && cached.isNotEmpty) {
-            setState(() => _results = cached);
-            _animCtrl.forward(from: 0);
-          } else {
-            setState(
-              () => _error = 'You are offline. No cached progress found.',
-            );
-          }
-        } catch (_) {
-          setState(() => _error = 'You are offline. No cached progress found.');
-        }
-      } else {
-        setState(() => _error = 'You are offline. No cached progress found.');
-      }
+    } catch (_) {
+      if (mounted && cached is! List) setState(() => _error = l10n.errorNetwork);
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 

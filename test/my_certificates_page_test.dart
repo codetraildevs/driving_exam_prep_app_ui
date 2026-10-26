@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:traffic_rule_in_rwanda/shared/network/offline_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -37,14 +39,14 @@ Future<ApiResponse> _fakeResultsLoader(String userId) async {
   );
 }
 
-GoRouter _buildRouter() {
+GoRouter _buildRouter([Future<ApiResponse> Function(String)? loader]) {
   return GoRouter(
     initialLocation: '/certificates',
     routes: [
       GoRoute(
         path: '/certificates',
         builder: (_, __) =>
-            const MyCertificatesPage(resultsLoader: _fakeResultsLoader),
+            MyCertificatesPage(resultsLoader: loader ?? _fakeResultsLoader),
       ),
     ],
   );
@@ -62,11 +64,11 @@ UserModel _user() {
   );
 }
 
-Widget _buildApp(AuthBloc bloc) {
+Widget _buildApp(AuthBloc bloc, {Future<ApiResponse> Function(String)? loader}) {
   return BlocProvider<AuthBloc>.value(
     value: bloc,
     child: MaterialApp.router(
-      routerConfig: _buildRouter(),
+      routerConfig: _buildRouter(loader),
       locale: const Locale('en'),
       supportedLocales: LocaleNotifier.supportedLocales,
       localizationsDelegates: const [
@@ -111,6 +113,24 @@ double _progressCardWidth(WidgetTester tester) {
 }
 
 void main() {
+  testWidgets('saved certificates display while network is still pending', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    await OfflineCache().save(OfflineCache().examResultsKey('u1'), [
+      {'examId': '1', 'score': 90, 'createdAt': '2026-01-01T12:00:00Z'},
+    ]);
+    final pending = Completer<ApiResponse>();
+    final bloc = AuthBloc()..emit(AuthAuthenticated(_user()));
+    await tester.pumpWidget(_buildApp(bloc, loader: (_) => pending.future));
+    for (var i = 0; i < 5; i++) { await tester.pump(const Duration(milliseconds: 20)); }
+    final l10n = AppLocalizations.of(tester.element(find.byType(MyCertificatesPage)));
+    expect(find.text(l10n.certificatesAchievements), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+    pending.complete(const ApiResponse(statusCode: 0, data: null, isSuccess: false, debugInfo: 'offline'));
+    await tester.pump();
+    expect(tester.takeException(), isNull);
+    await bloc.close();
+  });
+
   setUp(() {
     SharedPreferences.setMockInitialValues({});
   });
