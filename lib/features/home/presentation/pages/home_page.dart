@@ -104,26 +104,6 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
     if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 
-  void _comingSoon(String title) {
-    Navigator.of(context).push(MaterialPageRoute<void>(builder: (context) {
-      final l10n = AppLocalizations.of(context);
-      return Scaffold(
-        appBar: AppBar(title: Text(title)),
-        body: Center(child: SingleChildScrollView(padding: const EdgeInsets.all(32),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Icon(Icons.construction_rounded, size: 56, color: Theme.of(context).colorScheme.primary),
-            const SizedBox(height: 20),
-            Text(l10n.dashboardComingSoon, style: Theme.of(context).textTheme.headlineSmall, textAlign: TextAlign.center),
-            const SizedBox(height: 12),
-            Text(l10n.dashboardUnderDevelopment, textAlign: TextAlign.center),
-            const SizedBox(height: 24),
-            FilledButton(onPressed: () => Navigator.pop(context), child: Text(MaterialLocalizations.of(context).backButtonTooltip)),
-          ]),
-        )),
-      );
-    }));
-  }
-
   Future<void> _share(BuildContext cardContext) async {
     final l10n = AppLocalizations.of(context);
     final target = cardContext.findRenderObject();

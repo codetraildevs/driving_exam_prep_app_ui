@@ -65,7 +65,7 @@ Future<void> _pump(WidgetTester tester, {
     phoneNumber: phone, createdAt: now, updatedAt: now)));
   final router = GoRouter(initialLocation: '/home', routes: [
     GoRoute(path: '/home', builder: (_, __) => const HomePage()),
-    for (final path in ['practice', 'progress', 'subscription'])
+    for (final path in ['practice', 'progress', 'subscription', 'irembo'])
       GoRoute(path: '/$path', builder: (_, __) => Scaffold(body: Text('route-$path'))),
   ]);
   addTearDown(() async {
@@ -185,14 +185,13 @@ void main() {
   });
 
   for (final id in ['irembo']) {
-    testWidgets('$id opens the localized coming-soon page', (tester) async {
+    testWidgets('$id opens the Irembo service registration route', (tester) async {
       await _pump(tester, language: 'fr');
       final card = find.byKey(ValueKey('shortcut-$id'));
       await tester.ensureVisible(card);
       await tester.tap(card);
       await tester.pumpAndSettle();
-      expect(find.text('Bientôt disponible'), findsOneWidget);
-      expect(find.text('Cette fonctionnalité est en cours de développement.'), findsOneWidget);
+      expect(find.text('route-irembo'), findsOneWidget);
     });
   }
 

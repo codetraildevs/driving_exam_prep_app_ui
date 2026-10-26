@@ -30,10 +30,8 @@ jobs:
           path: pubspec.lock
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter gen-l10n
-      - name: Format Irembo sources
-        run: |
-          dart format lib/features/irembo test/irembo_test.dart test/irembo_page_test.dart
-          python3 -c "import pathlib,json,base64; paths=list(pathlib.Path('lib/features/irembo').rglob('*.dart'))+[pathlib.Path('test/irembo_test.dart'),pathlib.Path('test/irembo_page_test.dart')]; print('IREMBO_FORMATTED_SOURCE='+base64.b64encode(json.dumps({str(p):p.read_text() for p in paths}).encode()).decode())"
+      - name: Check Irembo source formatting
+        run: dart format --output=none --set-exit-if-changed lib/features/irembo test/irembo_test.dart test/irembo_page_test.dart
       - run: flutter analyze lib/ test/home_page_test.dart test/dashboard_notices_test.dart test/payment_preparation_test.dart test/subscription_payment_page_test.dart test/resources_page_test.dart test/admin_dashboard_page_test.dart test/login_page_test.dart test/whatsapp_groups_page_test.dart test/profile_page_test.dart test/settings_page_test.dart test/practice_page_test.dart test/quiz_page_test.dart test/about_page_test.dart test/privacy_policy_page_test.dart test/terms_of_service_page_test.dart test/my_certificates_page_test.dart test/signs_page_test.dart test/exam_intro_page_test.dart test/exam_page_test.dart test/main_layout_test.dart test/exam_result_page_test.dart test/offline_study_test.dart test/auth_session_test.dart test/irembo_test.dart test/irembo_page_test.dart --no-fatal-infos --no-fatal-warnings
       - name: Prepare PDFium for Flutter tests
         run: |
