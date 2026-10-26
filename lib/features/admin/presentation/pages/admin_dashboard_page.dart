@@ -170,7 +170,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
     bool innerBoxIsScrolled,
   ) {
     return SliverAppBar(
-      expandedHeight: 140 + (MediaQuery.textScalerOf(context).scale(24) - 24),
+      expandedHeight: 160 + (MediaQuery.textScalerOf(context).scale(64) - 64),
       pinned: true,
       floating: false,
       backgroundColor: AppColors.primary,
