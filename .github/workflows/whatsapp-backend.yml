@@ -5,6 +5,7 @@ on:
     paths:
       - 'backend/src/**'
       - 'backend/tests/whatsapp*'
+      - 'backend/tests/demo_auth*'
       - '.github/workflows/whatsapp-backend.yml'
 permissions:
   contents: read
@@ -30,3 +31,6 @@ jobs:
         run: find backend/src -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: Test WhatsApp API against MySQL
         run: python3 backend/tests/whatsapp_integration.py
+
+      - name: Test demo login and ordinary account restrictions
+        run: python3 backend/tests/demo_auth_test.py

@@ -31,10 +31,10 @@ function _ensureRefreshTokensTable($conn): void
  * Generate and store a refresh token for the given user.
  * Returns the raw token string.
  */
-function _createRefreshToken($conn, string $userId, bool $ownerVerified = false): string
+function _createRefreshToken($conn, string $userId): string
 {
     _ensureRefreshTokensTable($conn);
-    $token = ($ownerVerified ? 'owner.' : '') . SecurityUtils::generateRandomToken($ownerVerified ? 60 : 64);
+    $token = SecurityUtils::generateRandomToken(64);
     // Effectively permanent — token stays valid until user explicitly logs out
     // (which sets revoked=1) or admin revokes it. 10-year horizon avoids any
     // practical date overflow while eliminating the need for re-authentication.
@@ -210,15 +210,7 @@ function authLogin($conn, $params): void
         _authError('Account is inactive. Please contact support.', 403, 'ACCOUNT_INACTIVE');
     }
 
-    if ($phone === '0787012615') {
-        $hash = Env::get('DEMO_OWNER_PASSWORD_HASH', '');
-        $password = $input['ownerPassword'] ?? '';
-        if (!$hash || !is_string($password) || !password_verify($password, $hash)) {
-            _authError('This account requires its owner password.', 403, 'OWNER_PASSWORD_REQUIRED');
-        }
-    }
-
-    // The protected demo account uses its server-verified owner password.
+    // Only the existing Play Store demo account may sign in across devices.
     if ($user['role'] === 'USER' && $phone !== '0787012615') {
         if (!$device) {
             Logger::warning('USER login without deviceId', ['userId' => $user['id']]);
@@ -242,9 +234,8 @@ function authLogin($conn, $params): void
         'userId'      => $user['id'],
         'phoneNumber' => $user['phoneNumber'],
         'role'        => $user['role'],
-        'ownerVerified' => SecurityUtils::normalizePhone($user['phoneNumber']) === '0787012615',
     ]);
-    $refreshToken = _createRefreshToken($conn, $user['id'], $phone === '0787012615');
+    $refreshToken = _createRefreshToken($conn, $user['id']);
 
     Logger::info('User login successful', ['userId' => $user['id'], 'role' => $user['role']]);
 
@@ -399,12 +390,6 @@ function authRefresh($conn, $params): void
         ErrorHandler::unauthorized('User not found');
     }
 
-    $ownerVerified = SecurityUtils::normalizePhone($user['phoneNumber']) === '0787012615';
-    if ($ownerVerified && strpos($authToken, 'owner.') !== 0) {
-        _revokeRefreshToken($conn, $authToken);
-        ErrorHandler::unauthorized('Please log in with the owner password.');
-    }
-
     // Revoke old refresh token (rotation)
     _revokeRefreshToken($conn, $authToken);
 
@@ -413,9 +398,8 @@ function authRefresh($conn, $params): void
         'userId'      => $user['id'],
         'phoneNumber' => $user['phoneNumber'],
         'role'        => $user['role'],
-        'ownerVerified' => SecurityUtils::normalizePhone($user['phoneNumber']) === '0787012615',
     ]);
-    $newRefreshToken = _createRefreshToken($conn, $userId, $ownerVerified);
+    $newRefreshToken = _createRefreshToken($conn, $userId);
 
     Logger::info('Tokens refreshed', ['userId' => $userId]);
 

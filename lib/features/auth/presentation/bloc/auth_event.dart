@@ -20,11 +20,9 @@ class SignUpEvent extends AuthEvent {
 
 class SignInEvent extends AuthEvent {
   final String phoneNumber;
-  final String? ownerPassword;
 
   const SignInEvent({
     required this.phoneNumber,
-    this.ownerPassword,
   });
 }
 

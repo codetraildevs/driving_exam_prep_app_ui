@@ -82,7 +82,6 @@ class AuthRepository {
 
   Future<UserModel?> signIn({
     required String phoneNumber,
-    String? ownerPassword,
   }) async {
     try {
       final deviceId = await _deviceId.getOrCreate();
@@ -92,7 +91,6 @@ class AuthRepository {
       final data = await _api.post(
         ApiEndpoints.authLogin,
         body: {
-          if (ownerPassword != null) 'ownerPassword': ownerPassword,
           'phoneNumber': phoneNumber,
           'deviceId': deviceId,
         },

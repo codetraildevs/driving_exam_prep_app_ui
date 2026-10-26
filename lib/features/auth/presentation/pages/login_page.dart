@@ -60,30 +60,8 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    String? ownerPassword;
-    if (RegExp(r'^(?:\+?250|0)?787012615$').hasMatch(phone)) {
-      var password = '';
-      ownerPassword = await showDialog<String>(
-        context: context,
-        builder: (dialogContext) => AlertDialog(
-          title: const Text('Owner password'),
-          content: TextField(
-            obscureText: true,
-            autocorrect: false,
-            enableSuggestions: false,
-            onChanged: (value) => password = value,
-          ),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Cancel')),
-            FilledButton(onPressed: () => Navigator.pop(dialogContext, password), child: const Text('Log in')),
-          ],
-        ),
-      );
-      if (!mounted || ownerPassword == null) return;
-    }
     context.read<AuthBloc>().add(
       SignInEvent(
-        ownerPassword: ownerPassword,
         phoneNumber: phone,
       ),
     );

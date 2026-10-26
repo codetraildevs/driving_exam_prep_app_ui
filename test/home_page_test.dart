@@ -40,6 +40,7 @@ class _Locale extends LocaleNotifier {
 Future<void> _pump(WidgetTester tester, {
   Size size = const Size(390, 844),
   String language = 'rw',
+  String phone = '0788123456',
   double scale = 1,
   SubscriptionState sub = const SubscriptionState(hasLoaded: true),
   DashboardNotices notices = const DashboardNotices([]),
@@ -51,7 +52,7 @@ Future<void> _pump(WidgetTester tester, {
   tester.view.devicePixelRatio = 1;
   final now = DateTime.now();
   final bloc = AuthBloc()..emit(AuthAuthenticated(UserModel(id: 'u1', name: 'Test Driver',
-    phoneNumber: '0788123456', createdAt: now, updatedAt: now)));
+    phoneNumber: phone, createdAt: now, updatedAt: now)));
   final router = GoRouter(initialLocation: '/home', routes: [
     GoRoute(path: '/home', builder: (_, __) => const HomePage()),
     for (final path in ['practice', 'progress', 'subscription'])
@@ -85,6 +86,15 @@ Future<void> _pump(WidgetTester tester, {
 }
 
 void main() {
+  for (final phone in ['0787012615', '+250 787 012 615', '250787012615', '787012615']) {
+    testWidgets('demo dashboard keeps name and hides phone $phone', (tester) async {
+      await _pump(tester, phone: phone);
+      expect(find.text('Test Driver'), findsOneWidget);
+      expect(find.text(phone), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   for (final size in [const Size(320, 640), const Size(390, 844), const Size(1200, 900)]) {
     for (final language in ['rw', 'en', 'fr']) {
       testWidgets('six ordered cards and profile at $size in $language', (tester) async {

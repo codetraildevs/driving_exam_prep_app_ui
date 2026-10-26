@@ -208,7 +208,9 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
                       Text(user?.name.trim().isNotEmpty == true ? user!.name : l10n.dashboardProfileUnavailable,
                         style: TextStyle(fontSize: 21, height: 1.25, fontWeight: FontWeight.w800, color: Colors.white)),
                       const SizedBox(height: 5),
-                      if (user != null && user.phoneNumber.isNotEmpty)
+                      if (user != null && user.phoneNumber.isNotEmpty &&
+                          !RegExp(r'^(?:\+?250|0)?787012615$').hasMatch(
+                            user.phoneNumber.replaceAll(RegExp(r'[\s()\-]'), '')))
                         Text(user.phoneNumber, style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.85))),
                     ])),
                     const SizedBox(width: 12),
