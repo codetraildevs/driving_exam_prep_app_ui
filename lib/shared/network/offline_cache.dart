@@ -56,9 +56,24 @@ class OfflineCache {
   Future<dynamic> load(String key) async {
     await _writes;
     final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString('$_prefix$key');
-    if (raw == null) return null;
-    try { return json.decode(raw); } catch (_) { return null; }
+    dynamic data;
+    try { data = json.decode(prefs.getString('$_prefix$key') ?? 'null'); } catch (_) {}
+    if (!key.startsWith('exam_results_')) return data;
+    // Recover progress if the app closed after saving the outbox but before
+    // writing its derived cache.
+    final userId = key.substring('exam_results_'.length);
+    final pending = (await getPendingResults()).where((r) => r['userId'] == userId);
+    if (data is! List && pending.isEmpty) return null;
+    final merged = data is List ? List<dynamic>.from(data) : <dynamic>[];
+    final ids = merged.whereType<Map>().map((r) => r['id']?.toString()).toSet();
+    for (final row in pending) {
+      if (!ids.contains(row['clientResultId'])) {
+        merged.add({...row, 'id': row['clientResultId']});
+      }
+    }
+    merged.sort((a, b) => (b['createdAt'] ?? b['completedAt'] ?? '').toString()
+        .compareTo((a['createdAt'] ?? a['completedAt'] ?? '').toString()));
+    return merged;
   }
 
   /// Remove cached data for [key].

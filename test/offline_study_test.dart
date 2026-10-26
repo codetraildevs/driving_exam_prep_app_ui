@@ -112,6 +112,14 @@ void main() {
     expect((await cache.getPendingResults()).single['examId'], 'b');
   });
 
+  test('outbox recovers progress after an interrupted cache write', () async {
+    await cache.queuePendingResult(attempt('u1', 'a'));
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('offline_cache_exam_results_u1');
+    expect((await cache.load(cache.examResultsKey('u1')) as List).single['examId'], 'a');
+    expect(await cache.load(cache.examResultsKey('u2')), isNull);
+  });
+
   test('legacy queued attempts receive stable retry identifiers', () async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('offline_cache_pending_results', jsonEncode([attempt('u1', 'a')]));
