@@ -30,11 +30,6 @@ jobs:
           path: pubspec.lock
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter gen-l10n
-      - name: Prepare analyzer fixes
-        run: |
-          python3 -c "import pathlib,json; paths=list(pathlib.Path('lib').rglob('*.dart'))+list(pathlib.Path('test').rglob('*.dart')); pathlib.Path('/tmp/lint-before.json').write_text(json.dumps({str(p):p.read_text() for p in paths}))"
-          dart fix --apply --code=curly_braces_in_flow_control_structures,prefer_const_constructors,prefer_const_literals_to_create_immutables,unused_import,unnecessary_import
-          python3 -c "import pathlib,json,subprocess,base64; before=json.loads(pathlib.Path('/tmp/lint-before.json').read_text()); paths=[p for p,old in before.items() if pathlib.Path(p).read_text()!=old]; subprocess.run(['dart','format',*paths],check=True) if paths else None; print('LINT_FIXED_SOURCE='+base64.b64encode(json.dumps({p:pathlib.Path(p).read_text() for p in paths}).encode()).decode())"
       - name: Check Irembo source formatting
         run: dart format --output=none --set-exit-if-changed lib/features/irembo test/irembo_test.dart test/irembo_page_test.dart
       - run: flutter analyze

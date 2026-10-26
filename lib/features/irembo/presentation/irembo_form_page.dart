@@ -80,8 +80,9 @@ class _IremboFormPageState extends State<IremboFormPage> {
   void _select(String service, String? option) {
     setState(() {
       if (_service != service) _controllers['provisoireCode']!.clear();
-      if (_service != service || _option != option)
+      if (_service != service || _option != option) {
         _category = option == 'Automatic' ? 'A' : null;
+      }
       _service = service;
       _option = option;
     });
@@ -102,13 +103,14 @@ class _IremboFormPageState extends State<IremboFormPage> {
       firstDate: first,
       lastDate: last,
     );
-    if (selected != null && mounted)
+    if (selected != null && mounted) {
       setState(
         () => _controllers[key]!.text = selected.toIso8601String().substring(
           0,
           10,
         ),
       );
+    }
   }
 
   Future<void> _districtPicker() async {
@@ -207,8 +209,9 @@ class _IremboFormPageState extends State<IremboFormPage> {
       );
       if (mounted) Navigator.pop(context, true);
     } catch (e) {
-      if (mounted)
+      if (mounted) {
         setState(() => _error = irError(AppLocalizations.of(context), e));
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -347,23 +350,20 @@ class _IremboFormPageState extends State<IremboFormPage> {
                             state.didChange(v);
                           },
                           child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(l.irCategory),
-                            for (final c in ['A', 'B', 'F'])
-                              RadioListTile<String>(
-                                title: Text(c),
-                                value: c,
-                              ),
-                            if (state.hasError)
-                              Text(
-                                state.errorText!,
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.error,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(l.irCategory),
+                              for (final c in ['A', 'B', 'F'])
+                                RadioListTile<String>(title: Text(c), value: c),
+                              if (state.hasError)
+                                Text(
+                                  state.errorText!,
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
                                 ),
-                              ),
-                          ],
-                        ),
+                            ],
+                          ),
                         ),
                       ),
                     const SizedBox(height: 16),
@@ -420,13 +420,14 @@ class _IremboFormPageState extends State<IremboFormPage> {
                     onPressed: () {
                       final valid = _form.currentState!.validate();
                       final invalid = IremboRules.validate(_data());
-                      if (valid && invalid == null)
+                      if (valid && invalid == null) {
                         setState(() {
                           _error = null;
                           _review = true;
                         });
-                      else
+                      } else {
                         setState(() => _error = l.irInvalid);
+                      }
                     },
                     child: Text(l.irReview),
                   ),

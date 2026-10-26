@@ -77,8 +77,9 @@ class _IremboRequestPageState extends State<IremboRequestPage> {
         _assigned = row['assignedStaffId'];
       });
     } catch (e) {
-      if (mounted)
+      if (mounted) {
         setState(() => _error = irError(AppLocalizations.of(context), e));
+      }
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -101,8 +102,9 @@ class _IremboRequestPageState extends State<IremboRequestPage> {
     try {
       if (!await launchUrl(
         Uri(scheme: 'tel', path: _row!['phoneNumber'].toString()),
-      ))
+      )) {
         throw StateError('call');
+      }
     } catch (_) {
       if (mounted) irToast(context, l.irCallFailed);
     }

@@ -17,16 +17,18 @@ class IremboRepository {
       _map(await _api.put('$path/${Uri.encodeComponent(id)}', body: data));
   Future<List<Map<String, dynamic>>> staff() async {
     final response = await _api.get('$path/staff');
-    if (!response.isSuccess)
+    if (!response.isSuccess) {
       throw IremboFailure(response.errorMessage ?? 'iremboUnavailable');
+    }
     return response.dataList
         .map((e) => Map<String, dynamic>.from(e as Map))
         .toList();
   }
 
   Map<String, dynamic> _map(ApiResponse response) {
-    if (!response.isSuccess || response.data is! Map)
+    if (!response.isSuccess || response.data is! Map) {
       throw IremboFailure(response.errorMessage ?? 'iremboUnavailable');
+    }
     return Map<String, dynamic>.from(response.data as Map);
   }
 
@@ -99,28 +101,35 @@ class IremboRules {
       if (data[f] is! String || (data[f] as String).trim().isEmpty) return f;
     }
     if ((data['fullName'] as String).trim().length > 150) return 'fullName';
-    if (!RegExp(r'^07[2389]\d{7}$').hasMatch(phone(data['phoneNumber'])))
+    if (!RegExp(r'^07[2389]\d{7}$').hasMatch(phone(data['phoneNumber']))) {
       return 'phoneNumber';
-    if (!RegExp(r'^\d{16}$').hasMatch((data['nationalId'] as String).trim()))
+    }
+    if (!RegExp(r'^\d{16}$').hasMatch((data['nationalId'] as String).trim())) {
       return 'nationalId';
+    }
     if (!validDate(data['dob']) ||
-        DateTime.parse(data['dob']).isAfter(DateTime.now()))
+        DateTime.parse(data['dob']).isAfter(DateTime.now())) {
       return 'dob';
+    }
     if (!['Provisoire', 'Permis'].contains(data['service'])) return 'service';
-    if (!['rw', 'en', 'fr'].contains(data['examLanguage']))
+    if (!['rw', 'en', 'fr'].contains(data['examLanguage'])) {
       return 'examLanguage';
+    }
     if (!districts.contains(data['district'])) return 'district';
     if (data['service'] == 'Permis') {
-      if (!['Manual', 'Automatic'].contains(data['permisOption']))
+      if (!['Manual', 'Automatic'].contains(data['permisOption'])) {
         return 'permisOption';
+      }
       if ((data['provisoireCode']?.toString().trim() ?? '').isEmpty ||
-          data['provisoireCode'].toString().length > 80)
+          data['provisoireCode'].toString().length > 80) {
         return 'provisoireCode';
+      }
       final category = data['category']?.toString().trim().toUpperCase();
       if (data['permisOption'] == 'Automatic'
           ? category != 'A'
-          : !['A', 'B', 'F'].contains(category))
+          : !['A', 'B', 'F'].contains(category)) {
         return 'category';
+      }
     }
     final date = data['preferredExamDate'];
     if (date != null && date != '') {
@@ -130,8 +139,9 @@ class IremboRules {
   }
 
   static bool validDate(dynamic value) {
-    if (value is! String || !RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value))
+    if (value is! String || !RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value)) {
       return false;
+    }
     final date = DateTime.tryParse(value);
     return date != null && date.toIso8601String().substring(0, 10) == value;
   }

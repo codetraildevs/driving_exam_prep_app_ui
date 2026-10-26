@@ -8,7 +8,6 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_notifier.dart';
-import '../../../../shared/network/api_helper.dart';
 import '../../../../shared/network/offline_cache.dart';
 import '../../../../shared/network/sync_service.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
@@ -46,7 +45,9 @@ class _QuizPageState extends State<QuizPage> {
   static const int _totalSeconds = 1200;
   int _secondsLeft = _totalSeconds;
   Timer? _timer;
-  static const _securityChannel = MethodChannel('com.trafficrules.rwanda.app/security');
+  static const _securityChannel = MethodChannel(
+    'com.trafficrules.rwanda.app/security',
+  );
 
   @override
   void initState() {

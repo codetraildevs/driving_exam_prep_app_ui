@@ -68,7 +68,9 @@ class HomeRepository {
         ApiEndpoints.examResultsForUser(userId),
         headers: token == null ? null : {'Authorization': 'Bearer $token'},
       );
-      if (data is! List) return _streakFromCache(userId);
+      if (data is! List) {
+        return await _streakFromCache(userId);
+      }
 
       // Cache for offline use
       final cache = OfflineCache();

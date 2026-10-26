@@ -66,8 +66,9 @@ class _IremboPageState extends State<IremboPage> {
         _total = int.parse(data['total'].toString());
       });
     } catch (e) {
-      if (mounted && revision == _revision)
+      if (mounted && revision == _revision) {
         setState(() => _error = irError(AppLocalizations.of(context), e));
+      }
     } finally {
       if (mounted && revision == _revision) setState(() => _busy = false);
     }
@@ -142,8 +143,9 @@ class _IremboPageState extends State<IremboPage> {
       firstDate: DateTime(2000),
       lastDate: DateTime(now.year + 1),
     );
-    if (date != null && mounted)
+    if (date != null && mounted) {
       setState(() => _filters[key] = date.toIso8601String().substring(0, 10));
+    }
   }
 
   Widget _filterPanel(AppLocalizations l) => ExpansionTile(

@@ -47,10 +47,14 @@ Widget _buildApp(AuthBloc bloc, {String language = 'en', double scale = 1}) {
     value: bloc,
     child: MaterialApp(
       locale: Locale(language),
-      builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(
-        textScaler: TextScaler.linear(scale)), child: child!),
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(
+          context,
+        ).copyWith(textScaler: TextScaler.linear(scale)),
+        child: child!,
+      ),
       supportedLocales: LocaleNotifier.supportedLocales,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
@@ -67,7 +71,8 @@ Future<void> _pumpDashboard(
   WidgetTester tester,
   AuthBloc bloc,
   Size size, {
-  String language = 'en', double scale = 1,
+  String language = 'en',
+  double scale = 1,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1.0;
@@ -97,11 +102,19 @@ double _cappedWidth(WidgetTester tester) {
 
 void main() {
   for (final language in ['en', 'fr', 'rw']) {
-    testWidgets('admin dashboard is readable on narrow screens in $language', (tester) async {
+    testWidgets('admin dashboard is readable on narrow screens in $language', (
+      tester,
+    ) async {
       _seedDashboardCache();
       final bloc = AuthBloc()..emit(AuthAuthenticated(_adminUser()));
       addTearDown(() => bloc.close());
-      await _pumpDashboard(tester, bloc, const Size(320, 740), language: language, scale: 1.6);
+      await _pumpDashboard(
+        tester,
+        bloc,
+        const Size(320, 740),
+        language: language,
+        scale: 1.6,
+      );
       expect(find.text('Test Admin'), findsOneWidget);
       expect(find.text('WhatsApp'), findsOneWidget);
       expect(find.text('🇷🇼'), findsOneWidget);

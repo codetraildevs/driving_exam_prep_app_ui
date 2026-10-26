@@ -22,11 +22,12 @@ void main() {
     };
     expect(IremboRules.validate(manual), isNull);
     expect(IremboRules.applicable(manual)['category'], 'B');
-    for (final category in ['C', 'AB', 'A,B', '', 'A F'])
+    for (final category in ['C', 'AB', 'A,B', '', 'A F']) {
       expect(
         IremboRules.validate({...manual, 'category': category}),
         'category',
       );
+    }
     expect(
       IremboRules.validate({...manual, 'provisoireCode': ''}),
       'provisoireCode',
@@ -58,10 +59,12 @@ void main() {
   test('validates dates, national IDs and the exact district list', () {
     expect(IremboRules.districts.length, 24);
     expect(IremboRules.districts.toSet().length, 24);
-    for (final d in IremboRules.districts)
+    for (final d in IremboRules.districts) {
       expect(IremboRules.validate({...data(), 'district': d}), isNull);
-    for (final id in ['123', '12345678901234567', '123456789012345x'])
+    }
+    for (final id in ['123', '12345678901234567', '123456789012345x']) {
       expect(IremboRules.validate({...data(), 'nationalId': id}), 'nationalId');
+    }
     expect(
       IremboRules.validate({...data(), 'district': 'Unknown'}),
       'district',
@@ -95,12 +98,13 @@ void main() {
   test('retry keys are unique UUID v4 values', () {
     final ids = List.generate(100, (_) => IremboRepository.newKey());
     expect(ids.toSet().length, 100);
-    for (final id in ids)
+    for (final id in ids) {
       expect(
         RegExp(
           r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
         ).hasMatch(id),
         isTrue,
       );
+    }
   });
 }
