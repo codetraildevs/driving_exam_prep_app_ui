@@ -38,7 +38,8 @@ class _IremboFormPageState extends State<IremboFormPage> {
     'examLanguage':_language,'district':_district,
   });
   void _select(String service,String? option){setState((){
-    if(_service!=service||_option!=option){_controllers['provisoireCode']!.clear();_category=option=='Automatic'?'A':null;}
+    if(_service!=service)_controllers['provisoireCode']!.clear();
+    if(_service!=service||_option!=option)_category=option=='Automatic'?'A':null;
     _service=service;_option=option;
   });}
   Future<void> _date(String key)async{
