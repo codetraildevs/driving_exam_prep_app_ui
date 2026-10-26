@@ -1,3 +1,8 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:traffic_rule_in_rwanda/features/auth/data/models/user_model.dart';
+import 'package:traffic_rule_in_rwanda/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:traffic_rule_in_rwanda/shared/network/offline_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -38,8 +43,8 @@ void _stubChannels(WidgetTester tester) {
   });
 }
 
-Widget _buildApp() {
-  return const ProviderScope(
+Widget _buildApp({AuthBloc? bloc}) {
+  const app = ProviderScope(
     child: MaterialApp(
       locale: Locale('en'),
       supportedLocales: LocaleNotifier.supportedLocales,
@@ -54,6 +59,7 @@ Widget _buildApp() {
       home: QuizPage(quizId: _kQuizId),
     ),
   );
+  return bloc == null ? app : BlocProvider<AuthBloc>.value(value: bloc, child: app);
 }
 
 /// Loads the exams into the (singleton) repository cache using real async so
@@ -63,7 +69,7 @@ Future<void> _seedExamCache(WidgetTester tester) async {
   await tester.runAsync(() => ExamRepository().loadAllExams('rw'));
 }
 
-Future<void> _pumpQuiz(WidgetTester tester, Size size) async {
+Future<void> _pumpQuiz(WidgetTester tester, Size size, {AuthBloc? bloc}) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1.0;
   addTearDown(() {
@@ -71,7 +77,7 @@ Future<void> _pumpQuiz(WidgetTester tester, Size size) async {
     tester.view.resetDevicePixelRatio();
   });
 
-  await tester.pumpWidget(_buildApp());
+  await tester.pumpWidget(_buildApp(bloc: bloc));
   // Let the exam future resolve and the first frame render.
   for (int i = 0; i < 5; i++) {
     await tester.pump(const Duration(milliseconds: 50));
@@ -91,6 +97,28 @@ double _progressWidth(WidgetTester tester) {
 }
 
 void main() {
+  testWidgets('exam timer finishes and saves locally without an online session', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final bloc = AuthBloc()..emit(AuthAuthenticated(UserModel(
+      id: 'offline-user', name: 'Driver', phoneNumber: '0788123456',
+      createdAt: DateTime(2026), updatedAt: DateTime(2026),
+    )));
+    addTearDown(bloc.close);
+    _stubChannels(tester);
+    await _seedExamCache(tester);
+    await _pumpQuiz(tester, const Size(400, 800), bloc: bloc);
+    await tester.pump(const Duration(seconds: 1202));
+    await tester.pump();
+    final l10n = AppLocalizations.of(tester.element(find.byType(QuizPage)));
+    expect(find.text(l10n.quizResults), findsOneWidget);
+    final rows = await OfflineCache().getPendingResults();
+    expect(rows.single['userId'], 'offline-user');
+    expect(rows.single['examId'], _kQuizId);
+    expect(rows.single['totalQuestions'], greaterThan(0));
+    expect(tester.takeException(), isNull);
+  });
+
+
   for (final size in [const Size(844, 320), const Size(800, 1280), const Size(1280, 800)]) {
     testWidgets('page fits landscape and tablet $size', (tester) async {
       _stubChannels(tester); await _seedExamCache(tester);
