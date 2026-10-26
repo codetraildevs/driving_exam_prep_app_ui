@@ -1793,7 +1793,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get irAutomatic => "Otomatike";
 
   @override
-  String get irNotice => "Ubu ni ubusabe muri iyi porogaramu; si icyemezo cy’uko wiyandikishije ku rubuga rwemewe rwa Irembo.";
+  String get irNotice => "Dufasha abanyeshuri bagorwa no kwiyandikisha ku bizamini bya provisoire cyangwa permis. Ohereza amakuru yawe kugira ngo abakozi bacu basuzume ubusabe bwawe bagufashe kubona kode yemewe y’ikizamini. Iyi fomu ni iyo gusaba ubufasha; kwiyandikisha byemezwa ari uko inzira yemewe irangiye.";
 
   @override
   String get irFullName => "Amazina yose";
@@ -2013,5 +2013,50 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get irKinyarwanda => "Ikinyarwanda";
+
+  @override
+  String get irChooseService => "Hitamo serivisi y’ikizamini";
+
+  @override
+  String get irChooseOption => "Hitamo ubwoko bwa permis";
+
+  @override
+  String get irProvisoireHelp => "Ikizamini cy’uruhushya rw’agateganyo";
+
+  @override
+  String get irPermisHelp => "Ikizamini cy’uruhushya rwa burundu";
+
+  @override
+  String get irContinue => "Komeza wuzuze amakuru";
+
+  @override
+  String get irRequestsUnavailable => "Ubusabe bwawe ntibwashoboye kuboneka";
+
+  @override
+  String get irServerSetup => "Serivisi yo kwiyandikisha ntirategurwa neza kuri seriveri. Vugana n’abagufasha cyangwa wongere ugerageze nyuma.";
+
+  @override
+  String get irServiceUnavailable => "Serivisi yo kwiyandikisha ntiri kuboneka ubu. Ongera ugerageze nyuma.";
+
+  @override
+  String get irAccessUnavailable => "Ntiwemerewe kureba ubu busabe. Genzura konti winjiyemo.";
+
+  @override
+  String get irNoRequests => "Nta busabe uratanga. Hitamo serivisi iri hejuru kugira ngo tugufashe kwiyandikisha.";
+
+  @override
+  String get irStaffHelp => "Shakisha abasabye, suzuma ubusabe kandi ukurikirane ubufasha bwo kwiyandikisha.";
+
+  @override
+  String get waIntro => "Twigire hamwe. Hitamo itsinda ubazemo ibibazo kandi musangire inama zo kwiga.";
+
+  @override
+  String get waManageIntro => "Cunga amatsinda yo kwigiramo ahabwa abanyeshuri.";
+
+  @override
+  String get waCached => "Aya ni amatsinda yabitswe. Kwinjira mu itsinda cyangwa kwakira ubutumwa bushya bisaba interineti.";
+
+  @override
+  String get progressSaved => "Aya ni amanota yabitswe kuri iki gikoresho. Amashya azoherezwa igihe interineti ibonetse.";
 
 }

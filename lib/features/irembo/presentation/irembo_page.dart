@@ -18,7 +18,8 @@ class _IremboPageState extends State<IremboPage> {
   final _search = TextEditingController();
   final _filters = <String, String>{};
   List<Map<String, dynamic>> _items = [], _staff = [];
-  bool _busy = false, _permis = false;
+  bool _busy = false, _loaded = false;
+  String? _service, _option;
   String? _error;
   int _page = 1, _total = 0, _revision = 0;
   @override
@@ -56,7 +57,7 @@ class _IremboPageState extends State<IremboPage> {
       final data = await _repo.list({
         ..._filters,
         if (widget.manage) 'search': _search.text.trim(),
-        'page': '$_page',
+        if (widget.manage) 'page': '$_page',
       });
       if (!mounted || revision != _revision) return;
       setState(() {
@@ -64,6 +65,7 @@ class _IremboPageState extends State<IremboPage> {
             .map((e) => Map<String, dynamic>.from(e as Map))
             .toList();
         _total = int.parse(data['total'].toString());
+        _loaded = true;
       });
     } catch (e) {
       if (mounted && revision == _revision) {
@@ -130,6 +132,10 @@ class _IremboPageState extends State<IremboPage> {
           _filters.remove(key);
         } else {
           _filters[key] = v;
+          if (key == 'service' && v == 'Provisoire') {
+            _filters.remove('permisOption'); _filters.remove('category');
+          }
+          if (key == 'permisOption' && v == 'Automatic') _filters.remove('category');
         }
       }),
     );
@@ -161,19 +167,6 @@ class _IremboPageState extends State<IremboPage> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                TextField(
-                  controller: _search,
-                  decoration: InputDecoration(
-                    labelText: l.irSearch,
-                    prefixIcon: const Icon(Icons.search),
-                    border: const OutlineInputBorder(),
-                  ),
-                  onSubmitted: (_) {
-                    _page = 1;
-                    _load();
-                  },
-                ),
-                const SizedBox(height: 16),
                 Wrap(
                   spacing: 16,
                   runSpacing: 16,
@@ -294,6 +287,43 @@ class _IremboPageState extends State<IremboPage> {
       ),
     ],
   );
+  Widget _choice(String key, String title, IconData icon, bool selected, VoidCallback onTap, {String? description}) {
+    final theme = Theme.of(context);
+    return Semantics(selected: selected, button: true, child: Card(
+      color: selected ? theme.colorScheme.primaryContainer : null,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: selected ? theme.colorScheme.primary : theme.dividerColor, width: selected ? 2 : 1)),
+      child: InkWell(key: ValueKey(key), borderRadius: BorderRadius.circular(16), onTap: onTap,
+        child: Padding(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(children: [Icon(icon, color: theme.colorScheme.primary), const Spacer(),
+            Icon(selected ? Icons.check_circle : Icons.radio_button_unchecked, color: theme.colorScheme.primary)]),
+          const SizedBox(height: 12), Text(title, style: theme.textTheme.titleMedium),
+          if (description != null) ...[const SizedBox(height: 6), Text(description)],
+        ])))));
+  }
+
+  Widget _serviceSelection(AppLocalizations l) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+    Card(child: Padding(padding: const EdgeInsets.all(16), child: Text(l.irNotice))),
+    const SizedBox(height: 16), Text(l.irChooseService, style: Theme.of(context).textTheme.titleMedium),
+    LayoutBuilder(builder: (context, constraints) {
+      final width = constraints.maxWidth < 380 ? constraints.maxWidth : (constraints.maxWidth - 12) / 2;
+      return Wrap(spacing: 12, runSpacing: 8, children: [
+        SizedBox(width: width, child: _choice('service-provisoire', 'Provisoire', Icons.assignment_outlined, _service=='Provisoire', () => setState(() { _service='Provisoire'; _option=null; }), description: l.irProvisoireHelp)),
+        SizedBox(width: width, child: _choice('service-permis', 'Permis', Icons.directions_car_outlined, _service=='Permis', () => setState(() { _service='Permis'; }), description: l.irPermisHelp)),
+      ]);
+    }),
+    if (_service=='Permis') ...[
+      const SizedBox(height: 16), Text(l.irChooseOption, style: Theme.of(context).textTheme.titleMedium),
+      Wrap(spacing: 12, runSpacing: 8, children: [
+        ChoiceChip(key: const ValueKey('option-manual'), label: Text(l.irManual), selected: _option=='Manual', onSelected: (_) => setState(() => _option='Manual')),
+        ChoiceChip(key: const ValueKey('option-automatic'), label: Text(l.irAutomatic), selected: _option=='Automatic', onSelected: (_) => setState(() => _option='Automatic')),
+      ]),
+    ],
+    const SizedBox(height: 16), FilledButton.icon(key: const ValueKey('irembo-continue'),
+      onPressed: _service==null || (_service=='Permis' && _option==null) ? null : () => _create(_service!, _option),
+      icon: const Icon(Icons.arrow_forward), label: Text(l.irContinue)),
+  ]);
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
@@ -304,50 +334,27 @@ class _IremboPageState extends State<IremboPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (!widget.manage) ...[
-            Text(l.irNotice),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                FilledButton.icon(
-                  onPressed: () => _create('Provisoire'),
-                  icon: const Icon(Icons.assignment_outlined),
-                  label: const Text('Provisoire'),
-                ),
-                OutlinedButton.icon(
-                  onPressed: () => setState(() => _permis = !_permis),
-                  icon: const Icon(Icons.directions_car_outlined),
-                  label: const Text('Permis'),
-                ),
-              ],
-            ),
-            if (_permis)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: Wrap(
-                  spacing: 12,
-                  runSpacing: 12,
-                  children: [
-                    OutlinedButton(
-                      onPressed: () => _create('Permis', 'Manual'),
-                      child: Text(l.irManual),
-                    ),
-                    OutlinedButton(
-                      onPressed: () => _create('Permis', 'Automatic'),
-                      child: Text(l.irAutomatic),
-                    ),
-                  ],
-                ),
-              ),
-            const SizedBox(height: 24),
+            _serviceSelection(l), const SizedBox(height: 24),
             Text(l.irMyRequests, style: Theme.of(context).textTheme.titleLarge),
-          ] else
-            _filterPanel(l),
+          ] else ...[
+            Text(l.irStaffHelp), const SizedBox(height: 16),
+            TextField(controller: _search, decoration: InputDecoration(labelText: l.irSearch,
+              prefixIcon: const Icon(Icons.search), border: const OutlineInputBorder(),
+              suffixIcon: IconButton(tooltip: l.irApply, onPressed: _busy ? null : () { _page=1; _load(); }, icon: const Icon(Icons.arrow_forward))),
+              onSubmitted: (_) { _page=1; _load(); }),
+            const SizedBox(height: 12),
+            Wrap(spacing: 8, runSpacing: 8, children: [
+              for (final status in ['', ...IremboRules.statuses]) ChoiceChip(
+                label: Text(status.isEmpty ? l.irAll : irValue(l, status)),
+                selected: (_filters['status'] ?? '') == status,
+                onSelected: _busy ? null : (_) { setState(() { if(status.isEmpty) { _filters.remove('status'); } else { _filters['status']=status; } _page=1; }); _load(); }),
+            ]),
+            Card(child: _filterPanel(l)),
+          ],
           const SizedBox(height: 16),
           Row(
             children: [
-              Expanded(child: Text('${l.irResults}: $_total')),
+              Expanded(child: _loaded && _error == null ? Text('${l.irResults}: $_total') : const SizedBox.shrink()),
               IconButton(
                 tooltip: l.irRetry,
                 onPressed: _busy ? null : _load,
@@ -357,11 +364,15 @@ class _IremboPageState extends State<IremboPage> {
           ),
           if (_busy) const LinearProgressIndicator(),
           if (_error != null)
-            Padding(padding: const EdgeInsets.all(12), child: Text(_error!)),
-          if (!_busy && _items.isEmpty)
+            Card(child: Padding(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(l.irRequestsUnavailable, style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 8), Text(_error!), const SizedBox(height: 12),
+              OutlinedButton.icon(onPressed: _busy ? null : _load, icon: const Icon(Icons.refresh), label: Text(l.irRetry)),
+            ]))),
+          if (!_busy && _loaded && _error == null && _items.isEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 32),
-              child: Text(l.irEmpty),
+              child: Text(widget.manage ? l.irEmpty : l.irNoRequests),
             ),
           LayoutBuilder(
             builder: (context, constraints) {
@@ -433,7 +444,7 @@ class _IremboPageState extends State<IremboPage> {
             },
           ),
           const SizedBox(height: 16),
-          Wrap(
+          if (widget.manage && _loaded && _error == null && _total > 20) Wrap(
             alignment: WrapAlignment.center,
             spacing: 12,
             crossAxisAlignment: WrapCrossAlignment.center,

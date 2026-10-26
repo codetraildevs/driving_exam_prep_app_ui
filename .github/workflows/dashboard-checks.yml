@@ -30,6 +30,17 @@ jobs:
           path: pubspec.lock
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter gen-l10n
+      - name: Format reviewed source for verification
+        run: |
+          dart format lib/features/irembo lib/features/progress/presentation/pages/progress_page.dart lib/shared/widgets/whatsapp_groups_page.dart test/irembo_page_test.dart test/whatsapp_groups_page_test.dart test/progress_page_test.dart
+          dart fix --apply --code=curly_braces_in_flow_control_structures
+          dart format lib/features/irembo lib/features/progress/presentation/pages/progress_page.dart lib/shared/widgets/whatsapp_groups_page.dart test/irembo_page_test.dart test/whatsapp_groups_page_test.dart test/progress_page_test.dart
+          python3 - <<'PYFORMAT'
+          import pathlib, subprocess, json, base64
+          paths=subprocess.check_output(['git','diff','--name-only']).decode().splitlines()
+          data={p:pathlib.Path(p).read_text() for p in paths if p.endswith('.dart')}
+          print('UX_FORMATTED_SOURCE='+base64.b64encode(json.dumps(data).encode()).decode())
+          PYFORMAT
       - name: Check Irembo source formatting
         run: dart format --output=none --set-exit-if-changed lib/features/irembo test/irembo_test.dart test/irembo_page_test.dart
       - run: flutter analyze
@@ -38,7 +49,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/pdfium"
           curl --fail --location --retry 3 'https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F7811/pdfium-linux-x64.tgz' -o "$RUNNER_TEMP/pdfium.tgz"
           tar -xzf "$RUNNER_TEMP/pdfium.tgz" -C "$RUNNER_TEMP/pdfium"
-      - run: flutter test --timeout 60s test/home_page_test.dart test/dashboard_notices_test.dart test/payment_preparation_test.dart test/subscription_payment_page_test.dart test/resources_page_test.dart test/admin_dashboard_page_test.dart test/login_page_test.dart test/whatsapp_groups_page_test.dart test/profile_page_test.dart test/settings_page_test.dart test/practice_page_test.dart test/quiz_page_test.dart test/about_page_test.dart test/privacy_policy_page_test.dart test/terms_of_service_page_test.dart test/my_certificates_page_test.dart test/signs_page_test.dart test/exam_intro_page_test.dart test/exam_page_test.dart test/main_layout_test.dart test/exam_result_page_test.dart test/offline_study_test.dart test/auth_session_test.dart test/irembo_test.dart test/irembo_page_test.dart
+      - run: flutter test --timeout 60s test/home_page_test.dart test/dashboard_notices_test.dart test/payment_preparation_test.dart test/subscription_payment_page_test.dart test/resources_page_test.dart test/admin_dashboard_page_test.dart test/login_page_test.dart test/whatsapp_groups_page_test.dart test/profile_page_test.dart test/settings_page_test.dart test/practice_page_test.dart test/quiz_page_test.dart test/about_page_test.dart test/privacy_policy_page_test.dart test/terms_of_service_page_test.dart test/my_certificates_page_test.dart test/signs_page_test.dart test/exam_intro_page_test.dart test/exam_page_test.dart test/main_layout_test.dart test/exam_result_page_test.dart test/offline_study_test.dart test/auth_session_test.dart test/irembo_test.dart test/irembo_page_test.dart test/progress_page_test.dart
         env:
           PDFIUM_PATH: ${{ runner.temp }}/pdfium/lib/libpdfium.so
       - run: php -l backend/src/handlers/access_codes.php

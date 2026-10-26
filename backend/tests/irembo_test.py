@@ -64,6 +64,7 @@ try:
  for _ in range(20):req('POST',body=form(),expected=201)
  listing=req(user='m1');assert listing['total']==23 and len(listing['items'])==20
  assert len(req(path='?page=2',user='m1')['items'])==3
+ assert len(req()['items'])==23 # Applicant view includes all own requests, without pagination.
  assert req(user='u2')['total']==0
  # Clear conditional data on service change, preserving historical audit.
  new=req('PUT','/'+automatic['id'],{'version':1,'service':'Provisoire'},user='m1')
@@ -71,6 +72,8 @@ try:
  # Database role is authoritative even if a stale token claims staff privileges.
  sql("USE irembo_test; UPDATE users SET role='USER' WHERE id='m1';")
  req(path='/'+first['id'],user='m1',expected=404)
+ sql('USE irembo_test; RENAME TABLE irembo_requests TO irembo_requests_backup;')
+ req(expected=503)
  print('PASS: all service paths, conditional fields, privacy, staff scope, retries, filters, pagination, audit and role revocation')
 finally:
  server.terminate();server.wait(timeout=5)

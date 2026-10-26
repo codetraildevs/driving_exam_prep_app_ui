@@ -1801,7 +1801,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get irAutomatic => "Automatique";
 
   @override
-  String get irNotice => "Ceci crée une demande dans cette application, et non une inscription confirmée sur la plateforme officielle Irembo.";
+  String get irNotice => "Nous aidons les élèves qui rencontrent des difficultés pour s’inscrire aux examens du permis provisoire ou définitif. Envoyez vos informations pour que notre équipe examine votre demande et vous aide à obtenir le code officiel de l’examen. Ce formulaire demande notre assistance ; l’inscription sera confirmée après la procédure officielle.";
 
   @override
   String get irFullName => "Nom complet";
@@ -2021,5 +2021,50 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get irKinyarwanda => "Kinyarwanda";
+
+  @override
+  String get irChooseService => "Choisissez le service d’examen";
+
+  @override
+  String get irChooseOption => "Choisissez votre option de permis";
+
+  @override
+  String get irProvisoireHelp => "Examen du permis provisoire";
+
+  @override
+  String get irPermisHelp => "Examen pratique du permis";
+
+  @override
+  String get irContinue => "Continuer l’inscription";
+
+  @override
+  String get irRequestsUnavailable => "Vos demandes n’ont pas pu être chargées";
+
+  @override
+  String get irServerSetup => "Le service d’inscription n’est pas encore configuré sur le serveur. Contactez l’assistance ou réessayez plus tard.";
+
+  @override
+  String get irServiceUnavailable => "Le service d’inscription est temporairement indisponible. Réessayez plus tard.";
+
+  @override
+  String get irAccessUnavailable => "Vous n’avez pas accès à cette demande. Vérifiez le compte connecté.";
+
+  @override
+  String get irNoRequests => "Aucune demande pour le moment. Choisissez un service ci-dessus pour obtenir de l’aide.";
+
+  @override
+  String get irStaffHelp => "Recherchez les demandeurs, examinez les demandes et organisez l’aide à l’inscription.";
+
+  @override
+  String get waIntro => "Apprenez ensemble. Choisissez un groupe pour poser des questions et partager des conseils.";
+
+  @override
+  String get waManageIntro => "Gérez les groupes d’étude proposés aux élèves.";
+
+  @override
+  String get waCached => "Groupes enregistrés affichés. Une connexion est nécessaire pour rejoindre un groupe ou recevoir des messages.";
+
+  @override
+  String get progressSaved => "Résultats enregistrés sur cet appareil. Les nouveaux résultats seront synchronisés à la connexion.";
 
 }

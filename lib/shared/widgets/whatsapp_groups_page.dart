@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../network/api_helper.dart';
+import '../network/offline_cache.dart';
+import '../session/auth_session.dart';
+import 'app_page_header.dart';
+import '../responsive/responsive_layout.dart';
 
 class WhatsappGroupsPage extends StatefulWidget {
   final bool manage;
@@ -27,6 +31,8 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
   bool _saving = false;
   bool _requestInFlight = false;
   String? _error;
+  String? _cacheKey;
+  bool _saved = false;
 
   @override
   void initState() {
@@ -42,16 +48,30 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
       _error = null;
     });
     try {
+      try {
+        final user = await AuthSession().getUser();
+        _cacheKey = user == null ? null : 'whatsapp_groups_${user.id}';
+        if (_cacheKey != null && _groups.isEmpty && !widget.manage) {
+          final cached = await OfflineCache().load(_cacheKey!);
+          if (mounted && cached is List) {
+            setState(() { _groups = cached; _saved = true; });
+          }
+        }
+      } catch (_) { /* Storage failure must not block the directory. */ }
       final result = await (widget.loadGroups?.call() ??
           ApiHelper().get('/api/whatsapp-groups'));
       if (!mounted) return;
       setState(() {
         if (result.isSuccess) {
           _groups = result.dataList;
+          _saved = false;
         } else {
           _error = _loadError;
         }
       });
+      if (result.isSuccess && _cacheKey != null && !widget.manage) {
+        try { await OfflineCache().save(_cacheKey!, result.dataList); } catch (_) {}
+      }
     } catch (_) {
       if (mounted) setState(() => _error = _loadError);
     } finally {
@@ -129,12 +149,16 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text(AppLocalizations.of(context).joinGroup), actions: [IconButton(tooltip: AppLocalizations.of(context).commonRetry,
-      onPressed: _loading || _saving ? null : _load, icon: const Icon(Icons.refresh))]),
     floatingActionButton: widget.manage ? FloatingActionButton(onPressed: _saving ? null : () => _edit(), child: const Icon(Icons.add)) : null,
-    body: _loading && _groups.isEmpty ? const Center(child: CircularProgressIndicator()) : RefreshIndicator(
+    body: Column(children: [
+      AppPageHeader(title: AppLocalizations.of(context).joinGroup, trailing: IconButton(
+        key: const ValueKey('whatsapp-refresh'), tooltip: AppLocalizations.of(context).commonRetry,
+        onPressed: _loading || _saving ? null : _load, icon: const Icon(Icons.refresh, color: Colors.white))),
+      Expanded(child: _loading && _groups.isEmpty ? const Center(child: CircularProgressIndicator()) : RefreshIndicator(
       onRefresh: _load,
-      child: ListView(padding: const EdgeInsets.all(16), physics: const AlwaysScrollableScrollPhysics(), children: [
+      child: ListView(padding: const EdgeInsets.all(16), physics: const AlwaysScrollableScrollPhysics(), children: [ConstrainedContent(padding: EdgeInsets.zero, maxWidth: 800, child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Card(child: Padding(padding: const EdgeInsets.all(16), child: Text(widget.manage ? AppLocalizations.of(context).waManageIntro : AppLocalizations.of(context).waIntro))),
+        if (_saved) Padding(padding: const EdgeInsets.all(12), child: Text(AppLocalizations.of(context).waCached)),
         if (_saving || _loading) const LinearProgressIndicator(),
         if (_error != null) Card(child: Padding(
           padding: const EdgeInsets.all(16),
@@ -150,9 +174,10 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
         )),
         if (_error == null && _groups.isEmpty) Padding(padding: const EdgeInsets.all(24), child: Text(_text('No WhatsApp groups available yet.', 'Nta matsinda ya WhatsApp arahari.', 'Aucun groupe WhatsApp disponible.'))),
         for (final item in _groups) Card(child: ListTile(
-          leading: const Icon(Icons.groups),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          leading: CircleAvatar(backgroundColor: Theme.of(context).colorScheme.primaryContainer, child: Icon(Icons.groups, color: Theme.of(context).colorScheme.primary)),
           title: Text(item['name'] as String),
-          subtitle: widget.manage ? Text(item['inviteUrl'] as String) : null,
+          subtitle: widget.manage ? Text(item['inviteUrl'] as String, maxLines: 2, overflow: TextOverflow.ellipsis) : Text(AppLocalizations.of(context).joinGroup),
           onTap: widget.manage ? null : () async {
             try {
               final uri = Uri.parse(item['inviteUrl'] as String);
@@ -165,7 +190,8 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
           ]) : const Icon(Icons.open_in_new),
         )),
         const SizedBox(height: 80),
-      ]),
-    ),
+      ]))]),
+    )),
+    ]),
   );
 }

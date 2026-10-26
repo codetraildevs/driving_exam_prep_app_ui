@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,6 +25,19 @@ Widget app(Future<ApiResponse> Function() loader, {String language = 'en'}) => M
 );
 
 void main() {
+  setUp(() => SharedPreferences.setMockInitialValues({}));
+  testWidgets('saved group directory remains available without internet', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      'auth_user_json': jsonEncode({'id':'u1','name':'Driver','phoneNumber':'0788123456','role':'USER','createdAt':'2026-01-01','updatedAt':'2026-01-01'}),
+      'offline_cache_whatsapp_groups_u1': jsonEncode(groups.data),
+    });
+    await tester.pumpWidget(app(() async => failure));
+    await tester.pumpAndSettle();
+    expect(find.text('Study group'), findsOneWidget);
+    final l = AppLocalizations.of(tester.element(find.byType(WhatsappGroupsPage)));
+    expect(find.text(l.waCached), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
   for (final language in ['en', 'fr', 'rw']) {
     testWidgets('failed request offers localized retry in $language', (tester) async {
       var calls = 0;
@@ -43,7 +58,7 @@ void main() {
     final pending = Completer<ApiResponse>();
     await tester.pumpWidget(app(() => ++calls == 1 ? Future.value(groups) : pending.future));
     await tester.pumpAndSettle();
-    final refresh = find.byType(IconButton);
+    final refresh = find.byKey(const ValueKey('whatsapp-refresh'));
     await tester.tap(refresh);
     await tester.pump();
     expect(tester.widget<IconButton>(refresh).onPressed, isNull);

@@ -16,6 +16,8 @@ import 'package:traffic_rule_in_rwanda/shared/locale/fallback_localizations.dart
 class FakeIrembo extends IremboRepository {
   final submissions = <Map<String, dynamic>>[];
   bool failOnce = false;
+  bool failList = false;
+  Map<String, String>? lastFilters;
   @override
   Future<Map<String, dynamic>> create(Map<String, dynamic> data) async {
     submissions.add(Map.from(data));
@@ -43,11 +45,11 @@ class FakeIrembo extends IremboRepository {
     'audit': <dynamic>[],
   };
   @override
-  Future<Map<String, dynamic>> list(Map<String, String> filters) async => {
-    'items': [record],
-    'total': 1,
-    'page': 1,
-  };
+  Future<Map<String, dynamic>> list(Map<String, String> filters) async {
+    lastFilters = filters;
+    if (failList) throw const IremboFailure('iremboSetupRequired', statusCode: 503);
+    return {'items': [record], 'total': 1, 'page': 1};
+  }
   @override
   Future<List<Map<String, dynamic>>> staff() async => [
     {'id': 'staff1', 'name': 'Staff', 'role': 'MANAGER'},
@@ -107,11 +109,40 @@ Future<AuthBloc> app(
 }
 
 void main() {
+  testWidgets('failed request is not a zero result and applicants have no pager', (tester) async {
+    final repo = FakeIrembo()..failList = true;
+    await app(tester, IremboPage(repository: repo));
+    final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
+    expect(find.text('${l.irResults}: 0'), findsNothing);
+    expect(find.text(l.irNoRequests), findsNothing);
+    expect(find.text(l.irServerSetup), findsOneWidget);
+    expect(find.text(l.irPrevious), findsNothing);
+    expect(repo.lastFilters!.containsKey('page'), isFalse);
+  });
+  testWidgets('selection is explicit and conditional option resets', (tester) async {
+    await app(tester, IremboPage(repository: FakeIrembo()));
+    final proceed = find.byKey(const ValueKey('irembo-continue'));
+    expect(tester.widget<FilledButton>(proceed).onPressed, isNull);
+    final permis = find.byKey(const ValueKey('service-permis'));
+    await tester.ensureVisible(permis); await tester.tap(permis); await tester.pumpAndSettle();
+    expect(tester.widget<FilledButton>(proceed).onPressed, isNull);
+    final manual = find.byKey(const ValueKey('option-manual'));
+    await tester.ensureVisible(manual); await tester.tap(manual); await tester.pumpAndSettle();
+    expect(tester.widget<ChoiceChip>(manual).selected, isTrue);
+    expect(tester.widget<FilledButton>(proceed).onPressed, isNotNull);
+    final provisoire = find.byKey(const ValueKey('service-provisoire'));
+    await tester.ensureVisible(provisoire); await tester.tap(provisoire); await tester.pumpAndSettle();
+    expect(manual, findsNothing);
+    await tester.ensureVisible(permis); await tester.tap(permis); await tester.pumpAndSettle();
+    expect(tester.widget<ChoiceChip>(manual).selected, isFalse);
+    expect(tester.widget<FilledButton>(proceed).onPressed, isNull);
+  });
   for (final lang in ['en', 'fr', 'rw']) {
     testWidgets('localized Irembo service selection $lang', (tester) async {
       await app(tester, IremboPage(repository: FakeIrembo()), lang: lang);
       expect(find.text('Provisoire'), findsOneWidget);
-      await tester.tap(find.text('Permis'));
+      await tester.ensureVisible(find.byKey(const ValueKey('service-permis')));
+      await tester.tap(find.byKey(const ValueKey('service-permis')));
       await tester.pumpAndSettle();
       final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
       expect(find.text(l.irManual), findsOneWidget);
@@ -154,6 +185,7 @@ void main() {
         size: size,
       );
       final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
+      await tester.ensureVisible(find.text(l.irFilters));
       await tester.tap(find.text(l.irFilters));
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);

@@ -1767,7 +1767,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irAutomatic => "Automatic";
 
   @override
-  String get irNotice => "This creates a service request in this app, not a confirmed registration on the official Irembo platform.";
+  String get irNotice => "We help students who find it difficult to register for Provisoire or Permis exams. Send your details so our team can review your request and help you obtain the official exam code. This form requests our assistance; registration is confirmed only after the official process is completed.";
 
   @override
   String get irFullName => "Full name";
@@ -1987,5 +1987,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get irKinyarwanda => "Kinyarwanda";
+
+  @override
+  String get irChooseService => "Choose the exam service";
+
+  @override
+  String get irChooseOption => "Choose your Permis option";
+
+  @override
+  String get irProvisoireHelp => "Provisional driving licence exam";
+
+  @override
+  String get irPermisHelp => "Practical driving licence exam";
+
+  @override
+  String get irContinue => "Continue to registration";
+
+  @override
+  String get irRequestsUnavailable => "Your requests could not be loaded";
+
+  @override
+  String get irServerSetup => "The registration service is not ready on the server yet. Please contact support or try again later.";
+
+  @override
+  String get irServiceUnavailable => "The registration service is temporarily unavailable. Please try again later.";
+
+  @override
+  String get irAccessUnavailable => "You do not have access to this request. Check your signed-in account.";
+
+  @override
+  String get irNoRequests => "No requests yet. Choose a service above to get help with your registration.";
+
+  @override
+  String get irStaffHelp => "Find applicants, review requests and coordinate registration assistance.";
+
+  @override
+  String get waIntro => "Learn together. Choose a study group to ask questions and share learning tips.";
+
+  @override
+  String get waManageIntro => "Manage the study groups available to your learners.";
+
+  @override
+  String get waCached => "Showing saved groups. An internet connection is needed to join or receive new messages.";
+
+  @override
+  String get progressSaved => "Showing results saved on this device. New results will sync when connected.";
 
 }

@@ -44,6 +44,11 @@ String irValue(AppLocalizations l, dynamic value) =>
     };
 String irError(AppLocalizations l, Object error) {
   final code = error is IremboFailure ? error.code : '';
+  final status = error is IremboFailure ? error.statusCode : null;
+  if (code == 'iremboSetupRequired') return l.irServerSetup;
+  if (code == 'notFound' || status == 401 || status == 403) return l.irAccessUnavailable;
+  if (status == 404) return l.irServerSetup;
+  if (status != null && status >= 500) return l.irServiceUnavailable;
   if (code == 'conflict') return l.irConflict;
   if (code == 'reasonRequired') return l.irReasonRequired;
   if (code.startsWith('invalid')) return l.irInvalid;

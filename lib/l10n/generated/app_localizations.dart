@@ -232,6 +232,36 @@ abstract class AppLocalizations {
 
   String get irKinyarwanda;
 
+  String get irChooseService;
+
+  String get irChooseOption;
+
+  String get irProvisoireHelp;
+
+  String get irPermisHelp;
+
+  String get irContinue;
+
+  String get irRequestsUnavailable;
+
+  String get irServerSetup;
+
+  String get irServiceUnavailable;
+
+  String get irAccessUnavailable;
+
+  String get irNoRequests;
+
+  String get irStaffHelp;
+
+  String get waIntro;
+
+  String get waManageIntro;
+
+  String get waCached;
+
+  String get progressSaved;
+
   static const LocalizationsDelegate<AppLocalizations> delegate =
       _AppLocalizationsDelegate();
 

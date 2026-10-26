@@ -40,7 +40,7 @@ class ApiHelper {
     } on DioException catch (e) {
       final handled = await _tryHandle401('GET', path, e);
       if (handled != null) return handled;
-      return _networkError('GET', path, _dioErrorMessage(e), e.toString());
+      return _requestError('GET', path, e);
     } catch (e) {
       return _networkError('GET', path, 'An unexpected error occurred', e.toString());
     }
@@ -61,7 +61,7 @@ class ApiHelper {
     } on DioException catch (e) {
       final handled = await _tryHandle401('POST', path, e);
       if (handled != null) return handled;
-      return _networkError('POST', path, _dioErrorMessage(e), e.toString());
+      return _requestError('POST', path, e);
     } catch (e) {
       return _networkError('POST', path, 'An unexpected error occurred', e.toString());
     }
@@ -82,7 +82,7 @@ class ApiHelper {
     } on DioException catch (e) {
       final handled = await _tryHandle401('PUT', path, e);
       if (handled != null) return handled;
-      return _networkError('PUT', path, _dioErrorMessage(e), e.toString());
+      return _requestError('PUT', path, e);
     } catch (e) {
       return _networkError('PUT', path, 'An unexpected error occurred', e.toString());
     }
@@ -103,7 +103,7 @@ class ApiHelper {
     } on DioException catch (e) {
       final handled = await _tryHandle401('PATCH', path, e);
       if (handled != null) return handled;
-      return _networkError('PATCH', path, _dioErrorMessage(e), e.toString());
+      return _requestError('PATCH', path, e);
     } catch (e) {
       return _networkError('PATCH', path, 'An unexpected error occurred', e.toString());
     }
@@ -123,7 +123,7 @@ class ApiHelper {
     } on DioException catch (e) {
       final handled = await _tryHandle401('DELETE', path, e);
       if (handled != null) return handled;
-      return _networkError('DELETE', path, _dioErrorMessage(e), e.toString());
+      return _requestError('DELETE', path, e);
     } catch (e) {
       return _networkError('DELETE', path, 'An unexpected error occurred', e.toString());
     }
@@ -337,6 +337,15 @@ class ApiHelper {
       errorMessage: errorMessage,
       debugInfo: '$method $path → $statusCode',
     );
+  }
+
+  ApiResponse _requestError(String method, String path, DioException error) {
+    final status = error.response?.statusCode;
+    if (path.startsWith('/api/irembo-requests') && status != null) {
+      return ApiResponse(statusCode: status, data: null, isSuccess: false,
+        errorMessage: _dioErrorMessage(error), debugInfo: '$method $path → HTTP $status');
+    }
+    return _networkError(method, path, _dioErrorMessage(error), error.toString());
   }
 
   ApiResponse _networkError(String method, String path, String errorMessage, String rawError) {

@@ -28,7 +28,7 @@ All endpoints require the existing Bearer authentication:
 
 Creation requires a UUID v4 `requestKey`, reused across retries. Unique `(userId, requestKey)` plus a payload hash prevents repeated delivery from creating duplicates. Updates require the last loaded integer `version`; row locking and optimistic conflict checks prevent silent overwrites. Updates, messages and audit entries commit together. Reasons for Needs Information/Rejected are applicant-visible. Internal notes and audit entries are staff-only. Role/blocked status is read from the database for every request.
 
-Search/filter values are parameterized. Sort fields are allowlisted. Page size is 20. Submitted-date range is inclusive, evaluated in UTC. Staff can correct fields in the detail page, and manage status/assignment/messages separately. Calling uses the submitted phone number through `tel:`; copying never converts identifiers to numbers.
+Search/filter values are parameterized. Sort fields are allowlisted. Staff page size is 20. Applicants receive their own requests without pagination. Submitted-date range is inclusive, evaluated in UTC. Staff can correct fields in the detail page, and manage status/assignment/messages separately. Calling uses the submitted phone number through `tel:`; copying never converts identifiers to numbers.
 
 ## Verification
 CI exercises PHP syntax, MySQL integration, all registration variants, invalid categories/IDs/districts/dates, retry safety, scope and role revocation, private notes, audit history, search/filter pagination, Flutter validation, responsive/localized screens and clipboard behavior. Test the device dialer and a complete applicant/staff flow on staging before production rollout.

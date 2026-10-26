@@ -84,9 +84,12 @@ function irList($db, array $actor): array {
     if (!$page || $page < 1 || $page > 100000) irFail('invalidFilters');
     $condition = $where ? ' WHERE ' . implode(' AND ', $where) : '';
     $count = irQuery($db, 'SELECT COUNT(*) AS total FROM irembo_requests r' . $condition, $values)->fetch(PDO::FETCH_ASSOC);
+    $applicant = $actor['role'] === 'USER';
+    if ($applicant) $page = 1;
     $offset = ($page - 1) * 20;
-    $rows = irQuery($db, 'SELECT r.*, u.name AS assignedStaffName FROM irembo_requests r LEFT JOIN users u ON u.id = r.assignedStaffId' . $condition . ' ORDER BY ' . $orders[$sort] . " LIMIT 20 OFFSET $offset", $values)->fetchAll(PDO::FETCH_ASSOC);
-    return ['items'=>array_map(function($r) { return irPresent($r); }, $rows), 'total'=>intval($count['total']), 'page'=>$page, 'pageSize'=>20];
+    $limit = $applicant ? '' : " LIMIT 20 OFFSET $offset";
+    $rows = irQuery($db, 'SELECT r.*, u.name AS assignedStaffName FROM irembo_requests r LEFT JOIN users u ON u.id = r.assignedStaffId' . $condition . ' ORDER BY ' . $orders[$sort] . $limit, $values)->fetchAll(PDO::FETCH_ASSOC);
+    return ['items'=>array_map(function($r) { return irPresent($r); }, $rows), 'total'=>intval($count['total']), 'page'=>$page, 'pageSize'=>$applicant ? intval($count['total']) : 20];
 }
 function irCreate($db, array $actor, array $input): array {
     if ($actor['role'] !== 'USER') irFail('forbidden', 403);
@@ -191,6 +194,10 @@ function iremboRequests($db, $params): void {
     } catch (Throwable $e) {
         $status = intval($e->getCode());
         if ($e instanceof RuntimeException && in_array($status,[400,403,404,409],true)) ErrorHandler::error($e->getMessage(),$status);
+        // A missing additive migration is different from a network outage.
+        if ($e instanceof PDOException && ((string)$e->getCode() === '42S02' || (int)$e->getCode() === 1146)) {
+            ErrorHandler::error('iremboSetupRequired',503);
+        }
         // Never include SQL errors, form data or exception traces in logs/responses.
         ErrorHandler::error('iremboUnavailable',503);
     }
