@@ -18,7 +18,10 @@ class IremboRepository {
   Future<List<Map<String, dynamic>>> staff() async {
     final response = await _api.get('$path/staff');
     if (!response.isSuccess) {
-      throw IremboFailure(response.errorMessage ?? 'iremboUnavailable', statusCode: response.statusCode);
+      throw IremboFailure(
+        response.errorMessage ?? 'iremboUnavailable',
+        statusCode: response.statusCode,
+      );
     }
     return response.dataList
         .map((e) => Map<String, dynamic>.from(e as Map))
@@ -27,7 +30,10 @@ class IremboRepository {
 
   Map<String, dynamic> _map(ApiResponse response) {
     if (!response.isSuccess || response.data is! Map) {
-      throw IremboFailure(response.errorMessage ?? 'iremboUnavailable', statusCode: response.statusCode);
+      throw IremboFailure(
+        response.errorMessage ?? 'iremboUnavailable',
+        statusCode: response.statusCode,
+      );
     }
     return Map<String, dynamic>.from(response.data as Map);
   }

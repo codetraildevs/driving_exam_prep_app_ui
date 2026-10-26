@@ -195,7 +195,7 @@ function iremboRequests($db, $params): void {
         $status = intval($e->getCode());
         if ($e instanceof RuntimeException && in_array($status,[400,403,404,409],true)) ErrorHandler::error($e->getMessage(),$status);
         // A missing additive migration is different from a network outage.
-        if ($e instanceof PDOException && ((string)$e->getCode() === '42S02' || (int)$e->getCode() === 1146)) {
+        if (($e instanceof PDOException || $e instanceof mysqli_sql_exception) && ((string)$e->getCode() === '42S02' || (int)$e->getCode() === 1146)) {
             ErrorHandler::error('iremboSetupRequired',503);
         }
         // Never include SQL errors, form data or exception traces in logs/responses.

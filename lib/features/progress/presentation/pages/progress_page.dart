@@ -36,7 +36,9 @@ class _ProgressPageState extends State<ProgressPage>
       duration: const Duration(milliseconds: 900),
     );
     _anim = CurvedAnimation(parent: _animCtrl, curve: Curves.easeOutCubic);
-    WidgetsBinding.instance.addPostFrameCallback((_) { if (mounted) _loadResults(); });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _loadResults();
+    });
   }
 
   @override
@@ -50,35 +52,60 @@ class _ProgressPageState extends State<ProgressPage>
     final l10n = AppLocalizations.of(context);
     final auth = context.read<AuthBloc>().state;
     if (auth is! AuthAuthenticated) {
-      setState(() { _isLoading = false; _error = l10n.errorNetwork; });
+      setState(() {
+        _isLoading = false;
+        _error = l10n.errorNetwork;
+      });
       return;
     }
     final cache = OfflineCache();
     final key = cache.examResultsKey(auth.user.id);
-    setState(() { _refreshing = true; _isLoading = _results.isEmpty; _error = null; });
+    setState(() {
+      _refreshing = true;
+      _isLoading = _results.isEmpty;
+      _error = null;
+    });
     dynamic cached;
-    try { cached = await cache.load(key); } catch (_) {}
+    try {
+      cached = await cache.load(key);
+    } catch (_) {}
     if (!mounted) return;
     if (cached is List) {
-      setState(() { _results = cached; _isLoading = false; _saved = true; });
+      setState(() {
+        _results = cached;
+        _isLoading = false;
+        _saved = true;
+      });
       _animCtrl.forward(from: 0);
     }
     try {
-      final result = await (widget.loadResults?.call(auth.user.id) ?? ApiHelper().get('/api/exam-results/${auth.user.id}'));
+      final result =
+          await (widget.loadResults?.call(auth.user.id) ??
+              ApiHelper().get('/api/exam-results/${auth.user.id}'));
       if (!mounted) return;
       if (result.isSuccess) {
         await cache.save(key, result.dataList);
         final merged = await cache.load(key);
         if (!mounted) return;
-        setState(() { _results = merged is List ? merged : result.dataList; _saved = false; });
+        setState(() {
+          _results = merged is List ? merged : result.dataList;
+          _saved = false;
+        });
         _animCtrl.forward(from: 0);
       } else if (cached is! List) {
         setState(() => _error = l10n.errorNetwork);
       }
     } catch (_) {
-      if (mounted && cached is! List) setState(() => _error = l10n.errorNetwork);
+      if (mounted && cached is! List) {
+        setState(() => _error = l10n.errorNetwork);
+      }
     } finally {
-      if (mounted) setState(() { _isLoading = false; _refreshing = false; });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _refreshing = false;
+        });
+      }
     }
   }
 
@@ -86,7 +113,14 @@ class _ProgressPageState extends State<ProgressPage>
 
   int get _total => _results.length;
 
-  int get _passed => _results.where((r) => r['passed'] == null ? _intVal(r['score']) >= 60 : _boolVal(r['passed'])).length;
+  // Pending local attempts have no server flag yet; match the existing backend.
+  int get _passed => _results
+      .where(
+        (r) => r['passed'] == null
+            ? _intVal(r['score']) >= 60
+            : _boolVal(r['passed']),
+      )
+      .length;
 
   int get _failed => _total - _passed;
 
@@ -150,7 +184,11 @@ class _ProgressPageState extends State<ProgressPage>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            if (_saved) Padding(padding: const EdgeInsets.only(bottom: 16), child: Text(l10n.progressSaved)),
+                            if (_saved)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: Text(l10n.progressSaved),
+                              ),
                             // ── Summary grid ──────────────────────
                             _SummaryGrid(
                               total: _total,
@@ -464,7 +502,9 @@ class _ExamResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final passed = result['passed'] == null ? _intVal(result['score']) >= 60 : _boolVal(result['passed']);
+    final passed = result['passed'] == null
+        ? _intVal(result['score']) >= 60
+        : _boolVal(result['passed']);
     final score = _intVal(result['score']);
     final total = _intVal(result['totalQuestions']);
     final correct = _intVal(result['correctAnswers']);

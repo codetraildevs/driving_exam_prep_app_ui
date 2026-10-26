@@ -1707,25 +1707,29 @@ class AppLocalizationsRw extends AppLocalizations {
   String get guideAboutTitle => '1. Ubusobanuro bw’application';
 
   @override
-  String get guideAboutBody => 'RWANDA TRAFFIC RULE ni application yigisha amategeko y’umuhanda kandi igufasha kwitegura ikizamini cy’uruhushya rw’agateganyo rwo gutwara ibinyabiziga ukoresheje ibibazo by’imyitozo.';
+  String get guideAboutBody =>
+      'RWANDA TRAFFIC RULE ni application yigisha amategeko y’umuhanda kandi igufasha kwitegura ikizamini cy’uruhushya rw’agateganyo rwo gutwara ibinyabiziga ukoresheje ibibazo by’imyitozo.';
 
   @override
   String get guideUseTitle => '2. Uko application ikora';
 
   @override
-  String get guideUseBody => '1. Iyo ukoresheje application bwa mbere, banza wiyandikishe ukoresheje amazina yawe yose na nimero ya telefoni.\n\n2. Niba usanzwe ufite konti, kanda Injira, wandike nimero ya telefoni wiyandikishijeho, hanyuma ukurikize amabwiriza yo kwinjira.\n\n3. Kuri dashboard, kanda Imyitozo uhitemo ikizamini. Ibizamini byanditseho ko ari ubuntu ntibisaba kwishyura; ibifunze bisaba uburenganzira bwo kubikora.\n\n4. Hitamo igisubizo usome ibisobanuro. Icyatsi kigaragaza igisubizo cy’ukuri, umutuku ukagaragaza ikitari cyo. Komeza ku kibazo gikurikira, usoze ikizamini ubone amanota. Kanda Iterambere urebe uko witwaye.';
+  String get guideUseBody =>
+      '1. Iyo ukoresheje application bwa mbere, banza wiyandikishe ukoresheje amazina yawe yose na nimero ya telefoni.\n\n2. Niba usanzwe ufite konti, kanda Injira, wandike nimero ya telefoni wiyandikishijeho, hanyuma ukurikize amabwiriza yo kwinjira.\n\n3. Kuri dashboard, kanda Imyitozo uhitemo ikizamini. Ibizamini byanditseho ko ari ubuntu ntibisaba kwishyura; ibifunze bisaba uburenganzira bwo kubikora.\n\n4. Hitamo igisubizo usome ibisobanuro. Icyatsi kigaragaza igisubizo cy’ukuri, umutuku ukagaragaza ikitari cyo. Komeza ku kibazo gikurikira, usoze ikizamini ubone amanota. Kanda Iterambere urebe uko witwaye.';
 
   @override
   String get guideExamTitle => '3. Kwitegura ikizamini kuri mudasobwa';
 
   @override
-  String get guideExamBody => 'Ibibazo by’imyitozo bigufasha kumenyera gusoma ibibazo no guhitamo ibisubizo kuri ekara. Mu kizamini nyirizina, kurikiza amabwiriza uhabwa yo kujya ku kibazo gikurikira no gusoza ikizamini.\n\nIbisobanuro by’ibisubizo bigufasha kwiga. Ibibazo, igihe n’uburyo bwo kugaragaza ibisubizo mu kizamini nyirizina bishobora gutandukana n’ibyo muri iyi application; ntabwo twemeza ko ibibazo byose bizaba bimwe.';
+  String get guideExamBody =>
+      'Ibibazo by’imyitozo bigufasha kumenyera gusoma ibibazo no guhitamo ibisubizo kuri ekara. Mu kizamini nyirizina, kurikiza amabwiriza uhabwa yo kujya ku kibazo gikurikira no gusoza ikizamini.\n\nIbisobanuro by’ibisubizo bigufasha kwiga. Ibibazo, igihe n’uburyo bwo kugaragaza ibisubizo mu kizamini nyirizina bishobora gutandukana n’ibyo muri iyi application; ntabwo twemeza ko ibibazo byose bizaba bimwe.';
 
   @override
   String get guidePaymentTitle => '4. Kwishyura kugira ngo ibizamini bifunguke';
 
   @override
-  String get guidePaymentBody => '1. Kuri dashboard, kanda ahanditse ibijyanye n’uburenganzira bwo gukora ibizamini cyangwa ukande ikizamini gifunze. Urahita ufungura urupapuro rwo kwishyura ibizamini.\n\n2. Hitamo ukwezi 1, amezi 3 cyangwa amezi 6. Mu Kinyarwanda, ukwezi 1 ni ko kubanza gutoranywa; mu Cyongereza no mu Gifaransa habanza amezi 3. Amafaranga muri RWF ahinduka uko uhindura igihe; igiciro gishingira ku rurimi rwa application.\n\n3. MoMo Pay iba yatoranyijwe. Ushobora guhindura ugahitamo MTN cyangwa Tigo. Genzura izina ryanditse: Alexis kuri MoMo Pay, cyangwa NSHIMIYIMANA Alexis kuri MTN na Tigo. Mbere yo kwemeza, reba ko rihuye n’iryerekanywe kuri telefoni yawe.\n\n4. Kanda ahanditse Kanda hano wishyure. Kode ya USSD yose irakopororwa, telefoni ikagufungurira aho uyikubita. Soza kwishyura kuri telefoni. Ushobora no gukanda agashushondanga ko gukoporora kari iruhande rwa kode, ukayikubita ubwawe.\n\n5. Umaze kwishyura, koresha buto zo guhamagara cyangwa WhatsApp ziri mu gice cy’ubufasha, usabe gufungurirwa ukoresheje nimero ya telefoni wiyandikishijeho. Gufungura aho ukubitira kode cyangwa kuyikoporora ntibihita bifungura ibizamini.\n\n6. Umuyobozi namara gushyira uburenganzira bukora kuri konti yawe, subira kuri dashboard ufite interineti, ukande akambi k’uruziga. Amakuru y’uburenganzira arahinduka, ibizamini byishyurwa bifunguke. Ntukeneye kwandika kode kuri uru rupapuro. Application inagenzura uburenganzira iyo ufunguye dashboard, iyo uyigarutsemo, ndetse ikanabigenzura buri gihe dashboard iri gukoreshwa.\n\n7. Niba ibizamini bikigufungiye, genzura ko ubufasha bwakoresheje nimero wiyandikishijeho kandi ko uburenganzira butararangira. Koresha buto zikurikira ubaze ubufasha.';
+  String get guidePaymentBody =>
+      '1. Kuri dashboard, kanda ahanditse ibijyanye n’uburenganzira bwo gukora ibizamini cyangwa ukande ikizamini gifunze. Urahita ufungura urupapuro rwo kwishyura ibizamini.\n\n2. Hitamo ukwezi 1, amezi 3 cyangwa amezi 6. Mu Kinyarwanda, ukwezi 1 ni ko kubanza gutoranywa; mu Cyongereza no mu Gifaransa habanza amezi 3. Amafaranga muri RWF ahinduka uko uhindura igihe; igiciro gishingira ku rurimi rwa application.\n\n3. MoMo Pay iba yatoranyijwe. Ushobora guhindura ugahitamo MTN cyangwa Tigo. Genzura izina ryanditse: Alexis kuri MoMo Pay, cyangwa NSHIMIYIMANA Alexis kuri MTN na Tigo. Mbere yo kwemeza, reba ko rihuye n’iryerekanywe kuri telefoni yawe.\n\n4. Kanda ahanditse Kanda hano wishyure. Kode ya USSD yose irakopororwa, telefoni ikagufungurira aho uyikubita. Soza kwishyura kuri telefoni. Ushobora no gukanda agashushondanga ko gukoporora kari iruhande rwa kode, ukayikubita ubwawe.\n\n5. Umaze kwishyura, koresha buto zo guhamagara cyangwa WhatsApp ziri mu gice cy’ubufasha, usabe gufungurirwa ukoresheje nimero ya telefoni wiyandikishijeho. Gufungura aho ukubitira kode cyangwa kuyikoporora ntibihita bifungura ibizamini.\n\n6. Umuyobozi namara gushyira uburenganzira bukora kuri konti yawe, subira kuri dashboard ufite interineti, ukande akambi k’uruziga. Amakuru y’uburenganzira arahinduka, ibizamini byishyurwa bifunguke. Ntukeneye kwandika kode kuri uru rupapuro. Application inagenzura uburenganzira iyo ufunguye dashboard, iyo uyigarutsemo, ndetse ikanabigenzura buri gihe dashboard iri gukoreshwa.\n\n7. Niba ibizamini bikigufungiye, genzura ko ubufasha bwakoresheje nimero wiyandikishijeho kandi ko uburenganzira butararangira. Koresha buto zikurikira ubaze ubufasha.';
 
   @override
   String get guideOpenAccess => 'Reba ibiciro wishyure';
@@ -1737,13 +1741,15 @@ class AppLocalizationsRw extends AppLocalizations {
   String get dashboardRefreshDone => 'Uburenganzira bwongeye kugenzurwa.';
 
   @override
-  String get dashboardRefreshFailed => 'Ntibyashobotse kugenzura uburenganzira. Reba interineti wongere ugerageze.';
+  String get dashboardRefreshFailed =>
+      'Ntibyashobotse kugenzura uburenganzira. Reba interineti wongere ugerageze.';
 
   @override
   String get resourcesTitle => 'Inyandiko';
 
   @override
-  String get resourcesDescription => 'Soma igazeti n’ibyapa muri application. Izi nyandiko zirimo kandi zisomwa nta interineti; zigumana ururimi zanditswemo.';
+  String get resourcesDescription =>
+      'Soma igazeti n’ibyapa muri application. Izi nyandiko zirimo kandi zisomwa nta interineti; zigumana ururimi zanditswemo.';
 
   @override
   String get resourcesGazette => 'Igazeti';
@@ -1755,7 +1761,8 @@ class AppLocalizationsRw extends AppLocalizations {
   String get resourcesOfflinePdf => 'PDF • Soma nta interineti';
 
   @override
-  String get resourcesReadError => 'Ntibyashobotse gufungura iyi nyandiko. Ongera ugerageze.';
+  String get resourcesReadError =>
+      'Ntibyashobotse gufungura iyi nyandiko. Ongera ugerageze.';
 
   @override
   String get resourcesPreviousPage => 'Urupapuro rubanza';
@@ -1773,290 +1780,305 @@ class AppLocalizationsRw extends AppLocalizations {
   String get resourcesLoading => 'Inyandiko irimo gufunguka…';
 
   @override
-  String resourcesPageCount(int page, int total) => 'Urupapuro $page kuri $total';
-  @override
-  String get irTitle => "Serivisi za Irembo";
+  String resourcesPageCount(int page, int total) {
+    return 'Urupapuro $page kuri $total';
+  }
 
   @override
-  String get irWorkspace => "Ubusabe bwa Irembo";
+  String get irTitle => 'Serivisi za Irembo';
 
   @override
-  String get irMyRequests => "Ubusabe bwanjye bwa Irembo";
+  String get irWorkspace => 'Ubusabe bwa Irembo';
 
   @override
-  String get irNew => "Ubusabe bushya";
+  String get irMyRequests => 'Ubusabe bwanjye bwa Irembo';
 
   @override
-  String get irManual => "Manuweli";
+  String get irNew => 'Ubusabe bushya';
 
   @override
-  String get irAutomatic => "Otomatike";
+  String get irManual => 'Manuweli';
 
   @override
-  String get irNotice => "Dufasha abanyeshuri bagorwa no kwiyandikisha ku bizamini bya provisoire cyangwa permis. Ohereza amakuru yawe kugira ngo abakozi bacu basuzume ubusabe bwawe bagufashe kubona kode yemewe y’ikizamini. Iyi fomu ni iyo gusaba ubufasha; kwiyandikisha byemezwa ari uko inzira yemewe irangiye.";
+  String get irAutomatic => 'Otomatike';
 
   @override
-  String get irFullName => "Amazina yose";
+  String get irNotice =>
+      'Dufasha abanyeshuri bagorwa no kwiyandikisha ku bizamini bya provisoire cyangwa permis. Ohereza amakuru yawe kugira ngo abakozi bacu basuzume ubusabe bwawe bagufashe kubona kode yemewe y’ikizamini. Iyi fomu ni iyo gusaba ubufasha; kwiyandikisha byemezwa ari uko inzira yemewe irangiye.';
 
   @override
-  String get irPhone => "Nimero ya telefone";
+  String get irFullName => 'Amazina yose';
 
   @override
-  String get irNationalId => "Nimero y’indangamuntu";
+  String get irPhone => 'Nimero ya telefone';
 
   @override
-  String get irDob => "Itariki y’amavuko";
+  String get irNationalId => 'Nimero y’indangamuntu';
 
   @override
-  String get irExamLanguage => "Ururimi rw’ikizamini";
+  String get irDob => 'Itariki y’amavuko';
 
   @override
-  String get irLanguageHint => "Urugero: Ikinyarwanda, Icyongereza, Igifaransa";
+  String get irExamLanguage => 'Ururimi rw’ikizamini';
 
   @override
-  String get irDistrict => "Akarere wifuza gukoreramo ikizamini";
+  String get irLanguageHint => 'Urugero: Ikinyarwanda, Icyongereza, Igifaransa';
 
   @override
-  String get irExamDate => "Itariki wifuza gukora ikizamini (si ngombwa)";
+  String get irDistrict => 'Akarere wifuza gukoreramo ikizamini';
 
   @override
-  String get irDateNotice => "Itariki wifuza si gahunda yemejwe y’ikizamini.";
+  String get irExamDate => 'Itariki wifuza gukora ikizamini (si ngombwa)';
 
   @override
-  String get irProvisoireCode => "Kode ya provisoire";
+  String get irDateNotice => 'Itariki wifuza si gahunda yemejwe y’ikizamini.';
 
   @override
-  String get irCategory => "Icyiciro cy’uruhushya";
+  String get irProvisoireCode => 'Kode ya provisoire';
 
   @override
-  String get irService => "Serivisi";
+  String get irCategory => 'Icyiciro cy’uruhushya';
 
   @override
-  String get irOption => "Ubwoko bwa permis";
+  String get irService => 'Serivisi';
 
   @override
-  String get irReview => "Genzura ubusabe";
+  String get irOption => 'Ubwoko bwa permis';
 
   @override
-  String get irConfirm => "Emeza wohereze";
+  String get irReview => 'Genzura ubusabe';
 
   @override
-  String get irEdit => "Hindura amakuru";
+  String get irConfirm => 'Emeza wohereze';
 
   @override
-  String get irSaved => "Ubusabe bwakiriwe";
+  String get irEdit => 'Hindura amakuru';
 
   @override
-  String get irReference => "Nimero y’ubusabe";
+  String get irSaved => 'Ubusabe bwakiriwe';
 
   @override
-  String get irStatus => "Uko buhagaze";
+  String get irReference => 'Nimero y’ubusabe';
 
   @override
-  String get irSubmitted => "Igihe bwoherejwe";
+  String get irStatus => 'Uko buhagaze';
 
   @override
-  String get irUpdated => "Igihe buheruka guhindurwa";
+  String get irSubmitted => 'Igihe bwoherejwe';
 
   @override
-  String get irAssigned => "Umukozi ubishinzwe";
+  String get irUpdated => 'Igihe buheruka guhindurwa';
 
   @override
-  String get irUnassigned => "Nta mukozi wabugenewe";
+  String get irAssigned => 'Umukozi ubishinzwe';
 
   @override
-  String get irPending => "Burategereje";
+  String get irUnassigned => 'Nta mukozi wabugenewe';
 
   @override
-  String get irInReview => "Burimo gusuzumwa";
+  String get irPending => 'Burategereje';
 
   @override
-  String get irNeedsInformation => "Hakurikiraho andi makuru";
+  String get irInReview => 'Burimo gusuzumwa';
 
   @override
-  String get irCompleted => "Bwarangiye";
+  String get irNeedsInformation => 'Hakurikiraho andi makuru';
 
   @override
-  String get irRejected => "Bwaranzwe";
+  String get irCompleted => 'Bwarangiye';
 
   @override
-  String get irCancelled => "Bwahagaritswe";
+  String get irRejected => 'Bwaranzwe';
 
   @override
-  String get irSearch => "Shakisha nimero y’ubusabe, amazina cyangwa telefone";
+  String get irCancelled => 'Bwahagaritswe';
 
   @override
-  String get irFilters => "Ibyo ushunguriraho";
+  String get irSearch => 'Shakisha nimero y’ubusabe, amazina cyangwa telefone';
 
   @override
-  String get irApply => "Shungura";
+  String get irFilters => 'Ibyo ushunguriraho';
 
   @override
-  String get irClear => "Kuraho ibyo ushunguriraho";
+  String get irApply => 'Shungura';
 
   @override
-  String get irAll => "Byose";
+  String get irClear => 'Kuraho ibyo ushunguriraho';
 
   @override
-  String get irFrom => "Bwoherejwe kuva";
+  String get irAll => 'Byose';
 
   @override
-  String get irTo => "Bwoherejwe kugeza";
+  String get irFrom => 'Bwoherejwe kuva';
 
   @override
-  String get irNewest => "Ubushya mbere";
+  String get irTo => 'Bwoherejwe kugeza';
 
   @override
-  String get irOldest => "Ubwa kera mbere";
+  String get irNewest => 'Ubushya mbere';
 
   @override
-  String get irSort => "Tondeka ukurikije";
+  String get irOldest => 'Ubwa kera mbere';
 
   @override
-  String get irEmpty => "Nta busabe buhuye n’ibyo washakishije.";
+  String get irSort => 'Tondeka ukurikije';
 
   @override
-  String get irView => "Reba amakuru";
+  String get irEmpty => 'Nta busabe buhuye n’ibyo washakishije.';
 
   @override
-  String get irCall => "Hamagara uwasabye";
+  String get irView => 'Reba amakuru';
 
   @override
-  String get irCopy => "Koporora";
+  String get irCall => 'Hamagara uwasabye';
 
   @override
-  String get irCopyAll => "Koporora amakuru y’uwasabye";
+  String get irCopy => 'Koporora';
 
   @override
-  String get irCopied => "Byakoporowe";
+  String get irCopyAll => 'Koporora amakuru y’uwasabye';
 
   @override
-  String get irCopyFailed => "Gukoporora byanze. Ongera ugerageze.";
+  String get irCopied => 'Byakoporowe';
 
   @override
-  String get irCallFailed => "Porogaramu yo guhamagara ntiyafungutse.";
+  String get irCopyFailed => 'Gukoporora byanze. Ongera ugerageze.';
 
   @override
-  String get irMessages => "Ubutumwa bugenewe uwasabye";
+  String get irCallFailed => 'Porogaramu yo guhamagara ntiyafungutse.';
 
   @override
-  String get irInternalNotes => "Inyandiko z’abakozi gusa";
+  String get irMessages => 'Ubutumwa bugenewe uwasabye';
 
   @override
-  String get irInternalHint => "Bigaragarira abakozi gusa";
+  String get irInternalNotes => 'Inyandiko z’abakozi gusa';
 
   @override
-  String get irMessage => "Ubutumwa bwohererezwa uwasabye";
+  String get irInternalHint => 'Bigaragarira abakozi gusa';
 
   @override
-  String get irReason => "Impamvu (igaragarira uwasabye)";
+  String get irMessage => 'Ubutumwa bwohererezwa uwasabye';
 
   @override
-  String get irReasonRequired => "Tanga impamvu y’uko ubusabe buhagaze.";
+  String get irReason => 'Impamvu (igaragarira uwasabye)';
 
   @override
-  String get irAudit => "Amateka y’impinduka";
+  String get irReasonRequired => 'Tanga impamvu y’uko ubusabe buhagaze.';
 
   @override
-  String get irSave => "Bika impinduka";
+  String get irAudit => 'Amateka y’impinduka';
 
   @override
-  String get irRetry => "Ongera ugerageze";
+  String get irSave => 'Bika impinduka';
 
   @override
-  String get irClose => "Funga";
+  String get irRetry => 'Ongera ugerageze';
 
   @override
-  String get irRequired => "Aya makuru ni ngombwa.";
+  String get irClose => 'Funga';
 
   @override
-  String get irInvalid => "Genzura amakuru wanditse.";
+  String get irRequired => 'Aya makuru ni ngombwa.';
 
   @override
-  String get irInvalidId => "Andika imibare 16 gusa.";
+  String get irInvalid => 'Genzura amakuru wanditse.';
 
   @override
-  String get irInvalidPhone => "Andika nimero ya telefone igendanwa yemewe mu Rwanda.";
+  String get irInvalidId => 'Andika imibare 16 gusa.';
 
   @override
-  String get irUnavailable => "Ntibyashobotse. Genzura interineti wongere ugerageze. Amakuru wanditse aracyari kuri uru rupapuro.";
+  String get irInvalidPhone =>
+      'Andika nimero ya telefone igendanwa yemewe mu Rwanda.';
 
   @override
-  String get irConflict => "Ubu busabe bwarahinduwe cyangwa bwaroherejwe. Vugurura urutonde mbere yo kongera kugerageza.";
+  String get irUnavailable =>
+      'Ntibyashobotse. Genzura interineti wongere ugerageze. Amakuru wanditse aracyari kuri uru rupapuro.';
 
   @override
-  String get irNext => "Ibikurikira";
+  String get irConflict =>
+      'Ubu busabe bwarahinduwe cyangwa bwaroherejwe. Vugurura urutonde mbere yo kongera kugerageza.';
 
   @override
-  String get irPrevious => "Ibibanziriza";
+  String get irNext => 'Ibikurikira';
 
   @override
-  String get irCreated => "Ubusabe bwakozwe";
+  String get irPrevious => 'Ibibanziriza';
 
   @override
-  String get irChange => "Impinduka";
+  String get irCreated => 'Ubusabe bwakozwe';
 
   @override
-  String get irNoMessages => "Nta butumwa burahagera.";
+  String get irChange => 'Impinduka';
 
   @override
-  String get irResults => "Ibyabonetse";
+  String get irNoMessages => 'Nta butumwa burahagera.';
 
   @override
-  String get irSelectDistrict => "Shakisha uhitemo akarere";
+  String get irResults => 'Ibyabonetse';
 
   @override
-  String get irEnglish => "Icyongereza";
+  String get irSelectDistrict => 'Shakisha uhitemo akarere';
 
   @override
-  String get irFrench => "Igifaransa";
+  String get irEnglish => 'Icyongereza';
 
   @override
-  String get irKinyarwanda => "Ikinyarwanda";
+  String get irFrench => 'Igifaransa';
 
   @override
-  String get irChooseService => "Hitamo serivisi y’ikizamini";
+  String get irKinyarwanda => 'Ikinyarwanda';
 
   @override
-  String get irChooseOption => "Hitamo ubwoko bwa permis";
+  String get irChooseService => 'Hitamo serivisi y’ikizamini';
 
   @override
-  String get irProvisoireHelp => "Ikizamini cy’uruhushya rw’agateganyo";
+  String get irChooseOption => 'Hitamo ubwoko bwa permis';
 
   @override
-  String get irPermisHelp => "Ikizamini cy’uruhushya rwa burundu";
+  String get irProvisoireHelp => 'Ikizamini cy’uruhushya rw’agateganyo';
 
   @override
-  String get irContinue => "Komeza wuzuze amakuru";
+  String get irPermisHelp => 'Ikizamini cy’uruhushya rwa burundu';
 
   @override
-  String get irRequestsUnavailable => "Ubusabe bwawe ntibwashoboye kuboneka";
+  String get irContinue => 'Komeza wuzuze amakuru';
 
   @override
-  String get irServerSetup => "Serivisi yo kwiyandikisha ntirategurwa neza kuri seriveri. Vugana n’abagufasha cyangwa wongere ugerageze nyuma.";
+  String get irRequestsUnavailable => 'Ubusabe bwawe ntibwashoboye kuboneka';
 
   @override
-  String get irServiceUnavailable => "Serivisi yo kwiyandikisha ntiri kuboneka ubu. Ongera ugerageze nyuma.";
+  String get irServerSetup =>
+      'Serivisi yo kwiyandikisha ntirategurwa neza kuri seriveri. Vugana n’abagufasha cyangwa wongere ugerageze nyuma.';
 
   @override
-  String get irAccessUnavailable => "Ntiwemerewe kureba ubu busabe. Genzura konti winjiyemo.";
+  String get irServiceUnavailable =>
+      'Serivisi yo kwiyandikisha ntiri kuboneka ubu. Ongera ugerageze nyuma.';
 
   @override
-  String get irNoRequests => "Nta busabe uratanga. Hitamo serivisi iri hejuru kugira ngo tugufashe kwiyandikisha.";
+  String get irAccessUnavailable =>
+      'Ntiwemerewe kureba ubu busabe. Genzura konti winjiyemo.';
 
   @override
-  String get irStaffHelp => "Shakisha abasabye, suzuma ubusabe kandi ukurikirane ubufasha bwo kwiyandikisha.";
+  String get irNoRequests =>
+      'Nta busabe uratanga. Hitamo serivisi iri hejuru kugira ngo tugufashe kwiyandikisha.';
 
   @override
-  String get waIntro => "Twigire hamwe. Hitamo itsinda ubazemo ibibazo kandi musangire inama zo kwiga.";
+  String get irStaffHelp =>
+      'Shakisha abasabye, suzuma ubusabe kandi ukurikirane ubufasha bwo kwiyandikisha.';
 
   @override
-  String get waManageIntro => "Cunga amatsinda yo kwigiramo ahabwa abanyeshuri.";
+  String get waIntro =>
+      'Twigire hamwe. Hitamo itsinda ubazemo ibibazo kandi musangire inama zo kwiga.';
 
   @override
-  String get waCached => "Aya ni amatsinda yabitswe. Kwinjira mu itsinda cyangwa kwakira ubutumwa bushya bisaba interineti.";
+  String get waManageIntro =>
+      'Cunga amatsinda yo kwigiramo ahabwa abanyeshuri.';
 
   @override
-  String get progressSaved => "Aya ni amanota yabitswe kuri iki gikoresho. Amashya azoherezwa igihe interineti ibonetse.";
+  String get waCached =>
+      'Aya ni amatsinda yabitswe. Kwinjira mu itsinda cyangwa kwakira ubutumwa bushya bisaba interineti.';
 
+  @override
+  String get progressSaved =>
+      'Aya ni amanota yabitswe kuri iki gikoresho. Amashya azoherezwa igihe interineti ibonetse.';
 }

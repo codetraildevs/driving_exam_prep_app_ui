@@ -72,196 +72,6 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
-  String get irTitle;
-
-  String get irWorkspace;
-
-  String get irMyRequests;
-
-  String get irNew;
-
-  String get irManual;
-
-  String get irAutomatic;
-
-  String get irNotice;
-
-  String get irFullName;
-
-  String get irPhone;
-
-  String get irNationalId;
-
-  String get irDob;
-
-  String get irExamLanguage;
-
-  String get irLanguageHint;
-
-  String get irDistrict;
-
-  String get irExamDate;
-
-  String get irDateNotice;
-
-  String get irProvisoireCode;
-
-  String get irCategory;
-
-  String get irService;
-
-  String get irOption;
-
-  String get irReview;
-
-  String get irConfirm;
-
-  String get irEdit;
-
-  String get irSaved;
-
-  String get irReference;
-
-  String get irStatus;
-
-  String get irSubmitted;
-
-  String get irUpdated;
-
-  String get irAssigned;
-
-  String get irUnassigned;
-
-  String get irPending;
-
-  String get irInReview;
-
-  String get irNeedsInformation;
-
-  String get irCompleted;
-
-  String get irRejected;
-
-  String get irCancelled;
-
-  String get irSearch;
-
-  String get irFilters;
-
-  String get irApply;
-
-  String get irClear;
-
-  String get irAll;
-
-  String get irFrom;
-
-  String get irTo;
-
-  String get irNewest;
-
-  String get irOldest;
-
-  String get irSort;
-
-  String get irEmpty;
-
-  String get irView;
-
-  String get irCall;
-
-  String get irCopy;
-
-  String get irCopyAll;
-
-  String get irCopied;
-
-  String get irCopyFailed;
-
-  String get irCallFailed;
-
-  String get irMessages;
-
-  String get irInternalNotes;
-
-  String get irInternalHint;
-
-  String get irMessage;
-
-  String get irReason;
-
-  String get irReasonRequired;
-
-  String get irAudit;
-
-  String get irSave;
-
-  String get irRetry;
-
-  String get irClose;
-
-  String get irRequired;
-
-  String get irInvalid;
-
-  String get irInvalidId;
-
-  String get irInvalidPhone;
-
-  String get irUnavailable;
-
-  String get irConflict;
-
-  String get irNext;
-
-  String get irPrevious;
-
-  String get irCreated;
-
-  String get irChange;
-
-  String get irNoMessages;
-
-  String get irResults;
-
-  String get irSelectDistrict;
-
-  String get irEnglish;
-
-  String get irFrench;
-
-  String get irKinyarwanda;
-
-  String get irChooseService;
-
-  String get irChooseOption;
-
-  String get irProvisoireHelp;
-
-  String get irPermisHelp;
-
-  String get irContinue;
-
-  String get irRequestsUnavailable;
-
-  String get irServerSetup;
-
-  String get irServiceUnavailable;
-
-  String get irAccessUnavailable;
-
-  String get irNoRequests;
-
-  String get irStaffHelp;
-
-  String get waIntro;
-
-  String get waManageIntro;
-
-  String get waCached;
-
-  String get progressSaved;
-
   static const LocalizationsDelegate<AppLocalizations> delegate =
       _AppLocalizationsDelegate();
 
@@ -3314,57 +3124,731 @@ abstract class AppLocalizations {
   /// **'Online services'**
   String get dashboardIremboSubtitle;
 
+  /// No description provided for @guideTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Instructions'**
   String get guideTitle;
 
+  /// No description provided for @guideWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to RWANDA TRAFFIC RULE'**
   String get guideWelcome;
 
+  /// No description provided for @guideAboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'1. About the app'**
   String get guideAboutTitle;
 
+  /// No description provided for @guideAboutBody.
+  ///
+  /// In en, this message translates to:
+  /// **'RWANDA TRAFFIC RULE helps you learn road rules and prepare for the provisional driving licence exam through practice questions.'**
   String get guideAboutBody;
 
+  /// No description provided for @guideUseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'2. How to use the app'**
   String get guideUseTitle;
 
+  /// No description provided for @guideUseBody.
+  ///
+  /// In en, this message translates to:
+  /// **'1. On your first visit, register using your full name and phone number.\n\n2. If you already have an account, choose Sign in and enter your registered phone number. Follow any additional sign-in prompts.\n\n3. Open Practice from the dashboard and choose an exam. Exams marked free are available without paid access; locked exams require active access.\n\n4. Choose an answer and review the feedback. Green indicates a correct answer; red indicates an incorrect answer. Continue to the next question, finish the exam to see your score, and use Progress to review your results.'**
   String get guideUseBody;
 
+  /// No description provided for @guideExamTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Preparing for the computer-based exam'**
   String get guideExamTitle;
 
+  /// No description provided for @guideExamBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Use practice questions to learn how to read questions and choose answers on a screen. Follow the instructions shown during your official exam, including how to move between questions and submit your answers.\n\nPractice feedback helps you learn. The official exam may use different questions, timing and feedback; this app does not guarantee identical exam content.'**
   String get guideExamBody;
 
+  /// No description provided for @guidePaymentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Payment and exam access'**
   String get guidePaymentTitle;
 
+  /// No description provided for @guidePaymentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Tap the access banner on the dashboard or a locked practice exam to open Practice Exam Access.\n\n2. Choose 1, 3 or 6 months. The app initially selects 1 month in Kinyarwanda and 3 months in English or French. The amount in RWF updates when you change the plan; pricing follows the app language.\n\n3. MoMo Pay is selected first. You can switch to MTN or Tigo. Check the account name shown: Alexis for MoMo Pay, or NSHIMIYIMANA Alexis for MTN and Tigo. Compare it with the name your phone displays before confirming payment.\n\n4. Tap PAY NOW to copy the complete USSD code and open the dialer. Complete the payment on your phone. The copy icon beside the code also lets you copy and dial it manually.\n\n5. After paying, use the call or WhatsApp buttons under Need Help to request activation for the phone number registered in the app. Opening the dialer or copying a code does not activate the exams.\n\n6. Once an administrator has assigned active access to your account, return to the dashboard with an internet connection and tap a circular refresh arrow. The access banner updates and the paid practice exams become available. You do not need to enter the access code on this page. The app also checks on opening the dashboard, returning to the app and periodically while the dashboard is active.\n\n7. If exams remain locked, confirm that support used your registered phone number and that your access has not expired. Contact support using the buttons below.'**
   String get guidePaymentBody;
 
+  /// No description provided for @guideOpenAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'View plans and pay'**
   String get guideOpenAccess;
 
+  /// No description provided for @dashboardRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh app access'**
   String get dashboardRefresh;
 
+  /// No description provided for @dashboardRefreshDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Access status refreshed.'**
   String get dashboardRefreshDone;
 
+  /// No description provided for @dashboardRefreshFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not refresh access. Check your internet connection and try again.'**
   String get dashboardRefreshFailed;
 
+  /// No description provided for @resourcesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Resources'**
   String get resourcesTitle;
 
+  /// No description provided for @resourcesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the Gazette and road signs inside the app. Documents are included for offline reading and keep their original language.'**
   String get resourcesDescription;
 
+  /// No description provided for @resourcesGazette.
+  ///
+  /// In en, this message translates to:
+  /// **'Gazette'**
   String get resourcesGazette;
 
+  /// No description provided for @resourcesRoadSigns.
+  ///
+  /// In en, this message translates to:
+  /// **'Road signs'**
   String get resourcesRoadSigns;
 
+  /// No description provided for @resourcesOfflinePdf.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF • Read offline'**
   String get resourcesOfflinePdf;
 
+  /// No description provided for @resourcesReadError.
+  ///
+  /// In en, this message translates to:
+  /// **'This document could not be opened. Try again.'**
   String get resourcesReadError;
 
+  /// No description provided for @resourcesPreviousPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous page'**
   String get resourcesPreviousPage;
 
+  /// No description provided for @resourcesNextPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next page'**
   String get resourcesNextPage;
 
+  /// No description provided for @resourcesZoomOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom out'**
   String get resourcesZoomOut;
 
+  /// No description provided for @resourcesZoomIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom in'**
   String get resourcesZoomIn;
 
+  /// No description provided for @resourcesLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading document…'**
   String get resourcesLoading;
 
+  /// No description provided for @resourcesPageCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} of {total}'**
   String resourcesPageCount(int page, int total);
+
+  /// No description provided for @irTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Irembo services'**
+  String get irTitle;
+
+  /// No description provided for @irWorkspace.
+  ///
+  /// In en, this message translates to:
+  /// **'Irembo Registrations'**
+  String get irWorkspace;
+
+  /// No description provided for @irMyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'My Irembo Requests'**
+  String get irMyRequests;
+
+  /// No description provided for @irNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New service request'**
+  String get irNew;
+
+  /// No description provided for @irManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual'**
+  String get irManual;
+
+  /// No description provided for @irAutomatic.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get irAutomatic;
+
+  /// No description provided for @irNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'We help students who find it difficult to register for Provisoire or Permis exams. Send your details so our team can review your request and help you obtain the official exam code. This form requests our assistance; registration is confirmed only after the official process is completed.'**
+  String get irNotice;
+
+  /// No description provided for @irFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get irFullName;
+
+  /// No description provided for @irPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get irPhone;
+
+  /// No description provided for @irNationalId.
+  ///
+  /// In en, this message translates to:
+  /// **'National ID number'**
+  String get irNationalId;
+
+  /// No description provided for @irDob.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of birth'**
+  String get irDob;
+
+  /// No description provided for @irExamLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam language'**
+  String get irExamLanguage;
+
+  /// No description provided for @irLanguageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Kinyarwanda, English, French'**
+  String get irLanguageHint;
+
+  /// No description provided for @irDistrict.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred exam district'**
+  String get irDistrict;
+
+  /// No description provided for @irExamDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred exam date (optional)'**
+  String get irExamDate;
+
+  /// No description provided for @irDateNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Your preferred date is a request, not a confirmed appointment.'**
+  String get irDateNotice;
+
+  /// No description provided for @irProvisoireCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Provisoire code'**
+  String get irProvisoireCode;
+
+  /// No description provided for @irCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving category'**
+  String get irCategory;
+
+  /// No description provided for @irService.
+  ///
+  /// In en, this message translates to:
+  /// **'Service'**
+  String get irService;
+
+  /// No description provided for @irOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Permis option'**
+  String get irOption;
+
+  /// No description provided for @irReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Review request'**
+  String get irReview;
+
+  /// No description provided for @irConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm and submit'**
+  String get irConfirm;
+
+  /// No description provided for @irEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit details'**
+  String get irEdit;
+
+  /// No description provided for @irSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Request saved'**
+  String get irSaved;
+
+  /// No description provided for @irReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration reference'**
+  String get irReference;
+
+  /// No description provided for @irStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get irStatus;
+
+  /// No description provided for @irSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get irSubmitted;
+
+  /// No description provided for @irUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated'**
+  String get irUpdated;
+
+  /// No description provided for @irAssigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned staff member'**
+  String get irAssigned;
+
+  /// No description provided for @irUnassigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Unassigned'**
+  String get irUnassigned;
+
+  /// No description provided for @irPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get irPending;
+
+  /// No description provided for @irInReview.
+  ///
+  /// In en, this message translates to:
+  /// **'In Review'**
+  String get irInReview;
+
+  /// No description provided for @irNeedsInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Information'**
+  String get irNeedsInformation;
+
+  /// No description provided for @irCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get irCompleted;
+
+  /// No description provided for @irRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get irRejected;
+
+  /// No description provided for @irCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get irCancelled;
+
+  /// No description provided for @irSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search reference, name or phone'**
+  String get irSearch;
+
+  /// No description provided for @irFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get irFilters;
+
+  /// No description provided for @irApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply filters'**
+  String get irApply;
+
+  /// No description provided for @irClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get irClear;
+
+  /// No description provided for @irAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get irAll;
+
+  /// No description provided for @irFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted from'**
+  String get irFrom;
+
+  /// No description provided for @irTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted until'**
+  String get irTo;
+
+  /// No description provided for @irNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest first'**
+  String get irNewest;
+
+  /// No description provided for @irOldest.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest first'**
+  String get irOldest;
+
+  /// No description provided for @irSort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get irSort;
+
+  /// No description provided for @irEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching requests.'**
+  String get irEmpty;
+
+  /// No description provided for @irView.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get irView;
+
+  /// No description provided for @irCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call applicant'**
+  String get irCall;
+
+  /// No description provided for @irCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get irCopy;
+
+  /// No description provided for @irCopyAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy applicant details'**
+  String get irCopyAll;
+
+  /// No description provided for @irCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied'**
+  String get irCopied;
+
+  /// No description provided for @irCopyFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not copy. Please try again.'**
+  String get irCopyFailed;
+
+  /// No description provided for @irCallFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the calling app.'**
+  String get irCallFailed;
+
+  /// No description provided for @irMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages for the applicant'**
+  String get irMessages;
+
+  /// No description provided for @irInternalNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Internal staff notes'**
+  String get irInternalNotes;
+
+  /// No description provided for @irInternalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Visible to staff only'**
+  String get irInternalHint;
+
+  /// No description provided for @irMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Message to applicant'**
+  String get irMessage;
+
+  /// No description provided for @irReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (shown to applicant)'**
+  String get irReason;
+
+  /// No description provided for @irReasonRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Provide a reason for this status.'**
+  String get irReasonRequired;
+
+  /// No description provided for @irAudit.
+  ///
+  /// In en, this message translates to:
+  /// **'Audit history'**
+  String get irAudit;
+
+  /// No description provided for @irSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get irSave;
+
+  /// No description provided for @irRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get irRetry;
+
+  /// No description provided for @irClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get irClose;
+
+  /// No description provided for @irRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get irRequired;
+
+  /// No description provided for @irInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the entered details.'**
+  String get irInvalid;
+
+  /// No description provided for @irInvalidId.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter exactly 16 digits.'**
+  String get irInvalidId;
+
+  /// No description provided for @irInvalidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid Rwanda mobile number.'**
+  String get irInvalidPhone;
+
+  /// No description provided for @irUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to complete the request. Check your connection and retry. Your entered details are kept on this page.'**
+  String get irUnavailable;
+
+  /// No description provided for @irConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'This request changed or was already submitted. Refresh the list before trying again.'**
+  String get irConflict;
+
+  /// No description provided for @irNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get irNext;
+
+  /// No description provided for @irPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get irPrevious;
+
+  /// No description provided for @irCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Request created'**
+  String get irCreated;
+
+  /// No description provided for @irChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get irChange;
+
+  /// No description provided for @irNoMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet.'**
+  String get irNoMessages;
+
+  /// No description provided for @irResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Results'**
+  String get irResults;
+
+  /// No description provided for @irSelectDistrict.
+  ///
+  /// In en, this message translates to:
+  /// **'Search and select a district'**
+  String get irSelectDistrict;
+
+  /// No description provided for @irEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get irEnglish;
+
+  /// No description provided for @irFrench.
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get irFrench;
+
+  /// No description provided for @irKinyarwanda.
+  ///
+  /// In en, this message translates to:
+  /// **'Kinyarwanda'**
+  String get irKinyarwanda;
+
+  /// No description provided for @irChooseService.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the exam service'**
+  String get irChooseService;
+
+  /// No description provided for @irChooseOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your Permis option'**
+  String get irChooseOption;
+
+  /// No description provided for @irProvisoireHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Provisional driving licence exam'**
+  String get irProvisoireHelp;
+
+  /// No description provided for @irPermisHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Practical driving licence exam'**
+  String get irPermisHelp;
+
+  /// No description provided for @irContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to registration'**
+  String get irContinue;
+
+  /// No description provided for @irRequestsUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Your requests could not be loaded'**
+  String get irRequestsUnavailable;
+
+  /// No description provided for @irServerSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'The registration service is not ready on the server yet. Please contact support or try again later.'**
+  String get irServerSetup;
+
+  /// No description provided for @irServiceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The registration service is temporarily unavailable. Please try again later.'**
+  String get irServiceUnavailable;
+
+  /// No description provided for @irAccessUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have access to this request. Check your signed-in account.'**
+  String get irAccessUnavailable;
+
+  /// No description provided for @irNoRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No requests yet. Choose a service above to get help with your registration.'**
+  String get irNoRequests;
+
+  /// No description provided for @irStaffHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Find applicants, review requests and coordinate registration assistance.'**
+  String get irStaffHelp;
+
+  /// No description provided for @waIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn together. Choose a study group to ask questions and share learning tips.'**
+  String get waIntro;
+
+  /// No description provided for @waManageIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage the study groups available to your learners.'**
+  String get waManageIntro;
+
+  /// No description provided for @waCached.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing saved groups. An internet connection is needed to join or receive new messages.'**
+  String get waCached;
+
+  /// No description provided for @progressSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing results saved on this device. New results will sync when connected.'**
+  String get progressSaved;
 }
 
 class _AppLocalizationsDelegate

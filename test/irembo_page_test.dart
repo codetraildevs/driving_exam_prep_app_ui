@@ -47,9 +47,16 @@ class FakeIrembo extends IremboRepository {
   @override
   Future<Map<String, dynamic>> list(Map<String, String> filters) async {
     lastFilters = filters;
-    if (failList) throw const IremboFailure('iremboSetupRequired', statusCode: 503);
-    return {'items': [record], 'total': 1, 'page': 1};
+    if (failList) {
+      throw const IremboFailure('iremboSetupRequired', statusCode: 503);
+    }
+    return {
+      'items': [record],
+      'total': 1,
+      'page': 1,
+    };
   }
+
   @override
   Future<List<Map<String, dynamic>>> staff() async => [
     {'id': 'staff1', 'name': 'Staff', 'role': 'MANAGER'},
@@ -109,31 +116,44 @@ Future<AuthBloc> app(
 }
 
 void main() {
-  testWidgets('failed request is not a zero result and applicants have no pager', (tester) async {
-    final repo = FakeIrembo()..failList = true;
-    await app(tester, IremboPage(repository: repo));
-    final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
-    expect(find.text('${l.irResults}: 0'), findsNothing);
-    expect(find.text(l.irNoRequests), findsNothing);
-    expect(find.text(l.irServerSetup), findsOneWidget);
-    expect(find.text(l.irPrevious), findsNothing);
-    expect(repo.lastFilters!.containsKey('page'), isFalse);
-  });
-  testWidgets('selection is explicit and conditional option resets', (tester) async {
+  testWidgets(
+    'failed request is not a zero result and applicants have no pager',
+    (tester) async {
+      final repo = FakeIrembo()..failList = true;
+      await app(tester, IremboPage(repository: repo));
+      final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
+      expect(find.text('${l.irResults}: 0'), findsNothing);
+      expect(find.text(l.irNoRequests), findsNothing);
+      expect(find.text(l.irServerSetup), findsOneWidget);
+      expect(find.text(l.irPrevious), findsNothing);
+      expect(repo.lastFilters!.containsKey('page'), isFalse);
+    },
+  );
+  testWidgets('selection is explicit and conditional option resets', (
+    tester,
+  ) async {
     await app(tester, IremboPage(repository: FakeIrembo()));
     final proceed = find.byKey(const ValueKey('irembo-continue'));
     expect(tester.widget<FilledButton>(proceed).onPressed, isNull);
     final permis = find.byKey(const ValueKey('service-permis'));
-    await tester.ensureVisible(permis); await tester.tap(permis); await tester.pumpAndSettle();
+    await tester.ensureVisible(permis);
+    await tester.tap(permis);
+    await tester.pumpAndSettle();
     expect(tester.widget<FilledButton>(proceed).onPressed, isNull);
     final manual = find.byKey(const ValueKey('option-manual'));
-    await tester.ensureVisible(manual); await tester.tap(manual); await tester.pumpAndSettle();
+    await tester.ensureVisible(manual);
+    await tester.tap(manual);
+    await tester.pumpAndSettle();
     expect(tester.widget<ChoiceChip>(manual).selected, isTrue);
     expect(tester.widget<FilledButton>(proceed).onPressed, isNotNull);
     final provisoire = find.byKey(const ValueKey('service-provisoire'));
-    await tester.ensureVisible(provisoire); await tester.tap(provisoire); await tester.pumpAndSettle();
+    await tester.ensureVisible(provisoire);
+    await tester.tap(provisoire);
+    await tester.pumpAndSettle();
     expect(manual, findsNothing);
-    await tester.ensureVisible(permis); await tester.tap(permis); await tester.pumpAndSettle();
+    await tester.ensureVisible(permis);
+    await tester.tap(permis);
+    await tester.pumpAndSettle();
     expect(tester.widget<ChoiceChip>(manual).selected, isFalse);
     expect(tester.widget<FilledButton>(proceed).onPressed, isNull);
   });

@@ -15,6 +15,7 @@ def req(method='GET',path='',body=None,user='u1',expected=200):
  except urllib.error.HTTPError as e: response=e
  data=json.load(response)
  assert response.status==expected,(method,path,response.status,data)
+ if expected==503: assert data.get('message')=='iremboSetupRequired',data
  return data.get('data')
 def form(**values):
  return {'requestKey':str(uuid.uuid4()),'fullName':'Test Applicant','phoneNumber':'0788123456','nationalId':'0123456789012345','dob':'1990-02-01','service':'Provisoire','examLanguage':'rw','district':'Gasabo',**values}

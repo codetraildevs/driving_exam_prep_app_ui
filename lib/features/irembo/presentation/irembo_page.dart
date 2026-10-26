@@ -133,9 +133,12 @@ class _IremboPageState extends State<IremboPage> {
         } else {
           _filters[key] = v;
           if (key == 'service' && v == 'Provisoire') {
-            _filters.remove('permisOption'); _filters.remove('category');
+            _filters.remove('permisOption');
+            _filters.remove('category');
           }
-          if (key == 'permisOption' && v == 'Automatic') _filters.remove('category');
+          if (key == 'permisOption' && v == 'Automatic') {
+            _filters.remove('category');
+          }
         }
       }),
     );
@@ -287,42 +290,146 @@ class _IremboPageState extends State<IremboPage> {
       ),
     ],
   );
-  Widget _choice(String key, String title, IconData icon, bool selected, VoidCallback onTap, {String? description}) {
+  Widget _choice(
+    String key,
+    String title,
+    IconData icon,
+    bool selected,
+    VoidCallback onTap, {
+    String? description,
+  }) {
     final theme = Theme.of(context);
-    return Semantics(selected: selected, button: true, child: Card(
-      color: selected ? theme.colorScheme.primaryContainer : null,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: selected ? theme.colorScheme.primary : theme.dividerColor, width: selected ? 2 : 1)),
-      child: InkWell(key: ValueKey(key), borderRadius: BorderRadius.circular(16), onTap: onTap,
-        child: Padding(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [Icon(icon, color: theme.colorScheme.primary), const Spacer(),
-            Icon(selected ? Icons.check_circle : Icons.radio_button_unchecked, color: theme.colorScheme.primary)]),
-          const SizedBox(height: 12), Text(title, style: theme.textTheme.titleMedium),
-          if (description != null) ...[const SizedBox(height: 6), Text(description)],
-        ])))));
+    return Semantics(
+      selected: selected,
+      button: true,
+      child: Card(
+        color: selected ? theme.colorScheme.primaryContainer : null,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            color: selected ? theme.colorScheme.primary : theme.dividerColor,
+            width: selected ? 2 : 1,
+          ),
+        ),
+        child: InkWell(
+          key: ValueKey(key),
+          borderRadius: BorderRadius.circular(16),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(icon, color: theme.colorScheme.primary),
+                    const Spacer(),
+                    Icon(
+                      selected
+                          ? Icons.check_circle
+                          : Icons.radio_button_unchecked,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(title, style: theme.textTheme.titleMedium),
+                if (description != null) ...[
+                  const SizedBox(height: 6),
+                  Text(description),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
-  Widget _serviceSelection(AppLocalizations l) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-    Card(child: Padding(padding: const EdgeInsets.all(16), child: Text(l.irNotice))),
-    const SizedBox(height: 16), Text(l.irChooseService, style: Theme.of(context).textTheme.titleMedium),
-    LayoutBuilder(builder: (context, constraints) {
-      final width = constraints.maxWidth < 380 ? constraints.maxWidth : (constraints.maxWidth - 12) / 2;
-      return Wrap(spacing: 12, runSpacing: 8, children: [
-        SizedBox(width: width, child: _choice('service-provisoire', 'Provisoire', Icons.assignment_outlined, _service=='Provisoire', () => setState(() { _service='Provisoire'; _option=null; }), description: l.irProvisoireHelp)),
-        SizedBox(width: width, child: _choice('service-permis', 'Permis', Icons.directions_car_outlined, _service=='Permis', () => setState(() { _service='Permis'; }), description: l.irPermisHelp)),
-      ]);
-    }),
-    if (_service=='Permis') ...[
-      const SizedBox(height: 16), Text(l.irChooseOption, style: Theme.of(context).textTheme.titleMedium),
-      Wrap(spacing: 12, runSpacing: 8, children: [
-        ChoiceChip(key: const ValueKey('option-manual'), label: Text(l.irManual), selected: _option=='Manual', onSelected: (_) => setState(() => _option='Manual')),
-        ChoiceChip(key: const ValueKey('option-automatic'), label: Text(l.irAutomatic), selected: _option=='Automatic', onSelected: (_) => setState(() => _option='Automatic')),
-      ]),
+  Widget _serviceSelection(AppLocalizations l) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Text(l.irNotice),
+        ),
+      ),
+      const SizedBox(height: 16),
+      Text(l.irChooseService, style: Theme.of(context).textTheme.titleMedium),
+      LayoutBuilder(
+        builder: (context, constraints) {
+          final width = constraints.maxWidth < 380
+              ? constraints.maxWidth
+              : (constraints.maxWidth - 12) / 2;
+          return Wrap(
+            spacing: 12,
+            runSpacing: 8,
+            children: [
+              SizedBox(
+                width: width,
+                child: _choice(
+                  'service-provisoire',
+                  'Provisoire',
+                  Icons.assignment_outlined,
+                  _service == 'Provisoire',
+                  () => setState(() {
+                    _service = 'Provisoire';
+                    _option = null;
+                  }),
+                  description: l.irProvisoireHelp,
+                ),
+              ),
+              SizedBox(
+                width: width,
+                child: _choice(
+                  'service-permis',
+                  'Permis',
+                  Icons.directions_car_outlined,
+                  _service == 'Permis',
+                  () => setState(() {
+                    _service = 'Permis';
+                  }),
+                  description: l.irPermisHelp,
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+      if (_service == 'Permis') ...[
+        const SizedBox(height: 16),
+        Text(l.irChooseOption, style: Theme.of(context).textTheme.titleMedium),
+        Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          children: [
+            ChoiceChip(
+              key: const ValueKey('option-manual'),
+              label: Text(l.irManual),
+              selected: _option == 'Manual',
+              onSelected: (_) => setState(() => _option = 'Manual'),
+            ),
+            ChoiceChip(
+              key: const ValueKey('option-automatic'),
+              label: Text(l.irAutomatic),
+              selected: _option == 'Automatic',
+              onSelected: (_) => setState(() => _option = 'Automatic'),
+            ),
+          ],
+        ),
+      ],
+      const SizedBox(height: 16),
+      FilledButton.icon(
+        key: const ValueKey('irembo-continue'),
+        onPressed: _service == null || (_service == 'Permis' && _option == null)
+            ? null
+            : () => _create(_service!, _option),
+        icon: const Icon(Icons.arrow_forward),
+        label: Text(l.irContinue),
+      ),
     ],
-    const SizedBox(height: 16), FilledButton.icon(key: const ValueKey('irembo-continue'),
-      onPressed: _service==null || (_service=='Permis' && _option==null) ? null : () => _create(_service!, _option),
-      icon: const Icon(Icons.arrow_forward), label: Text(l.irContinue)),
-  ]);
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -334,27 +441,69 @@ class _IremboPageState extends State<IremboPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (!widget.manage) ...[
-            _serviceSelection(l), const SizedBox(height: 24),
+            _serviceSelection(l),
+            const SizedBox(height: 24),
             Text(l.irMyRequests, style: Theme.of(context).textTheme.titleLarge),
           ] else ...[
-            Text(l.irStaffHelp), const SizedBox(height: 16),
-            TextField(controller: _search, decoration: InputDecoration(labelText: l.irSearch,
-              prefixIcon: const Icon(Icons.search), border: const OutlineInputBorder(),
-              suffixIcon: IconButton(tooltip: l.irApply, onPressed: _busy ? null : () { _page=1; _load(); }, icon: const Icon(Icons.arrow_forward))),
-              onSubmitted: (_) { _page=1; _load(); }),
+            Text(l.irStaffHelp),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _search,
+              decoration: InputDecoration(
+                labelText: l.irSearch,
+                prefixIcon: const Icon(Icons.search),
+                border: const OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  tooltip: l.irApply,
+                  onPressed: _busy
+                      ? null
+                      : () {
+                          _page = 1;
+                          _load();
+                        },
+                  icon: const Icon(Icons.arrow_forward),
+                ),
+              ),
+              onSubmitted: (_) {
+                _page = 1;
+                _load();
+              },
+            ),
             const SizedBox(height: 12),
-            Wrap(spacing: 8, runSpacing: 8, children: [
-              for (final status in ['', ...IremboRules.statuses]) ChoiceChip(
-                label: Text(status.isEmpty ? l.irAll : irValue(l, status)),
-                selected: (_filters['status'] ?? '') == status,
-                onSelected: _busy ? null : (_) { setState(() { if(status.isEmpty) { _filters.remove('status'); } else { _filters['status']=status; } _page=1; }); _load(); }),
-            ]),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final status in ['', ...IremboRules.statuses])
+                  ChoiceChip(
+                    label: Text(status.isEmpty ? l.irAll : irValue(l, status)),
+                    selected: (_filters['status'] ?? '') == status,
+                    onSelected: _busy
+                        ? null
+                        : (_) {
+                            setState(() {
+                              if (status.isEmpty) {
+                                _filters.remove('status');
+                              } else {
+                                _filters['status'] = status;
+                              }
+                              _page = 1;
+                            });
+                            _load();
+                          },
+                  ),
+              ],
+            ),
             Card(child: _filterPanel(l)),
           ],
           const SizedBox(height: 16),
           Row(
             children: [
-              Expanded(child: _loaded && _error == null ? Text('${l.irResults}: $_total') : const SizedBox.shrink()),
+              Expanded(
+                child: _loaded && _error == null
+                    ? Text('${l.irResults}: $_total')
+                    : const SizedBox.shrink(),
+              ),
               IconButton(
                 tooltip: l.irRetry,
                 onPressed: _busy ? null : _load,
@@ -364,11 +513,28 @@ class _IremboPageState extends State<IremboPage> {
           ),
           if (_busy) const LinearProgressIndicator(),
           if (_error != null)
-            Card(child: Padding(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(l.irRequestsUnavailable, style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 8), Text(_error!), const SizedBox(height: 12),
-              OutlinedButton.icon(onPressed: _busy ? null : _load, icon: const Icon(Icons.refresh), label: Text(l.irRetry)),
-            ]))),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l.irRequestsUnavailable,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(_error!),
+                    const SizedBox(height: 12),
+                    OutlinedButton.icon(
+                      onPressed: _busy ? null : _load,
+                      icon: const Icon(Icons.refresh),
+                      label: Text(l.irRetry),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           if (!_busy && _loaded && _error == null && _items.isEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 32),
@@ -444,32 +610,33 @@ class _IremboPageState extends State<IremboPage> {
             },
           ),
           const SizedBox(height: 16),
-          if (widget.manage && _loaded && _error == null && _total > 20) Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 12,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              OutlinedButton(
-                onPressed: _busy || _page <= 1
-                    ? null
-                    : () {
-                        _page--;
-                        _load();
-                      },
-                child: Text(l.irPrevious),
-              ),
-              Text('$_page / ${(_total / 20).ceil().clamp(1, 100000)}'),
-              OutlinedButton(
-                onPressed: _busy || _page * 20 >= _total
-                    ? null
-                    : () {
-                        _page++;
-                        _load();
-                      },
-                child: Text(l.irNext),
-              ),
-            ],
-          ),
+          if (widget.manage && _loaded && _error == null && _total > 20)
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 12,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                OutlinedButton(
+                  onPressed: _busy || _page <= 1
+                      ? null
+                      : () {
+                          _page--;
+                          _load();
+                        },
+                  child: Text(l.irPrevious),
+                ),
+                Text('$_page / ${(_total / 20).ceil().clamp(1, 100000)}'),
+                OutlinedButton(
+                  onPressed: _busy || _page * 20 >= _total
+                      ? null
+                      : () {
+                          _page++;
+                          _load();
+                        },
+                  child: Text(l.irNext),
+                ),
+              ],
+            ),
         ],
       ),
     );

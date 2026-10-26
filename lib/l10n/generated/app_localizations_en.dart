@@ -1681,25 +1681,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get guideAboutTitle => '1. About the app';
 
   @override
-  String get guideAboutBody => 'RWANDA TRAFFIC RULE helps you learn road rules and prepare for the provisional driving licence exam through practice questions.';
+  String get guideAboutBody =>
+      'RWANDA TRAFFIC RULE helps you learn road rules and prepare for the provisional driving licence exam through practice questions.';
 
   @override
   String get guideUseTitle => '2. How to use the app';
 
   @override
-  String get guideUseBody => '1. On your first visit, register using your full name and phone number.\n\n2. If you already have an account, choose Sign in and enter your registered phone number. Follow any additional sign-in prompts.\n\n3. Open Practice from the dashboard and choose an exam. Exams marked free are available without paid access; locked exams require active access.\n\n4. Choose an answer and review the feedback. Green indicates a correct answer; red indicates an incorrect answer. Continue to the next question, finish the exam to see your score, and use Progress to review your results.';
+  String get guideUseBody =>
+      '1. On your first visit, register using your full name and phone number.\n\n2. If you already have an account, choose Sign in and enter your registered phone number. Follow any additional sign-in prompts.\n\n3. Open Practice from the dashboard and choose an exam. Exams marked free are available without paid access; locked exams require active access.\n\n4. Choose an answer and review the feedback. Green indicates a correct answer; red indicates an incorrect answer. Continue to the next question, finish the exam to see your score, and use Progress to review your results.';
 
   @override
   String get guideExamTitle => '3. Preparing for the computer-based exam';
 
   @override
-  String get guideExamBody => 'Use practice questions to learn how to read questions and choose answers on a screen. Follow the instructions shown during your official exam, including how to move between questions and submit your answers.\n\nPractice feedback helps you learn. The official exam may use different questions, timing and feedback; this app does not guarantee identical exam content.';
+  String get guideExamBody =>
+      'Use practice questions to learn how to read questions and choose answers on a screen. Follow the instructions shown during your official exam, including how to move between questions and submit your answers.\n\nPractice feedback helps you learn. The official exam may use different questions, timing and feedback; this app does not guarantee identical exam content.';
 
   @override
   String get guidePaymentTitle => '4. Payment and exam access';
 
   @override
-  String get guidePaymentBody => '1. Tap the access banner on the dashboard or a locked practice exam to open Practice Exam Access.\n\n2. Choose 1, 3 or 6 months. The app initially selects 1 month in Kinyarwanda and 3 months in English or French. The amount in RWF updates when you change the plan; pricing follows the app language.\n\n3. MoMo Pay is selected first. You can switch to MTN or Tigo. Check the account name shown: Alexis for MoMo Pay, or NSHIMIYIMANA Alexis for MTN and Tigo. Compare it with the name your phone displays before confirming payment.\n\n4. Tap PAY NOW to copy the complete USSD code and open the dialer. Complete the payment on your phone. The copy icon beside the code also lets you copy and dial it manually.\n\n5. After paying, use the call or WhatsApp buttons under Need Help to request activation for the phone number registered in the app. Opening the dialer or copying a code does not activate the exams.\n\n6. Once an administrator has assigned active access to your account, return to the dashboard with an internet connection and tap a circular refresh arrow. The access banner updates and the paid practice exams become available. You do not need to enter the access code on this page. The app also checks on opening the dashboard, returning to the app and periodically while the dashboard is active.\n\n7. If exams remain locked, confirm that support used your registered phone number and that your access has not expired. Contact support using the buttons below.';
+  String get guidePaymentBody =>
+      '1. Tap the access banner on the dashboard or a locked practice exam to open Practice Exam Access.\n\n2. Choose 1, 3 or 6 months. The app initially selects 1 month in Kinyarwanda and 3 months in English or French. The amount in RWF updates when you change the plan; pricing follows the app language.\n\n3. MoMo Pay is selected first. You can switch to MTN or Tigo. Check the account name shown: Alexis for MoMo Pay, or NSHIMIYIMANA Alexis for MTN and Tigo. Compare it with the name your phone displays before confirming payment.\n\n4. Tap PAY NOW to copy the complete USSD code and open the dialer. Complete the payment on your phone. The copy icon beside the code also lets you copy and dial it manually.\n\n5. After paying, use the call or WhatsApp buttons under Need Help to request activation for the phone number registered in the app. Opening the dialer or copying a code does not activate the exams.\n\n6. Once an administrator has assigned active access to your account, return to the dashboard with an internet connection and tap a circular refresh arrow. The access banner updates and the paid practice exams become available. You do not need to enter the access code on this page. The app also checks on opening the dashboard, returning to the app and periodically while the dashboard is active.\n\n7. If exams remain locked, confirm that support used your registered phone number and that your access has not expired. Contact support using the buttons below.';
 
   @override
   String get guideOpenAccess => 'View plans and pay';
@@ -1711,13 +1715,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardRefreshDone => 'Access status refreshed.';
 
   @override
-  String get dashboardRefreshFailed => 'Could not refresh access. Check your internet connection and try again.';
+  String get dashboardRefreshFailed =>
+      'Could not refresh access. Check your internet connection and try again.';
 
   @override
   String get resourcesTitle => 'Resources';
 
   @override
-  String get resourcesDescription => 'Read the Gazette and road signs inside the app. Documents are included for offline reading and keep their original language.';
+  String get resourcesDescription =>
+      'Read the Gazette and road signs inside the app. Documents are included for offline reading and keep their original language.';
 
   @override
   String get resourcesGazette => 'Gazette';
@@ -1729,7 +1735,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resourcesOfflinePdf => 'PDF • Read offline';
 
   @override
-  String get resourcesReadError => 'This document could not be opened. Try again.';
+  String get resourcesReadError =>
+      'This document could not be opened. Try again.';
 
   @override
   String get resourcesPreviousPage => 'Previous page';
@@ -1747,290 +1754,305 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resourcesLoading => 'Loading document…';
 
   @override
-  String resourcesPageCount(int page, int total) => 'Page $page of $total';
-  @override
-  String get irTitle => "Irembo services";
+  String resourcesPageCount(int page, int total) {
+    return 'Page $page of $total';
+  }
 
   @override
-  String get irWorkspace => "Irembo Registrations";
+  String get irTitle => 'Irembo services';
 
   @override
-  String get irMyRequests => "My Irembo Requests";
+  String get irWorkspace => 'Irembo Registrations';
 
   @override
-  String get irNew => "New service request";
+  String get irMyRequests => 'My Irembo Requests';
 
   @override
-  String get irManual => "Manual";
+  String get irNew => 'New service request';
 
   @override
-  String get irAutomatic => "Automatic";
+  String get irManual => 'Manual';
 
   @override
-  String get irNotice => "We help students who find it difficult to register for Provisoire or Permis exams. Send your details so our team can review your request and help you obtain the official exam code. This form requests our assistance; registration is confirmed only after the official process is completed.";
+  String get irAutomatic => 'Automatic';
 
   @override
-  String get irFullName => "Full name";
+  String get irNotice =>
+      'We help students who find it difficult to register for Provisoire or Permis exams. Send your details so our team can review your request and help you obtain the official exam code. This form requests our assistance; registration is confirmed only after the official process is completed.';
 
   @override
-  String get irPhone => "Phone number";
+  String get irFullName => 'Full name';
 
   @override
-  String get irNationalId => "National ID number";
+  String get irPhone => 'Phone number';
 
   @override
-  String get irDob => "Date of birth";
+  String get irNationalId => 'National ID number';
 
   @override
-  String get irExamLanguage => "Exam language";
+  String get irDob => 'Date of birth';
 
   @override
-  String get irLanguageHint => "e.g., Kinyarwanda, English, French";
+  String get irExamLanguage => 'Exam language';
 
   @override
-  String get irDistrict => "Preferred exam district";
+  String get irLanguageHint => 'e.g., Kinyarwanda, English, French';
 
   @override
-  String get irExamDate => "Preferred exam date (optional)";
+  String get irDistrict => 'Preferred exam district';
 
   @override
-  String get irDateNotice => "Your preferred date is a request, not a confirmed appointment.";
+  String get irExamDate => 'Preferred exam date (optional)';
 
   @override
-  String get irProvisoireCode => "Provisoire code";
+  String get irDateNotice =>
+      'Your preferred date is a request, not a confirmed appointment.';
 
   @override
-  String get irCategory => "Driving category";
+  String get irProvisoireCode => 'Provisoire code';
 
   @override
-  String get irService => "Service";
+  String get irCategory => 'Driving category';
 
   @override
-  String get irOption => "Permis option";
+  String get irService => 'Service';
 
   @override
-  String get irReview => "Review request";
+  String get irOption => 'Permis option';
 
   @override
-  String get irConfirm => "Confirm and submit";
+  String get irReview => 'Review request';
 
   @override
-  String get irEdit => "Edit details";
+  String get irConfirm => 'Confirm and submit';
 
   @override
-  String get irSaved => "Request saved";
+  String get irEdit => 'Edit details';
 
   @override
-  String get irReference => "Registration reference";
+  String get irSaved => 'Request saved';
 
   @override
-  String get irStatus => "Status";
+  String get irReference => 'Registration reference';
 
   @override
-  String get irSubmitted => "Submitted";
+  String get irStatus => 'Status';
 
   @override
-  String get irUpdated => "Last updated";
+  String get irSubmitted => 'Submitted';
 
   @override
-  String get irAssigned => "Assigned staff member";
+  String get irUpdated => 'Last updated';
 
   @override
-  String get irUnassigned => "Unassigned";
+  String get irAssigned => 'Assigned staff member';
 
   @override
-  String get irPending => "Pending";
+  String get irUnassigned => 'Unassigned';
 
   @override
-  String get irInReview => "In Review";
+  String get irPending => 'Pending';
 
   @override
-  String get irNeedsInformation => "Needs Information";
+  String get irInReview => 'In Review';
 
   @override
-  String get irCompleted => "Completed";
+  String get irNeedsInformation => 'Needs Information';
 
   @override
-  String get irRejected => "Rejected";
+  String get irCompleted => 'Completed';
 
   @override
-  String get irCancelled => "Cancelled";
+  String get irRejected => 'Rejected';
 
   @override
-  String get irSearch => "Search reference, name or phone";
+  String get irCancelled => 'Cancelled';
 
   @override
-  String get irFilters => "Filters";
+  String get irSearch => 'Search reference, name or phone';
 
   @override
-  String get irApply => "Apply filters";
+  String get irFilters => 'Filters';
 
   @override
-  String get irClear => "Clear filters";
+  String get irApply => 'Apply filters';
 
   @override
-  String get irAll => "All";
+  String get irClear => 'Clear filters';
 
   @override
-  String get irFrom => "Submitted from";
+  String get irAll => 'All';
 
   @override
-  String get irTo => "Submitted until";
+  String get irFrom => 'Submitted from';
 
   @override
-  String get irNewest => "Newest first";
+  String get irTo => 'Submitted until';
 
   @override
-  String get irOldest => "Oldest first";
+  String get irNewest => 'Newest first';
 
   @override
-  String get irSort => "Sort by";
+  String get irOldest => 'Oldest first';
 
   @override
-  String get irEmpty => "No matching requests.";
+  String get irSort => 'Sort by';
 
   @override
-  String get irView => "View details";
+  String get irEmpty => 'No matching requests.';
 
   @override
-  String get irCall => "Call applicant";
+  String get irView => 'View details';
 
   @override
-  String get irCopy => "Copy";
+  String get irCall => 'Call applicant';
 
   @override
-  String get irCopyAll => "Copy applicant details";
+  String get irCopy => 'Copy';
 
   @override
-  String get irCopied => "Copied";
+  String get irCopyAll => 'Copy applicant details';
 
   @override
-  String get irCopyFailed => "Could not copy. Please try again.";
+  String get irCopied => 'Copied';
 
   @override
-  String get irCallFailed => "Could not open the calling app.";
+  String get irCopyFailed => 'Could not copy. Please try again.';
 
   @override
-  String get irMessages => "Messages for the applicant";
+  String get irCallFailed => 'Could not open the calling app.';
 
   @override
-  String get irInternalNotes => "Internal staff notes";
+  String get irMessages => 'Messages for the applicant';
 
   @override
-  String get irInternalHint => "Visible to staff only";
+  String get irInternalNotes => 'Internal staff notes';
 
   @override
-  String get irMessage => "Message to applicant";
+  String get irInternalHint => 'Visible to staff only';
 
   @override
-  String get irReason => "Reason (shown to applicant)";
+  String get irMessage => 'Message to applicant';
 
   @override
-  String get irReasonRequired => "Provide a reason for this status.";
+  String get irReason => 'Reason (shown to applicant)';
 
   @override
-  String get irAudit => "Audit history";
+  String get irReasonRequired => 'Provide a reason for this status.';
 
   @override
-  String get irSave => "Save changes";
+  String get irAudit => 'Audit history';
 
   @override
-  String get irRetry => "Retry";
+  String get irSave => 'Save changes';
 
   @override
-  String get irClose => "Close";
+  String get irRetry => 'Retry';
 
   @override
-  String get irRequired => "This field is required.";
+  String get irClose => 'Close';
 
   @override
-  String get irInvalid => "Check the entered details.";
+  String get irRequired => 'This field is required.';
 
   @override
-  String get irInvalidId => "Enter exactly 16 digits.";
+  String get irInvalid => 'Check the entered details.';
 
   @override
-  String get irInvalidPhone => "Enter a valid Rwanda mobile number.";
+  String get irInvalidId => 'Enter exactly 16 digits.';
 
   @override
-  String get irUnavailable => "Unable to complete the request. Check your connection and retry. Your entered details are kept on this page.";
+  String get irInvalidPhone => 'Enter a valid Rwanda mobile number.';
 
   @override
-  String get irConflict => "This request changed or was already submitted. Refresh the list before trying again.";
+  String get irUnavailable =>
+      'Unable to complete the request. Check your connection and retry. Your entered details are kept on this page.';
 
   @override
-  String get irNext => "Next";
+  String get irConflict =>
+      'This request changed or was already submitted. Refresh the list before trying again.';
 
   @override
-  String get irPrevious => "Previous";
+  String get irNext => 'Next';
 
   @override
-  String get irCreated => "Request created";
+  String get irPrevious => 'Previous';
 
   @override
-  String get irChange => "Change";
+  String get irCreated => 'Request created';
 
   @override
-  String get irNoMessages => "No messages yet.";
+  String get irChange => 'Change';
 
   @override
-  String get irResults => "Results";
+  String get irNoMessages => 'No messages yet.';
 
   @override
-  String get irSelectDistrict => "Search and select a district";
+  String get irResults => 'Results';
 
   @override
-  String get irEnglish => "English";
+  String get irSelectDistrict => 'Search and select a district';
 
   @override
-  String get irFrench => "French";
+  String get irEnglish => 'English';
 
   @override
-  String get irKinyarwanda => "Kinyarwanda";
+  String get irFrench => 'French';
 
   @override
-  String get irChooseService => "Choose the exam service";
+  String get irKinyarwanda => 'Kinyarwanda';
 
   @override
-  String get irChooseOption => "Choose your Permis option";
+  String get irChooseService => 'Choose the exam service';
 
   @override
-  String get irProvisoireHelp => "Provisional driving licence exam";
+  String get irChooseOption => 'Choose your Permis option';
 
   @override
-  String get irPermisHelp => "Practical driving licence exam";
+  String get irProvisoireHelp => 'Provisional driving licence exam';
 
   @override
-  String get irContinue => "Continue to registration";
+  String get irPermisHelp => 'Practical driving licence exam';
 
   @override
-  String get irRequestsUnavailable => "Your requests could not be loaded";
+  String get irContinue => 'Continue to registration';
 
   @override
-  String get irServerSetup => "The registration service is not ready on the server yet. Please contact support or try again later.";
+  String get irRequestsUnavailable => 'Your requests could not be loaded';
 
   @override
-  String get irServiceUnavailable => "The registration service is temporarily unavailable. Please try again later.";
+  String get irServerSetup =>
+      'The registration service is not ready on the server yet. Please contact support or try again later.';
 
   @override
-  String get irAccessUnavailable => "You do not have access to this request. Check your signed-in account.";
+  String get irServiceUnavailable =>
+      'The registration service is temporarily unavailable. Please try again later.';
 
   @override
-  String get irNoRequests => "No requests yet. Choose a service above to get help with your registration.";
+  String get irAccessUnavailable =>
+      'You do not have access to this request. Check your signed-in account.';
 
   @override
-  String get irStaffHelp => "Find applicants, review requests and coordinate registration assistance.";
+  String get irNoRequests =>
+      'No requests yet. Choose a service above to get help with your registration.';
 
   @override
-  String get waIntro => "Learn together. Choose a study group to ask questions and share learning tips.";
+  String get irStaffHelp =>
+      'Find applicants, review requests and coordinate registration assistance.';
 
   @override
-  String get waManageIntro => "Manage the study groups available to your learners.";
+  String get waIntro =>
+      'Learn together. Choose a study group to ask questions and share learning tips.';
 
   @override
-  String get waCached => "Showing saved groups. An internet connection is needed to join or receive new messages.";
+  String get waManageIntro =>
+      'Manage the study groups available to your learners.';
 
   @override
-  String get progressSaved => "Showing results saved on this device. New results will sync when connected.";
+  String get waCached =>
+      'Showing saved groups. An internet connection is needed to join or receive new messages.';
 
+  @override
+  String get progressSaved =>
+      'Showing results saved on this device. New results will sync when connected.';
 }
