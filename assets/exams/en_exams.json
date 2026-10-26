@@ -2117,7 +2117,7 @@
           "option3": "c. Prohibition to move beyond the signal",
           "option4": "d. Go if your exit from the junction is blocked",
           "correctAnswer": "c. Prohibition to move beyond the signal",
-          "questionImgUrl": "assets/images/q253.webp"
+          "questionImgUrl": "assets/images/ex12q3.webp"
         },
         {
           "question": "4. What does a yellow light mean?",
@@ -2126,7 +2126,7 @@
           "option3": "c. A and B are correct",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "b. Prohibition to move beyond the stop line or, in default of any stop line, the signal itself",
-          "questionImgUrl": "assets/images/q254.webp"
+          "questionImgUrl": "assets/images/ex12q4.webp"
         },
         {
           "question": "5. What does a green light mean?",
@@ -2135,7 +2135,7 @@
           "option3": "c. Stop if your exit from the junction is blocked",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "b. Authorization to pass the signal",
-          "questionImgUrl": "assets/images/q255.webp"
+          "questionImgUrl": "assets/images/ex12q5.webp"
         },
         {
           "question": "6. What does this broken white line mean?",
@@ -2144,7 +2144,7 @@
           "option3": "c. You’re approaching a hazard",
           "option4": "d. No overtaking allowed",
           "correctAnswer": "a. It’s forbidden to cross this line",
-          "questionImgUrl": "assets/images/q256.webp"
+          "questionImgUrl": ""
         },
         {
           "question": "7. What does this sign mean?",
@@ -2726,7 +2726,7 @@
           "option3": "c) Car 3 is in the correct position to make the right turn.",
           "option4": "d) Car 4 is in the correct position to make the right turn.",
           "correctAnswer": "a) Car 1 is in the correct position to make the right turn.",
-          "questionImgUrl": "assets/images/q18.webp"
+          "questionImgUrl": "assets/images/q318.webp"
         },
         {
           "question": "9. What should a driver do if they see a red warning triangle on the road?",
@@ -3380,7 +3380,7 @@
           "option3": "c. No",
           "option4": "d. None of the answers is correct",
           "correctAnswer": "a. Yes",
-          "questionImgUrl": "assets/images/q88.webp"
+          "questionImgUrl": "assets/images/q388.webp"
         },
         {
           "question": "19. Highway. I want to overtake these two trucks in a single maneuver, by the left and at the same time. Is it authorized?",

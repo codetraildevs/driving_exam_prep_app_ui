@@ -1725,7 +1725,7 @@
                 },
                 {
                     "question": "2. Où pouvez-vous dépasser dans une rue à sens unique ?",
-                    "questionImgUrl": "URL_232",
+                    "questionImgUrl": "",
                     "option1": "a) Sur le côté gauche",
                     "option2": "b) Les dépassements ne sont pas autorisés",
                     "option3": "c) Seulement sur le côté droit",
@@ -1734,7 +1734,7 @@
                 },
                 {
                     "question": "3. Quelle personne parmi les suivantes, doit-on obéir le signal en route ?",
-                    "questionImgUrl": "URL_233",
+                    "questionImgUrl": "",
                     "option1": "a) Un motocycliste",
                     "option2": "b) Un piéton",
                     "option3": "c) Un agent qualifié",
@@ -1949,7 +1949,7 @@
                 },
                 {
                     "question": "6. Que signifie cette ligne blanche discontinue ?",
-                    "questionImgUrl": "assets/images/ex12q6.webp",
+                    "questionImgUrl": "",
                     "option1": "a) Interdit de franchir cette ligne",
                     "option2": "b) Stationner interdit",
                     "option3": "c) Vous approchez d'un danger",
@@ -2325,7 +2325,7 @@
                 },
                 {
                     "question": "6. Les téléphones mobiles ne doivent pas être utilisés :",
-                    "questionImgUrl": "URL_296",
+                    "questionImgUrl": "",
                     "option1": "a) Au feu rouges",
                     "option2": "b) Lorsque vous conduisez",
                     "option3": "c) une vitesse de20km/ h",

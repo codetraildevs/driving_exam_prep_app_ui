@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:traffic_rule_in_rwanda/shared/network/offline_cache.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -114,10 +114,11 @@ double _progressCardWidth(WidgetTester tester) {
 
 void main() {
   testWidgets('saved certificates display while network is still pending', (tester) async {
-    SharedPreferences.setMockInitialValues({});
-    await OfflineCache().save(OfflineCache().examResultsKey('u1'), [
-      {'examId': '1', 'score': 90, 'createdAt': '2026-01-01T12:00:00Z'},
-    ]);
+    SharedPreferences.setMockInitialValues({
+      'offline_cache_exam_results_u1': jsonEncode([
+        {'examId': '1', 'score': 90, 'createdAt': '2026-01-01T12:00:00Z'},
+      ]),
+    });
     final pending = Completer<ApiResponse>();
     final bloc = AuthBloc()..emit(AuthAuthenticated(_user()));
     await tester.pumpWidget(_buildApp(bloc, loader: (_) => pending.future));
@@ -129,7 +130,7 @@ void main() {
     await tester.pump();
     expect(tester.takeException(), isNull);
     await bloc.close();
-  });
+  }, timeout: const Timeout(Duration(seconds: 30)));
 
   setUp(() {
     SharedPreferences.setMockInitialValues({});

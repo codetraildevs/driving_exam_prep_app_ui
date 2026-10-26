@@ -18,3 +18,9 @@ The Flutter app must also be rebuilt and installed. Do not upload backend test h
 ## Verification
 
 Automated checks cover bundled content, offline persistence, concurrent saves, account-specific synchronization, retries, cached startup, cached certificates, access expiry and MySQL duplicate-delivery handling. Physical-device airplane-mode testing is still recommended before a Play Store release.
+
+## Bundled-content repairs
+
+English traffic-light, right-turn and overtaking-sign references now reuse the correct images already used by their matching French/Kinyarwanda questions. Nonexistent optional illustrations and placeholder image URLs were removed from text questions; no questions or answer keys were removed or changed.
+
+Content-owner review is still needed for the existing broken-white-line question (rw free exam question 20 / exam 12 question 6; en/fr exam 11 question 6): its answer key prohibits crossing, while other questions describe exceptions. Its originally referenced illustration is absent from the repository. This update does not invent a replacement diagram or change the authored answer.
