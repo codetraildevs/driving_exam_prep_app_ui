@@ -1,4 +1,4 @@
-name: Dashboard checks
+name: App layout and interaction checks
 on:
   push:
     branches: [feat/app-updates-1.2.0]
