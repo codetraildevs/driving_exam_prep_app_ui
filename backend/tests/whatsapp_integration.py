@@ -70,7 +70,7 @@ try:
     assert request() == []
     request("DELETE", suffix, status=404)
     # Read failure must not appear as an empty successful list.
-    sql("REVOKE SELECT ON wa_test.* FROM 'wa_read'@'%'")
+    sql("GRANT INSERT ON wa_test.* TO 'wa_read'@'%'; REVOKE SELECT ON wa_test.* FROM 'wa_read'@'%'")
     request(user="wa_read", status=500)
     print("PASS: CRUD, roles, validation, missing records, missing table, restricted privileges and database failures")
 finally:
