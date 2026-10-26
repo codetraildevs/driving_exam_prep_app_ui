@@ -281,7 +281,7 @@ class _ExamResultPageState extends State<ExamResultPage>
         children: [
           // ── Background gradient panel ──────────────────────────────────
           Container(
-            height: size.height * 0.52,
+            height: size.height,
             decoration: BoxDecoration(gradient: topGradient),
           ),
 
@@ -295,6 +295,7 @@ class _ExamResultPageState extends State<ExamResultPage>
 
           // ── Main content ──────────────────────────────────────────────
           SafeArea(
+            child: SingleChildScrollView(
             child: Column(
               children: [
                 // ── Top bar ────────────────────────────────────────────
@@ -359,7 +360,7 @@ class _ExamResultPageState extends State<ExamResultPage>
                     // Grade badge (top-right of ring)
                     Positioned(
                       top: 0,
-                      right: (size.width - ringSize) / 2 - 4,
+                      right: 0,
                       child: _GradeBadge(grade: grade, passed: passed),
                     ),
                   ],
@@ -424,8 +425,7 @@ class _ExamResultPageState extends State<ExamResultPage>
 
                 // ── Scrollable bottom card ─────────────────────────────
                 const SizedBox(height: 18),
-                Expanded(
-                  child: FadeTransition(
+                FadeTransition(
                     opacity: _fadeAnim,
                     child: SlideTransition(
                       position: _slideAnim,
@@ -449,7 +449,7 @@ class _ExamResultPageState extends State<ExamResultPage>
                               ),
                             ],
                           ),
-                          child: SingleChildScrollView(
+                          child: Padding(
                             padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -517,9 +517,9 @@ class _ExamResultPageState extends State<ExamResultPage>
                         ),
                       ),
                     ),
-                  ),
                 ),
               ],
+            ),
             ),
           ),
         ],

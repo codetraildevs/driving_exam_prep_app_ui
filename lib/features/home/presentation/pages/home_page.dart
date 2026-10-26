@@ -126,7 +126,9 @@ class _HomePageState extends ConsumerState<HomePage> with WidgetsBindingObserver
 
   Future<void> _share(BuildContext cardContext) async {
     final l10n = AppLocalizations.of(context);
-    final box = cardContext.findRenderObject() as RenderBox?;
+    final target = cardContext.findRenderObject();
+    final page = context.findRenderObject();
+    final box = target is RenderBox ? target : page is RenderBox ? page : null;
     try {
       final result = await SharePlus.instance.share(ShareParams(
         text: '${l10n.homeShareAppMessage} ${AppConfig.playStoreUrl}',
