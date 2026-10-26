@@ -12,7 +12,7 @@ final class IremboValidation
         }
         if (!is_string($v)) throw new InvalidArgumentException($key);
         $v = trim($v);
-        if (($required && $v === '') || strlen($v) > $max || preg_match(in_array($key, ['reason','internalNote','applicantMessage'], true) ? '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/' : '/[\x00-\x1F\x7F]/', $v)) throw new InvalidArgumentException($key);
+        if (($required && $v === '') || preg_match_all('/./us', $v) > $max || preg_match(in_array($key, ['reason','internalNote','applicantMessage'], true) ? '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/' : '/[\x00-\x1F\x7F]/', $v)) throw new InvalidArgumentException($key);
         return $v === '' ? null : $v;
     }
     public static function date($value, string $field): string {
@@ -54,7 +54,8 @@ final class IremboValidation
         if (!in_array($out['examLanguage'], ['rw','en','fr'], true)) throw new InvalidArgumentException('examLanguage');
         $out['district'] = self::text($input, 'district', 40);
         if (!in_array($out['district'], self::DISTRICTS, true)) throw new InvalidArgumentException('district');
-        $out['preferredExamDate'] = empty($input['preferredExamDate']) ? null : self::date($input['preferredExamDate'], 'preferredExamDate');
+        $preferredDate = $input['preferredExamDate'] ?? null;
+        $out['preferredExamDate'] = $preferredDate === null || $preferredDate === '' ? null : self::date($preferredDate, 'preferredExamDate');
         return $out;
     }
 }

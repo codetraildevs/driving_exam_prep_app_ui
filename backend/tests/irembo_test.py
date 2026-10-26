@@ -25,7 +25,10 @@ try:
  else: raise AssertionError('test server unavailable')
  req(user=None,expected=401);req(user='blocked',expected=403)
  body=form(provisoireCode='must not persist',category='B',permisOption='Manual')
+ body['fullName']='É' * 100
+ body['userId']='u2' # Untrusted ownership must be ignored.
  first=req('POST',body=body,expected=201)
+ assert first['userId']=='u1' and first['fullName']=='É' * 100
  assert first['status']=='Pending' and first['category'] is None and first['provisoireCode'] is None
  assert first['nationalId']=='************2345'
  retry=req('POST',body=body,expected=201);assert first['id']==retry['id']
@@ -34,7 +37,7 @@ try:
  req(path='/'+first['id'],user='u2',expected=404)
  req('PUT','/'+first['id'],{'version':1,'status':'Completed'},expected=403)
  req('POST',body=form(),user='a1',expected=403)
- for values in [dict(nationalId='123'),dict(nationalId=1234567890123456),dict(dob='2999-01-01'),dict(dob='2025-02-30'),dict(district='Not a district'),dict(examLanguage='xx'),dict(phoneNumber='abc'),dict(service='Other'),dict(preferredExamDate='not-a-date')]:
+ for values in [dict(nationalId='123'),dict(nationalId=1234567890123456),dict(dob='2999-01-01'),dict(dob='2025-02-30'),dict(district='Not a district'),dict(examLanguage='xx'),dict(phoneNumber='abc'),dict(service='Other'),dict(preferredExamDate='not-a-date'),dict(preferredExamDate=0)]:
   req('POST',body=form(**values),expected=400)
  for cat in ['C','A,B','AB',['A','B'],'']:
   req('POST',body=form(service='Permis',permisOption='Manual',provisoireCode='001234',category=cat),expected=400)
