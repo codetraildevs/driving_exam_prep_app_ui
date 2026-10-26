@@ -1782,4 +1782,244 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String resourcesPageCount(int page, int total) => 'Page $page sur $total';
+  @override
+  String get irTitle => "Services Irembo";
+
+  @override
+  String get irWorkspace => "Demandes Irembo";
+
+  @override
+  String get irMyRequests => "Mes demandes Irembo";
+
+  @override
+  String get irNew => "Nouvelle demande";
+
+  @override
+  String get irManual => "Manuelle";
+
+  @override
+  String get irAutomatic => "Automatique";
+
+  @override
+  String get irNotice => "Ceci crée une demande dans cette application, et non une inscription confirmée sur la plateforme officielle Irembo.";
+
+  @override
+  String get irFullName => "Nom complet";
+
+  @override
+  String get irPhone => "Numéro de téléphone";
+
+  @override
+  String get irNationalId => "Numéro de carte d’identité";
+
+  @override
+  String get irDob => "Date de naissance";
+
+  @override
+  String get irExamLanguage => "Langue de l’examen";
+
+  @override
+  String get irLanguageHint => "p. ex., kinyarwanda, anglais, français";
+
+  @override
+  String get irDistrict => "District souhaité pour l’examen";
+
+  @override
+  String get irExamDate => "Date souhaitée (facultative)";
+
+  @override
+  String get irDateNotice => "La date souhaitée n’est pas un rendez-vous confirmé.";
+
+  @override
+  String get irProvisoireCode => "Code du permis provisoire";
+
+  @override
+  String get irCategory => "Catégorie du permis";
+
+  @override
+  String get irService => "Service";
+
+  @override
+  String get irOption => "Option du permis";
+
+  @override
+  String get irReview => "Vérifier la demande";
+
+  @override
+  String get irConfirm => "Confirmer et envoyer";
+
+  @override
+  String get irEdit => "Modifier les informations";
+
+  @override
+  String get irSaved => "Demande enregistrée";
+
+  @override
+  String get irReference => "Référence de la demande";
+
+  @override
+  String get irStatus => "Statut";
+
+  @override
+  String get irSubmitted => "Date de soumission";
+
+  @override
+  String get irUpdated => "Dernière modification";
+
+  @override
+  String get irAssigned => "Agent responsable";
+
+  @override
+  String get irUnassigned => "Non attribuée";
+
+  @override
+  String get irPending => "En attente";
+
+  @override
+  String get irInReview => "En cours d’examen";
+
+  @override
+  String get irNeedsInformation => "Informations requises";
+
+  @override
+  String get irCompleted => "Terminée";
+
+  @override
+  String get irRejected => "Rejetée";
+
+  @override
+  String get irCancelled => "Annulée";
+
+  @override
+  String get irSearch => "Rechercher référence, nom ou téléphone";
+
+  @override
+  String get irFilters => "Filtres";
+
+  @override
+  String get irApply => "Appliquer les filtres";
+
+  @override
+  String get irClear => "Effacer les filtres";
+
+  @override
+  String get irAll => "Tous";
+
+  @override
+  String get irFrom => "Soumise à partir du";
+
+  @override
+  String get irTo => "Soumise jusqu’au";
+
+  @override
+  String get irNewest => "Plus récentes";
+
+  @override
+  String get irOldest => "Plus anciennes";
+
+  @override
+  String get irSort => "Trier par";
+
+  @override
+  String get irEmpty => "Aucune demande correspondante.";
+
+  @override
+  String get irView => "Voir les détails";
+
+  @override
+  String get irCall => "Appeler le demandeur";
+
+  @override
+  String get irCopy => "Copier";
+
+  @override
+  String get irCopyAll => "Copier les coordonnées";
+
+  @override
+  String get irCopied => "Copié";
+
+  @override
+  String get irCopyFailed => "Copie impossible. Réessayez.";
+
+  @override
+  String get irCallFailed => "Impossible d’ouvrir l’application téléphone.";
+
+  @override
+  String get irMessages => "Messages au demandeur";
+
+  @override
+  String get irInternalNotes => "Notes internes";
+
+  @override
+  String get irInternalHint => "Visibles uniquement au personnel";
+
+  @override
+  String get irMessage => "Message au demandeur";
+
+  @override
+  String get irReason => "Motif (visible au demandeur)";
+
+  @override
+  String get irReasonRequired => "Indiquez un motif pour ce statut.";
+
+  @override
+  String get irAudit => "Historique des modifications";
+
+  @override
+  String get irSave => "Enregistrer";
+
+  @override
+  String get irRetry => "Réessayer";
+
+  @override
+  String get irClose => "Fermer";
+
+  @override
+  String get irRequired => "Ce champ est obligatoire.";
+
+  @override
+  String get irInvalid => "Vérifiez les informations saisies.";
+
+  @override
+  String get irInvalidId => "Saisissez exactement 16 chiffres.";
+
+  @override
+  String get irInvalidPhone => "Saisissez un numéro mobile rwandais valide.";
+
+  @override
+  String get irUnavailable => "Impossible de terminer. Vérifiez la connexion et réessayez. Les informations saisies restent sur cette page.";
+
+  @override
+  String get irConflict => "Cette demande a été modifiée ou déjà envoyée. Actualisez la liste avant de réessayer.";
+
+  @override
+  String get irNext => "Suivant";
+
+  @override
+  String get irPrevious => "Précédent";
+
+  @override
+  String get irCreated => "Demande créée";
+
+  @override
+  String get irChange => "Modification";
+
+  @override
+  String get irNoMessages => "Aucun message pour le moment.";
+
+  @override
+  String get irResults => "Résultats";
+
+  @override
+  String get irSelectDistrict => "Rechercher et choisir un district";
+
+  @override
+  String get irEnglish => "Anglais";
+
+  @override
+  String get irFrench => "Français";
+
+  @override
+  String get irKinyarwanda => "Kinyarwanda";
+
 }

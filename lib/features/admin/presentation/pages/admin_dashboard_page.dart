@@ -378,6 +378,10 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
   // ──────────────────────────────────────────────────────────────────────────
   Widget _buildActionsGrid(BuildContext context, AppLocalizations l10n) {
     final cards = [
+      _ActionCard(icon: Icons.assignment_outlined, title: l10n.irWorkspace,
+        description: l10n.irView,
+        gradientColors: const [AppColors.primary, AppColors.primaryLight],
+        onTap: () => context.push('/admin/irembo')),
       _ActionCard(icon: Icons.people, title: l10n.adminManageUsers,
         description: l10n.adminManageUsersDesc,
         gradientColors: const [AppColors.primary, AppColors.primaryLight],

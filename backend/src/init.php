@@ -267,6 +267,7 @@ foreach ($rateLimitedPrefixes as $prefix) {
 // ---------------------------------------------------------------------------
 // 12. Load all handler files
 // ---------------------------------------------------------------------------
+require_once __DIR__ . '/handlers/irembo.php';
 require_once __DIR__ . '/handlers/whatsapp_groups.php';
 require_once __DIR__ . '/handlers/general.php';
 require_once __DIR__ . '/handlers/auth.php';

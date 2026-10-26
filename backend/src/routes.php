@@ -22,6 +22,12 @@ return [
     ['PUT', '/api/whatsapp-groups/:id', 'whatsappGroups'],
     ['DELETE', '/api/whatsapp-groups/:id', 'whatsappGroups'],
 
+    // Irembo requests (all routes require authentication)
+    ['GET', '/api/irembo-requests', 'iremboRequests'],
+    ['POST', '/api/irembo-requests', 'iremboRequests'],
+    ['GET', '/api/irembo-requests/:id', 'iremboRequests'],
+    ['PUT', '/api/irembo-requests/:id', 'iremboRequests'],
+
     // Users
     ['GET', '/api/users/:id', 'getUser'],
     ['GET', '/api/users', 'listUsers'],

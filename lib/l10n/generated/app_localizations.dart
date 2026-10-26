@@ -72,6 +72,166 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
+  String get irTitle;
+
+  String get irWorkspace;
+
+  String get irMyRequests;
+
+  String get irNew;
+
+  String get irManual;
+
+  String get irAutomatic;
+
+  String get irNotice;
+
+  String get irFullName;
+
+  String get irPhone;
+
+  String get irNationalId;
+
+  String get irDob;
+
+  String get irExamLanguage;
+
+  String get irLanguageHint;
+
+  String get irDistrict;
+
+  String get irExamDate;
+
+  String get irDateNotice;
+
+  String get irProvisoireCode;
+
+  String get irCategory;
+
+  String get irService;
+
+  String get irOption;
+
+  String get irReview;
+
+  String get irConfirm;
+
+  String get irEdit;
+
+  String get irSaved;
+
+  String get irReference;
+
+  String get irStatus;
+
+  String get irSubmitted;
+
+  String get irUpdated;
+
+  String get irAssigned;
+
+  String get irUnassigned;
+
+  String get irPending;
+
+  String get irInReview;
+
+  String get irNeedsInformation;
+
+  String get irCompleted;
+
+  String get irRejected;
+
+  String get irCancelled;
+
+  String get irSearch;
+
+  String get irFilters;
+
+  String get irApply;
+
+  String get irClear;
+
+  String get irAll;
+
+  String get irFrom;
+
+  String get irTo;
+
+  String get irNewest;
+
+  String get irOldest;
+
+  String get irSort;
+
+  String get irEmpty;
+
+  String get irView;
+
+  String get irCall;
+
+  String get irCopy;
+
+  String get irCopyAll;
+
+  String get irCopied;
+
+  String get irCopyFailed;
+
+  String get irCallFailed;
+
+  String get irMessages;
+
+  String get irInternalNotes;
+
+  String get irInternalHint;
+
+  String get irMessage;
+
+  String get irReason;
+
+  String get irReasonRequired;
+
+  String get irAudit;
+
+  String get irSave;
+
+  String get irRetry;
+
+  String get irClose;
+
+  String get irRequired;
+
+  String get irInvalid;
+
+  String get irInvalidId;
+
+  String get irInvalidPhone;
+
+  String get irUnavailable;
+
+  String get irConflict;
+
+  String get irNext;
+
+  String get irPrevious;
+
+  String get irCreated;
+
+  String get irChange;
+
+  String get irNoMessages;
+
+  String get irResults;
+
+  String get irSelectDistrict;
+
+  String get irEnglish;
+
+  String get irFrench;
+
+  String get irKinyarwanda;
+
   static const LocalizationsDelegate<AppLocalizations> delegate =
       _AppLocalizationsDelegate();
 

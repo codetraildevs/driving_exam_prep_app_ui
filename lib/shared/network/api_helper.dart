@@ -340,7 +340,7 @@ class ApiHelper {
   }
 
   ApiResponse _networkError(String method, String path, String errorMessage, String rawError) {
-    if (kDebugMode) debugPrint('❌ API ERROR [$method $path]: $rawError');
+    if (kDebugMode && !path.startsWith('/api/irembo-requests')) debugPrint('❌ API ERROR [$method $path]: $rawError');
     return ApiResponse(
       statusCode: 0,
       data: null,
@@ -352,7 +352,7 @@ class ApiHelper {
 
   void _logRequest(String method, String path, {Map<String, dynamic>? body, Map<String, String>? queryParams}) {
     if (!kDebugMode) return;
-    final queryStr = queryParams != null ? '?$queryParams' : '';
+    final queryStr = queryParams != null && !path.startsWith('/api/irembo-requests') ? '?$queryParams' : '';
     debugPrint('🌐 API REQUEST: $method $path$queryStr');
     if (body != null) {
       // Request bodies may contain credentials; do not log them.

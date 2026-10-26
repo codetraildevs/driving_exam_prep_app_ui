@@ -1748,4 +1748,244 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String resourcesPageCount(int page, int total) => 'Page $page of $total';
+  @override
+  String get irTitle => "Irembo services";
+
+  @override
+  String get irWorkspace => "Irembo Registrations";
+
+  @override
+  String get irMyRequests => "My Irembo Requests";
+
+  @override
+  String get irNew => "New service request";
+
+  @override
+  String get irManual => "Manual";
+
+  @override
+  String get irAutomatic => "Automatic";
+
+  @override
+  String get irNotice => "This creates a service request in this app, not a confirmed registration on the official Irembo platform.";
+
+  @override
+  String get irFullName => "Full name";
+
+  @override
+  String get irPhone => "Phone number";
+
+  @override
+  String get irNationalId => "National ID number";
+
+  @override
+  String get irDob => "Date of birth";
+
+  @override
+  String get irExamLanguage => "Exam language";
+
+  @override
+  String get irLanguageHint => "e.g., Kinyarwanda, English, French";
+
+  @override
+  String get irDistrict => "Preferred exam district";
+
+  @override
+  String get irExamDate => "Preferred exam date (optional)";
+
+  @override
+  String get irDateNotice => "Your preferred date is a request, not a confirmed appointment.";
+
+  @override
+  String get irProvisoireCode => "Provisoire code";
+
+  @override
+  String get irCategory => "Driving category";
+
+  @override
+  String get irService => "Service";
+
+  @override
+  String get irOption => "Permis option";
+
+  @override
+  String get irReview => "Review request";
+
+  @override
+  String get irConfirm => "Confirm and submit";
+
+  @override
+  String get irEdit => "Edit details";
+
+  @override
+  String get irSaved => "Request saved";
+
+  @override
+  String get irReference => "Registration reference";
+
+  @override
+  String get irStatus => "Status";
+
+  @override
+  String get irSubmitted => "Submitted";
+
+  @override
+  String get irUpdated => "Last updated";
+
+  @override
+  String get irAssigned => "Assigned staff member";
+
+  @override
+  String get irUnassigned => "Unassigned";
+
+  @override
+  String get irPending => "Pending";
+
+  @override
+  String get irInReview => "In Review";
+
+  @override
+  String get irNeedsInformation => "Needs Information";
+
+  @override
+  String get irCompleted => "Completed";
+
+  @override
+  String get irRejected => "Rejected";
+
+  @override
+  String get irCancelled => "Cancelled";
+
+  @override
+  String get irSearch => "Search reference, name or phone";
+
+  @override
+  String get irFilters => "Filters";
+
+  @override
+  String get irApply => "Apply filters";
+
+  @override
+  String get irClear => "Clear filters";
+
+  @override
+  String get irAll => "All";
+
+  @override
+  String get irFrom => "Submitted from";
+
+  @override
+  String get irTo => "Submitted until";
+
+  @override
+  String get irNewest => "Newest first";
+
+  @override
+  String get irOldest => "Oldest first";
+
+  @override
+  String get irSort => "Sort by";
+
+  @override
+  String get irEmpty => "No matching requests.";
+
+  @override
+  String get irView => "View details";
+
+  @override
+  String get irCall => "Call applicant";
+
+  @override
+  String get irCopy => "Copy";
+
+  @override
+  String get irCopyAll => "Copy applicant details";
+
+  @override
+  String get irCopied => "Copied";
+
+  @override
+  String get irCopyFailed => "Could not copy. Please try again.";
+
+  @override
+  String get irCallFailed => "Could not open the calling app.";
+
+  @override
+  String get irMessages => "Messages for the applicant";
+
+  @override
+  String get irInternalNotes => "Internal staff notes";
+
+  @override
+  String get irInternalHint => "Visible to staff only";
+
+  @override
+  String get irMessage => "Message to applicant";
+
+  @override
+  String get irReason => "Reason (shown to applicant)";
+
+  @override
+  String get irReasonRequired => "Provide a reason for this status.";
+
+  @override
+  String get irAudit => "Audit history";
+
+  @override
+  String get irSave => "Save changes";
+
+  @override
+  String get irRetry => "Retry";
+
+  @override
+  String get irClose => "Close";
+
+  @override
+  String get irRequired => "This field is required.";
+
+  @override
+  String get irInvalid => "Check the entered details.";
+
+  @override
+  String get irInvalidId => "Enter exactly 16 digits.";
+
+  @override
+  String get irInvalidPhone => "Enter a valid Rwanda mobile number.";
+
+  @override
+  String get irUnavailable => "Unable to complete the request. Check your connection and retry. Your entered details are kept on this page.";
+
+  @override
+  String get irConflict => "This request changed or was already submitted. Refresh the list before trying again.";
+
+  @override
+  String get irNext => "Next";
+
+  @override
+  String get irPrevious => "Previous";
+
+  @override
+  String get irCreated => "Request created";
+
+  @override
+  String get irChange => "Change";
+
+  @override
+  String get irNoMessages => "No messages yet.";
+
+  @override
+  String get irResults => "Results";
+
+  @override
+  String get irSelectDistrict => "Search and select a district";
+
+  @override
+  String get irEnglish => "English";
+
+  @override
+  String get irFrench => "French";
+
+  @override
+  String get irKinyarwanda => "Kinyarwanda";
+
 }

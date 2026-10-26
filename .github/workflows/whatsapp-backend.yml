@@ -4,6 +4,8 @@ on:
     branches: [feat/app-updates-1.2.0]
     paths:
       - 'backend/src/**'
+      - 'backend/migrations/**'
+      - 'backend/tests/irembo*'
       - 'backend/tests/whatsapp*'
       - 'backend/tests/demo_auth*'
       - 'backend/tests/offline_results*'
@@ -38,3 +40,6 @@ jobs:
 
       - name: Test offline result retry safety
         run: python3 backend/tests/offline_results_test.py
+
+      - name: Test Irembo request workflow and access controls
+        run: python3 backend/tests/irembo_test.py

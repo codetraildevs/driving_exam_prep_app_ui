@@ -1,3 +1,4 @@
+import '../../features/irembo/presentation/irembo_page.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -104,6 +105,7 @@ class AppRouter {
           location == '/language-select';
 
       final isProtectedPage =
+          location.startsWith('/irembo') ||
           location.startsWith('/home') ||
           location.startsWith('/practice') ||
           location.startsWith('/exam') ||
@@ -145,6 +147,8 @@ class AppRouter {
       return null;
     },
     routes: [
+      GoRoute(path: '/irembo', builder: (context, state) => const IremboPage()),
+      GoRoute(path: '/admin/irembo', builder: (context, state) => const IremboPage(manage: true)),
       GoRoute(
         path: '/language-select',
         pageBuilder: (context, state) => const MaterialPage(

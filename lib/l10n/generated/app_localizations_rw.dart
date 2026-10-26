@@ -1774,4 +1774,244 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String resourcesPageCount(int page, int total) => 'Urupapuro $page kuri $total';
+  @override
+  String get irTitle => "Serivisi za Irembo";
+
+  @override
+  String get irWorkspace => "Ubusabe bwa Irembo";
+
+  @override
+  String get irMyRequests => "Ubusabe bwanjye bwa Irembo";
+
+  @override
+  String get irNew => "Ubusabe bushya";
+
+  @override
+  String get irManual => "Manuweli";
+
+  @override
+  String get irAutomatic => "Otomatike";
+
+  @override
+  String get irNotice => "Ubu ni ubusabe muri iyi porogaramu; si icyemezo cy’uko wiyandikishije ku rubuga rwemewe rwa Irembo.";
+
+  @override
+  String get irFullName => "Amazina yose";
+
+  @override
+  String get irPhone => "Nimero ya telefone";
+
+  @override
+  String get irNationalId => "Nimero y’indangamuntu";
+
+  @override
+  String get irDob => "Itariki y’amavuko";
+
+  @override
+  String get irExamLanguage => "Ururimi rw’ikizamini";
+
+  @override
+  String get irLanguageHint => "Urugero: Ikinyarwanda, Icyongereza, Igifaransa";
+
+  @override
+  String get irDistrict => "Akarere wifuza gukoreramo ikizamini";
+
+  @override
+  String get irExamDate => "Itariki wifuza gukora ikizamini (si ngombwa)";
+
+  @override
+  String get irDateNotice => "Itariki wifuza si gahunda yemejwe y’ikizamini.";
+
+  @override
+  String get irProvisoireCode => "Kode ya provisoire";
+
+  @override
+  String get irCategory => "Icyiciro cy’uruhushya";
+
+  @override
+  String get irService => "Serivisi";
+
+  @override
+  String get irOption => "Ubwoko bwa permis";
+
+  @override
+  String get irReview => "Genzura ubusabe";
+
+  @override
+  String get irConfirm => "Emeza wohereze";
+
+  @override
+  String get irEdit => "Hindura amakuru";
+
+  @override
+  String get irSaved => "Ubusabe bwakiriwe";
+
+  @override
+  String get irReference => "Nimero y’ubusabe";
+
+  @override
+  String get irStatus => "Uko buhagaze";
+
+  @override
+  String get irSubmitted => "Igihe bwoherejwe";
+
+  @override
+  String get irUpdated => "Igihe buheruka guhindurwa";
+
+  @override
+  String get irAssigned => "Umukozi ubishinzwe";
+
+  @override
+  String get irUnassigned => "Nta mukozi wabugenewe";
+
+  @override
+  String get irPending => "Burategereje";
+
+  @override
+  String get irInReview => "Burimo gusuzumwa";
+
+  @override
+  String get irNeedsInformation => "Hakurikiraho andi makuru";
+
+  @override
+  String get irCompleted => "Bwarangiye";
+
+  @override
+  String get irRejected => "Bwaranzwe";
+
+  @override
+  String get irCancelled => "Bwahagaritswe";
+
+  @override
+  String get irSearch => "Shakisha nimero y’ubusabe, amazina cyangwa telefone";
+
+  @override
+  String get irFilters => "Ibyo ushunguriraho";
+
+  @override
+  String get irApply => "Shungura";
+
+  @override
+  String get irClear => "Kuraho ibyo ushunguriraho";
+
+  @override
+  String get irAll => "Byose";
+
+  @override
+  String get irFrom => "Bwoherejwe kuva";
+
+  @override
+  String get irTo => "Bwoherejwe kugeza";
+
+  @override
+  String get irNewest => "Ubushya mbere";
+
+  @override
+  String get irOldest => "Ubwa kera mbere";
+
+  @override
+  String get irSort => "Tondeka ukurikije";
+
+  @override
+  String get irEmpty => "Nta busabe buhuye n’ibyo washakishije.";
+
+  @override
+  String get irView => "Reba amakuru";
+
+  @override
+  String get irCall => "Hamagara uwasabye";
+
+  @override
+  String get irCopy => "Koporora";
+
+  @override
+  String get irCopyAll => "Koporora amakuru y’uwasabye";
+
+  @override
+  String get irCopied => "Byakoporowe";
+
+  @override
+  String get irCopyFailed => "Gukoporora byanze. Ongera ugerageze.";
+
+  @override
+  String get irCallFailed => "Porogaramu yo guhamagara ntiyafungutse.";
+
+  @override
+  String get irMessages => "Ubutumwa bugenewe uwasabye";
+
+  @override
+  String get irInternalNotes => "Inyandiko z’abakozi gusa";
+
+  @override
+  String get irInternalHint => "Bigaragarira abakozi gusa";
+
+  @override
+  String get irMessage => "Ubutumwa bwohererezwa uwasabye";
+
+  @override
+  String get irReason => "Impamvu (igaragarira uwasabye)";
+
+  @override
+  String get irReasonRequired => "Tanga impamvu y’uko ubusabe buhagaze.";
+
+  @override
+  String get irAudit => "Amateka y’impinduka";
+
+  @override
+  String get irSave => "Bika impinduka";
+
+  @override
+  String get irRetry => "Ongera ugerageze";
+
+  @override
+  String get irClose => "Funga";
+
+  @override
+  String get irRequired => "Aya makuru ni ngombwa.";
+
+  @override
+  String get irInvalid => "Genzura amakuru wanditse.";
+
+  @override
+  String get irInvalidId => "Andika imibare 16 gusa.";
+
+  @override
+  String get irInvalidPhone => "Andika nimero ya telefone igendanwa yemewe mu Rwanda.";
+
+  @override
+  String get irUnavailable => "Ntibyashobotse. Genzura interineti wongere ugerageze. Amakuru wanditse aracyari kuri uru rupapuro.";
+
+  @override
+  String get irConflict => "Ubu busabe bwarahinduwe cyangwa bwaroherejwe. Vugurura urutonde mbere yo kongera kugerageza.";
+
+  @override
+  String get irNext => "Ibikurikira";
+
+  @override
+  String get irPrevious => "Ibibanziriza";
+
+  @override
+  String get irCreated => "Ubusabe bwakozwe";
+
+  @override
+  String get irChange => "Impinduka";
+
+  @override
+  String get irNoMessages => "Nta butumwa burahagera.";
+
+  @override
+  String get irResults => "Ibyabonetse";
+
+  @override
+  String get irSelectDistrict => "Shakisha uhitemo akarere";
+
+  @override
+  String get irEnglish => "Icyongereza";
+
+  @override
+  String get irFrench => "Igifaransa";
+
+  @override
+  String get irKinyarwanda => "Ikinyarwanda";
+
 }
