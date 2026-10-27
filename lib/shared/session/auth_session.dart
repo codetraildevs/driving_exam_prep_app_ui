@@ -36,8 +36,12 @@ class AuthSession {
       String payload = parts[1];
       payload = payload.replaceAll('-', '+').replaceAll('_', '/');
       switch (payload.length % 4) {
-        case 2: payload += '=='; break;
-        case 3: payload += '='; break;
+        case 2:
+          payload += '==';
+          break;
+        case 3:
+          payload += '=';
+          break;
       }
       final decoded = jsonDecode(utf8.decode(base64Decode(payload)));
       if (decoded is Map && decoded['exp'] is num) {
@@ -111,9 +115,13 @@ class AuthSession {
 
   Future<void> clear() async {
     final prefs = await SharedPreferences.getInstance();
+    for (final key in prefs.getKeys().where(
+      (key) => key.startsWith('offline_cache_irembo_'),
+    )) {
+      await prefs.remove(key);
+    }
     await prefs.remove(_tokenKey);
     await prefs.remove(_refreshTokenKey);
     await prefs.remove(_userKey);
   }
 }
-

@@ -3289,7 +3289,7 @@ abstract class AppLocalizations {
   /// No description provided for @irAlreadySubmitted.
   ///
   /// In en, this message translates to:
-  /// **'Request received. One request per account.'**
+  /// **'Request received. One request per service slot.'**
   String get irAlreadySubmitted;
 
   /// No description provided for @irServiceFee.
@@ -3337,7 +3337,7 @@ abstract class AppLocalizations {
   /// No description provided for @irNotice.
   ///
   /// In en, this message translates to:
-  /// **'Get help registering for your exam. Official registration is confirmed separately.'**
+  /// **'Get help registering for your exam. Official registration is confirmed separately. You can submit a request for each service you need.'**
   String get irNotice;
 
   /// No description provided for @irFullName.
@@ -3517,7 +3517,7 @@ abstract class AppLocalizations {
   /// No description provided for @irSearch.
   ///
   /// In en, this message translates to:
-  /// **'Search reference, name or phone'**
+  /// **'Search name, phone or national ID'**
   String get irSearch;
 
   /// No description provided for @irFilters.
@@ -3867,6 +3867,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Showing results saved on this device. New results will sync when connected.'**
   String get progressSaved;
+
+  /// No description provided for @irDeleteRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete request'**
+  String get irDeleteRequest;
+
+  /// No description provided for @irDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently delete this request and its messages? This cannot be undone.'**
+  String get irDeleteConfirm;
+
+  /// No description provided for @irSelectRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Select request'**
+  String get irSelectRequest;
+
+  /// No description provided for @irSelectPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select this page'**
+  String get irSelectPage;
+
+  /// No description provided for @irSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get irSelected;
+
+  /// No description provided for @irDeleteSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete selected'**
+  String get irDeleteSelected;
+
+  /// No description provided for @irOfflineSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing saved requests. Connect to the internet to refresh, submit or delete requests.'**
+  String get irOfflineSaved;
+
+  /// No description provided for @irDeleteUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Deletion is unavailable on this server. Update the Irembo backend routes and handler, then retry.'**
+  String get irDeleteUnavailable;
 }
 
 class _AppLocalizationsDelegate

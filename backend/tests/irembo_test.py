@@ -64,8 +64,8 @@ try:
  assert all(m['staffName']=='Admin' for m in staff['messages'])
  assert {a['actorName'] for a in staff['audit']}=={'Applicant','Admin'}
  req('PUT','/'+manual['id'],{'version':2,'assignedStaffId':'a1','status':'Completed'},user='m1')
- for query in ['?service=Permis&permisOption=Manual&category=B&status=Completed&examLanguage=rw&district=Gasabo&assignedStaffId=a1&sort=updated','?search='+manual['reference'],'?search=Test%20Applicant','?search=0788123456','?assignedStaffId=unassigned','?sort=oldest','?sort=name']:
-  listing=req(path=query,user='m1');assert listing['total']>0 and all('*' in r['nationalId'] for r in listing['items'])
+ for query in ['?service=Permis&permisOption=Manual&category=B&status=Completed&examLanguage=rw&district=Gasabo&assignedStaffId=a1&sort=updated','?search='+manual['nationalId'],'?search=Test%20Applicant','?search=0788123456','?assignedStaffId=unassigned','?sort=oldest','?sort=name']:
+  listing=req(path=query,user='m1');assert listing['total']>0 and all(r['nationalId']=='0123456789012345' for r in listing['items'])
   assert all(r['assignedStaffName']=='Admin' for r in listing['items'] if r['assignedStaffId']=='a1')
  req(path='?sort=sql',user='m1',expected=400)
  req(path='?from=2026-02-01&to=2026-01-01',user='m1',expected=400)
@@ -77,6 +77,14 @@ try:
  assert len(req(path='?page=2',user='m1')['items'])==3
  assert len(req()['items'])==1 # Applicant sees only their single request.
  assert req(user='u2')['total']==0
+ # One request per account per service: Provisoire, Permis Manual and Permis Automatic are separate slots.
+ sql("USE irembo_test; INSERT INTO users (id,fullName,role) VALUES ('slots','Applicant','USER');")
+ req('POST',body=form(),user='slots',expected=201)
+ req('POST',body=form(service='Permis',permisOption='Manual',provisoireCode='001234',category='B'),user='slots',expected=201)
+ req('POST',body=form(service='Permis',permisOption='Automatic',provisoireCode='001234'),user='slots',expected=201)
+ assert len(req(user='slots')['items'])==3
+ req('POST',body=form(fullName='Duplicate'),user='slots',expected=409)
+ req('POST',body=form(service='Permis',permisOption='Automatic',provisoireCode='009999'),user='slots',expected=409)
  # Clear conditional data on service change, preserving historical audit.
  new=req('PUT','/'+automatic['id'],{'version':1,'service':'Provisoire'},user='m1')
  assert new['category'] is None and new['permisOption'] is None and new['provisoireCode'] is None

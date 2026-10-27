@@ -1785,23 +1785,23 @@ class AppLocalizationsRw extends AppLocalizations {
   }
 
   @override
-  String get irTitle => 'Serivisi za Irembo';
+  String get irTitle => 'Serivisi z’irembo';
 
   @override
   String get irAlreadySubmitted =>
-      'Ubusabe bwakiriwe. Ubusabe bumwe kuri konti.';
+      'Ubusabe bwakiriwe. Ubusabe bumwe kuri buri serivisi.';
 
   @override
-  String get irServiceFee => 'Ikiguzi cy’ubufasha bwo kwiyandikisha';
+  String get irServiceFee => 'Kanda hano hasi wishyure aya serivisi';
 
   @override
   String get irPay => 'Ishyura';
 
   @override
-  String get irWorkspace => 'Ubusabe bwa Irembo';
+  String get irWorkspace => 'Ubusabe bw’irembo';
 
   @override
-  String get irMyRequests => 'Ubusabe bwanjye bwa Irembo';
+  String get irMyRequests => 'Ubusabe bwanjye bw’irembo';
 
   @override
   String get irNew => 'Ubusabe bushya';
@@ -1904,7 +1904,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get irCancelled => 'Bwahagaritswe';
 
   @override
-  String get irSearch => 'Shakisha nimero y’ubusabe, amazina cyangwa telefone';
+  String get irSearch => 'Shakisha izina, telefone cyangwa indangamuntu';
 
   @override
   String get irFilters => 'Ibyo ushunguriraho';
@@ -2090,4 +2090,31 @@ class AppLocalizationsRw extends AppLocalizations {
   @override
   String get progressSaved =>
       'Aya ni amanota yabitswe kuri iki gikoresho. Amashya azoherezwa igihe interineti ibonetse.';
+
+  @override
+  String get irDeleteRequest => 'Siba ubusabe';
+
+  @override
+  String get irDeleteConfirm =>
+      'Gusiba burundu ubu busabe n\'ubutumwa bwabwo? Ntibishobora gusubizwa.';
+
+  @override
+  String get irSelectRequest => 'Hitamo ubusabe';
+
+  @override
+  String get irSelectPage => 'Hitamo ubusabe bwose kuri iyi paji';
+
+  @override
+  String get irSelected => 'Byatoranyijwe';
+
+  @override
+  String get irDeleteSelected => 'Siba ibyatoranyijwe';
+
+  @override
+  String get irOfflineSaved =>
+      'Ubu ni ubusabe bwabitswe. Huza interineti kugira ngo uvugurure, wohereze cyangwa usibe ubusabe.';
+
+  @override
+  String get irDeleteUnavailable =>
+      'Gusiba ntibiraboneka kuri seriveri. Vugurura inzira za API n\'igice gishinzwe ubusabe bwa Irembo kuri seriveri, hanyuma wongere ugerageze.';
 }

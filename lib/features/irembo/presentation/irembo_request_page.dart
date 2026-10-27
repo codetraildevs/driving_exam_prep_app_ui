@@ -126,7 +126,7 @@ class _IremboRequestPageState extends State<IremboRequestPage> {
   }
 
   Future<void> _save() async {
-    if (_saving || !_isStaff) return;
+    if (_saving || !_isStaff || _row?['offline'] == true) return;
     final l = AppLocalizations.of(context);
     if (_status != _row!['status'] &&
         ['Needs Information', 'Rejected'].contains(_status) &&
@@ -231,7 +231,7 @@ class _IremboRequestPageState extends State<IremboRequestPage> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final row = _row;
-    final staff = _isStaff;
+    final staff = _isStaff && row?['offline'] != true;
     final names = <String, String>{
       for (final s in _staff) s['id'].toString(): s['name'].toString(),
     };
@@ -244,7 +244,7 @@ class _IremboRequestPageState extends State<IremboRequestPage> {
       'dob',
     ];
     return IremboScaffold(
-      title: row?['reference']?.toString() ?? l.irView,
+      title: row?['service']?.toString() ?? l.irView,
       maxWidth: 800,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -261,6 +261,7 @@ class _IremboRequestPageState extends State<IremboRequestPage> {
             ),
           ),
           if (row != null) ...[
+            if (row['offline'] == true) Text(l.irOfflineSaved),
             Text(
               irValue(l, row['status']),
               style: Theme.of(context).textTheme.headlineSmall,

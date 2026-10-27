@@ -42,7 +42,8 @@ class _HomePageState extends ConsumerState<HomePage>
     _clock = Timer.periodic(const Duration(minutes: 1), (_) {
       if (mounted) {
         setState(() {});
-        if (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
+        if (WidgetsBinding.instance.lifecycleState ==
+            AppLifecycleState.resumed) {
           unawaited(_refresh());
         }
       }
@@ -446,6 +447,11 @@ class _HomePageState extends ConsumerState<HomePage>
                                     'assets/images/practices_image.webp',
                                   'whatsapp' =>
                                     'assets/images/whatsapp_logo.webp',
+                                  'gazette' =>
+                                    'assets/images/Coat _of_arms.jpg',
+                                  'irembo' => 'assets/images/irembo.png',
+                                  'progress' => 'assets/images/progress.png',
+                                  'share' => 'assets/images/share.jpg',
                                   _ => null,
                                 };
                                 final cardColor = switch (item.id) {
@@ -503,7 +509,9 @@ class _HomePageState extends ConsumerState<HomePage>
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Container(
-                                                  width: 36,
+                                                  width: item.id == 'irembo'
+                                                      ? 88
+                                                      : 36,
                                                   height: 36,
                                                   decoration: BoxDecoration(
                                                     color: cardColor.withValues(

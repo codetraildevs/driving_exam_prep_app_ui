@@ -67,7 +67,7 @@ function irList($db, array $actor): array {
         if (trim($search) !== '') {
             // Treat LIKE wildcard characters as literal search text.
             $needle = '%' . str_replace(['!','%','_'], ['!!','!%','!_'], trim($search)) . '%';
-            $where[] = "(r.reference LIKE ? ESCAPE '!' OR r.fullName LIKE ? ESCAPE '!' OR r.phoneNumber LIKE ? ESCAPE '!')";
+            $where[] = "(r.nationalId LIKE ? ESCAPE '!' OR r.fullName LIKE ? ESCAPE '!' OR r.phoneNumber LIKE ? ESCAPE '!')";
             array_push($values, $needle, $needle, $needle);
         }
     }
@@ -89,7 +89,32 @@ function irList($db, array $actor): array {
     $offset = ($page - 1) * 20;
     $limit = $applicant ? '' : " LIMIT 20 OFFSET $offset";
     $rows = irQuery($db, 'SELECT r.*, u.fullName AS assignedStaffName FROM irembo_requests r LEFT JOIN users u ON u.id = r.assignedStaffId' . $condition . ' ORDER BY ' . $orders[$sort] . $limit, $values)->fetchAll(PDO::FETCH_ASSOC);
-    return ['items'=>array_map(function($r) { return irPresent($r); }, $rows), 'total'=>intval($count['total']), 'page'=>$page, 'pageSize'=>$applicant ? intval($count['total']) : 20];
+    return ['items'=>array_map(function($r) use ($actor) { return irPresent($r, irStaff($actor)); }, $rows), 'total'=>intval($count['total']), 'page'=>$page, 'pageSize'=>$applicant ? intval($count['total']) : 20];
+}
+function irDelete($db, array $actor, string $id): array {
+    irDeleteMany($db, $actor, [$id]);
+    return ['deleted'=>true];
+}
+function irDeleteMany($db, array $actor, array $ids): array {
+    if (!irStaff($actor)) irFail('forbidden', 403);
+    if (!$ids || count($ids) > 100) irFail('invalidRequest');
+    foreach ($ids as $id) {
+        if (!is_string($id) || !preg_match('/^[a-f0-9-]{36}$/iD', $id)) irFail('invalidRequest');
+    }
+    $ids = array_values(array_unique($ids));
+    sort($ids); // Stable lock order for concurrent bulk requests.
+    $db->exec('START TRANSACTION');
+    try {
+        foreach ($ids as $id) {
+        // Missing records are already deleted: retries remain safe.
+        irQuery($db, 'SELECT id FROM irembo_requests WHERE id = ? FOR UPDATE', [$id])->fetch(PDO::FETCH_ASSOC);
+        irQuery($db, 'DELETE FROM irembo_messages WHERE requestId = ?', [$id]);
+        irQuery($db, 'DELETE FROM irembo_audit WHERE requestId = ?', [$id]);
+        irQuery($db, 'DELETE FROM irembo_requests WHERE id = ?', [$id]);
+        }
+        $db->exec('COMMIT');
+        return ['deletedIds'=>$ids];
+    } catch (Throwable $e) { $db->exec('ROLLBACK'); throw $e; }
 }
 function irCreate($db, array $actor, array $input): array {
     if ($actor['role'] !== 'USER') irFail('forbidden', 403);
@@ -110,7 +135,9 @@ function irCreate($db, array $actor, array $input): array {
         // Serialize submissions for this account, including different devices/keys.
         $owner = irQuery($db, 'SELECT id, isActive FROM users WHERE id = ? FOR UPDATE', [$actor['id']])->fetch(PDO::FETCH_ASSOC);
         if (!$owner || intval($owner['isActive']) !== 1) irFail('forbidden', 403);
-        $prior = irQuery($db, 'SELECT * FROM irembo_requests WHERE userId = ? ORDER BY createdAt, id LIMIT 1 FOR UPDATE', [$actor['id']])->fetch(PDO::FETCH_ASSOC);
+        // Applicants may submit one request per service: Provisoire, Permis · Manual and Permis · Automatic.
+        $slot = $data['permisOption'] ?? '';
+        $prior = irQuery($db, "SELECT * FROM irembo_requests WHERE userId = ? AND service = ? AND COALESCE(permisOption, '') = ? ORDER BY createdAt, id LIMIT 1 FOR UPDATE", [$actor['id'], $data['service'], $slot])->fetch(PDO::FETCH_ASSOC);
         if ($prior) {
             if ($prior['requestKey'] === $key && hash_equals($prior['payloadHash'], $hash)) {
                 $db->exec('COMMIT');
@@ -183,7 +210,14 @@ function iremboRequests($db, $params): void {
         $actor = irQuery($db, 'SELECT id, role, isActive FROM users WHERE id = ?', [$tokenData['userId'] ?? ''])->fetch(PDO::FETCH_ASSOC);
         if (!$actor || intval($actor['isActive']) !== 1 || !in_array($actor['role'],['USER','MANAGER','ADMIN'],true)) irFail('forbidden',403);
         $method = $_SERVER['REQUEST_METHOD'];
-        if (($params['id'] ?? '') === 'staff') {
+        if ($method === 'POST' && ($params['action'] ?? '') === 'bulk-delete') {
+            $input = getInput();
+            if (!isset($input['ids']) || !is_array($input['ids'])) irFail('invalidRequest');
+            respond(irDeleteMany($db, $actor, $input['ids'])); return;
+        }
+        if ($method === 'POST' && ($params['action'] ?? '') === 'delete') {
+            respond(irDelete($db, $actor, $params['id'])); return;
+        }        if (($params['id'] ?? '') === 'staff') {
             if (!irStaff($actor) || $method !== 'GET') irFail('forbidden',403);
             $rows = irQuery($db, "SELECT id, fullName AS name, role FROM users WHERE role IN ('ADMIN','MANAGER') AND isActive = 1 ORDER BY fullName, id")->fetchAll(PDO::FETCH_ASSOC);
             respond($rows,200); return;
@@ -192,6 +226,7 @@ function iremboRequests($db, $params): void {
         if ($method === 'GET' && !$id) { respond(irList($db,$actor)); return; }
         if ($method === 'POST' && !$id) { respond(irCreate($db,$actor,getInput()),201); return; }
         if ($method === 'PUT' && $id) { respond(irUpdate($db,$actor,$id,getInput())); return; }
+        if ($method === 'DELETE' && $id) { respond(irDelete($db,$actor,$id)); return; }
         if ($method === 'GET' && $id) {
             $row = irGet($db,$id);
             if (!irCanRead($actor,$row)) irFail('notFound',404);
@@ -214,4 +249,13 @@ function iremboRequests($db, $params): void {
         // Never include SQL errors, form data or exception traces in logs/responses.
         ErrorHandler::error('iremboUnavailable',503);
     }
+}
+
+function iremboBulkDelete($db, $params): void {
+    $params['action'] = 'bulk-delete';
+    iremboRequests($db, $params);
+}
+function iremboDeleteRequest($db, $params): void {
+    $params['action'] = 'delete';
+    iremboRequests($db, $params);
 }

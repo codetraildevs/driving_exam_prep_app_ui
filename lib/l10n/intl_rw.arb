@@ -2053,12 +2053,12 @@
       }
     }
   },
-  "irTitle": "Serivisi za Irembo",
-  "irAlreadySubmitted": "Ubusabe bwakiriwe. Ubusabe bumwe kuri konti.",
-  "irServiceFee": "Ikiguzi cy’ubufasha bwo kwiyandikisha",
+  "irTitle": "Serivisi z’irembo",
+  "irAlreadySubmitted": "Ubusabe bwakiriwe. Ubusabe bumwe kuri buri serivisi.",
+  "irServiceFee": "Kanda hano hasi wishyure aya serivisi",
   "irPay": "Ishyura",
-  "irWorkspace": "Ubusabe bwa Irembo",
-  "irMyRequests": "Ubusabe bwanjye bwa Irembo",
+  "irWorkspace": "Ubusabe bw’irembo",
+  "irMyRequests": "Ubusabe bwanjye bw’irembo",
   "irNew": "Ubusabe bushya",
   "irManual": "Manuweli",
   "irAutomatic": "Otomatike",
@@ -2092,7 +2092,7 @@
   "irCompleted": "Bwarangiye",
   "irRejected": "Bwaranzwe",
   "irCancelled": "Bwahagaritswe",
-  "irSearch": "Shakisha nimero y’ubusabe, amazina cyangwa telefone",
+  "irSearch": "Shakisha izina, telefone cyangwa indangamuntu",
   "irFilters": "Ibyo ushunguriraho",
   "irApply": "Shungura",
   "irClear": "Kuraho ibyo ushunguriraho",
@@ -2150,5 +2150,13 @@
   "waIntro": "Twigire hamwe. Hitamo itsinda ubazemo ibibazo kandi musangire inama zo kwiga.",
   "waManageIntro": "Cunga amatsinda yo kwigiramo ahabwa abanyeshuri.",
   "waCached": "Aya ni amatsinda yabitswe. Kwinjira mu itsinda cyangwa kwakira ubutumwa bushya bisaba interineti.",
-  "progressSaved": "Aya ni amanota yabitswe kuri iki gikoresho. Amashya azoherezwa igihe interineti ibonetse."
+  "progressSaved": "Aya ni amanota yabitswe kuri iki gikoresho. Amashya azoherezwa igihe interineti ibonetse.",
+  "irDeleteRequest": "Siba ubusabe",
+  "irDeleteConfirm": "Gusiba burundu ubu busabe n'ubutumwa bwabwo? Ntibishobora gusubizwa.",
+  "irSelectRequest": "Hitamo ubusabe",
+  "irSelectPage": "Hitamo ubusabe bwose kuri iyi paji",
+  "irSelected": "Byatoranyijwe",
+  "irDeleteSelected": "Siba ibyatoranyijwe",
+  "irOfflineSaved": "Ubu ni ubusabe bwabitswe. Huza interineti kugira ngo uvugurure, wohereze cyangwa usibe ubusabe.",
+  "irDeleteUnavailable": "Gusiba ntibiraboneka kuri seriveri. Vugurura inzira za API n'igice gishinzwe ubusabe bwa Irembo kuri seriveri, hanyuma wongere ugerageze."
 }

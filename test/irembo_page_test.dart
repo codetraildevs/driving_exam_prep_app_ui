@@ -19,6 +19,24 @@ class FakeIrembo extends IremboRepository {
   bool failOnce = false;
   bool failList = false;
   bool hasRequest = false;
+  bool failDelete = false;
+  bool offline = false;
+  bool multiple = false;
+  @override
+  Future<void> deleteMany(List<String> ids) async {
+    if (failDelete) throw const IremboFailure('network');
+    deleted.addAll(ids);
+    hasRequest = false;
+  }
+
+  final deleted = <String>[];
+  @override
+  Future<void> delete(String id) async {
+    if (failDelete) throw const IremboFailure('network');
+    deleted.add(id);
+    hasRequest = false;
+  }
+
   Map<String, String>? lastFilters;
   @override
   Future<Map<String, dynamic>> create(Map<String, dynamic> data) async {
@@ -53,8 +71,14 @@ class FakeIrembo extends IremboRepository {
       throw const IremboFailure('iremboSetupRequired', statusCode: 503);
     }
     return {
-      'items': hasRequest ? [record] : [],
-      'total': hasRequest ? 1 : 0,
+      'items': hasRequest
+          ? [
+              record,
+              if (multiple) {...record, 'id': 'r2'},
+            ]
+          : [],
+      'total': hasRequest ? (multiple ? 2 : 1) : 0,
+      'offline': offline,
       'page': 1,
     };
   }
@@ -118,53 +142,187 @@ Future<AuthBloc> app(
 }
 
 void main() {
-  testWidgets(
-    'existing request shows submitted details and keeps the selection usable',
-    (tester) async {
-      final repo = FakeIrembo()..hasRequest = true;
-      repo.record = {
-        ...repo.record,
-        'service': 'Permis',
-        'permisOption': 'Automatic',
-      };
-      await app(tester, IremboPage(repository: repo));
-      final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
-      expect(find.byKey(const ValueKey('irembo-continue')), findsNothing);
-      expect(find.text(l.irAlreadySubmitted), findsOneWidget);
-      // Applicants see the information they submitted, not only a status line.
-      expect(find.text('IR-EXAMPLE'), findsOneWidget);
-      expect(find.text('Driver'), findsOneWidget);
-      expect(find.text('0788123456'), findsOneWidget);
-      expect(find.text('0123456789012345'), findsOneWidget);
-      expect(find.text('${l.irSubmitted}: 2026-10-01'), findsOneWidget);
-      expect(find.text(l.irPending), findsOneWidget);
-      expect(find.text('*182*8*1*644203*5000#'), findsOneWidget);
-      expect(find.byKey(const ValueKey('irembo-copy-payment')), findsOneWidget);
-      // Switching services reacts even though a request already exists.
-      await tester.ensureVisible(
-        find.byKey(const ValueKey('service-provisoire')),
-      );
-      await tester.tap(find.byKey(const ValueKey('service-provisoire')));
+  testWidgets('bulk deletion selects only visible requests and confirms', (
+    tester,
+  ) async {
+    final repo = FakeIrembo()
+      ..hasRequest = true
+      ..multiple = true;
+    await app(
+      tester,
+      IremboPage(manage: true, repository: repo),
+      role: 'ADMIN',
+    );
+    final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
+    await tester.ensureVisible(find.byKey(const ValueKey('select-page')));
+    await tester.tap(find.byKey(const ValueKey('select-page')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('delete-selected')));
+    await tester.pumpAndSettle();
+    expect(repo.deleted, isEmpty);
+    await tester.tap(find.widgetWithText(FilledButton, l.profileDelete));
+    await tester.pumpAndSettle();
+    expect(repo.deleted, ['r1', 'r2']);
+    expect(find.byKey(const ValueKey('row-r1')), findsNothing);
+  });
+  testWidgets('offline applicant keeps requests visible and cannot submit', (
+    tester,
+  ) async {
+    final repo = FakeIrembo()
+      ..hasRequest = true
+      ..offline = true;
+    await app(tester, IremboPage(repository: repo));
+    expect(find.byKey(const ValueKey('irembo-offline')), findsOneWidget);
+    expect(find.text('Driver'), findsOneWidget);
+    expect(
+      tester
+          .widget<FilledButton>(find.byKey(const ValueKey('irembo-continue')))
+          .onPressed,
+      isNull,
+    );
+  });
+  testWidgets('filters apply immediately and clear incompatible options', (
+    tester,
+  ) async {
+    final repo = FakeIrembo();
+    await app(
+      tester,
+      IremboPage(manage: true, repository: repo),
+      role: 'ADMIN',
+      size: const Size(1200, 1000),
+    );
+    final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
+    await tester.tap(find.text(l.irFilters));
+    await tester.pumpAndSettle();
+    Future<void> select(String key, String value) async {
+      final dropdown = find.byKey(ValueKey('$key-${repo.lastFilters?[key]}'));
+      await tester.ensureVisible(dropdown);
+      await tester.tap(dropdown);
       await tester.pumpAndSettle();
-      expect(find.text('*182*8*1*644203*1000#'), findsOneWidget);
-      expect(find.text('*182*8*1*644203*5000#'), findsNothing);
-      await tester.ensureVisible(find.byKey(const ValueKey('service-permis')));
-      await tester.tap(find.byKey(const ValueKey('service-permis')));
+      await tester.tap(find.text(value).last);
       await tester.pumpAndSettle();
-      await tester
-          .tap(find.byKey(const ValueKey('option-automatic')));
-      await tester.pumpAndSettle();
-      expect(find.text('*182*8*1*644203*5000#'), findsOneWidget);
-      expect(
-        tester.getRect(find.byKey(const ValueKey('irembo-pay'))).bottom,
-        lessThan(780),
-      );
-      await tester.ensureVisible(find.byKey(const ValueKey('irembo-view')));
-      await tester.tap(find.byKey(const ValueKey('irembo-view')));
-      await tester.pumpAndSettle();
-      expect(find.byType(IremboRequestPage), findsOneWidget);
-    },
-  );
+    }
+
+    await select('category', 'B');
+    expect(repo.lastFilters?['category'], 'B');
+    await select('permisOption', l.irAutomatic);
+    expect(repo.lastFilters?['category'], isNull);
+    expect(repo.lastFilters?['permisOption'], 'Automatic');
+    await select('service', 'Provisoire');
+    expect(repo.lastFilters?['permisOption'], isNull);
+    expect(repo.lastFilters?['page'], '1');
+    expect(find.byKey(const ValueKey('permisOption-null')), findsNothing);
+    await tester.ensureVisible(find.text(l.irClear));
+    await tester.tap(find.text(l.irClear));
+    await tester.pumpAndSettle();
+    expect(repo.lastFilters, {'search': '', 'page': '1'});
+    expect(tester.takeException(), isNull);
+  });
+  testWidgets('admin cards copy IDs and confirm deletion', (tester) async {
+    final repo = FakeIrembo()..hasRequest = true;
+    String? copied;
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      SystemChannels.platform,
+      (call) async {
+        if (call.method == 'Clipboard.setData') {
+          copied = (call.arguments as Map)['text'] as String;
+        }
+        return null;
+      },
+    );
+    addTearDown(
+      () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        SystemChannels.platform,
+        null,
+      ),
+    );
+    await app(
+      tester,
+      IremboPage(manage: true, repository: repo),
+      role: 'ADMIN',
+    );
+    final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
+    expect(find.byType(DataTable), findsNothing);
+    expect(find.text('IR-EXAMPLE'), findsNothing);
+    final copy = find.byKey(const ValueKey('copy-r1-nationalId'));
+    await tester.ensureVisible(copy);
+    await tester.tap(copy);
+    await tester.pumpAndSettle();
+    expect(copied, '0123456789012345');
+    final remove = find.byKey(const ValueKey('delete-r1'));
+    await tester.ensureVisible(remove);
+    await tester.tap(remove);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(l.commonCancel));
+    await tester.pumpAndSettle();
+    expect(repo.deleted, isEmpty);
+    repo.failDelete = true;
+    await tester.tap(remove);
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FilledButton, l.profileDelete));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('row-r1')), findsOneWidget);
+    expect(repo.deleted, isEmpty);
+    repo.failDelete = false;
+    await tester.tap(remove);
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FilledButton, l.profileDelete));
+    await tester.pumpAndSettle();
+    expect(repo.deleted, ['r1']);
+    expect(find.byKey(const ValueKey('row-r1')), findsNothing);
+  });
+  testWidgets('existing request shows details and blocks only that service', (
+    tester,
+  ) async {
+    final repo = FakeIrembo()..hasRequest = true;
+    repo.record = {
+      ...repo.record,
+      'service': 'Permis',
+      'permisOption': 'Automatic',
+    };
+    await app(tester, IremboPage(repository: repo));
+    final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
+    // Applicants see the information they submitted, with no detail page.
+    expect(find.text('IR-EXAMPLE'), findsNothing);
+    expect(find.text('Driver'), findsOneWidget);
+    expect(find.text('0788123456'), findsOneWidget);
+    expect(find.text('0123456789012345'), findsOneWidget);
+    expect(find.text('${l.irSubmitted}: 2026-10-01'), findsOneWidget);
+    expect(find.text(l.irPending), findsOneWidget);
+    expect(find.byKey(const ValueKey('irembo-view')), findsNothing);
+    // The still-open Provisoire service is preselected and submittable.
+    expect(find.text(l.irAlreadySubmitted), findsNothing);
+    expect(find.byKey(const ValueKey('irembo-continue')), findsOneWidget);
+    expect(find.text('*182*8*1*644209*1000#'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('irembo-copy-payment')),
+      findsOneWidget,
+    ); // Irembo MoMo only: 644209
+    // The submitted Permis · Automatic service shows the received notice.
+    await tester.ensureVisible(find.byKey(const ValueKey('service-permis')));
+    await tester.tap(find.byKey(const ValueKey('service-permis')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('option-automatic')));
+    await tester.pumpAndSettle();
+    expect(find.text(l.irAlreadySubmitted), findsOneWidget);
+    expect(find.byKey(const ValueKey('irembo-continue')), findsNothing);
+    expect(find.text('*182*8*1*644209*5000#'), findsOneWidget);
+    // Permis · Manual is a separate service and stays available.
+    await tester.tap(find.byKey(const ValueKey('option-manual')));
+    await tester.pumpAndSettle();
+    expect(find.text(l.irAlreadySubmitted), findsNothing);
+    expect(find.byKey(const ValueKey('irembo-continue')), findsOneWidget);
+    expect(find.text('*182*8*1*644209*1000#'), findsOneWidget);
+    expect(
+      tester.getRect(find.byKey(const ValueKey('irembo-pay'))).bottom,
+      lessThan(780),
+    );
+    // Continuing opens the registration form for that service.
+    await tester.ensureVisible(find.byKey(const ValueKey('irembo-continue')));
+    await tester.tap(find.byKey(const ValueKey('irembo-continue')));
+    await tester.pumpAndSettle();
+    expect(find.byType(IremboFormPage), findsOneWidget);
+  });
   for (final selection in [
     ('Provisoire', null, 1000),
     ('Permis', 'Manual', 1000),
@@ -210,7 +368,7 @@ void main() {
           body: IremboPaymentBar(service: selection.$1, option: selection.$2),
         ),
       );
-      final code = '*182*8*1*644203*${selection.$3}#';
+      final code = '*182*8*1*644209*${selection.$3}#';
       expect(find.text(code), findsOneWidget);
       await tester.tap(find.byKey(const ValueKey('irembo-copy-payment')));
       await tester.pump();
@@ -485,18 +643,18 @@ void main() {
       });
       await app(
         tester,
-        IremboRequestPage(id: 'r1', manage: true, repository: FakeIrembo()),
+        IremboPage(manage: true, repository: FakeIrembo()..hasRequest = true),
         role: 'ADMIN',
       );
-      final l = AppLocalizations.of(
-        tester.element(find.byType(IremboRequestPage)),
-      );
+      final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
+      expect(find.text(l.irView), findsNothing);
       await tester.ensureVisible(find.text(l.irCall));
       await tester.tap(find.text(l.irCall));
       await tester.pumpAndSettle();
       expect(launched, 'tel:0788123456');
-      await tester.ensureVisible(find.text(l.irCopyAll));
-      await tester.tap(find.text(l.irCopyAll));
+      final copy = find.byKey(const ValueKey('copy-r1-phoneNumber'));
+      await tester.ensureVisible(copy);
+      await tester.tap(copy);
       await tester.pump();
       expect(find.text(l.irCopyFailed), findsOneWidget);
     },

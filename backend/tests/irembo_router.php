@@ -16,6 +16,6 @@ if (getenv('IREMBO_TEST_EMPTY_PASSWORD') === '1') $testPassword = '';
 $conn=new PDO('mysql:host=127.0.0.1;dbname='.$testDatabase.';charset=utf8mb4','root',$testPassword === false ? 'test-password' : $testPassword,[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,PDO::ATTR_EMULATE_PREPARES=>false]);
 foreach(require __DIR__.'/../src/routes.php' as [$method,$path,$handler]) {
  $params=[];
- if($handler==='iremboRequests' && $method===$_SERVER['REQUEST_METHOD'] && matchRoute($path,parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH),$params)){iremboRequests($conn,$params);exit();}
+ if(in_array($handler,['iremboRequests','iremboBulkDelete','iremboDeleteRequest'],true) && $method===$_SERVER['REQUEST_METHOD'] && matchRoute($path,parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH),$params)){call_user_func($handler,$conn,$params);exit();}
 }
 ErrorHandler::notFound();

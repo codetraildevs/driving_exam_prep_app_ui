@@ -5,9 +5,10 @@ import '../../../l10n/generated/app_localizations.dart';
 import 'irembo_widgets.dart';
 
 class IremboPaymentBar extends StatelessWidget {
-  /// MoMo Pay merchant code for Irembo service fees only; the subscription
+  /// MoMo Pay merchant code for Irembo service fees only (644209); the subscription
+  /// page uses the owner destinations in `lib/features/irembo/presentation/payment_config.dart`.
   /// page uses the owner destinations in `lib/config/payment_config.dart`.
-  static const momoPayCode = '644203';
+  static const momoPayCode = '644209';
   final String? service;
   final String? option;
   const IremboPaymentBar({super.key, this.service, this.option});
@@ -19,7 +20,7 @@ class IremboPaymentBar extends StatelessWidget {
     return null;
   }
 
-  /// The exact USSD request the applicant dials, e.g. `*182*8*1*644203*1000#`.
+  /// The exact USSD request the applicant dials, e.g. `*182*8*1*644209*1000#`.
   static String? ussdCode(String? service, String? option) {
     final amount = fee(service, option);
     return amount == null ? null : '*182*8*1*$momoPayCode*$amount#';

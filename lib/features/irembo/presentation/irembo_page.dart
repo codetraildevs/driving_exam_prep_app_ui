@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../data/irembo_repository.dart';
 import 'irembo_widgets.dart';
 import 'irembo_form_page.dart';
-import 'irembo_request_page.dart';
 import 'irembo_payment_bar.dart';
 
 class IremboPage extends StatefulWidget {
@@ -18,6 +18,8 @@ class _IremboPageState extends State<IremboPage> {
   late final IremboRepository _repo = widget.repository ?? IremboRepository();
   final _search = TextEditingController();
   final _filters = <String, String>{};
+  final _selected = <String>{};
+  bool _offline = false;
   List<Map<String, dynamic>> _items = [], _staff = [];
   bool _busy = false, _loaded = false;
   String? _service, _option;
@@ -48,29 +50,54 @@ class _IremboPageState extends State<IremboPage> {
     }
   }
 
+  /// Applicants may submit one request per service slot. A single account can
+  /// still have several requests across Provisoire, Permis · Manual and
+  /// Permis · Automatic, so choosing a service does not block the others.
+  void _preselect() {
+    final used = {
+      for (final row in _items)
+        iremboSlot(row['service'] as String?, row['permisOption'] as String?),
+    };
+    final current = iremboSlot(_service, _option);
+    if (current.isNotEmpty && !used.contains(current)) return;
+    final open = iremboSlots.where((slot) => !used.contains(slot)).toList();
+    final next = (open.isEmpty ? iremboSlots.first : open.first).split('|');
+    _service = next.first;
+    _option = next.length > 1 ? next[1] : null;
+  }
+
+  bool _slotUsed(String? service, String? option) {
+    final slot = iremboSlot(service, option);
+    if (!iremboSlots.contains(slot)) return false;
+    return _items.any(
+      (row) =>
+          iremboSlot(
+            row['service'] as String?,
+            row['permisOption'] as String?,
+          ) ==
+          slot,
+    );
+  }
+
   Future<void> _load() async {
     final revision = ++_revision;
     setState(() {
       _busy = true;
       _error = null;
     });
+    final filters = {
+      ..._filters,
+      if (widget.manage) 'search': _search.text.trim(),
+      if (widget.manage) 'page': '$_page',
+    };
     try {
-      final data = await _repo.list({
-        ..._filters,
-        if (widget.manage) 'search': _search.text.trim(),
-        if (widget.manage) 'page': '$_page',
-      });
+      final cached = await _repo.cachedList(filters);
+      if (!mounted || revision != _revision) return;
+      if (cached != null) setState(() => _setData(cached));
+      final data = await _repo.list(filters);
       if (!mounted || revision != _revision) return;
       setState(() {
-        _items = (data['items'] as List)
-            .map((e) => Map<String, dynamic>.from(e as Map))
-            .toList();
-        _total = int.parse(data['total'].toString());
-        if (!widget.manage && _items.isNotEmpty) {
-          _service = _items.first['service'] as String?;
-          _option = _items.first['permisOption'] as String?;
-        }
-        _loaded = true;
+        _setData(data);
       });
     } catch (e) {
       if (mounted && revision == _revision) {
@@ -81,22 +108,147 @@ class _IremboPageState extends State<IremboPage> {
     }
   }
 
-  Future<void> _open(Map<String, dynamic> row) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute<void>(
-        builder: (_) => IremboRequestPage(
-          id: row['id'],
-          manage: widget.manage,
-          repository: _repo,
+  void _setData(Map<String, dynamic> data) {
+    _items = (data['items'] as List)
+        .map((e) => Map<String, dynamic>.from(e as Map))
+        .toList();
+    _total = int.parse(data['total'].toString());
+    _offline = data['offline'] == true;
+    _selected.clear();
+    if (!widget.manage && _items.isNotEmpty) _preselect();
+    _loaded = true;
+  }
+
+  Future<void> _refresh() async {
+    if (_busy) return;
+    await _load();
+  }
+
+  Future<void> _delete(Map<String, dynamic>? row) async {
+    if (_busy || _offline) return;
+    final ids = row == null ? _selected.toList() : [row['id'].toString()];
+    if (ids.isEmpty) return;
+    final l = AppLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l.irDeleteRequest),
+        content: Text(
+          '${row == null ? '${l.irSelected}: ${ids.length}' : '${row['fullName']} — ${row['service']}'}\n${l.irDeleteConfirm}',
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l.commonCancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l.profileDelete),
+          ),
+        ],
       ),
     );
-    if (mounted) _load();
+    if (confirmed != true || !mounted) return;
+    setState(() => _busy = true);
+    try {
+      if (row == null) {
+        await _repo.deleteMany(ids);
+      } else {
+        await _repo.delete(ids.single);
+      }
+      if (!mounted) return;
+      setState(() {
+        _items.removeWhere((item) => ids.contains(item['id'].toString()));
+        _selected.removeAll(ids);
+        _total = (_total - ids.length).clamp(0, _total);
+      });
+      if (_items.isEmpty && _page > 1) _page--;
+      await _load();
+    } catch (e) {
+      if (mounted) irToast(context, irError(l, e));
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Widget _adminCard(Map<String, dynamic> row, AppLocalizations l) => Card(
+    key: ValueKey('row-${row['id']}'),
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          CheckboxListTile(
+            key: ValueKey('select-${row['id']}'),
+            contentPadding: EdgeInsets.zero,
+            title: Text(l.irSelectRequest),
+            value: _selected.contains(row['id'].toString()),
+            onChanged: _busy || _offline
+                ? null
+                : (value) => setState(() {
+                    if (value == true) {
+                      _selected.add(row['id'].toString());
+                    } else {
+                      _selected.remove(row['id'].toString());
+                    }
+                  }),
+          ),
+          Text(
+            [
+              row['service'],
+              if (row['permisOption'] != null) irValue(l, row['permisOption']),
+              irValue(l, row['status']),
+            ].join(' · '),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 8),
+          IremboDetailsFields(data: row, compact: true, copyable: true),
+          const Divider(),
+          Row(
+            children: [
+              TextButton.icon(
+                onPressed: (row['phoneNumber']?.toString().trim() ?? '').isEmpty
+                    ? null
+                    : () => _call(row),
+                icon: const Icon(Icons.call_outlined),
+                label: Text(l.irCall),
+              ),
+              const Spacer(),
+              IconButton(
+                key: ValueKey('delete-${row['id']}'),
+                tooltip: l.profileDelete,
+                onPressed: _busy || _offline ? null : () => _delete(row),
+                color: Theme.of(context).colorScheme.error,
+                icon: const Icon(Icons.delete_outline),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+
+  Future<void> _call(Map<String, dynamic> row) async {
+    final l = AppLocalizations.of(context);
+    try {
+      if (!await launchUrl(
+        Uri(scheme: 'tel', path: row['phoneNumber'].toString().trim()),
+      )) {
+        throw StateError('call');
+      }
+    } catch (_) {
+      if (mounted) irToast(context, l.irCallFailed);
+    }
   }
 
   Future<void> _create(String service, [String? option]) async {
-    if (!_loaded || _busy || _error != null || _items.isNotEmpty) return;
+    if (!_loaded ||
+        _busy ||
+        _offline ||
+        _error != null ||
+        _slotUsed(service, option)) {
+      return;
+    }
     await Navigator.push<bool>(
       context,
       MaterialPageRoute(
@@ -133,33 +285,48 @@ class _IremboPageState extends State<IremboPage> {
         for (final v in values)
           DropdownMenuItem(value: v, child: Text(names?[v] ?? irValue(l, v))),
       ],
-      onChanged: (v) => setState(() {
-        if (v == null || v.isEmpty) {
-          _filters.remove(key);
-        } else {
-          _filters[key] = v;
-          if (key == 'service' && v == 'Provisoire') {
-            _filters.remove('permisOption');
-            _filters.remove('category');
-          }
-          if (key == 'permisOption' && v == 'Automatic') {
-            _filters.remove('category');
-          }
-        }
-      }),
+      onChanged: _busy
+          ? null
+          : (v) {
+              setState(() {
+                if (v == null || v.isEmpty) {
+                  _filters.remove(key);
+                } else {
+                  _filters[key] = v;
+                  if (key == 'service' && v == 'Provisoire') {
+                    _filters.remove('permisOption');
+                    _filters.remove('category');
+                  }
+                  if (key == 'permisOption' && v == 'Automatic') {
+                    _filters.remove('category');
+                  }
+                }
+                _page = 1;
+              });
+              _load();
+            },
     );
   }
 
   Future<void> _filterDate(String key) async {
     final now = DateTime.now();
+    final first = key == 'to'
+        ? DateTime.tryParse(_filters['from'] ?? '')
+        : null;
+    final last = key == 'from' ? DateTime.tryParse(_filters['to'] ?? '') : null;
+    var initial = DateTime.tryParse(_filters[key] ?? '') ?? now;
+    if (first != null && initial.isBefore(first)) initial = first;
+    if (last != null && initial.isAfter(last)) initial = last;
     final date = await showDatePicker(
       context: context,
-      initialDate: DateTime.tryParse(_filters[key] ?? '') ?? now,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(now.year + 1),
+      initialDate: initial,
+      firstDate: first ?? DateTime(2000),
+      lastDate: last ?? DateTime(now.year + 1),
     );
     if (date != null && mounted) {
       setState(() => _filters[key] = date.toIso8601String().substring(0, 10));
+      _page = 1;
+      _load();
     }
   }
 
@@ -187,25 +354,24 @@ class _IremboPageState extends State<IremboPage> {
                         'Permis',
                       ]),
                     ),
-                    SizedBox(
-                      width: width,
-                      child: _filter('permisOption', l.irOption, [
-                        'Manual',
-                        'Automatic',
-                      ]),
-                    ),
-                    SizedBox(
-                      width: width,
-                      child: _filter('category', l.irCategory, ['A', 'B', 'F']),
-                    ),
-                    SizedBox(
-                      width: width,
-                      child: _filter(
-                        'status',
-                        l.irStatus,
-                        IremboRules.statuses,
+                    if (_filters['service'] != 'Provisoire')
+                      SizedBox(
+                        width: width,
+                        child: _filter('permisOption', l.irOption, [
+                          'Manual',
+                          'Automatic',
+                        ]),
                       ),
-                    ),
+                    if (_filters['service'] != 'Provisoire' &&
+                        _filters['permisOption'] != 'Automatic')
+                      SizedBox(
+                        width: width,
+                        child: _filter('category', l.irCategory, [
+                          'A',
+                          'B',
+                          'F',
+                        ]),
+                      ),
                     SizedBox(
                       width: width,
                       child: _filter('examLanguage', l.irExamLanguage, [
@@ -252,7 +418,7 @@ class _IremboPageState extends State<IremboPage> {
                       SizedBox(
                         width: width,
                         child: OutlinedButton.icon(
-                          onPressed: () => _filterDate(key),
+                          onPressed: _busy ? null : () => _filterDate(key),
                           icon: const Icon(Icons.date_range),
                           label: Text(
                             '${key == 'from' ? l.irFrom : l.irTo}: ${_filters[key] ?? '—'}',
@@ -265,15 +431,6 @@ class _IremboPageState extends State<IremboPage> {
                 Wrap(
                   spacing: 12,
                   children: [
-                    FilledButton(
-                      onPressed: _busy
-                          ? null
-                          : () {
-                              _page = 1;
-                              _load();
-                            },
-                      child: Text(l.irApply),
-                    ),
                     TextButton(
                       onPressed: _busy
                           ? null
@@ -283,7 +440,7 @@ class _IremboPageState extends State<IremboPage> {
                                 _search.clear();
                                 _page = 1;
                               });
-                              _load();
+                              _refresh();
                             },
                       child: Text(l.irClear),
                     ),
@@ -417,7 +574,7 @@ class _IremboPageState extends State<IremboPage> {
         ),
       ],
       const SizedBox(height: 16),
-      if (_items.isNotEmpty)
+      if (_slotUsed(_service, _option))
         Text(l.irAlreadySubmitted, key: const ValueKey('irembo-submitted'))
       else
         FilledButton.icon(
@@ -425,6 +582,7 @@ class _IremboPageState extends State<IremboPage> {
           onPressed:
               !_loaded ||
                   _busy ||
+                  _offline ||
                   _error != null ||
                   _service == null ||
                   (_service == 'Permis' && _option == null)
@@ -453,8 +611,6 @@ class _IremboPageState extends State<IremboPage> {
             const SizedBox(height: 24),
             Text(l.irMyRequests, style: Theme.of(context).textTheme.titleLarge),
           ] else ...[
-            Text(l.irStaffHelp),
-            const SizedBox(height: 16),
             TextField(
               controller: _search,
               decoration: InputDecoration(
@@ -467,7 +623,7 @@ class _IremboPageState extends State<IremboPage> {
                       ? null
                       : () {
                           _page = 1;
-                          _load();
+                          _refresh();
                         },
                   icon: const Icon(Icons.arrow_forward),
                 ),
@@ -484,6 +640,13 @@ class _IremboPageState extends State<IremboPage> {
               children: [
                 for (final status in ['', ...IremboRules.statuses])
                   ChoiceChip(
+                    selectedColor: Theme.of(context).colorScheme.primary,
+                    checkmarkColor: Theme.of(context).colorScheme.onPrimary,
+                    labelStyle: TextStyle(
+                      color: (_filters['status'] ?? '') == status
+                          ? Theme.of(context).colorScheme.onPrimary
+                          : null,
+                    ),
                     label: Text(status.isEmpty ? l.irAll : irValue(l, status)),
                     selected: (_filters['status'] ?? '') == status,
                     onSelected: _busy
@@ -503,8 +666,88 @@ class _IremboPageState extends State<IremboPage> {
               ],
             ),
             Card(child: _filterPanel(l)),
+            if (_filters.isNotEmpty)
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final entry in _filters.entries)
+                    InputChip(
+                      selected: true,
+                      showCheckmark: false,
+                      selectedColor: Theme.of(context).colorScheme.primary,
+                      labelStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                      deleteIconColor: Theme.of(context).colorScheme.onPrimary,
+                      label: Text(
+                        '${switch (entry.key) {
+                          'from' => l.irFrom,
+                          'to' => l.irTo,
+                          'sort' => l.irSort,
+                          _ => irLabel(l, entry.key),
+                        }}: ${entry.key == 'assignedStaffId' ? (entry.value == 'unassigned' ? l.irUnassigned : _staff.where((s) => s['id'] == entry.value).map((s) => s['name']).firstOrNull ?? l.irAssigned) : irValue(l, entry.value)}',
+                      ),
+                      onDeleted: _busy
+                          ? null
+                          : () {
+                              setState(() {
+                                _filters.remove(entry.key);
+                                _page = 1;
+                              });
+                              _load();
+                            },
+                    ),
+                ],
+              ),
           ],
           const SizedBox(height: 16),
+          if (_offline)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Text(
+                l.irOfflineSaved,
+                key: const ValueKey('irembo-offline'),
+              ),
+            ),
+          if (widget.manage && _loaded && _error == null && _items.isNotEmpty)
+            Wrap(
+              spacing: 12,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                FilterChip(
+                  key: const ValueKey('select-page'),
+                  label: Text(l.irSelectPage),
+                  selected: _selected.length == _items.length,
+                  selectedColor: Theme.of(context).colorScheme.primary,
+                  checkmarkColor: Theme.of(context).colorScheme.onPrimary,
+                  labelStyle: TextStyle(
+                    color: _selected.length == _items.length
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : null,
+                  ),
+                  onSelected: _busy || _offline
+                      ? null
+                      : (value) => setState(() {
+                          _selected.clear();
+                          if (value) {
+                            _selected.addAll(
+                              _items.map((r) => r['id'].toString()),
+                            );
+                          }
+                        }),
+                ),
+                Text('${l.irSelected}: ${_selected.length}'),
+                FilledButton.icon(
+                  key: const ValueKey('delete-selected'),
+                  onPressed: _busy || _offline || _selected.isEmpty
+                      ? null
+                      : () => _delete(null),
+                  icon: const Icon(Icons.delete_outline),
+                  label: Text(l.irDeleteSelected),
+                ),
+              ],
+            ),
           Row(
             children: [
               Expanded(
@@ -514,7 +757,7 @@ class _IremboPageState extends State<IremboPage> {
               ),
               IconButton(
                 tooltip: l.irRetry,
-                onPressed: _busy ? null : _load,
+                onPressed: _busy ? null : _refresh,
                 icon: const Icon(Icons.refresh),
               ),
             ],
@@ -535,7 +778,7 @@ class _IremboPageState extends State<IremboPage> {
                     Text(_error!),
                     const SizedBox(height: 12),
                     OutlinedButton.icon(
-                      onPressed: _busy ? null : _load,
+                      onPressed: _busy ? null : _refresh,
                       icon: const Icon(Icons.refresh),
                       label: Text(l.irRetry),
                     ),
@@ -569,7 +812,7 @@ class _IremboPageState extends State<IremboPage> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      row['reference'].toString(),
+                                      row['service'].toString(),
                                       style: Theme.of(
                                         context,
                                       ).textTheme.titleMedium,
@@ -582,16 +825,6 @@ class _IremboPageState extends State<IremboPage> {
                               Text('${l.irSubmitted}: ${row['createdAt']}'),
                               const SizedBox(height: 12),
                               IremboDetailsFields(data: row),
-                              const SizedBox(height: 8),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: OutlinedButton.icon(
-                                  key: const ValueKey('irembo-view'),
-                                  onPressed: () => _open(row),
-                                  icon: const Icon(Icons.visibility_outlined),
-                                  label: Text(l.irView),
-                                ),
-                              ),
                             ],
                           ),
                         ),
@@ -599,69 +832,16 @@ class _IremboPageState extends State<IremboPage> {
                   ],
                 );
               }
-              if (widget.manage && constraints.maxWidth >= 900) {
-                final keys = [
-                  'reference',
-                  'fullName',
-                  'phoneNumber',
-                  'service',
-                  'permisOption',
-                  'category',
-                  'examLanguage',
-                  'district',
-                  'createdAt',
-                  'assignedStaffId',
-                  'status',
-                ];
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    columns: [
-                      for (final key in keys)
-                        DataColumn(label: Text(irLabel(l, key))),
-                      DataColumn(label: Text(l.irView)),
-                    ],
-                    rows: [
-                      for (final row in _items)
-                        DataRow(
-                          cells: [
-                            for (final key in keys)
-                              DataCell(
-                                Text(
-                                  key == 'assignedStaffId'
-                                      ? (row['assignedStaffName'] ??
-                                                l.irUnassigned)
-                                            .toString()
-                                      : irValue(l, row[key]),
-                                ),
-                              ),
-                            DataCell(
-                              IconButton(
-                                tooltip: l.irView,
-                                icon: const Icon(Icons.visibility_outlined),
-                                onPressed: () => _open(row),
-                              ),
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
-                );
-              }
-              return Column(
+              if (!_loaded || _error != null) return const SizedBox.shrink();
+              final width = constraints.maxWidth >= 900
+                  ? (constraints.maxWidth - 16) / 2
+                  : constraints.maxWidth;
+              return Wrap(
+                spacing: 16,
+                runSpacing: 12,
                 children: [
                   for (final row in _items)
-                    Card(
-                      child: ListTile(
-                        isThreeLine: true,
-                        title: Text(row['reference'].toString()),
-                        subtitle: Text(
-                          '${widget.manage ? '${row['fullName']} · ${row['phoneNumber']}\n' : ''}${row['service']} ${row['permisOption'] == null ? '' : '· ${irValue(l, row['permisOption'])}'} · ${irValue(l, row['status'])}\n${row['createdAt']}',
-                        ),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () => _open(row),
-                      ),
-                    ),
+                    SizedBox(width: width, child: _adminCard(row, l)),
                 ],
               );
             },
@@ -678,7 +858,7 @@ class _IremboPageState extends State<IremboPage> {
                       ? null
                       : () {
                           _page--;
-                          _load();
+                          _refresh();
                         },
                   child: Text(l.irPrevious),
                 ),
@@ -688,7 +868,7 @@ class _IremboPageState extends State<IremboPage> {
                       ? null
                       : () {
                           _page++;
-                          _load();
+                          _refresh();
                         },
                   child: Text(l.irNext),
                 ),

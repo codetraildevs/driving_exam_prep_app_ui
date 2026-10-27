@@ -25,8 +25,11 @@ return [
     // Irembo requests (all routes require authentication)
     ['GET', '/api/irembo-requests', 'iremboRequests'],
     ['POST', '/api/irembo-requests', 'iremboRequests'],
+    ['POST', '/api/irembo-requests/bulk-delete', 'iremboBulkDelete'],
+    ['POST', '/api/irembo-requests/:id/delete', 'iremboDeleteRequest'],
     ['GET', '/api/irembo-requests/:id', 'iremboRequests'],
     ['PUT', '/api/irembo-requests/:id', 'iremboRequests'],
+    ['DELETE', '/api/irembo-requests/:id', 'iremboRequests'],
 
     // Users
     ['GET', '/api/users/:id', 'getUser'],

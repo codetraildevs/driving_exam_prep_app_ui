@@ -1762,7 +1762,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irTitle => 'Irembo services';
 
   @override
-  String get irAlreadySubmitted => 'Request received. One request per account.';
+  String get irAlreadySubmitted =>
+      'Request received. One request per service slot.';
 
   @override
   String get irServiceFee => 'Registration assistance fee';
@@ -1787,7 +1788,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get irNotice =>
-      'Get help registering for your exam. Official registration is confirmed separately.';
+      'Get help registering for your exam. Official registration is confirmed separately. You can submit a request for each service you need.';
 
   @override
   String get irFullName => 'Full name';
@@ -1878,7 +1879,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irCancelled => 'Cancelled';
 
   @override
-  String get irSearch => 'Search reference, name or phone';
+  String get irSearch => 'Search name, phone or national ID';
 
   @override
   String get irFilters => 'Filters';
@@ -2063,4 +2064,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get progressSaved =>
       'Showing results saved on this device. New results will sync when connected.';
+
+  @override
+  String get irDeleteRequest => 'Delete request';
+
+  @override
+  String get irDeleteConfirm =>
+      'Permanently delete this request and its messages? This cannot be undone.';
+
+  @override
+  String get irSelectRequest => 'Select request';
+
+  @override
+  String get irSelectPage => 'Select this page';
+
+  @override
+  String get irSelected => 'Selected';
+
+  @override
+  String get irDeleteSelected => 'Delete selected';
+
+  @override
+  String get irOfflineSaved =>
+      'Showing saved requests. Connect to the internet to refresh, submit or delete requests.';
+
+  @override
+  String get irDeleteUnavailable =>
+      'Deletion is unavailable on this server. Update the Irembo backend routes and handler, then retry.';
 }

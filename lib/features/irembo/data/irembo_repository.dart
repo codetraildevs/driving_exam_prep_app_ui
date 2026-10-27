@@ -1,20 +1,169 @@
 import 'dart:math';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../shared/network/api_helper.dart';
+import '../../../shared/network/offline_cache.dart';
+import '../../../shared/session/auth_session.dart';
 
 class IremboRepository {
-  final ApiHelper _api = ApiHelper();
+  final ApiHelper _api;
+  IremboRepository({ApiHelper? api}) : _api = api ?? ApiHelper();
+  final _cache = OfflineCache();
+  Future<void> _invalidate() async {
+    final scope = await _scope();
+    if (scope == null) return;
+    final prefs = await SharedPreferences.getInstance();
+    for (final key in prefs.getKeys().where(
+      (k) => k.startsWith('offline_cache_${scope}_'),
+    )) {
+      await prefs.remove(key);
+    }
+  }
+
+  Future<String?> _scope() async {
+    final user = await AuthSession().getUser();
+    return user == null ? null : 'irembo_${user.id}_${user.role}';
+  }
+
+  String _listKey(String scope, Map<String, String> filters) {
+    final keys = filters.keys.toList()..sort();
+    return '${scope}_list_${jsonEncode({for (final key in keys) key: filters[key]})}';
+  }
+
+  Future<Map<String, dynamic>?> cachedList(Map<String, String> filters) async {
+    final scope = await _scope();
+    if (scope == null) return null;
+    final data = await _cache.load(_listKey(scope, filters));
+    return data is Map
+        ? {...Map<String, dynamic>.from(data), 'offline': true}
+        : null;
+  }
+
+  Future<Map<String, dynamic>> _read(
+    String endpoint,
+    String key,
+    String? scope, {
+    Map<String, String>? filters,
+  }) async {
+    final response = await _api.get(endpoint, queryParams: filters);
+    if (scope != await _scope()) {
+      throw const IremboFailure('forbidden', statusCode: 403);
+    }
+    if (response.isSuccess) {
+      final data = _map(response);
+      if (scope != null) {
+        try {
+          await _cache.save(key, data);
+        } catch (_) {
+          /* Online reads still succeed. */
+        }
+      }
+      return data;
+    }
+    if (scope != null &&
+        (response.statusCode == 0 || response.statusCode >= 500)) {
+      final cached = await _cache.load(key);
+      if (cached is Map) {
+        return {...Map<String, dynamic>.from(cached), 'offline': true};
+      }
+    }
+    if (scope != null && [401, 403].contains(response.statusCode)) {
+      await _invalidate();
+    } else if (scope != null && response.statusCode == 404) {
+      await _cache.remove(key);
+    }
+    return _map(response);
+  }
+
   static const path = '/api/irembo-requests';
-  Future<Map<String, dynamic>> list(Map<String, String> filters) async =>
-      _map(await _api.get(path, queryParams: filters));
-  Future<Map<String, dynamic>> get(String id) async =>
-      _map(await _api.get('$path/${Uri.encodeComponent(id)}'));
-  Future<Map<String, dynamic>> create(Map<String, dynamic> data) async =>
-      _map(await _api.post(path, body: data));
+  Future<Map<String, dynamic>> list(Map<String, String> filters) async {
+    final scope = await _scope();
+    return _read(path, _listKey(scope ?? '', filters), scope, filters: filters);
+  }
+
+  Future<Map<String, dynamic>> get(String id) async {
+    final scope = await _scope();
+    return _read(
+      '$path/${Uri.encodeComponent(id)}',
+      '${scope}_detail_$id',
+      scope,
+    );
+  }
+
+  Future<void> delete(String id) async {
+    var response = await _api.delete('$path/${Uri.encodeComponent(id)}');
+    if ([404, 405].contains(response.statusCode)) {
+      response = await _api.post('$path/${Uri.encodeComponent(id)}/delete');
+    }
+    if (!response.isSuccess) {
+      throw IremboFailure(
+        response.statusCode == 404
+            ? 'iremboDeleteUnavailable'
+            : response.errorMessage ?? 'iremboUnavailable',
+        statusCode: response.statusCode,
+      );
+    }
+    await _invalidate();
+  }
+
+  Future<void> deleteMany(List<String> ids) async {
+    final response = await _api.post('$path/bulk-delete', body: {'ids': ids});
+    if (!response.isSuccess) {
+      throw IremboFailure(
+        response.statusCode == 404
+            ? 'iremboDeleteUnavailable'
+            : response.errorMessage ?? 'iremboUnavailable',
+        statusCode: response.statusCode,
+      );
+    }
+    await _invalidate();
+  }
+
+  Future<Map<String, dynamic>> _remember(
+    Map<String, dynamic> row,
+    String? scope,
+  ) async {
+    if (scope != await _scope()) {
+      throw const IremboFailure('forbidden', statusCode: 403);
+    }
+    if (scope == null) return row;
+    try {
+      final previous = await cachedList({});
+      await _invalidate();
+      await _cache.save('${scope}_detail_${row['id']}', row);
+      if (scope.endsWith('_USER')) {
+        final items =
+            (previous?['items'] as List? ?? [])
+                .where((r) => r['id'] != row['id'])
+                .toList()
+              ..add(row);
+        await _cache.save(_listKey(scope, {}), {
+          'items': items,
+          'total': items.length,
+        });
+      }
+    } catch (_) {
+      /* A successful submission must not fail due to local storage. */
+    }
+    return row;
+  }
+
+  Future<Map<String, dynamic>> create(Map<String, dynamic> data) async {
+    final scope = await _scope();
+    return _remember(_map(await _api.post(path, body: data)), scope);
+  }
+
   Future<Map<String, dynamic>> update(
     String id,
     Map<String, dynamic> data,
-  ) async =>
-      _map(await _api.put('$path/${Uri.encodeComponent(id)}', body: data));
+  ) async {
+    final scope = await _scope();
+    return _remember(
+      _map(await _api.put('$path/${Uri.encodeComponent(id)}', body: data)),
+      scope,
+    );
+  }
+
   Future<List<Map<String, dynamic>>> staff() async {
     final response = await _api.get('$path/staff');
     if (!response.isSuccess) {

@@ -54,7 +54,8 @@ try {
     check(request('POST','',$form,'u1',201)['id'] === $created['id'], 'Retry deduplication');
     $duplicate = array_merge($form, ['requestKey'=>'22222222-2222-4222-8222-222222222222']);
     request('POST','',$duplicate,'u1',409);
-    request('POST','',array_merge($duplicate,['service'=>'Permis','permisOption'=>'Automatic','provisoireCode'=>'12345']),'u1',409);
+    $otherSlot = request('POST','',array_merge($duplicate,['service'=>'Permis','permisOption'=>'Automatic','provisoireCode'=>'12345']),'u1',201);
+    request('DELETE','/'.$otherSlot['id'],null,'m1');
     check(request('GET')['total'] === 1, 'Applicant list after submission');
     check(request('GET','',null,'u2')['total'] === 0, 'Applicant isolation');
     $path = '/' . $created['id'];
@@ -71,6 +72,7 @@ try {
     check(count($own['messages']) === 1 && !isset($own['audit']), 'Applicant message privacy');
     // Separate PHP processes use independent connections, unlike the single-threaded HTTP harness.
     $workerCode = <<<'PHP'
+class Env { public static function get($key, $default = null) { return $default; } }
 require $argv[1].'/../src/helpers.php';
 require $argv[1].'/../src/SecurityUtils.php';
 require $argv[1].'/../src/handlers/irembo.php';
@@ -108,6 +110,31 @@ PHP;
     check(array_column(request('GET','/staff',null,'a1'),'name') === ['Admin'], 'Inactive staff excluded');
     request('PUT',$path,['version'=>2,'assignedStaffId'=>'m1'],'a1',400);
     request('GET','',null,'missing-user',403);
+    check($list['items'][0]['nationalId'] === $form['nationalId'], 'Staff cards receive full ID for copying');
+    check(strpos(request('GET')['items'][0]['nationalId'], '*') !== false, 'Applicant list remains masked');
+    check(request('GET','?search='.$form['nationalId'],null,'a1')['total'] > 0, 'National ID search');
+    request('DELETE',$path,null,'u1',403);
+    request('DELETE',$path,null,'m1',403);
+    request('DELETE',$path,null,'a1');
+    request('GET',$path,null,'a1',404);
+    request('DELETE',$path,null,'a1'); // Safe retry after a lost response.
+    request('POST',$path.'/delete',null,'a1');
+    $second = request('POST','',$form,'u1',201);
+    $other = request('GET','',null,'u2')['items'][0];
+    $ids = [$second['id'], $other['id']];
+    request('POST','/bulk-delete',['ids'=>$ids],'u1',403);
+    request('POST','/bulk-delete',['ids'=>[]],'a1',400);
+    request('POST','/bulk-delete',['ids'=>[$second['id'],'invalid']],'a1',400);
+    request('GET','/'.$second['id'],null,'a1');
+    $removed = request('POST','/bulk-delete',['ids'=>$ids],'a1');
+    check(count($removed['deletedIds']) === 2, 'Bulk deletion response');
+    request('POST','/bulk-delete',['ids'=>$ids],'a1');
+    check(request('GET','',null,'a1')['total'] === 0, 'Bulk deletion removed all selected requests');
+    foreach (['irembo_messages','irembo_audit'] as $table) {
+        $statement = $db->prepare("SELECT COUNT(*) FROM $table WHERE requestId = ?");
+        $statement->execute([$created['id']]);
+        check(intval($statement->fetchColumn()) === 0, 'Deleted dependent records');
+    }
     echo "PASS: real users schema; single submission per account, retry, lists, assignment, messages, audit and privacy\n";
 } finally {
     if (is_resource($server)) { proc_terminate($server); proc_close($server); }

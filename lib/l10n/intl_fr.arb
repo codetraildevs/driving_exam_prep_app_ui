@@ -2054,7 +2054,7 @@
     }
   },
   "irTitle": "Services Irembo",
-  "irAlreadySubmitted": "Demande reçue. Une seule demande par compte.",
+  "irAlreadySubmitted": "Demande reçue. Une seule demande par service.",
   "irServiceFee": "Frais d’aide à l’inscription",
   "irPay": "Payer",
   "irWorkspace": "Demandes Irembo",
@@ -2092,7 +2092,7 @@
   "irCompleted": "Terminée",
   "irRejected": "Rejetée",
   "irCancelled": "Annulée",
-  "irSearch": "Rechercher référence, nom ou téléphone",
+  "irSearch": "Rechercher par nom, téléphone ou ID",
   "irFilters": "Filtres",
   "irApply": "Appliquer les filtres",
   "irClear": "Effacer les filtres",
@@ -2150,5 +2150,13 @@
   "waIntro": "Apprenez ensemble. Choisissez un groupe pour poser des questions et partager des conseils.",
   "waManageIntro": "Gérez les groupes d’étude proposés aux élèves.",
   "waCached": "Groupes enregistrés affichés. Une connexion est nécessaire pour rejoindre un groupe ou recevoir des messages.",
-  "progressSaved": "Résultats enregistrés sur cet appareil. Les nouveaux résultats seront synchronisés à la connexion."
+  "progressSaved": "Résultats enregistrés sur cet appareil. Les nouveaux résultats seront synchronisés à la connexion.",
+  "irDeleteRequest": "Supprimer la demande",
+  "irDeleteConfirm": "Supprimer définitivement cette demande et ses messages ? Cette action est irréversible.",
+  "irSelectRequest": "Sélectionner la demande",
+  "irSelectPage": "Sélectionner cette page",
+  "irSelected": "Sélectionnées",
+  "irDeleteSelected": "Supprimer la sélection",
+  "irOfflineSaved": "Demandes enregistrées. Connectez-vous à Internet pour actualiser, envoyer ou supprimer des demandes.",
+  "irDeleteUnavailable": "La suppression est indisponible sur ce serveur. Mettez à jour les routes et le gestionnaire Irembo, puis réessayez."
 }

@@ -5,14 +5,23 @@ This is an internal service-request module. Its service-fee button opens the pho
 ## Confirmed policies
 - Admins and managers can view/process all requests and assign/reassign to active staff.
 - Only USER accounts create requests; applicants see only their own requests and applicant-visible messages.
-- One request per account across all services. Reopening the form or changing devices cannot create another request. Existing duplicate records are preserved for staff; the applicant page lists the submitted details (reference, full name, phone, national ID as returned by the server, service, option, category, exam language, district and dates) and opens the full request, including applicant-visible messages.
-- The applicant page keeps the service/option selection interactive, so the fee and USSD code follow the current selection even when a request already exists. Only submission stays limited to one request per account.
+- One request per account per service: Provisoire, Permis · Manual and Permis · Automatic are separate slots, so an applicant can submit all three. Reopening a form or changing devices cannot create a second request for the same service. The applicant page lists the submitted details (reference, full name, phone, national ID as returned by the server, service, option, category, exam language, district and dates) without a detail-page button.
+- The applicant page keeps the service/option selection interactive, so the fee and USSD code follow the current selection. A service that is already submitted shows the received notice instead of the continue button, and the page preselects a service that is still open when one exists.
 - A fixed payment bar stays visible on the applicant page and registration form. Provisoire and Permis Manual cost 1,000 RWF; Permis Automatic costs 5,000 RWF. The bar shows the full USSD request, `*182*8*1*644203*1000#` or `*182*8*1*644203*5000#`, with a copy icon underneath the pay button, and the pay button dials that exact code. `644203` is the MoMo Pay merchant code for Irembo service fees only and is separate from the subscription destinations in `lib/config/payment_config.dart`. Opening the dialer does not mark a request paid.
 - National ID is exactly 16 digits, kept as text. Full national ID/provisoire code are returned only to authorized staff; list responses mask them.
 - Provisoire has no category/code/option; Permis Manual requires exactly A, B or F; Automatic is fixed to A. Server and client validate and clear conditional values.
 - Only the supplied 24 districts are accepted. Preferred dates are requests, not confirmed bookings.
 
 ## Server deployment
+### Delete HTTP 404, bulk deletion and offline reading
+Deploy **both** `backend/src/routes.php` and `backend/src/handlers/irembo.php` together, then rebuild the Flutter app. A Flutter-only update cannot add a missing server endpoint. The runtime database account also needs DELETE privileges on `irembo_requests`, `irembo_messages`, and `irembo_audit`. No new migration is required.
+
+The app tries DELETE `/api/irembo-requests/{id}` and falls back on HTTP 404/405 to POST `/api/irembo-requests/{id}/delete`. Both endpoints authorize the current database role, remove dependent messages/audit rows in a transaction, and accept retries when a record has already been deleted. POST `/api/irembo-requests/bulk-delete` accepts `{"ids":["uuid", "uuid"]}` (1–100 IDs), authorizes ADMIN/MANAGER, validates all IDs before deleting, and commits the entire batch atomically. The UI selects individual requests or the current page; changing the result set clears selection. No deletion is queued offline.
+
+Request lists are cached by account, role, filters and page. Previously loaded detail pages can also be read offline. Lists show saved data immediately while refreshing and fall back to saved data for network timeouts/server outages, with an offline notice. Submission and deletion require a server connection. A first visit without saved data cannot show requests. Authorization failures do not fall back to cached data; logout clears Irembo caches. The cache does not fix a server timeout or missing route: investigate hosting/database latency if GET timeouts continue after deployment.
+
+Verify with `php backend/tests/irembo_schema_test.php` against a disposable local database and `flutter test test/irembo_test.dart test/irembo_page_test.dart test/irembo_offline_test.dart`. Never deploy test files.
+
 Back up your database and existing backend files first. Run `backend/migrations/20261026_irembo.sql` in the **existing application database** using cPanel/phpMyAdmin. It adds three InnoDB tables and does not alter exam or user tables. Runtime credentials need SELECT/INSERT/UPDATE on the new tables; DDL can be run with your deployment account.
 
 Upload, retaining folder structure:

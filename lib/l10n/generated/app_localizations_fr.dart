@@ -1797,7 +1797,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get irAlreadySubmitted =>
-      'Demande reçue. Une seule demande par compte.';
+      'Demande reçue. Une seule demande par service.';
 
   @override
   String get irServiceFee => 'Frais d’aide à l’inscription';
@@ -1913,7 +1913,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get irCancelled => 'Annulée';
 
   @override
-  String get irSearch => 'Rechercher référence, nom ou téléphone';
+  String get irSearch => 'Rechercher par nom, téléphone ou ID';
 
   @override
   String get irFilters => 'Filtres';
@@ -2097,4 +2097,31 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get progressSaved =>
       'Résultats enregistrés sur cet appareil. Les nouveaux résultats seront synchronisés à la connexion.';
+
+  @override
+  String get irDeleteRequest => 'Supprimer la demande';
+
+  @override
+  String get irDeleteConfirm =>
+      'Supprimer définitivement cette demande et ses messages ? Cette action est irréversible.';
+
+  @override
+  String get irSelectRequest => 'Sélectionner la demande';
+
+  @override
+  String get irSelectPage => 'Sélectionner cette page';
+
+  @override
+  String get irSelected => 'Sélectionnées';
+
+  @override
+  String get irDeleteSelected => 'Supprimer la sélection';
+
+  @override
+  String get irOfflineSaved =>
+      'Demandes enregistrées. Connectez-vous à Internet pour actualiser, envoyer ou supprimer des demandes.';
+
+  @override
+  String get irDeleteUnavailable =>
+      'La suppression est indisponible sur ce serveur. Mettez à jour les routes et le gestionnaire Irembo, puis réessayez.';
 }
