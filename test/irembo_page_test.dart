@@ -118,28 +118,53 @@ Future<AuthBloc> app(
 }
 
 void main() {
-  testWidgets('existing request has status only and no second registration', (
-    tester,
-  ) async {
-    final repo = FakeIrembo()..hasRequest = true;
-    repo.record = {
-      ...repo.record,
-      'service': 'Permis',
-      'permisOption': 'Automatic',
-    };
-    await app(tester, IremboPage(repository: repo));
-    final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
-    expect(find.byKey(const ValueKey('irembo-continue')), findsNothing);
-    expect(find.text(l.irAlreadySubmitted), findsOneWidget);
-    expect(find.text('IR-EXAMPLE'), findsNothing);
-    expect(find.text('0123456789012345'), findsNothing);
-    expect(find.text(l.irView), findsNothing);
-    expect(find.text('*182*8*1*644203*5000#'), findsOneWidget);
-    expect(
-      tester.getRect(find.byKey(const ValueKey('irembo-pay'))).bottom,
-      lessThan(780),
-    );
-  });
+  testWidgets(
+    'existing request shows submitted details and keeps the selection usable',
+    (tester) async {
+      final repo = FakeIrembo()..hasRequest = true;
+      repo.record = {
+        ...repo.record,
+        'service': 'Permis',
+        'permisOption': 'Automatic',
+      };
+      await app(tester, IremboPage(repository: repo));
+      final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
+      expect(find.byKey(const ValueKey('irembo-continue')), findsNothing);
+      expect(find.text(l.irAlreadySubmitted), findsOneWidget);
+      // Applicants see the information they submitted, not only a status line.
+      expect(find.text('IR-EXAMPLE'), findsOneWidget);
+      expect(find.text('Driver'), findsOneWidget);
+      expect(find.text('0788123456'), findsOneWidget);
+      expect(find.text('0123456789012345'), findsOneWidget);
+      expect(find.text('${l.irSubmitted}: 2026-10-01'), findsOneWidget);
+      expect(find.text(l.irPending), findsOneWidget);
+      expect(find.text('*182*8*1*644203*5000#'), findsOneWidget);
+      expect(find.byKey(const ValueKey('irembo-copy-payment')), findsOneWidget);
+      // Switching services reacts even though a request already exists.
+      await tester.ensureVisible(
+        find.byKey(const ValueKey('service-provisoire')),
+      );
+      await tester.tap(find.byKey(const ValueKey('service-provisoire')));
+      await tester.pumpAndSettle();
+      expect(find.text('*182*8*1*644203*1000#'), findsOneWidget);
+      expect(find.text('*182*8*1*644203*5000#'), findsNothing);
+      await tester.ensureVisible(find.byKey(const ValueKey('service-permis')));
+      await tester.tap(find.byKey(const ValueKey('service-permis')));
+      await tester.pumpAndSettle();
+      await tester
+          .tap(find.byKey(const ValueKey('option-automatic')));
+      await tester.pumpAndSettle();
+      expect(find.text('*182*8*1*644203*5000#'), findsOneWidget);
+      expect(
+        tester.getRect(find.byKey(const ValueKey('irembo-pay'))).bottom,
+        lessThan(780),
+      );
+      await tester.ensureVisible(find.byKey(const ValueKey('irembo-view')));
+      await tester.tap(find.byKey(const ValueKey('irembo-view')));
+      await tester.pumpAndSettle();
+      expect(find.byType(IremboRequestPage), findsOneWidget);
+    },
+  );
   for (final selection in [
     ('Provisoire', null, 1000),
     ('Permis', 'Manual', 1000),
@@ -149,6 +174,7 @@ void main() {
       tester,
     ) async {
       String? launched;
+      String? copied;
       const channel = MethodChannel('plugins.flutter.io/url_launcher');
       tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, (
         call,
@@ -159,25 +185,40 @@ void main() {
         }
         return null;
       });
-      addTearDown(
-        () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        SystemChannels.platform,
+        (call) async {
+          if (call.method == 'Clipboard.setData') {
+            copied = call.arguments['text'];
+          }
+          return null;
+        },
+      );
+      addTearDown(() {
+        tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
           channel,
           null,
-        ),
-      );
+        );
+        tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          SystemChannels.platform,
+          null,
+        );
+      });
       await app(
         tester,
         Scaffold(
           body: IremboPaymentBar(service: selection.$1, option: selection.$2),
         ),
       );
+      final code = '*182*8*1*644203*${selection.$3}#';
+      expect(find.text(code), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('irembo-copy-payment')));
+      await tester.pump();
+      expect(copied, code);
       await tester.tap(find.byKey(const ValueKey('irembo-pay')));
       await tester.pumpAndSettle();
       expect(Uri.parse(launched!).scheme, 'tel');
-      expect(
-        Uri.decodeComponent(Uri.parse(launched!).path),
-        '*182*8*1*644203*${selection.$3}#',
-      );
+      expect(Uri.decodeComponent(Uri.parse(launched!).path), code);
       expect(Uri.parse(launched!).fragment, isEmpty);
     });
   }

@@ -19,11 +19,37 @@ class IremboPaymentBar extends StatelessWidget {
     return null;
   }
 
+  /// The exact USSD request the applicant dials, e.g. `*182*8*1*644203*1000#`.
+  static String? ussdCode(String? service, String? option) {
+    final amount = fee(service, option);
+    return amount == null ? null : '*182*8*1*$momoPayCode*$amount#';
+  }
+
+  Future<void> _dial(BuildContext context, String code) async {
+    final l = AppLocalizations.of(context);
+    try {
+      final opened = await launchUrl(Uri(scheme: 'tel', path: code));
+      if (!opened && context.mounted) irToast(context, l.irCallFailed);
+    } catch (_) {
+      if (context.mounted) irToast(context, l.irCallFailed);
+    }
+  }
+
+  Future<void> _copy(BuildContext context, String code) async {
+    final l = AppLocalizations.of(context);
+    try {
+      await Clipboard.setData(ClipboardData(text: code));
+      if (context.mounted) irToast(context, l.irCopied);
+    } catch (_) {
+      if (context.mounted) irToast(context, l.irCopyFailed);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final amount = fee(service, option);
-    final code = amount == null ? null : '*182*8*1*$momoPayCode*$amount#';
+    final code = ussdCode(service, option);
     return Material(
       elevation: 8,
       color: Theme.of(context).colorScheme.surface,
@@ -33,53 +59,59 @@ class IremboPaymentBar extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                l.irServiceFee,
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
-              const SizedBox(height: 6),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  key: const ValueKey('irembo-pay'),
-                  icon: const Icon(Icons.phone_outlined),
-                  label: Text(
-                    amount == null
-                        ? l.irChooseService
-                        : '${l.irPay} · $amount RWF',
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      l.irServiceFee,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
                   ),
-                  onPressed: code == null
-                      ? null
-                      : () async {
-                          try {
-                            final opened = await launchUrl(
-                              Uri(scheme: 'tel', path: code),
-                            );
-                            if (!opened && context.mounted) {
-                              irToast(context, l.irCallFailed);
-                            }
-                          } catch (_) {
-                            if (context.mounted) {
-                              irToast(context, l.irCallFailed);
-                            }
-                          }
-                        },
-                ),
+                  if (amount != null)
+                    Text(
+                      '$amount RWF',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                ],
               ),
-              if (code != null)
-                TextButton(
-                  key: const ValueKey('irembo-copy-payment'),
-                  onPressed: () async {
-                    try {
-                      await Clipboard.setData(ClipboardData(text: code));
-                      if (context.mounted) irToast(context, l.irCopied);
-                    } catch (_) {
-                      if (context.mounted) irToast(context, l.irCopyFailed);
-                    }
-                  },
-                  child: Text(code),
+              const SizedBox(height: 8),
+              FilledButton.icon(
+                key: const ValueKey('irembo-pay'),
+                icon: const Icon(Icons.phone_outlined),
+                label: Text(
+                  amount == null
+                      ? l.irChooseService
+                      : '${l.irPay} · $amount RWF',
                 ),
+                onPressed: code == null ? null : () => _dial(context, code),
+              ),
+              if (code != null) ...[
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SelectableText(
+                        code,
+                        key: const ValueKey('irembo-payment-code'),
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    IconButton(
+                      key: const ValueKey('irembo-copy-payment'),
+                      tooltip: l.irCopy,
+                      onPressed: () => _copy(context, code),
+                      icon: const Icon(Icons.copy_outlined, size: 20),
+                      constraints: const BoxConstraints(
+                        minWidth: 48,
+                        minHeight: 48,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ],
           ),
         ),

@@ -372,12 +372,10 @@ class _IremboPageState extends State<IremboPage> {
                   'Provisoire',
                   Icons.assignment_outlined,
                   _service == 'Provisoire',
-                  _items.isNotEmpty
-                      ? null
-                      : () => setState(() {
-                          _service = 'Provisoire';
-                          _option = null;
-                        }),
+                  () => setState(() {
+                    _service = 'Provisoire';
+                    _option = null;
+                  }),
                 ),
               ),
               SizedBox(
@@ -387,11 +385,9 @@ class _IremboPageState extends State<IremboPage> {
                   'Permis',
                   Icons.directions_car_outlined,
                   _service == 'Permis',
-                  _items.isNotEmpty
-                      ? null
-                      : () => setState(() {
-                          _service = 'Permis';
-                        }),
+                  () => setState(() {
+                    _service = 'Permis';
+                  }),
                 ),
               ),
             ],
@@ -409,23 +405,21 @@ class _IremboPageState extends State<IremboPage> {
               key: const ValueKey('option-manual'),
               label: Text(l.irManual),
               selected: _option == 'Manual',
-              onSelected: _items.isNotEmpty
-                  ? null
-                  : (_) => setState(() => _option = 'Manual'),
+              onSelected: (_) => setState(() => _option = 'Manual'),
             ),
             ChoiceChip(
               key: const ValueKey('option-automatic'),
               label: Text(l.irAutomatic),
               selected: _option == 'Automatic',
-              onSelected: _items.isNotEmpty
-                  ? null
-                  : (_) => setState(() => _option = 'Automatic'),
+              onSelected: (_) => setState(() => _option = 'Automatic'),
             ),
           ],
         ),
       ],
       const SizedBox(height: 16),
-      if (_items.isEmpty)
+      if (_items.isNotEmpty)
+        Text(l.irAlreadySubmitted, key: const ValueKey('irembo-submitted'))
+      else
         FilledButton.icon(
           key: const ValueKey('irembo-continue'),
           onPressed:
@@ -560,20 +554,49 @@ class _IremboPageState extends State<IremboPage> {
                 if (!_loaded || _error != null || _items.isEmpty) {
                   return const SizedBox.shrink();
                 }
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(l.irAlreadySubmitted),
-                        const SizedBox(height: 8),
-                        Text(
-                          '${l.irStatus}: ${irValue(l, _items.first['status'])}',
+                // Applicants see what they submitted, not just a status line.
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (final row in _items)
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      row['reference'].toString(),
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.titleMedium,
+                                    ),
+                                  ),
+                                  Text(irValue(l, row['status'])),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Text('${l.irSubmitted}: ${row['createdAt']}'),
+                              const SizedBox(height: 12),
+                              IremboDetailsFields(data: row),
+                              const SizedBox(height: 8),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: OutlinedButton.icon(
+                                  key: const ValueKey('irembo-view'),
+                                  onPressed: () => _open(row),
+                                  icon: const Icon(Icons.visibility_outlined),
+                                  label: Text(l.irView),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
+                      ),
+                  ],
                 );
               }
               if (widget.manage && constraints.maxWidth >= 900) {
