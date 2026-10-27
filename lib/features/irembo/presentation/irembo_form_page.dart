@@ -5,6 +5,7 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../../auth/presentation/bloc/auth_bloc.dart';
 import '../data/irembo_repository.dart';
 import 'irembo_widgets.dart';
+import 'irembo_payment_bar.dart';
 
 class IremboFormPage extends StatefulWidget {
   final String service;
@@ -29,7 +30,7 @@ class _IremboFormPageState extends State<IremboFormPage> {
   late final String _key = IremboRepository.newKey();
   late String _service;
   String? _option, _category, _language, _district;
-  bool _review = false, _busy = false;
+  bool _busy = false, _submitted = false;
   String? _error;
   @override
   void initState() {
@@ -168,7 +169,13 @@ class _IremboFormPageState extends State<IremboFormPage> {
   }
 
   Future<void> _save() async {
-    if (_busy) return;
+    if (_busy || _submitted) return;
+    final valid = _form.currentState!.validate();
+    if (!valid || IremboRules.validate(_data()) != null) {
+      setState(() => _error = AppLocalizations.of(context).irInvalid);
+      return;
+    }
+    FocusScope.of(context).unfocus();
     setState(() {
       _busy = true;
       _error = null;
@@ -184,6 +191,7 @@ class _IremboFormPageState extends State<IremboFormPage> {
               'version': int.parse(widget.existing!['version'].toString()),
             });
       if (!mounted) return;
+      setState(() => _submitted = true);
       final l = AppLocalizations.of(context);
       await showDialog<void>(
         context: context,
@@ -210,7 +218,11 @@ class _IremboFormPageState extends State<IremboFormPage> {
       if (mounted) Navigator.pop(context, true);
     } catch (e) {
       if (mounted) {
-        setState(() => _error = irError(AppLocalizations.of(context), e));
+        if (e is IremboFailure && e.code == 'alreadySubmitted') {
+          _submitted = true;
+        }
+        final message = irError(AppLocalizations.of(context), e);
+        setState(() => _error = message);
       }
     } finally {
       if (mounted) setState(() => _busy = false);
@@ -266,8 +278,11 @@ class _IremboFormPageState extends State<IremboFormPage> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     return IremboScaffold(
-      title: _review ? l.irReview : l.irNew,
+      title: widget.existing == null ? l.irNew : l.irEdit,
       maxWidth: 680,
+      bottomBar: widget.existing == null
+          ? IremboPaymentBar(service: _service, option: _option)
+          : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -278,24 +293,9 @@ class _IremboFormPageState extends State<IremboFormPage> {
             ),
           ),
           const SizedBox(height: 16),
-          if (_error != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Text(_error!),
-            ),
-          if (_review) ...[
-            IremboDetailsFields(data: _data()),
-            const SizedBox(height: 20),
-            FilledButton(
-              onPressed: _busy ? null : _save,
-              child: Text(_busy ? l.irPending : l.irConfirm),
-            ),
-            TextButton(
-              onPressed: _busy ? null : () => setState(() => _review = false),
-              child: Text(l.irEdit),
-            ),
-          ] else
-            Form(
+          AbsorbPointer(
+            absorbing: _busy,
+            child: Form(
               key: _form,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -416,24 +416,30 @@ class _IremboFormPageState extends State<IremboFormPage> {
                     ),
                   Text(l.irDateNotice),
                   const SizedBox(height: 20),
+                  if (_error != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Text(
+                        _error!,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                    ),
                   FilledButton(
-                    onPressed: () {
-                      final valid = _form.currentState!.validate();
-                      final invalid = IremboRules.validate(_data());
-                      if (valid && invalid == null) {
-                        setState(() {
-                          _error = null;
-                          _review = true;
-                        });
-                      } else {
-                        setState(() => _error = l.irInvalid);
-                      }
-                    },
-                    child: Text(l.irReview),
+                    onPressed: _busy || _submitted ? null : _save,
+                    child: Text(
+                      _busy
+                          ? l.irPending
+                          : widget.existing == null
+                          ? l.irConfirm
+                          : l.irSave,
+                    ),
                   ),
                 ],
               ),
             ),
+          ),
         ],
       ),
     );

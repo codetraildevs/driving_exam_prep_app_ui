@@ -1796,6 +1796,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get irTitle => 'Services Irembo';
 
   @override
+  String get irAlreadySubmitted =>
+      'Demande reçue. Une seule demande par compte.';
+
+  @override
+  String get irServiceFee => 'Frais d’aide à l’inscription';
+
+  @override
+  String get irPay => 'Payer';
+
+  @override
   String get irWorkspace => 'Demandes Irembo';
 
   @override
@@ -1812,7 +1822,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get irNotice =>
-      'Nous aidons les élèves qui rencontrent des difficultés pour s’inscrire aux examens du permis provisoire ou définitif. Envoyez vos informations pour que notre équipe examine votre demande et vous aide à obtenir le code officiel de l’examen. Ce formulaire demande notre assistance ; l’inscription sera confirmée après la procédure officielle.';
+      'Aide à l’inscription aux examens. L’inscription officielle est confirmée séparément.';
 
   @override
   String get irFullName => 'Nom complet';
@@ -1858,7 +1868,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get irReview => 'Vérifier la demande';
 
   @override
-  String get irConfirm => 'Confirmer et envoyer';
+  String get irConfirm => 'Envoyer la demande';
 
   @override
   String get irEdit => 'Modifier les informations';
@@ -2049,7 +2059,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get irPermisHelp => 'Examen pratique du permis';
 
   @override
-  String get irContinue => 'Continuer l’inscription';
+  String get irContinue => 'S’inscrire';
 
   @override
   String get irRequestsUnavailable => 'Vos demandes n’ont pas pu être chargées';
@@ -2067,8 +2077,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Vous n’avez pas accès à cette demande. Vérifiez le compte connecté.';
 
   @override
-  String get irNoRequests =>
-      'Aucune demande pour le moment. Choisissez un service ci-dessus pour obtenir de l’aide.';
+  String get irNoRequests => 'Choisissez un service pour commencer.';
 
   @override
   String get irStaffHelp =>

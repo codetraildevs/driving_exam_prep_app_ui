@@ -43,3 +43,6 @@ jobs:
 
       - name: Test Irembo request workflow and access controls
         run: python3 backend/tests/irembo_test.py
+
+      - name: Test Irembo against the application's users schema
+        run: php backend/tests/irembo_schema_test.php

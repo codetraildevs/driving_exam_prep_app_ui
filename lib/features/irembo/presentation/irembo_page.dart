@@ -4,6 +4,7 @@ import '../data/irembo_repository.dart';
 import 'irembo_widgets.dart';
 import 'irembo_form_page.dart';
 import 'irembo_request_page.dart';
+import 'irembo_payment_bar.dart';
 
 class IremboPage extends StatefulWidget {
   final bool manage;
@@ -65,6 +66,10 @@ class _IremboPageState extends State<IremboPage> {
             .map((e) => Map<String, dynamic>.from(e as Map))
             .toList();
         _total = int.parse(data['total'].toString());
+        if (!widget.manage && _items.isNotEmpty) {
+          _service = _items.first['service'] as String?;
+          _option = _items.first['permisOption'] as String?;
+        }
         _loaded = true;
       });
     } catch (e) {
@@ -91,7 +96,8 @@ class _IremboPageState extends State<IremboPage> {
   }
 
   Future<void> _create(String service, [String? option]) async {
-    final result = await Navigator.push<bool>(
+    if (!_loaded || _busy || _error != null || _items.isNotEmpty) return;
+    await Navigator.push<bool>(
       context,
       MaterialPageRoute(
         builder: (_) => IremboFormPage(
@@ -101,7 +107,7 @@ class _IremboPageState extends State<IremboPage> {
         ),
       ),
     );
-    if (result == true && mounted) {
+    if (mounted) {
       _page = 1;
       _load();
     }
@@ -295,7 +301,7 @@ class _IremboPageState extends State<IremboPage> {
     String title,
     IconData icon,
     bool selected,
-    VoidCallback onTap, {
+    VoidCallback? onTap, {
     String? description,
   }) {
     final theme = Theme.of(context);
@@ -349,19 +355,12 @@ class _IremboPageState extends State<IremboPage> {
   Widget _serviceSelection(AppLocalizations l) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(l.irNotice),
-        ),
-      ),
-      const SizedBox(height: 16),
+      Text(l.irNotice),
+      const SizedBox(height: 12),
       Text(l.irChooseService, style: Theme.of(context).textTheme.titleMedium),
       LayoutBuilder(
         builder: (context, constraints) {
-          final width = constraints.maxWidth < 380
-              ? constraints.maxWidth
-              : (constraints.maxWidth - 12) / 2;
+          final width = (constraints.maxWidth - 12) / 2;
           return Wrap(
             spacing: 12,
             runSpacing: 8,
@@ -373,11 +372,12 @@ class _IremboPageState extends State<IremboPage> {
                   'Provisoire',
                   Icons.assignment_outlined,
                   _service == 'Provisoire',
-                  () => setState(() {
-                    _service = 'Provisoire';
-                    _option = null;
-                  }),
-                  description: l.irProvisoireHelp,
+                  _items.isNotEmpty
+                      ? null
+                      : () => setState(() {
+                          _service = 'Provisoire';
+                          _option = null;
+                        }),
                 ),
               ),
               SizedBox(
@@ -387,10 +387,11 @@ class _IremboPageState extends State<IremboPage> {
                   'Permis',
                   Icons.directions_car_outlined,
                   _service == 'Permis',
-                  () => setState(() {
-                    _service = 'Permis';
-                  }),
-                  description: l.irPermisHelp,
+                  _items.isNotEmpty
+                      ? null
+                      : () => setState(() {
+                          _service = 'Permis';
+                        }),
                 ),
               ),
             ],
@@ -408,26 +409,36 @@ class _IremboPageState extends State<IremboPage> {
               key: const ValueKey('option-manual'),
               label: Text(l.irManual),
               selected: _option == 'Manual',
-              onSelected: (_) => setState(() => _option = 'Manual'),
+              onSelected: _items.isNotEmpty
+                  ? null
+                  : (_) => setState(() => _option = 'Manual'),
             ),
             ChoiceChip(
               key: const ValueKey('option-automatic'),
               label: Text(l.irAutomatic),
               selected: _option == 'Automatic',
-              onSelected: (_) => setState(() => _option = 'Automatic'),
+              onSelected: _items.isNotEmpty
+                  ? null
+                  : (_) => setState(() => _option = 'Automatic'),
             ),
           ],
         ),
       ],
       const SizedBox(height: 16),
-      FilledButton.icon(
-        key: const ValueKey('irembo-continue'),
-        onPressed: _service == null || (_service == 'Permis' && _option == null)
-            ? null
-            : () => _create(_service!, _option),
-        icon: const Icon(Icons.arrow_forward),
-        label: Text(l.irContinue),
-      ),
+      if (_items.isEmpty)
+        FilledButton.icon(
+          key: const ValueKey('irembo-continue'),
+          onPressed:
+              !_loaded ||
+                  _busy ||
+                  _error != null ||
+                  _service == null ||
+                  (_service == 'Permis' && _option == null)
+              ? null
+              : () => _create(_service!, _option),
+          icon: const Icon(Icons.arrow_forward),
+          label: Text(l.irContinue),
+        ),
     ],
   );
 
@@ -437,6 +448,9 @@ class _IremboPageState extends State<IremboPage> {
     return IremboScaffold(
       title: widget.manage ? l.irWorkspace : l.irTitle,
       maxWidth: 1400,
+      bottomBar: widget.manage
+          ? null
+          : IremboPaymentBar(service: _service, option: _option),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -500,7 +514,7 @@ class _IremboPageState extends State<IremboPage> {
           Row(
             children: [
               Expanded(
-                child: _loaded && _error == null
+                child: widget.manage && _loaded && _error == null
                     ? Text('${l.irResults}: $_total')
                     : const SizedBox.shrink(),
               ),
@@ -542,6 +556,26 @@ class _IremboPageState extends State<IremboPage> {
             ),
           LayoutBuilder(
             builder: (context, constraints) {
+              if (!widget.manage) {
+                if (!_loaded || _error != null || _items.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(l.irAlreadySubmitted),
+                        const SizedBox(height: 8),
+                        Text(
+                          '${l.irStatus}: ${irValue(l, _items.first['status'])}',
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
               if (widget.manage && constraints.maxWidth >= 900) {
                 final keys = [
                   'reference',

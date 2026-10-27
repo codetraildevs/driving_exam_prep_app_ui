@@ -3,8 +3,8 @@ import concurrent.futures, json, os, pathlib, subprocess, time, urllib.request, 
 ENV={**os.environ,'MYSQL_PWD':'test-password'}
 def sql(text):
  return subprocess.check_output(['mysql','-h','127.0.0.1','-u','root','-N','-e',text],env=ENV).decode()
-sql('CREATE DATABASE irembo_test; USE irembo_test; CREATE TABLE users (id VARCHAR(36) PRIMARY KEY, name VARCHAR(100), role VARCHAR(10), isBlocked TINYINT DEFAULT 0);'+
-    "INSERT INTO users VALUES ('u1','Applicant','USER',0),('u2','Other user','USER',0),('a1','Admin','ADMIN',0),('m1','Manager','MANAGER',0),('blocked','Blocked','MANAGER',1);")
+sql('CREATE DATABASE irembo_test; USE irembo_test; CREATE TABLE users (id VARCHAR(36) PRIMARY KEY, fullName VARCHAR(200), role VARCHAR(10), isActive TINYINT DEFAULT 1, isBlocked TINYINT DEFAULT 1);'+
+    "INSERT INTO users (id,fullName,role,isActive) VALUES ('u1','Applicant','USER',1),('u2','Other user','USER',1),('a1','Admin','ADMIN',1),('m1','Manager','MANAGER',1),('blocked','Blocked','MANAGER',0);")
 sql('USE irembo_test;'+pathlib.Path('backend/migrations/20261026_irembo.sql').read_text())
 server=subprocess.Popen(['php','-S','127.0.0.1:8101','backend/tests/irembo_router.php'],env={**os.environ,'IREMBO_TEST_MODE':'1'},stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 def req(method='GET',path='',body=None,user='u1',expected=200):
@@ -25,6 +25,8 @@ try:
   except urllib.error.URLError: time.sleep(.1)
  else: raise AssertionError('test server unavailable')
  req(user=None,expected=401);req(user='blocked',expected=403)
+ staff_options=req(path='/staff',user='a1')
+ assert {s['name'] for s in staff_options}=={'Admin','Manager'}
  body=form(provisoireCode='must not persist',category='B',permisOption='Manual')
  body['fullName']='É' * 100
  body['userId']='u2' # Untrusted ownership must be ignored.
@@ -34,6 +36,7 @@ try:
  assert first['nationalId']=='************2345'
  retry=req('POST',body=body,expected=201);assert first['id']==retry['id']
  req('POST',body={**body,'fullName':'Changed'},expected=409)
+ req('POST',body=form(),expected=409) # Reopening the form cannot submit twice.
  assert req()['total']==1
  req(path='/'+first['id'],user='u2',expected=404)
  req('PUT','/'+first['id'],{'version':1,'status':'Completed'},expected=403)
@@ -44,9 +47,10 @@ try:
   req('POST',body=form(service='Permis',permisOption='Manual',provisoireCode='001234',category=cat),expected=400)
  for option in ['Manual','Automatic']:
   req('POST',body=form(service='Permis',permisOption=option,category='A'),expected=400)
- manual=req('POST',body=form(service='Permis',permisOption='Manual',provisoireCode='001234',category=' b '),expected=201)
+ sql("USE irembo_test; INSERT INTO users (id,fullName,role) VALUES ('manual','Applicant','USER'),('automatic','Applicant','USER');")
+ manual=req('POST',body=form(service='Permis',permisOption='Manual',provisoireCode='001234',category=' b '),user='manual',expected=201)
  assert manual['category']=='B'
- automatic=req('POST',body=form(service='Permis',permisOption='Automatic',provisoireCode='000456'),expected=201)
+ automatic=req('POST',body=form(service='Permis',permisOption='Automatic',provisoireCode='000456'),user='automatic',expected=201)
  assert automatic['category']=='A'
  req('POST',body=form(service='Permis',permisOption='Automatic',provisoireCode='000456',category='B'),expected=400)
  detail=req(path='/'+manual['id'],user='m1');assert detail['nationalId']=='0123456789012345' and detail['provisoireCode']=='001234'
@@ -55,17 +59,23 @@ try:
  assert changed['version']==2
  req('PUT','/'+manual['id'],{'version':1,'status':'Completed'},user='m1',expected=409)
  req('PUT','/'+manual['id'],{'version':2,'assignedStaffId':'u1'},user='m1',expected=400)
- own=req(path='/'+manual['id']);assert 'audit' not in own and all(str(m['applicantVisible'])=='1' for m in own['messages']) and 'Private staff' not in json.dumps(own)
+ own=req(path='/'+manual['id'],user='manual');assert 'audit' not in own and all(str(m['applicantVisible'])=='1' for m in own['messages']) and 'Private staff' not in json.dumps(own)
  staff=req(path='/'+manual['id'],user='m1');assert len(staff['audit'])==2 and len(staff['messages'])==3
+ assert all(m['staffName']=='Admin' for m in staff['messages'])
+ assert {a['actorName'] for a in staff['audit']}=={'Applicant','Admin'}
  req('PUT','/'+manual['id'],{'version':2,'assignedStaffId':'a1','status':'Completed'},user='m1')
  for query in ['?service=Permis&permisOption=Manual&category=B&status=Completed&examLanguage=rw&district=Gasabo&assignedStaffId=a1&sort=updated','?search='+manual['reference'],'?search=Test%20Applicant','?search=0788123456','?assignedStaffId=unassigned','?sort=oldest','?sort=name']:
   listing=req(path=query,user='m1');assert listing['total']>0 and all('*' in r['nationalId'] for r in listing['items'])
+  assert all(r['assignedStaffName']=='Admin' for r in listing['items'] if r['assignedStaffId']=='a1')
  req(path='?sort=sql',user='m1',expected=400)
  req(path='?from=2026-02-01&to=2026-01-01',user='m1',expected=400)
- for _ in range(20):req('POST',body=form(),expected=201)
+ for i in range(20):
+  user='page'+str(i)
+  sql("USE irembo_test; INSERT INTO users (id,fullName,role) VALUES ('"+user+"','Applicant','USER');")
+  req('POST',body=form(),user=user,expected=201)
  listing=req(user='m1');assert listing['total']==23 and len(listing['items'])==20
  assert len(req(path='?page=2',user='m1')['items'])==3
- assert len(req()['items'])==23 # Applicant view includes all own requests, without pagination.
+ assert len(req()['items'])==1 # Applicant sees only their single request.
  assert req(user='u2')['total']==0
  # Clear conditional data on service change, preserving historical audit.
  new=req('PUT','/'+automatic['id'],{'version':1,'service':'Provisoire'},user='m1')

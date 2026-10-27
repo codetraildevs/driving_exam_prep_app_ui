@@ -1762,6 +1762,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irTitle => 'Irembo services';
 
   @override
+  String get irAlreadySubmitted => 'Request received. One request per account.';
+
+  @override
+  String get irServiceFee => 'Registration assistance fee';
+
+  @override
+  String get irPay => 'Pay';
+
+  @override
   String get irWorkspace => 'Irembo Registrations';
 
   @override
@@ -1778,7 +1787,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get irNotice =>
-      'We help students who find it difficult to register for Provisoire or Permis exams. Send your details so our team can review your request and help you obtain the official exam code. This form requests our assistance; registration is confirmed only after the official process is completed.';
+      'Get help registering for your exam. Official registration is confirmed separately.';
 
   @override
   String get irFullName => 'Full name';
@@ -1824,7 +1833,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irReview => 'Review request';
 
   @override
-  String get irConfirm => 'Confirm and submit';
+  String get irConfirm => 'Submit request';
 
   @override
   String get irEdit => 'Edit details';
@@ -2015,7 +2024,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irPermisHelp => 'Practical driving licence exam';
 
   @override
-  String get irContinue => 'Continue to registration';
+  String get irContinue => 'Register';
 
   @override
   String get irRequestsUnavailable => 'Your requests could not be loaded';
@@ -2033,8 +2042,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'You do not have access to this request. Check your signed-in account.';
 
   @override
-  String get irNoRequests =>
-      'No requests yet. Choose a service above to get help with your registration.';
+  String get irNoRequests => 'Choose a service to get started.';
 
   @override
   String get irStaffHelp =>

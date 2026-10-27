@@ -3286,6 +3286,24 @@ abstract class AppLocalizations {
   /// **'Irembo services'**
   String get irTitle;
 
+  /// No description provided for @irAlreadySubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Request received. One request per account.'**
+  String get irAlreadySubmitted;
+
+  /// No description provided for @irServiceFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration assistance fee'**
+  String get irServiceFee;
+
+  /// No description provided for @irPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay'**
+  String get irPay;
+
   /// No description provided for @irWorkspace.
   ///
   /// In en, this message translates to:
@@ -3319,7 +3337,7 @@ abstract class AppLocalizations {
   /// No description provided for @irNotice.
   ///
   /// In en, this message translates to:
-  /// **'We help students who find it difficult to register for Provisoire or Permis exams. Send your details so our team can review your request and help you obtain the official exam code. This form requests our assistance; registration is confirmed only after the official process is completed.'**
+  /// **'Get help registering for your exam. Official registration is confirmed separately.'**
   String get irNotice;
 
   /// No description provided for @irFullName.
@@ -3409,7 +3427,7 @@ abstract class AppLocalizations {
   /// No description provided for @irConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Confirm and submit'**
+  /// **'Submit request'**
   String get irConfirm;
 
   /// No description provided for @irEdit.
@@ -3787,7 +3805,7 @@ abstract class AppLocalizations {
   /// No description provided for @irContinue.
   ///
   /// In en, this message translates to:
-  /// **'Continue to registration'**
+  /// **'Register'**
   String get irContinue;
 
   /// No description provided for @irRequestsUnavailable.
@@ -3817,7 +3835,7 @@ abstract class AppLocalizations {
   /// No description provided for @irNoRequests.
   ///
   /// In en, this message translates to:
-  /// **'No requests yet. Choose a service above to get help with your registration.'**
+  /// **'Choose a service to get started.'**
   String get irNoRequests;
 
   /// No description provided for @irStaffHelp.

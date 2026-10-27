@@ -10,6 +10,7 @@ import 'package:traffic_rule_in_rwanda/features/irembo/data/irembo_repository.da
 import 'package:traffic_rule_in_rwanda/features/irembo/presentation/irembo_page.dart';
 import 'package:traffic_rule_in_rwanda/features/irembo/presentation/irembo_form_page.dart';
 import 'package:traffic_rule_in_rwanda/features/irembo/presentation/irembo_request_page.dart';
+import 'package:traffic_rule_in_rwanda/features/irembo/presentation/irembo_payment_bar.dart';
 import 'package:traffic_rule_in_rwanda/l10n/generated/app_localizations.dart';
 import 'package:traffic_rule_in_rwanda/shared/locale/fallback_localizations.dart';
 
@@ -17,6 +18,7 @@ class FakeIrembo extends IremboRepository {
   final submissions = <Map<String, dynamic>>[];
   bool failOnce = false;
   bool failList = false;
+  bool hasRequest = false;
   Map<String, String>? lastFilters;
   @override
   Future<Map<String, dynamic>> create(Map<String, dynamic> data) async {
@@ -51,8 +53,8 @@ class FakeIrembo extends IremboRepository {
       throw const IremboFailure('iremboSetupRequired', statusCode: 503);
     }
     return {
-      'items': [record],
-      'total': 1,
+      'items': hasRequest ? [record] : [],
+      'total': hasRequest ? 1 : 0,
       'page': 1,
     };
   }
@@ -116,6 +118,82 @@ Future<AuthBloc> app(
 }
 
 void main() {
+  testWidgets('existing request has status only and no second registration', (
+    tester,
+  ) async {
+    final repo = FakeIrembo()..hasRequest = true;
+    repo.record = {
+      ...repo.record,
+      'service': 'Permis',
+      'permisOption': 'Automatic',
+    };
+    await app(tester, IremboPage(repository: repo));
+    final l = AppLocalizations.of(tester.element(find.byType(IremboPage)));
+    expect(find.byKey(const ValueKey('irembo-continue')), findsNothing);
+    expect(find.text(l.irAlreadySubmitted), findsOneWidget);
+    expect(find.text('IR-EXAMPLE'), findsNothing);
+    expect(find.text('0123456789012345'), findsNothing);
+    expect(find.text(l.irView), findsNothing);
+    expect(find.text('*182*8*1*644203*5000#'), findsOneWidget);
+    expect(
+      tester.getRect(find.byKey(const ValueKey('irembo-pay'))).bottom,
+      lessThan(780),
+    );
+  });
+  for (final selection in [
+    ('Provisoire', null, 1000),
+    ('Permis', 'Manual', 1000),
+    ('Permis', 'Automatic', 5000),
+  ]) {
+    testWidgets('service payment opens exact USSD for $selection', (
+      tester,
+    ) async {
+      String? launched;
+      const channel = MethodChannel('plugins.flutter.io/url_launcher');
+      tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, (
+        call,
+      ) async {
+        if (call.method == 'launch') {
+          launched = call.arguments['url'];
+          return true;
+        }
+        return null;
+      });
+      addTearDown(
+        () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          channel,
+          null,
+        ),
+      );
+      await app(
+        tester,
+        Scaffold(
+          body: IremboPaymentBar(service: selection.$1, option: selection.$2),
+        ),
+      );
+      await tester.tap(find.byKey(const ValueKey('irembo-pay')));
+      await tester.pumpAndSettle();
+      expect(Uri.parse(launched!).scheme, 'tel');
+      expect(
+        Uri.decodeComponent(Uri.parse(launched!).path),
+        '*182*8*1*644203*${selection.$3}#',
+      );
+      expect(Uri.parse(launched!).fragment, isEmpty);
+    });
+  }
+  testWidgets('direct submission rejects incomplete registration', (
+    tester,
+  ) async {
+    final repo = FakeIrembo();
+    await app(tester, IremboFormPage(service: 'Provisoire', repository: repo));
+    final l = AppLocalizations.of(tester.element(find.byType(IremboFormPage)));
+    await tester.ensureVisible(find.text(l.irConfirm));
+    await tester.tap(find.text(l.irConfirm));
+    await tester.pumpAndSettle();
+    expect(repo.submissions, isEmpty);
+    expect(find.text(l.irInvalid), findsOneWidget);
+    expect(find.text(l.irReview), findsNothing);
+  });
   testWidgets(
     'failed request is not a zero result and applicants have no pager',
     (tester) async {
@@ -127,6 +205,12 @@ void main() {
       expect(find.text(l.irServerSetup), findsOneWidget);
       expect(find.text(l.irPrevious), findsNothing);
       expect(repo.lastFilters!.containsKey('page'), isFalse);
+      expect(
+        tester
+            .widget<FilledButton>(find.byKey(const ValueKey('irembo-continue')))
+            .onPressed,
+        isNull,
+      );
     },
   );
   testWidgets('selection is explicit and conditional option resets', (
@@ -159,7 +243,20 @@ void main() {
   });
   for (final lang in ['en', 'fr', 'rw']) {
     testWidgets('localized Irembo service selection $lang', (tester) async {
-      await app(tester, IremboPage(repository: FakeIrembo()), lang: lang);
+      await app(
+        tester,
+        IremboPage(repository: FakeIrembo()),
+        lang: lang,
+        size: const Size(320, 740),
+      );
+      final left = tester.getTopLeft(
+        find.byKey(const ValueKey('service-provisoire')),
+      );
+      final right = tester.getTopLeft(
+        find.byKey(const ValueKey('service-permis')),
+      );
+      expect(left.dy, right.dy);
+      expect(left.dx, lessThan(right.dx));
       expect(find.text('Provisoire'), findsOneWidget);
       await tester.ensureVisible(find.byKey(const ValueKey('service-permis')));
       await tester.tap(find.byKey(const ValueKey('service-permis')));
@@ -200,7 +297,7 @@ void main() {
     testWidgets('staff table and filters fit $size', (tester) async {
       await app(
         tester,
-        IremboPage(manage: true, repository: FakeIrembo()),
+        IremboPage(manage: true, repository: FakeIrembo()..hasRequest = true),
         role: 'MANAGER',
         size: size,
       );
@@ -256,7 +353,7 @@ void main() {
     expect(find.text(l.irInternalNotes), findsNothing);
   });
   testWidgets(
-    'review retains details and reuses the same key after a failed submission',
+    'submits directly and retains details and retry key after a failure',
     (tester) async {
       final repo = FakeIrembo()..failOnce = true;
       await app(
@@ -289,14 +386,20 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('Gasabo'));
       await tester.pumpAndSettle();
-      await tester.ensureVisible(find.text(l.irReview));
-      await tester.tap(find.text(l.irReview));
-      await tester.pumpAndSettle();
+      expect(find.text(l.irReview), findsNothing);
       await tester.ensureVisible(find.text(l.irConfirm));
       await tester.tap(find.text(l.irConfirm));
       await tester.pumpAndSettle();
       expect(find.text(l.irUnavailable), findsOneWidget);
-      expect(find.text('0123456789012345'), findsOneWidget);
+      expect(
+        tester
+            .widget<TextFormField>(
+              find.byKey(const ValueKey('irembo-nationalId')),
+            )
+            .controller!
+            .text,
+        '0123456789012345',
+      );
       await tester.ensureVisible(find.text(l.irConfirm));
       await tester.tap(find.text(l.irConfirm));
       await tester.pumpAndSettle();

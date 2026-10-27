@@ -1788,6 +1788,16 @@ class AppLocalizationsRw extends AppLocalizations {
   String get irTitle => 'Serivisi za Irembo';
 
   @override
+  String get irAlreadySubmitted =>
+      'Ubusabe bwakiriwe. Ubusabe bumwe kuri konti.';
+
+  @override
+  String get irServiceFee => 'Ikiguzi cy’ubufasha bwo kwiyandikisha';
+
+  @override
+  String get irPay => 'Ishyura';
+
+  @override
   String get irWorkspace => 'Ubusabe bwa Irembo';
 
   @override
@@ -1804,7 +1814,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get irNotice =>
-      'Dufasha abanyeshuri bagorwa no kwiyandikisha ku bizamini bya provisoire cyangwa permis. Ohereza amakuru yawe kugira ngo abakozi bacu basuzume ubusabe bwawe bagufashe kubona kode yemewe y’ikizamini. Iyi fomu ni iyo gusaba ubufasha; kwiyandikisha byemezwa ari uko inzira yemewe irangiye.';
+      'Ubufasha bwo kwiyandikisha ku kizamini. Kwiyandikisha byemezwa ukwabyo.';
 
   @override
   String get irFullName => 'Amazina yose';
@@ -1849,7 +1859,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get irReview => 'Genzura ubusabe';
 
   @override
-  String get irConfirm => 'Emeza wohereze';
+  String get irConfirm => 'Ohereza ubusabe';
 
   @override
   String get irEdit => 'Hindura amakuru';
@@ -2041,7 +2051,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get irPermisHelp => 'Ikizamini cy’uruhushya rwa burundu';
 
   @override
-  String get irContinue => 'Komeza wuzuze amakuru';
+  String get irContinue => 'Iyandikishe';
 
   @override
   String get irRequestsUnavailable => 'Ubusabe bwawe ntibwashoboye kuboneka';
@@ -2059,8 +2069,7 @@ class AppLocalizationsRw extends AppLocalizations {
       'Ntiwemerewe kureba ubu busabe. Genzura konti winjiyemo.';
 
   @override
-  String get irNoRequests =>
-      'Nta busabe uratanga. Hitamo serivisi iri hejuru kugira ngo tugufashe kwiyandikisha.';
+  String get irNoRequests => 'Hitamo serivisi utangire.';
 
   @override
   String get irStaffHelp =>

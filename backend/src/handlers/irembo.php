@@ -88,7 +88,7 @@ function irList($db, array $actor): array {
     if ($applicant) $page = 1;
     $offset = ($page - 1) * 20;
     $limit = $applicant ? '' : " LIMIT 20 OFFSET $offset";
-    $rows = irQuery($db, 'SELECT r.*, u.name AS assignedStaffName FROM irembo_requests r LEFT JOIN users u ON u.id = r.assignedStaffId' . $condition . ' ORDER BY ' . $orders[$sort] . $limit, $values)->fetchAll(PDO::FETCH_ASSOC);
+    $rows = irQuery($db, 'SELECT r.*, u.fullName AS assignedStaffName FROM irembo_requests r LEFT JOIN users u ON u.id = r.assignedStaffId' . $condition . ' ORDER BY ' . $orders[$sort] . $limit, $values)->fetchAll(PDO::FETCH_ASSOC);
     return ['items'=>array_map(function($r) { return irPresent($r); }, $rows), 'total'=>intval($count['total']), 'page'=>$page, 'pageSize'=>$applicant ? intval($count['total']) : 20];
 }
 function irCreate($db, array $actor, array $input): array {
@@ -107,6 +107,17 @@ function irCreate($db, array $actor, array $input): array {
     // Transactions use SQL commands supported by both PDO and this project's mysqli shim.
     $db->exec('START TRANSACTION');
     try {
+        // Serialize submissions for this account, including different devices/keys.
+        $owner = irQuery($db, 'SELECT id, isActive FROM users WHERE id = ? FOR UPDATE', [$actor['id']])->fetch(PDO::FETCH_ASSOC);
+        if (!$owner || intval($owner['isActive']) !== 1) irFail('forbidden', 403);
+        $prior = irQuery($db, 'SELECT * FROM irembo_requests WHERE userId = ? ORDER BY createdAt, id LIMIT 1 FOR UPDATE', [$actor['id']])->fetch(PDO::FETCH_ASSOC);
+        if ($prior) {
+            if ($prior['requestKey'] === $key && hash_equals($prior['payloadHash'], $hash)) {
+                $db->exec('COMMIT');
+                return irPresent($prior);
+            }
+            irFail('alreadySubmitted', 409);
+        }
         $cols = array_keys($data);
         irQuery($db, 'INSERT INTO irembo_requests (' . implode(',', $cols) . ', createdAt, updatedAt) VALUES (' . implode(',', array_fill(0,count($cols),'?')) . ', UTC_TIMESTAMP(), UTC_TIMESTAMP())', array_values($data));
         irAudit($db, $id, $actor['id'], ['created'=>true, 'status'=>['to'=>'Pending']]);
@@ -138,7 +149,7 @@ function irUpdate($db, array $actor, string $id, array $input): array {
             $staffId = $input['assignedStaffId'];
             if ($staffId !== null) {
                 if (!is_string($staffId)) irFail('invalidAssignment');
-                $staff = irQuery($db, "SELECT id FROM users WHERE id = ? AND role IN ('ADMIN','MANAGER') AND isBlocked = 0", [$staffId])->fetch(PDO::FETCH_ASSOC);
+                $staff = irQuery($db, "SELECT id FROM users WHERE id = ? AND role IN ('ADMIN','MANAGER') AND isActive = 1", [$staffId])->fetch(PDO::FETCH_ASSOC);
                 if (!$staff) irFail('invalidAssignment');
             }
             $new['assignedStaffId'] = $staffId;
@@ -167,12 +178,14 @@ function iremboRequests($db, $params): void {
     global $tokenData;
     header('Cache-Control: no-store');
     try {
-        $actor = irQuery($db, 'SELECT id, name, role, isBlocked FROM users WHERE id = ?', [$tokenData['userId'] ?? ''])->fetch(PDO::FETCH_ASSOC);
-        if (!$actor || $actor['isBlocked'] || !in_array($actor['role'],['USER','MANAGER','ADMIN'],true)) irFail('forbidden',403);
+        // Match authLogin and adminBlockUser: isActive is authoritative.
+        // The legacy isBlocked field defaults to 1 even for active accounts.
+        $actor = irQuery($db, 'SELECT id, role, isActive FROM users WHERE id = ?', [$tokenData['userId'] ?? ''])->fetch(PDO::FETCH_ASSOC);
+        if (!$actor || intval($actor['isActive']) !== 1 || !in_array($actor['role'],['USER','MANAGER','ADMIN'],true)) irFail('forbidden',403);
         $method = $_SERVER['REQUEST_METHOD'];
         if (($params['id'] ?? '') === 'staff') {
             if (!irStaff($actor) || $method !== 'GET') irFail('forbidden',403);
-            $rows = irQuery($db, "SELECT id, name, role FROM users WHERE role IN ('ADMIN','MANAGER') AND isBlocked = 0 ORDER BY name, id")->fetchAll(PDO::FETCH_ASSOC);
+            $rows = irQuery($db, "SELECT id, fullName AS name, role FROM users WHERE role IN ('ADMIN','MANAGER') AND isActive = 1 ORDER BY fullName, id")->fetchAll(PDO::FETCH_ASSOC);
             respond($rows,200); return;
         }
         $id = $params['id'] ?? null;
@@ -184,8 +197,8 @@ function iremboRequests($db, $params): void {
             if (!irCanRead($actor,$row)) irFail('notFound',404);
             $staff = irStaff($actor);
             $result = irPresent($row,$staff);
-            $result['messages'] = irQuery($db,'SELECT m.id,m.body,m.applicantVisible,m.createdAt,u.name AS staffName FROM irembo_messages m LEFT JOIN users u ON u.id=m.staffId WHERE m.requestId=?' . ($staff?'':' AND m.applicantVisible=1') . ' ORDER BY m.createdAt,m.id',[$id])->fetchAll(PDO::FETCH_ASSOC);
-            if ($staff) $result['audit'] = irQuery($db,'SELECT a.actorId,a.createdAt,a.changesJson,u.name AS actorName FROM irembo_audit a LEFT JOIN users u ON u.id=a.actorId WHERE a.requestId=? ORDER BY a.createdAt,a.id',[$id])->fetchAll(PDO::FETCH_ASSOC);
+            $result['messages'] = irQuery($db,'SELECT m.id,m.body,m.applicantVisible,m.createdAt,u.fullName AS staffName FROM irembo_messages m LEFT JOIN users u ON u.id=m.staffId WHERE m.requestId=?' . ($staff?'':' AND m.applicantVisible=1') . ' ORDER BY m.createdAt,m.id',[$id])->fetchAll(PDO::FETCH_ASSOC);
+            if ($staff) $result['audit'] = irQuery($db,'SELECT a.actorId,a.createdAt,a.changesJson,u.fullName AS actorName FROM irembo_audit a LEFT JOIN users u ON u.id=a.actorId WHERE a.requestId=? ORDER BY a.createdAt,a.id',[$id])->fetchAll(PDO::FETCH_ASSOC);
             respond($result); return;
         }
         irFail('notFound',404);

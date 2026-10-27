@@ -46,6 +46,7 @@ String irError(AppLocalizations l, Object error) {
   final code = error is IremboFailure ? error.code : '';
   final status = error is IremboFailure ? error.statusCode : null;
   if (code == 'iremboSetupRequired') return l.irServerSetup;
+  if (code == 'alreadySubmitted') return l.irAlreadySubmitted;
   if (code == 'notFound' || status == 401 || status == 403) {
     return l.irAccessUnavailable;
   }
@@ -65,14 +66,17 @@ class IremboScaffold extends StatelessWidget {
   final String title;
   final Widget child;
   final double maxWidth;
+  final Widget? bottomBar;
   const IremboScaffold({
     super.key,
     required this.title,
     required this.child,
     this.maxWidth = 960,
+    this.bottomBar,
   });
   @override
   Widget build(BuildContext context) => Scaffold(
+    bottomNavigationBar: bottomBar,
     body: SafeArea(
       top: false,
       child: Column(

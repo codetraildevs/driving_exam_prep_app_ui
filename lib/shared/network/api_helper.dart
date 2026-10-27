@@ -341,6 +341,10 @@ class ApiHelper {
 
   ApiResponse _requestError(String method, String path, DioException error) {
     final status = error.response?.statusCode;
+    if (kDebugMode && path.startsWith('/api/irembo-requests')) {
+      // Log only transport metadata, never applicant data or response bodies.
+      debugPrint('API ERROR: $method $path status=${status ?? 0} type=${error.type.name}');
+    }
     if (path.startsWith('/api/irembo-requests') && status != null) {
       return ApiResponse(statusCode: status, data: null, isSuccess: false,
         errorMessage: _dioErrorMessage(error), debugInfo: '$method $path → HTTP $status');
@@ -349,6 +353,9 @@ class ApiHelper {
   }
 
   ApiResponse _networkError(String method, String path, String errorMessage, String rawError) {
+    if (kDebugMode && path.startsWith('/api/irembo-requests')) {
+      debugPrint('API ERROR: $method $path request failed without a usable response');
+    }
     if (kDebugMode && !path.startsWith('/api/irembo-requests')) debugPrint('❌ API ERROR [$method $path]: $rawError');
     return ApiResponse(
       statusCode: 0,
