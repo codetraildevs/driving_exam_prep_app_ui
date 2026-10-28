@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traffic_rule_in_rwanda/features/auth/data/models/user_model.dart';
 import 'package:traffic_rule_in_rwanda/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:traffic_rule_in_rwanda/features/home/presentation/pages/main_layout.dart';
+import 'package:traffic_rule_in_rwanda/features/resources/presentation/pages/resources_page.dart';
 import 'package:traffic_rule_in_rwanda/l10n/generated/app_localizations.dart';
 import 'package:traffic_rule_in_rwanda/shared/locale/fallback_localizations.dart';
 import 'package:traffic_rule_in_rwanda/shared/locale/locale_notifier.dart';
@@ -27,11 +28,14 @@ class _StubPage extends StatelessWidget {
 /// Routes every shell destination so MainLayout's GoRouterState lookups and
 /// context.go() navigation work exactly like the production router.
 GoRouter _buildRouter() {
+  final shellNavigatorKey = GlobalKey<NavigatorState>();
   return GoRouter(
     initialLocation: '/home',
     routes: [
       ShellRoute(
-        builder: (context, state, child) => MainLayout(child: child),
+        navigatorKey: shellNavigatorKey,
+        builder: (context, state, child) =>
+            MainLayout(navigatorKey: shellNavigatorKey, child: child),
         routes: [
           GoRoute(
             path: '/home',
@@ -150,6 +154,84 @@ void main() {
   });
 
   group('MainLayout responsive shell', () {
+    testWidgets(
+      'system back returns from nested reader to resources then home',
+      (tester) async {
+        final bloc = AuthBloc();
+        addTearDown(bloc.close);
+        await _pumpShell(tester, bloc, const Size(400, 800));
+        final navigator = tester
+            .widget<MainLayout>(find.byType(MainLayout))
+            .navigatorKey
+            .currentState!;
+        navigator.push(
+          MaterialPageRoute<void>(builder: (_) => const ResourcesPage()),
+        );
+        await tester.pumpAndSettle();
+        navigator.push(
+          MaterialPageRoute<void>(
+            builder: (_) => const _StubPage('ROAD SIGNS'),
+          ),
+        );
+        await tester.pumpAndSettle();
+        await tester.binding.handlePopRoute();
+        await tester.pumpAndSettle();
+        expect(find.text('ROAD SIGNS'), findsNothing);
+        expect(find.byType(ResourcesPage), findsOneWidget);
+        expect(find.byType(AlertDialog), findsNothing);
+        await tester.binding.handlePopRoute();
+        await tester.pumpAndSettle();
+        expect(find.byKey(const Key('page-home')), findsOneWidget);
+        expect(find.byType(AlertDialog), findsNothing);
+      },
+    );
+
+    for (final role in ['USER', 'ADMIN', 'MANAGER']) {
+      for (final destination in [0, 1, 2, 3]) {
+        testWidgets('$role bottom tab $destination dismisses pushed pages', (
+          tester,
+        ) async {
+          final bloc = AuthBloc()..emit(AuthAuthenticated(_user(role: role)));
+          addTearDown(bloc.close);
+          await _pumpShell(tester, bloc, const Size(400, 800));
+          final layout = tester.widget<MainLayout>(find.byType(MainLayout));
+          final navigator = layout.navigatorKey.currentState!;
+          navigator.push(
+            MaterialPageRoute<void>(builder: (_) => const ResourcesPage()),
+          );
+          await tester.pumpAndSettle();
+          expect(find.byType(ResourcesPage), findsOneWidget);
+          // Also cover a second pushed screen, such as a document reader.
+          if (destination != 0) {
+            navigator.push(
+              MaterialPageRoute<void>(
+                builder: (_) => const _StubPage('DOCUMENT'),
+              ),
+            );
+            await tester.pumpAndSettle();
+          }
+          final bar = tester.widget<BottomNavigationBar>(
+            find.byType(BottomNavigationBar),
+          );
+          final label = bar.items[destination].label!;
+          await tester.tap(
+            find.descendant(
+              of: find.byType(BottomNavigationBar),
+              matching: find.text(label),
+            ),
+          );
+          await tester.pumpAndSettle();
+          final pages = role == 'USER'
+              ? ['home', 'practice', 'progress', 'profile']
+              : ['admin', 'admin-users', 'admin-access', 'admin-analytics'];
+          expect(find.byKey(Key('page-${pages[destination]}')), findsOneWidget);
+          expect(find.byType(ResourcesPage), findsNothing);
+          expect(find.text('DOCUMENT'), findsNothing);
+          expect(tester.takeException(), isNull);
+        });
+      }
+    }
+
     testWidgets('desktop shows slide-out drawer, no rail or bottom bar', (
       tester,
     ) async {

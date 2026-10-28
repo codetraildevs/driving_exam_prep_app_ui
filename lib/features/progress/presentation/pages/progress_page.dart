@@ -347,13 +347,16 @@ class _SummaryGrid extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    l10n.progressPassRate,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
+                  Expanded(
+                    child: Text(
+                      l10n.progressPassRate,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
+                  const SizedBox(width: 8),
                   Text(
                     '${(total > 0 ? passed / total * 100 : 0).toInt()}%',
                     style: const TextStyle(
@@ -561,7 +564,10 @@ class _ExamResultCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 2,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     Text(
                       passed ? l10n.progressPassed : l10n.quizFailed,
@@ -571,7 +577,6 @@ class _ExamResultCard extends StatelessWidget {
                         fontSize: 13,
                       ),
                     ),
-                    const SizedBox(width: 6),
                     if (date.isNotEmpty)
                       Text(
                         '• $date',

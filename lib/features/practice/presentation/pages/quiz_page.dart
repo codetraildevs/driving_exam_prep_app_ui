@@ -493,7 +493,6 @@ class _QuizPageState extends State<QuizPage> {
     final questions = _exam!.questions;
     final question = questions[_currentQuestion];
     final answeredCount = _answeredCount;
-    final progress = answeredCount / questions.length;
     final isLastQuestion = _currentQuestion == questions.length - 1;
 
     return Scaffold(
@@ -565,17 +564,74 @@ class _QuizPageState extends State<QuizPage> {
                     ],
                   ),
                   const SizedBox(height: 6),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: LinearProgressIndicator(
-                      value: progress,
-                      minHeight: 6,
-                      backgroundColor: Theme.of(
-                        context,
-                      ).colorScheme.outlineVariant,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                        AppColors.primary,
-                      ),
+                  SizedBox(
+                    key: const ValueKey('question-progress'),
+                    width: double.infinity,
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        const spacing = 2.0;
+                        final markerWidth =
+                            ((constraints.maxWidth -
+                                        spacing * (questions.length - 1)) /
+                                    questions.length)
+                                .clamp(16.0, 24.0);
+                        return FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: List.generate(questions.length, (index) {
+                              final answer = _answers[index];
+                              final color = answer == null
+                                  ? AppColors.neutral500
+                                  : answer == questions[index].correctAnswer
+                                  ? AppColors.success
+                                  : AppColors.error;
+
+                              return Semantics(
+                                label: l10n.quizQuestionOf(
+                                  index + 1,
+                                  questions.length,
+                                ),
+                                selected: index == _currentQuestion,
+                                child: Container(
+                                  key: ValueKey('question-progress-$index'),
+                                  width: markerWidth,
+                                  height: 24,
+                                  margin: EdgeInsets.only(
+                                    right: index == questions.length - 1
+                                        ? 0
+                                        : spacing,
+                                  ),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: color,
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                      color: index == _currentQuestion
+                                          ? Theme.of(
+                                              context,
+                                            ).colorScheme.onSurface
+                                          : Colors.transparent,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    '${index + 1}',
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 9,
+                                      height: 1,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],

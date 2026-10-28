@@ -181,7 +181,10 @@ class AppRouter {
       ),
       ShellRoute(
         navigatorKey: shellNavigatorKey,
-        builder: (context, state, child) => MainLayout(child: child),
+        builder: (context, state, child) => MainLayout(
+          navigatorKey: shellNavigatorKey,
+          child: child,
+        ),
         routes: [
           GoRoute(
             path: '/home',

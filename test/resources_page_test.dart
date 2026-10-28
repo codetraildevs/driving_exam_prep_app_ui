@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:traffic_rule_in_rwanda/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:traffic_rule_in_rwanda/features/home/presentation/pages/main_layout.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -58,7 +63,9 @@ void main() {
             document == StudyDocument.gazette ? 235 : 18,
           );
           expect(
-            await pdf.pages.first.waitForLoaded(timeout: const Duration(seconds: 30)),
+            await pdf.pages.first.waitForLoaded(
+              timeout: const Duration(seconds: 30),
+            ),
             isNotNull,
           );
         } finally {
@@ -115,4 +122,58 @@ void main() {
     expect(find.byType(ResourcesPage), findsOneWidget);
     expect(find.byType(DocumentReaderPage), findsNothing);
   });
+
+  testWidgets(
+    'road signs reader supports header and system back inside shell',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final bloc = AuthBloc();
+      final navigatorKey = GlobalKey<NavigatorState>();
+      final router = GoRouter(
+        initialLocation: '/home',
+        routes: [
+          ShellRoute(
+            navigatorKey: navigatorKey,
+            builder: (_, __, child) =>
+                MainLayout(navigatorKey: navigatorKey, child: child),
+            routes: [
+              GoRoute(path: '/home', builder: (_, __) => const SizedBox()),
+            ],
+          ),
+        ],
+      );
+      addTearDown(bloc.close);
+      addTearDown(router.dispose);
+      await tester.pumpWidget(
+        BlocProvider.value(
+          value: bloc,
+          child: MaterialApp.router(
+            routerConfig: router,
+            locale: const Locale('en'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      navigatorKey.currentState!.push(
+        MaterialPageRoute<void>(builder: (_) => const ResourcesPage()),
+      );
+      await tester.pumpAndSettle();
+      for (final systemBack in [false, true]) {
+        await tester.tap(find.byKey(const ValueKey('resource-roadSigns')));
+        await waitForPage(tester, 'Page 1 of 18');
+        if (systemBack) {
+          await tester.binding.handlePopRoute();
+        } else {
+          await tester.tap(find.byIcon(Icons.arrow_back));
+        }
+        await tester.pumpAndSettle();
+        expect(find.byType(ResourcesPage), findsOneWidget);
+        expect(find.byType(DocumentReaderPage), findsNothing);
+        expect(find.byType(AlertDialog), findsNothing);
+        expect(tester.takeException(), isNull);
+      }
+    },
+  );
 }

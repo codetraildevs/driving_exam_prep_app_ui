@@ -14,8 +14,10 @@ bool _isAdminOrManager(String role) => role == 'ADMIN' || role == 'MANAGER';
 
 class MainLayout extends StatefulWidget {
   final Widget child;
+  final GlobalKey<NavigatorState> navigatorKey;
 
-  const MainLayout({required this.child, Key? key}) : super(key: key);
+  const MainLayout({required this.child, required this.navigatorKey, Key? key})
+    : super(key: key);
 
   @override
   State<MainLayout> createState() => _MainLayoutState();
@@ -337,6 +339,7 @@ class _MainLayoutState extends State<MainLayout> {
   }
 
   void _onUserNavTapped(BuildContext context, int index) {
+    _dismissPushedPages();
     switch (index) {
       case 0:
         context.go('/home');
@@ -354,6 +357,7 @@ class _MainLayoutState extends State<MainLayout> {
   }
 
   void _onAdminNavTapped(BuildContext context, int index) {
+    _dismissPushedPages();
     switch (index) {
       case 0:
         context.go('/admin');
@@ -371,5 +375,13 @@ class _MainLayoutState extends State<MainLayout> {
         context.go('/profile');
         break;
     }
+  }
+
+  void _dismissPushedPages() {
+    // Navigator.push pages (resources, readers, etc.) sit above GoRouter's
+    // pages. Remove them before switching tabs, including the current tab.
+    widget.navigatorKey.currentState?.popUntil(
+      (route) => route.settings is Page || route.isFirst,
+    );
   }
 }
