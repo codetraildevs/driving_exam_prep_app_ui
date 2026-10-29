@@ -11,7 +11,8 @@ import '../../../../shared/widgets/app_page_header.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class AdminUsersPage extends StatefulWidget {
-  const AdminUsersPage({Key? key}) : super(key: key);
+  final Future<ApiResponse> Function(Map<String, String>)? loadUsers;
+  const AdminUsersPage({super.key, this.loadUsers});
 
   @override
   State<AdminUsersPage> createState() => _AdminUsersPageState();
@@ -32,6 +33,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
   int _page = 1;
   static const _limit = 10;
   final _loadingMap = <String, bool>{};
+  int _loadRequest = 0;
 
   @override
   void initState() {
@@ -52,6 +54,8 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
   }
 
   Future<void> _loadUsers() async {
+    if (!mounted) return;
+    final request = ++_loadRequest;
     setState(() {
       _isLoading = true;
       _error = null;
@@ -71,9 +75,9 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
         if (!_todayOnly && _dateTo != null)
           'dateTo': _dateTo!.toIso8601String().split('T')[0],
       };
-      final authBloc = context.read<AuthBloc>();
-      final router = GoRouter.of(context);
-      final result = await ApiHelper().get('/api/admin/users', queryParams: qp);
+      final result = await (widget.loadUsers?.call(qp) ??
+          ApiHelper().get('/api/admin/users', queryParams: qp));
+      if (!mounted || request != _loadRequest) return;
       if (result.isSuccess) {
         final data = result.data;
         setState(() {
@@ -84,15 +88,15 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
         });
       } else if (result.statusCode == 401) {
         if (!mounted) return;
-        authBloc.add(const SignOutEvent());
-        router.go('/login');
+        context.read<AuthBloc>().add(const SignOutEvent());
+        context.go('/login');
       } else {
         setState(() => _error = result.errorMessage);
       }
     } catch (e) {
-      setState(() => _error = e.toString());
+      if (mounted && request == _loadRequest) setState(() => _error = e.toString());
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted && request == _loadRequest) setState(() => _isLoading = false);
     }
   }
 
@@ -716,122 +720,134 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                   // ── Sort + Date range row ────────────────────────────────────
                   Padding(
                     padding: const EdgeInsets.fromLTRB(12, 2, 12, 4),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(
-                              () => _sortDir = _sortDir == 'DESC'
-                                  ? 'ASC'
-                                  : 'DESC',
-                            );
-                            _page = 1;
-                            _loadUsers();
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: primary.withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: primary.withValues(alpha: 0.2),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  _sortDir == 'DESC'
-                                      ? Icons.arrow_downward
-                                      : Icons.arrow_upward,
-                                  size: 14,
-                                  color: primary,
+                    child: LayoutBuilder(
+                      builder: (ctx, constraints) {
+                        final isNarrow = constraints.maxWidth < 480;
+                        return Wrap(
+                          spacing: 8,
+                          runSpacing: 6,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(
+                                  () => _sortDir = _sortDir == 'DESC'
+                                      ? 'ASC'
+                                      : 'DESC',
+                                );
+                                _page = 1;
+                                _loadUsers();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 6,
                                 ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  _sortDir == 'DESC'
-                                      ? l10n.adminSortDesc
-                                      : l10n.adminSortAsc,
-                                  style: TextStyle(
-                                    color: primary,
-                                    fontSize: 12,
+                                decoration: BoxDecoration(
+                                  color: primary.withValues(alpha: 0.08),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: primary.withValues(alpha: 0.2),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        if (!_todayOnly)
-                          GestureDetector(
-                            onTap: () => _pickDateRange(context, l10n),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: (_dateFrom != null)
-                                    ? primary.withValues(alpha: 0.1)
-                                    : surfaceColor,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: primary.withValues(alpha: 0.2),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.date_range,
-                                    size: 14,
-                                    color: primary,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    _dateFrom != null
-                                        ? '${_dateFrom!.toIso8601String().split('T')[0]} – ${_dateTo?.toIso8601String().split('T')[0] ?? '...'}'
-                                        : l10n.adminDateRange,
-                                    style: TextStyle(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      _sortDir == 'DESC'
+                                          ? Icons.arrow_downward
+                                          : Icons.arrow_upward,
+                                      size: 14,
                                       color: primary,
-                                      fontSize: 12,
                                     ),
-                                  ),
-                                  if (_dateFrom != null) ...[
                                     const SizedBox(width: 4),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _dateFrom = null;
-                                          _dateTo = null;
-                                        });
-                                        _page = 1;
-                                        _loadUsers();
-                                      },
-                                      child: Icon(
-                                        Icons.close,
-                                        size: 14,
+                                    Text(
+                                      _sortDir == 'DESC'
+                                          ? l10n.adminSortDesc
+                                          : l10n.adminSortAsc,
+                                      style: TextStyle(
                                         color: primary,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ],
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        const Spacer(),
-                        Expanded(
-                          child: Text(
-                            '${l10n.adminTotalUsers}: $_totalUsers',
-                            style: AppTextStyles.labelSmall.copyWith(
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                        ),
-                      ],
+                            if (!_todayOnly)
+                              GestureDetector(
+                                onTap: () => _pickDateRange(context, l10n),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: (_dateFrom != null)
+                                        ? primary.withValues(alpha: 0.1)
+                                        : surfaceColor,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: primary.withValues(alpha: 0.2),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.date_range,
+                                        size: 14,
+                                        color: primary,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Flexible(
+                                        child: Text(
+                                          _dateFrom != null
+                                              ? '${_dateFrom!.toIso8601String().split('T')[0]} – ${_dateTo?.toIso8601String().split('T')[0] ?? '...'}'
+                                              : l10n.adminDateRange,
+                                          style: TextStyle(
+                                            color: primary,
+                                            fontSize: 12,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      if (_dateFrom != null) ...[
+                                        const SizedBox(width: 4),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _dateFrom = null;
+                                              _dateTo = null;
+                                            });
+                                            _page = 1;
+                                            _loadUsers();
+                                          },
+                                          child: Icon(
+                                            Icons.close,
+                                            size: 14,
+                                            color: primary,
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            if (isNarrow) ...[
+                              const Spacer(),
+                              Expanded(
+                                child: Text(
+                                  '${l10n.adminTotalUsers}: $_totalUsers',
+                                  style: AppTextStyles.labelSmall.copyWith(
+                                    color: AppColors.textSecondary,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ],
+                        );
+                      },
                     ),
                   ),
 
@@ -841,26 +857,29 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                         ? const Center(child: CircularProgressIndicator())
                         : _error != null
                         ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.error_outline,
-                                  size: 48,
-                                  color: AppColors.error,
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  _error!,
-                                  style: AppTextStyles.bodyMedium,
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 16),
-                                ElevatedButton(
-                                  onPressed: _loadUsers,
-                                  child: Text(l10n.commonRetry),
-                                ),
-                              ],
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 420),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.error_outline,
+                                    size: 48,
+                                    color: AppColors.error,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    _error!,
+                                    style: AppTextStyles.bodyMedium,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ElevatedButton(
+                                    onPressed: _loadUsers,
+                                    child: Text(l10n.commonRetry),
+                                  ),
+                                ],
+                              ),
                             ),
                           )
                         : _users.isEmpty
@@ -980,18 +999,35 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     );
   }
 
+  /// Today's date in the Africa/Kigali calendar, used for the picker's max day.
+  static DateTime _todayInKigali() {
+    // Kigali is UTC+2, so shift UTC midnight by that offset and drop the time.
+    final kigaliDay = DateTime.now().toUtc().add(_kigaliOffsetFromUtc());
+    return DateTime(kigaliDay.year, kigaliDay.month, kigaliDay.day);
+  }
+
+  /// Approximate Kigali offset from UTC.
+  ///
+  /// Kigali uses UTC+2 year-round (no daylight saving). This is a fixed offset
+  /// so the date range picker stays aligned with the backend's Africa/Kigali
+  /// day boundaries even when the device clock is in another zone.
+  static Duration _kigaliOffsetFromUtc() => const Duration(hours: 2);
+
   Future<void> _pickDateRange(
     BuildContext context,
     AppLocalizations l10n,
   ) async {
-    final now = DateTime.now();
+    final today = _todayInKigali();
+    final firstDate = DateTime(today.year - 3);
+    final lastDate = DateTime(today.year, today.month, today.day);
+    final initialRange = _dateFrom != null && _dateTo != null
+        ? DateTimeRange(start: _dateFrom!, end: _dateTo!)
+        : null;
     final range = await showDateRangePicker(
       context: context,
-      firstDate: DateTime(2023),
-      lastDate: now,
-      initialDateRange: _dateFrom != null && _dateTo != null
-          ? DateTimeRange(start: _dateFrom!, end: _dateTo!)
-          : null,
+      firstDate: firstDate,
+      lastDate: lastDate,
+      initialDateRange: initialRange,
     );
     if (range != null) {
       setState(() {
@@ -1056,9 +1092,12 @@ class _UserCard extends StatelessWidget {
     final phone = (user['phoneNumber'] ?? user['phone_number'] ?? '')
         .toString();
     final role = (user['role'] ?? 'USER').toString();
-    final created = (user['createdAt'] ?? user['created_at'] ?? '')
+    final createdRaw = (user['createdAt'] ?? user['created_at'] ?? '')
         .toString()
         .split('T')[0];
+    final createdKigali =
+        (user['createdAtKigali'] ?? '').toString().split('T')[0];
+    final created = createdKigali.isNotEmpty ? createdKigali : createdRaw;
     final calledAt = (user['lastCalledAt'] ?? '').toString();
     final lang = (user['preferredLanguage'] ?? 'en').toString();
     final primary = Theme.of(context).colorScheme.primary;
@@ -1202,6 +1241,7 @@ class _UserCard extends StatelessWidget {
               Wrap(
                 spacing: 6,
                 runSpacing: 6,
+                alignment: WrapAlignment.start,
                 children: [
                   _actionBtn(
                     icon: Icons.phone_rounded,
