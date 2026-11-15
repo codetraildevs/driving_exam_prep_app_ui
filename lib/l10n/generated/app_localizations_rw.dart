@@ -1695,7 +1695,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get dashboardGazetteSubtitle => 'Amategeko y\'umuhanda';
 
   @override
-  String get dashboardIremboSubtitle => 'Serivisi kuri interineti';
+  String get dashboardIremboSubtitle => 'Serivisi z’irembo';
 
   @override
   String get guideTitle => 'AMABWIRIZA';
@@ -1704,32 +1704,34 @@ class AppLocalizationsRw extends AppLocalizations {
   String get guideWelcome => 'Ikaze kuri RWANDA TRAFFIC RULE';
 
   @override
-  String get guideAboutTitle => '1. Ubusobanuro bw’application';
+  String get guideAboutTitle => '1. Ubusobanuro bw\'application';
 
   @override
   String get guideAboutBody =>
-      'RWANDA TRAFFIC RULE ni application yigisha amategeko y’umuhanda kandi igufasha kwitegura ikizamini cy’uruhushya rw’agateganyo rwo gutwara ibinyabiziga ukoresheje ibibazo by’imyitozo.';
+      'Iyi application yitwa ``RWANDA TRAFFIC RULE`` ni application yigisha amategeko y\'umuhanda, igizwe n\'ibibazo babaza mu kizamini cya provisoire (uruhushya rw\'agatenyo)';
 
   @override
-  String get guideUseTitle => '2. Uko application ikora';
+  String get guideUseTitle => '2. UKO APPLICATION IKORA';
 
   @override
   String get guideUseBody =>
-      '1. Iyo ukoresheje application bwa mbere, banza wiyandikishe ukoresheje amazina yawe yose na nimero ya telefoni.\n\n2. Niba usanzwe ufite konti, kanda Injira, wandike nimero ya telefoni wiyandikishijeho, hanyuma ukurikize amabwiriza yo kwinjira.\n\n3. Kuri dashboard, kanda Imyitozo uhitemo ikizamini. Ibizamini byanditseho ko ari ubuntu ntibisaba kwishyura; ibifunze bisaba uburenganzira bwo kubikora.\n\n4. Hitamo igisubizo usome ibisobanuro. Icyatsi kigaragaza igisubizo cy’ukuri, umutuku ukagaragaza ikitari cyo. Komeza ku kibazo gikurikira, usoze ikizamini ubone amanota. Kanda Iterambere urebe uko witwaye.';
+      '1. Kugirango ukoresheiyi application ugomba kubanza kwiyandikisha kuri application mugihe ukoze download bwa mbere aho usabwa kwandika amazina yawe, nimero yawe telephone; warangiza ugakanda ahanditse EMEZA\n\n2. Mugihe usanzwe wariyandikishe ntabwo wongera kwiyandisha ahubwo ukanda ahanditse \"INJIRA\" ubundi ugashyiramo nimero ya telephone  ubundi ugakanda \"EMEZA\" ugahita ugera ahitwa dashboard usanga ibikubyemo muri application.\n\n3. Gutangira kwiga ukanda ahanditse \"IMYITOZO\" iyo uhafunguye hagizwe y\'ibizamini 21 buri mwitozo ugizwe n\'ibibazo 20, ariko umwitozo wa mbere ni ubuntu (free) indi isigaye bisaba kwishyura.\n\n4. Iyo uri kwitoza muri iyi application ukanda mu kazu iyo ugikoze gihinduka icyatsi naho iyo ucyishe gihinduka umutuku kuko ari ukwitoza uhita ubona igisubizo cyukuri ako kanya uhita ugerageza kugifata cga kumenya (kukiboroka) warangiza ugakanda abanditse \"igikurikira\" ukajya kukindi kibazo iyo ugeze kucyanyuma ukanda ahanditse \"soza ikizamini\" ugahita ubona n\'amanota ugize ugahita  ajya guhitamo ikindi kizamini wiga';
 
   @override
-  String get guideExamTitle => '3. Kwitegura ikizamini kuri mudasobwa';
+  String get guideExamTitle =>
+      '3. UKO UZASANGA IBIBAZO BIMEZE  KURI EXAM YA PROVISOIRE  NYIRIZINA';
 
   @override
   String get guideExamBody =>
-      'Ibibazo by’imyitozo bigufasha kumenyera gusoma ibibazo no guhitamo ibisubizo kuri ekara. Mu kizamini nyirizina, kurikiza amabwiriza uhabwa yo kujya ku kibazo gikurikira no gusoza ikizamini.\n\nIbisobanuro by’ibisubizo bigufasha kwiga. Ibibazo, igihe n’uburyo bwo kugaragaza ibisubizo mu kizamini nyirizina bishobora gutandukana n’ibyo muri iyi application; ntabwo twemeza ko ibibazo byose bizaba bimwe.';
+      'A. Nugera muri exam ya provisoire kuri machine Bwa mbere bazabanza bakwitegereze (bagupime) ko udafite ubumuga, ubona, wumva, uzi gusoma no kwandika, ufite indangamuntu y\'umwimerere cga indangampunzi (impunzi) na code y\'uwo munsi, ibindi byinshi,... urugero ikinyabupfura, ku utari  umusinzi,...\n\nB. Uzasanga ibi bibazo biri muri iyo application ari nako bimeze muri exam nta kibazo bazakubaza muri exam ya provisoire kitari muri iyi application, Muguhitamo igisubizo uzakanda MUKAVI ugakomeza kukindi kibazo  ukanze ahanditse IGIKURIKIRA ukomeze n\'ibindi bibazo iyo ubirangije uzakanda ahanditse ``SOZA IKIZAMINI`` uzahita umenya amanota ugize Ako kanya ndetse ushatse wanagenzura ibyo wishe ndetse nibyo wakoze.\n\nC. Aho bitaniye no muri exam ya provoire kuri machine nuko hano iyo ucyishe cga ugikoze uhita umenya  igisubizo cy\'ukuri ako kanya  naho kuri exam nyirizina udahita umenya igisubizo.\n\nD. Hejuru hari imibare kuva kuri 1 kugeza 20 igaragaza ibibazo wasimbutse, ibyo umaze gusubiza nibyo usigaje gukora\n\nE. Amanota yo gutsindiraho muri exam ya ni 12/20 angana na 60% naho hano muri application yacu (nge umunyeshuri wiga amategeko yumuhanda, n\'abayikoze ndetse n\'abayikoramo,..) amanota yo gutsinda ni 80% angana 16/20 muri application ahanditse \"iterambere\" hagaragaza uko ibi bibazo ubyiga uko ubitsinda ariko amanota yibikayo iyo uri kwiga ufite interineti nubwo kwiga atari ngombwa interineti mu gihe wafunze connection wakiga ahanditse amanota muri rusange ntabwo yiyongera';
 
   @override
-  String get guidePaymentTitle => '4. Kwishyura kugira ngo ibizamini bifunguke';
+  String get guidePaymentTitle =>
+      '4. KWISHYURA KUGIRA NGO IBIZAMINI BYOSE BIFUNGUKE';
 
   @override
   String get guidePaymentBody =>
-      '1. Kuri dashboard, kanda ahanditse ibijyanye n’uburenganzira bwo gukora ibizamini cyangwa ukande ikizamini gifunze. Urahita ufungura urupapuro rwo kwishyura ibizamini.\n\n2. Hitamo ukwezi 1, amezi 3 cyangwa amezi 6. Mu Kinyarwanda, ukwezi 1 ni ko kubanza gutoranywa; mu Cyongereza no mu Gifaransa habanza amezi 3. Amafaranga muri RWF ahinduka uko uhindura igihe; igiciro gishingira ku rurimi rwa application.\n\n3. MoMo Pay iba yatoranyijwe. Ushobora guhindura ugahitamo MTN cyangwa Tigo. Genzura izina ryanditse: Alexis kuri MoMo Pay, cyangwa NSHIMIYIMANA Alexis kuri MTN na Tigo. Mbere yo kwemeza, reba ko rihuye n’iryerekanywe kuri telefoni yawe.\n\n4. Kanda ahanditse Kanda hano wishyure. Kode ya USSD yose irakopororwa, telefoni ikagufungurira aho uyikubita. Soza kwishyura kuri telefoni. Ushobora no gukanda agashushondanga ko gukoporora kari iruhande rwa kode, ukayikubita ubwawe.\n\n5. Umaze kwishyura, koresha buto zo guhamagara cyangwa WhatsApp ziri mu gice cy’ubufasha, usabe gufungurirwa ukoresheje nimero ya telefoni wiyandikishijeho. Gufungura aho ukubitira kode cyangwa kuyikoporora ntibihita bifungura ibizamini.\n\n6. Umuyobozi namara gushyira uburenganzira bukora kuri konti yawe, subira kuri dashboard ufite interineti, ukande akambi k’uruziga. Amakuru y’uburenganzira arahinduka, ibizamini byishyurwa bifunguke. Ntukeneye kwandika kode kuri uru rupapuro. Application inagenzura uburenganzira iyo ufunguye dashboard, iyo uyigarutsemo, ndetse ikanabigenzura buri gihe dashboard iri gukoreshwa.\n\n7. Niba ibizamini bikigufungiye, genzura ko ubufasha bwakoresheje nimero wiyandikishijeho kandi ko uburenganzira butararangira. Koresha buto zikurikira ubaze ubufasha.';
+      '1. Nk\'uko nabisobanuye bwa mbere umwitozo  ya mbere ni ubuntu indi 20 bisaba kwishyura 1500Rwf kwiga ukwezi kumwe, 3000Rwf kwiga amezi atatu cyangwa 5000 Rwf kwiga amezi atandatu kuri 0788659575/ 0728877442 cg kuri MOMO PAY: 329494 ibaruye kuri Alexis.\n\nKwishyura wakoresha nimero ushaka bitemewe si ngomba ikubaruyeho ariko mu gihe  ukoresheje indi nimero iyo umaze kwishyura uhita uduhamagara\n\nA. Kwishyura ukoresheje MTN ukanda:\na. *182*1*1*0788659575*1500#\nb. *182*8*1*329494*1500#\n\nB. Kwishyura ukoresheje Tigo cga Airtel\na. *500*1*1*0728877442*1500#\nb. *182*8*1*88329494*1500#\nIbaruye kuri ALEXIS\n\n2. Iyo umaze kwishyura uhite ureba niba ufite connection (internet) ugategereza iminota  ibiri ugahita ukanda imbere y\'ahanditse ururimi ku ka↪️ ugahita ufungura imyitozo usanga byafungutse utugufuri twavuyeho twose.\n\n4. IBINDI BISABANURO BIRAMBUYE WADUHAMAGARA:';
 
   @override
   String get guideOpenAccess => 'Reba ibiciro wishyure';
@@ -2117,4 +2119,77 @@ class AppLocalizationsRw extends AppLocalizations {
   @override
   String get irDeleteUnavailable =>
       'Gusiba ntibiraboneka kuri seriveri. Vugurura inzira za API n\'igice gishinzwe ubusabe bwa Irembo kuri seriveri, hanyuma wongere ugerageze.';
+
+  @override
+  String get referralTitle => 'Tumira inshuti';
+
+  @override
+  String get referralHeading => 'Twitegure neza, turi kumwe.';
+
+  @override
+  String get referralDescription =>
+      'Fasha inshuti kwitegura ikizamini cy’amategeko y’umuhanda. Sangiza ubutumire bwawe maze ukurikirane abiyandikishije hano.';
+
+  @override
+  String get referralSubtitle => 'Tumira inshuti. Kurikirana ubutumire bwawe.';
+
+  @override
+  String get referralYourCode => 'Kode yawe y’ubutumire';
+
+  @override
+  String get referralInvite => 'Tumira inshuti';
+
+  @override
+  String get referralCopy => 'Koporora ihuza ry’ubutumire';
+
+  @override
+  String get referralHistory => 'Amateka y’ubutumire';
+
+  @override
+  String get referralTotal => 'Abatumirwa bose';
+
+  @override
+  String get referralConfirmed => 'Kwiyandikisha byemejwe';
+
+  @override
+  String get referralPending => 'Birategereje';
+
+  @override
+  String get referralRewardsDisabled =>
+      'Gukurikirana ubutumire birakora. Ibihembo ntibirashyirwaho, bityo ubutumire ntibutanga amafaranga cyangwa uburenganzira bwo gukora imyitozo ubu.';
+
+  @override
+  String get referralEmpty =>
+      'Ubutumire bwawe buzagaragara hano inshuti zimaze gufungura konti zikoresheje ihuza ryawe.';
+
+  @override
+  String get referralLoadError =>
+      'Ntitwashoboye kubona ubutumire bwawe. Reba interineti maze wongere ugerageze.';
+
+  @override
+  String get referralInviteMessage =>
+      'Itegure ikizamini cy’amategeko y’umuhanda mu Rwanda ukoresheje Rwanda Traffic Rules! Kuramo porogaramu maze utangire kwiga ukoresheje ubutumire bwanjye:';
+
+  @override
+  String get referralShareUnavailable =>
+      'Gusangiza ntibishoboka hano. Koporora ihuza ry’ubutumire maze uryohereze.';
+
+  @override
+  String get referralMore => 'Erekana ibindi';
+
+  @override
+  String get adminReferrals => 'Ubutumire';
+
+  @override
+  String get adminReferralSearch =>
+      'Shakisha izina, kode y’ubutumire cyangwa telefone';
+
+  @override
+  String get adminReferralInvitees => 'Abatumiwe';
+
+  @override
+  String get adminReferralDeletedUser => 'Konti yasibwe';
+
+  @override
+  String get dashboardReferrals => 'Tumira inshuti';
 }

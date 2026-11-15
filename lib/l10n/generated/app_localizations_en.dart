@@ -2091,4 +2091,76 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get irDeleteUnavailable =>
       'Deletion is unavailable on this server. Update the Irembo backend routes and handler, then retry.';
+
+  @override
+  String get referralTitle => 'Refer & Earn';
+
+  @override
+  String get referralHeading => 'Better prepared, together.';
+
+  @override
+  String get referralDescription =>
+      'Help a friend prepare for their driving theory exam. Send your personal invitation and follow successful registrations here.';
+
+  @override
+  String get referralSubtitle => 'Invite friends. Track your invitations.';
+
+  @override
+  String get referralYourCode => 'Your personal invitation code';
+
+  @override
+  String get referralInvite => 'Invite friends';
+
+  @override
+  String get referralCopy => 'Copy referral link';
+
+  @override
+  String get referralHistory => 'Referral history';
+
+  @override
+  String get referralTotal => 'Total referrals';
+
+  @override
+  String get referralConfirmed => 'Successful registration';
+
+  @override
+  String get referralPending => 'Pending';
+
+  @override
+  String get referralRewardsDisabled =>
+      'Referral tracking is active. Rewards are not configured yet, so invitations do not currently grant money or exam access.';
+
+  @override
+  String get referralEmpty =>
+      'Your invitations will appear here when friends create their accounts using your link.';
+
+  @override
+  String get referralLoadError =>
+      'We couldn’t load your invitations. Check your connection and try again.';
+
+  @override
+  String get referralInviteMessage =>
+      'Prepare for your Rwanda driving theory exam with Rwanda Traffic Rules! Get the app and start learning using my invitation:';
+
+  @override
+  String get referralShareUnavailable =>
+      'Sharing isn’t available here. Use Copy referral link to send your invitation.';
+
+  @override
+  String get referralMore => 'Load more';
+
+  @override
+  String get adminReferrals => 'Referrals';
+
+  @override
+  String get adminReferralSearch => 'Search by name, referral code or phone';
+
+  @override
+  String get adminReferralInvitees => 'Invited users';
+
+  @override
+  String get adminReferralDeletedUser => 'Deleted account';
+
+  @override
+  String get dashboardReferrals => 'Refer & Earn';
 }

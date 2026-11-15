@@ -7,9 +7,7 @@ import '../../../../shared/widgets/app_page_header.dart';
 import '../../../../shared/widgets/need_help_section.dart';
 
 class InstructionsPage extends StatelessWidget {
-  final Future<void> Function(BuildContext) onShare;
-  final VoidCallback? onNotices;
-  const InstructionsPage({super.key, required this.onShare, this.onNotices});
+  const InstructionsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,17 +54,12 @@ class InstructionsPage extends StatelessWidget {
             const SizedBox(height: 20),
             const NeedHelpSection(),
             const SizedBox(height: 12),
-            Builder(builder: (buttonContext) => OutlinedButton.icon(
-              onPressed: () => onShare(buttonContext),
-              icon: const Icon(Icons.share_outlined),
-              label: Text(l10n.dashboardShare),
-            )),
-            if (onNotices != null) ...[
-              const SizedBox(height: 8),
-              OutlinedButton.icon(onPressed: onNotices,
-                icon: const Icon(Icons.notifications_none),
-                label: Text(l10n.settingsNotifications)),
-            ],
+            OutlinedButton.icon(
+              key: const ValueKey('instructions-referrals'),
+              onPressed: () => context.push('/referrals'),
+              icon: const Icon(Icons.group_add_outlined),
+              label: Text(l10n.referralTitle),
+            ),
           ]),
         )),
       )),

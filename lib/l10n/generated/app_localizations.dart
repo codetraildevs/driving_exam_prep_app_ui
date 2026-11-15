@@ -3915,6 +3915,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deletion is unavailable on this server. Update the Irembo backend routes and handler, then retry.'**
   String get irDeleteUnavailable;
+
+  /// No description provided for @referralTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Refer & Earn'**
+  String get referralTitle;
+
+  /// No description provided for @referralHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Better prepared, together.'**
+  String get referralHeading;
+
+  /// No description provided for @referralDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Help a friend prepare for their driving theory exam. Send your personal invitation and follow successful registrations here.'**
+  String get referralDescription;
+
+  /// No description provided for @referralSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite friends. Track your invitations.'**
+  String get referralSubtitle;
+
+  /// No description provided for @referralYourCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Your personal invitation code'**
+  String get referralYourCode;
+
+  /// No description provided for @referralInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite friends'**
+  String get referralInvite;
+
+  /// No description provided for @referralCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy referral link'**
+  String get referralCopy;
+
+  /// No description provided for @referralHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral history'**
+  String get referralHistory;
+
+  /// No description provided for @referralTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total referrals'**
+  String get referralTotal;
+
+  /// No description provided for @referralConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Successful registration'**
+  String get referralConfirmed;
+
+  /// No description provided for @referralPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get referralPending;
+
+  /// No description provided for @referralRewardsDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral tracking is active. Rewards are not configured yet, so invitations do not currently grant money or exam access.'**
+  String get referralRewardsDisabled;
+
+  /// No description provided for @referralEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your invitations will appear here when friends create their accounts using your link.'**
+  String get referralEmpty;
+
+  /// No description provided for @referralLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn’t load your invitations. Check your connection and try again.'**
+  String get referralLoadError;
+
+  /// No description provided for @referralInviteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Prepare for your Rwanda driving theory exam with Rwanda Traffic Rules! Get the app and start learning using my invitation:'**
+  String get referralInviteMessage;
+
+  /// No description provided for @referralShareUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing isn’t available here. Use Copy referral link to send your invitation.'**
+  String get referralShareUnavailable;
+
+  /// No description provided for @referralMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get referralMore;
+
+  /// No description provided for @adminReferrals.
+  ///
+  /// In en, this message translates to:
+  /// **'Referrals'**
+  String get adminReferrals;
+
+  /// No description provided for @adminReferralSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name, referral code or phone'**
+  String get adminReferralSearch;
+
+  /// No description provided for @adminReferralInvitees.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited users'**
+  String get adminReferralInvitees;
+
+  /// No description provided for @adminReferralDeletedUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted account'**
+  String get adminReferralDeletedUser;
+
+  /// No description provided for @dashboardReferrals.
+  ///
+  /// In en, this message translates to:
+  /// **'Refer & Earn'**
+  String get dashboardReferrals;
 }
 
 class _AppLocalizationsDelegate

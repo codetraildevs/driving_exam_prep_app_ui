@@ -95,13 +95,10 @@ class _HomePageState extends ConsumerState<HomePage>
     }
   }
 
-  void _instructions(String? userId) {
+  void _instructions() {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => InstructionsPage(
-          onShare: _share,
-          onNotices: userId == null ? null : () => _notices(userId),
-        ),
+        builder: (_) => const InstructionsPage(),
       ),
     );
   }
@@ -172,13 +169,6 @@ class _HomePageState extends ConsumerState<HomePage>
     );
   }
 
-  Future<void> _notices(String userId) => showModalBottomSheet<void>(
-    context: context,
-    isScrollControlled: true,
-    useSafeArea: true,
-    showDragHandle: true,
-    builder: (_) => _NoticesSheet(userId: userId),
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -232,6 +222,13 @@ class _HomePageState extends ConsumerState<HomePage>
         l10n.homeProgress,
         l10n.homeProgressSubtitle,
         (_) => context.push('/progress'),
+      ),
+      _Shortcut(
+        'referral',
+        Icons.group_add_outlined,
+        l10n.referralTitle,
+        l10n.referralSubtitle,
+        (_) => context.push('/referrals'),
       ),
       _Shortcut(
         'share',
@@ -360,7 +357,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                     surface: Colors.white.withValues(
                                       alpha: 0.12,
                                     ),
-                                    onTap: () => _instructions(user?.id),
+                                    onTap: _instructions,
                                   ),
                                 ],
                               ),
@@ -873,76 +870,3 @@ class _SubscriptionBanner extends ConsumerWidget {
   }
 }
 
-class _NoticesSheet extends ConsumerWidget {
-  final String userId;
-  const _NoticesSheet({required this.userId});
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-    final notices = ref.watch(dashboardNoticesProvider(userId));
-    return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.65,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    l10n.dashboardNotices,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
-                IconButton(
-                  tooltip: l10n.commonRetry,
-                  onPressed: () =>
-                      ref.invalidate(dashboardNoticesProvider(userId)),
-                  icon: const Icon(Icons.refresh),
-                ),
-                IconButton(
-                  tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: notices.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (_, __) => Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Text(
-                    l10n.dashboardNoticesUnavailable,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              data: (data) => data.items.isEmpty
-                  ? Center(child: Text(l10n.dashboardNoNotices))
-                  : ListView.separated(
-                      padding: const EdgeInsets.all(20),
-                      itemCount: data.items.length,
-                      separatorBuilder: (_, __) => const Divider(),
-                      itemBuilder: (context, index) {
-                        final item = data.items[index];
-                        return ListTile(
-                          leading: Icon(
-                            item.unread
-                                ? Icons.mark_email_unread_outlined
-                                : Icons.drafts_outlined,
-                          ),
-                          title: Text(item.title),
-                          subtitle: item.body.isEmpty ? null : Text(item.body),
-                        );
-                      },
-                    ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

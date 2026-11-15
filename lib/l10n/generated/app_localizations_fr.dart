@@ -2124,4 +2124,76 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get irDeleteUnavailable =>
       'La suppression est indisponible sur ce serveur. Mettez à jour les routes et le gestionnaire Irembo, puis réessayez.';
+
+  @override
+  String get referralTitle => 'Inviter et gagner';
+
+  @override
+  String get referralHeading => 'Mieux préparés, ensemble.';
+
+  @override
+  String get referralDescription =>
+      'Aidez un ami à préparer son examen théorique. Partagez votre invitation personnelle et suivez les inscriptions réussies ici.';
+
+  @override
+  String get referralSubtitle => 'Invitez vos amis. Suivez vos invitations.';
+
+  @override
+  String get referralYourCode => 'Votre code d’invitation personnel';
+
+  @override
+  String get referralInvite => 'Inviter des amis';
+
+  @override
+  String get referralCopy => 'Copier le lien d’invitation';
+
+  @override
+  String get referralHistory => 'Historique des invitations';
+
+  @override
+  String get referralTotal => 'Total des parrainages';
+
+  @override
+  String get referralConfirmed => 'Inscription réussie';
+
+  @override
+  String get referralPending => 'En attente';
+
+  @override
+  String get referralRewardsDisabled =>
+      'Le suivi des invitations est actif. Les récompenses ne sont pas encore configurées : les invitations ne donnent actuellement ni argent ni accès aux examens.';
+
+  @override
+  String get referralEmpty =>
+      'Vos invitations apparaîtront ici lorsque vos amis créeront leur compte avec votre lien.';
+
+  @override
+  String get referralLoadError =>
+      'Impossible de charger vos invitations. Vérifiez votre connexion et réessayez.';
+
+  @override
+  String get referralInviteMessage =>
+      'Préparez votre examen théorique de conduite au Rwanda avec Rwanda Traffic Rules ! Téléchargez l’application et commencez à apprendre grâce à mon invitation :';
+
+  @override
+  String get referralShareUnavailable =>
+      'Le partage est indisponible ici. Copiez le lien pour envoyer votre invitation.';
+
+  @override
+  String get referralMore => 'Afficher plus';
+
+  @override
+  String get adminReferrals => 'Parrainages';
+
+  @override
+  String get adminReferralSearch => 'Rechercher par nom, code ou téléphone';
+
+  @override
+  String get adminReferralInvitees => 'Utilisateurs invités';
+
+  @override
+  String get adminReferralDeletedUser => 'Compte supprimé';
+
+  @override
+  String get dashboardReferrals => 'Inviter et gagner';
 }
