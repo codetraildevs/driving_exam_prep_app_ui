@@ -6,11 +6,17 @@ import '../../../../shared/network/api_endpoints.dart';
 import '../../../../shared/device/device_id.dart';
 import '../../../../shared/session/auth_session.dart';
 import '../models/user_model.dart';
+import '../../../referrals/data/referral_session.dart';
 
 class AuthRepository {
-  final ApiClient _api = ApiClient();
+  final ApiClient _api;
+  final ReferralSession _referrals;
   final AuthSession _session = AuthSession();
   final DeviceId _deviceId = DeviceId();
+
+  AuthRepository({ApiClient? apiClient, ReferralSession? referralSession})
+    : _api = apiClient ?? ApiClient(),
+      _referrals = referralSession ?? ReferralSession.instance;
 
   Future<UserModel?> signUp({
     required String fullName,
@@ -23,13 +29,18 @@ class AuthRepository {
         debugPrint('[AUTH][SIGNUP] start phone=$phoneNumber device=${deviceId.substring(deviceId.length > 8 ? deviceId.length - 8 : 0)}');
       }
 
+      final form = <String, dynamic>{
+        'fullName': fullName,
+        'phoneNumber': phoneNumber,
+        'deviceId': deviceId,
+        'preferredLanguage': preferredLanguage,
+      };
+      final referralFields = await _referrals.registrationFields(form);
       final registerData = await _api.post(
         ApiEndpoints.authRegister,
         body: {
-          'fullName': fullName,
-          'phoneNumber': phoneNumber,
-          'deviceId': deviceId,
-          'preferredLanguage': preferredLanguage,
+          ...form,
+          ...referralFields,
         },
       );
       if (kDebugMode) {
@@ -49,6 +60,7 @@ class AuthRepository {
           await _session.setRefreshToken(registerExtracted.refreshToken);
         }
         await _session.setUser(registerExtracted.user);
+        await _completeReferral();
         return registerExtracted.user;
       }
 
@@ -71,6 +83,7 @@ class AuthRepository {
         await _session.setRefreshToken(extracted.refreshToken);
       }
       await _session.setUser(extracted.user);
+      await _completeReferral();
       return extracted.user;
     } catch (e) {
       if (kDebugMode) {
@@ -106,12 +119,22 @@ class AuthRepository {
         await _session.setRefreshToken(extracted.refreshToken);
       }
       await _session.setUser(extracted.user);
+      await _completeReferral();
       return extracted.user;
     } catch (e) {
       if (kDebugMode) {
         debugPrint('[AUTH][LOGIN][ERROR] $e');
       }
       rethrow;
+    }
+  }
+
+  Future<void> _completeReferral() async {
+    try {
+      await _referrals.complete();
+    } catch (_) {
+      // Authentication is already saved. Initialization retries cleanup using
+      // that persisted session; a storage failure must not report login failure.
     }
   }
 

@@ -210,6 +210,8 @@ if ($path === '' || $path === '/index.php') {
 // 9. Public routes (no auth required)
 // ---------------------------------------------------------------------------
 $publicRoutes = [
+    'GET:/referral',
+    'GET:/.well-known/assetlinks.json',
     'GET:/',
     'GET:/health',
     'GET:/api/health',
@@ -271,6 +273,7 @@ require_once __DIR__ . '/handlers/irembo.php';
 require_once __DIR__ . '/handlers/whatsapp_groups.php';
 require_once __DIR__ . '/handlers/general.php';
 require_once __DIR__ . '/handlers/auth.php';
+require_once __DIR__ . '/handlers/referrals.php';
 require_once __DIR__ . '/handlers/exam.php';
 require_once __DIR__ . '/handlers/questions.php';
 require_once __DIR__ . '/handlers/exam_results.php';

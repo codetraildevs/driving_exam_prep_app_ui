@@ -1,1678 +1,656 @@
 {
-  "@@locale": "en",
-
   "appTitle": "Rwanda Traffic Rule",
-  "@appTitle": { "description": "The title of the application" },
-
   "languageSelectTitle": "Choose Your Language",
-  "@languageSelectTitle": { "description": "Title on the first-run language selector screen" },
-
   "languageSelectSubtitle": "You can change this later in Settings",
-  "@languageSelectSubtitle": { "description": "Subtitle on language selector screen" },
-
   "languageSelectConfirm": "Continue",
-  "@languageSelectConfirm": { "description": "Confirm button on language selector" },
-
   "homeWelcomeBack": "Welcome back 👋",
-  "@homeWelcomeBack": { "description": "Greeting label on home page header" },
-
-  "homeGreeting": "{userName}",
   "@homeGreeting": {
-    "description": "User name displayed in home header",
     "placeholders": {
-      "userName": { "type": "String", "example": "Jean" }
+      "userName": {
+        "type": "Object"
+      }
     }
   },
-
+  "homeGreeting": "{userName}",
   "homeContinueMessage": "Continue mastering traffic rules today.",
-  "@homeContinueMessage": { "description": "Motivational sub-text on home page" },
-
   "homeContinueLearning": "Continue Learning",
-  "@homeContinueLearning": { "description": "CTA button text on home page" },
-
   "homeAccessActive": "Access Active - {daysLeft} days left",
-  "@homeAccessActive": {
-    "description": "Access card status",
-    "placeholders": {
-      "daysLeft": { "type": "int", "example": "175" }
-    }
-  },
-
   "homePaymentTier": "Payment Tier: {tier}",
-  "@homePaymentTier": {
-    "description": "Payment tier label",
-    "placeholders": {
-      "tier": { "type": "String", "example": "6 MONTHS" }
-    }
-  },
-
   "homePracticeSessions": "{count, plural, =0{No practice sessions} =1{1 practice session} other{{count} practice sessions}}",
-  "@homePracticeSessions": {
-    "description": "Plural example: number of practice sessions completed",
-    "placeholders": {
-      "count": { "type": "int", "example": "5" }
-    }
-  },
-
   "homePractices": "Practices",
-  "@homePractices": { "description": "Service card title" },
-
   "homePracticesSubtitle": "Practice questions",
-  "@homePracticesSubtitle": { "description": "Service card subtitle" },
-
   "homeCourses": "Courses",
-  "@homeCourses": { "description": "Service card title" },
-
   "homeCoursesSubtitle": "Learning modules",
-  "@homeCoursesSubtitle": { "description": "Service card subtitle" },
-
   "homeMockExams": "Practice Exams",
-  "@homeMockExams": { "description": "Service card title" },
-
   "homeMockExamsSubtitle": "Test knowledge",
-  "@homeMockExamsSubtitle": { "description": "Service card subtitle" },
-
   "homeProgress": "Progress",
-  "@homeProgress": { "description": "Service card title" },
-
   "homeProgressSubtitle": "Track performance",
-  "@homeProgressSubtitle": { "description": "Service card subtitle" },
-
   "homeShareApp": "Share App",
-  "@homeShareApp": { "description": "Service card title" },
-
   "homeShareAppSubtitle": "Invite friends",
-  "@homeShareAppSubtitle": { "description": "Service card subtitle" },
-
   "homeShareAppMessage": "Download Rwanda Traffic Rule to learn traffic rules and pass your exam!",
-  "@homeShareAppMessage": { "description": "Sharing message text" },
-
   "settingsTitle": "Settings",
-  "@settingsTitle": { "description": "Settings page app bar title" },
-
   "settingsPreferences": "Preferences",
-  "@settingsPreferences": { "description": "Settings section header" },
-
   "settingsDarkMode": "Dark Mode",
-  "@settingsDarkMode": { "description": "Dark mode toggle title" },
-
   "settingsDarkModeSubtitle": "Use dark theme",
-  "@settingsDarkModeSubtitle": { "description": "Dark mode toggle subtitle" },
-
   "settingsNotifications": "Notifications",
-  "@settingsNotifications": { "description": "Notifications toggle title" },
-
   "settingsNotificationsSubtitle": "Receive daily reminders",
-  "@settingsNotificationsSubtitle": { "description": "Notifications toggle subtitle" },
-
   "settingsLanguage": "Language",
-  "@settingsLanguage": { "description": "Language setting title" },
-
   "settingsAbout": "About",
-  "@settingsAbout": { "description": "About section header" },
-
   "settingsAboutApp": "About Rwanda Traffic Rule",
-  "@settingsAboutApp": { "description": "About app title" },
-
   "settingsVersion": "Version {version}",
-  "@settingsVersion": {
-    "description": "App version with interpolation",
-    "placeholders": {
-      "version": { "type": "String", "example": "1.0.0" }
-    }
-  },
-
   "settingsPrivacyPolicy": "Privacy Policy",
-  "@settingsPrivacyPolicy": { "description": "Privacy policy link title" },
-
   "settingsPrivacyPolicySubtitle": "Read our privacy policy",
-  "@settingsPrivacyPolicySubtitle": { "description": "Privacy policy subtitle" },
-
   "settingsTermsOfService": "Terms of Service",
-  "@settingsTermsOfService": { "description": "Terms of service link title" },
-
   "settingsTermsOfServiceSubtitle": "Read our terms",
-  "@settingsTermsOfServiceSubtitle": { "description": "Terms subtitle" },
-
   "settingsData": "Data",
-  "@settingsData": { "description": "Data section header" },
-
   "settingsResetProgress": "Reset Progress",
-  "@settingsResetProgress": { "description": "Reset progress button title" },
-
-  "settingsResetProgressSubtitle": "Clear all your data",
-  "@settingsResetProgressSubtitle": { "description": "Reset progress subtitle" },
-
+  "settingsResetProgressSubtitle": "Delete all your data",
   "settingsResetConfirmTitle": "Reset Progress",
-  "@settingsResetConfirmTitle": { "description": "Reset confirm dialog title" },
-
   "settingsResetConfirmMessage": "Are you sure you want to reset all your progress? This action cannot be undone.",
-  "@settingsResetConfirmMessage": { "description": "Reset confirm dialog message" },
-
   "settingsResetSuccess": "Progress reset successfully",
-  "@settingsResetSuccess": { "description": "Reset success snackbar message" },
-
-  "settingsSelectLanguage": "Select Language",
-  "@settingsSelectLanguage": { "description": "Language dialog title" },
-
+  "settingsSelectLanguage": "Choose language",
   "commonCancel": "Cancel",
-  "@commonCancel": { "description": "Generic cancel button" },
-
   "commonMenu": "Menu",
-  "@commonMenu": { "description": "Tooltip for the navigation drawer hamburger button" },
-
   "commonConfirm": "Confirm",
-  "@commonConfirm": { "description": "Generic confirm button" },
-
   "commonReset": "Reset",
-  "@commonReset": { "description": "Generic reset button" },
-
-  "landingHeroTitle": "Master Traffic Rules Easily",
-  "@landingHeroTitle": { "description": "Landing page hero title" },
-
-  "landingHeroSubtitle": "Practice real exam questions and pass your driving test.",
-  "@landingHeroSubtitle": { "description": "Landing page hero subtitle" },
-
+  "landingHeroTitle": "Learn traffic rules easily",
+  "landingHeroSubtitle": "Practice on your own questions and pass your exam.",
   "landingGetStarted": "Get Started",
-  "@landingGetStarted": { "description": "Landing page CTA button" },
-
-  "landingAlreadyHaveAccount": "Already have an account? Login",
-  "@landingAlreadyHaveAccount": { "description": "Landing page login link" },
-
-  "landingWhyUseApp": "Why Use Our App?",
-  "@landingWhyUseApp": { "description": "Features section title" },
-
-  "landingLearnRules": "Learn Rules",
-  "@landingLearnRules": { "description": "Feature card title" },
-
-  "landingLearnRulesDesc": "Clear explanations of all traffic laws and road signs.",
-  "@landingLearnRulesDesc": { "description": "Feature card description" },
-
-  "landingPracticeExams": "Practice Exams",
-  "@landingPracticeExams": { "description": "Feature card title" },
-
-  "landingPracticeExamsDesc": "Take mock exams similar to the real driving test.",
-  "@landingPracticeExamsDesc": { "description": "Feature card description" },
-
-  "landingTrackProgress": "Track Progress",
-  "@landingTrackProgress": { "description": "Feature card title" },
-
-  "landingTrackProgressDesc": "Monitor your performance and improve weak areas.",
-  "@landingTrackProgressDesc": { "description": "Feature card description" },
-
-  "landingHowItWorks": "How It Works",
-  "@landingHowItWorks": { "description": "How it works section title" },
-
-  "landingStep1": "Create your free account",
-  "@landingStep1": { "description": "How it works step 1" },
-
+  "landingAlreadyHaveAccount": "Already have an account? Sign in",
+  "landingWhyUseApp": "Why use our app?",
+  "landingLearnRules": "Learn rules",
+  "landingLearnRulesDesc": "Clear explanations of all traffic rules and signs.",
+  "landingPracticeExams": "Practice exams",
+  "landingPracticeExamsDesc": "Take practice exams similar to the real exam.",
+  "landingTrackProgress": "Track progress",
+  "landingTrackProgressDesc": "Track your performance and see where you want to go.",
+  "landingHowItWorks": "How it works",
+  "landingStep1": "Open your free account",
   "landingStep2": "Start learning traffic rules",
-  "@landingStep2": { "description": "How it works step 2" },
-
-  "landingStep3": "Take mock exams",
-  "@landingStep3": { "description": "How it works step 3" },
-
-  "landingStep4": "Pass your real test confidently",
-  "@landingStep4": { "description": "How it works step 4" },
-
-  "landingReadyTitle": "Ready to Pass Your Driving Exam?",
-  "@landingReadyTitle": { "description": "Landing CTA section title" },
-
-  "landingStartLearning": "Start Learning Now",
-  "@landingStartLearning": { "description": "Landing CTA button" },
-
+  "landingStep3": "Take practice exams",
+  "landingStep4": "Pass the real exam with confidence",
+  "landingReadyTitle": "Ready to pass your health driving license exam?",
+  "landingStartLearning": "Start learning now",
   "homeServices": "Services",
-  "@homeServices": { "description": "Services section header on home page" },
-
   "authAppName": "Rwanda Traffic Rule",
-  "@authAppName": { "description": "App brand name on auth pages" },
-
-  "authSubtitle": "Prepare for Your Provisional Driving Licence",
-  "@authSubtitle": { "description": "Subtitle on auth pages" },
-
-  "loginTitle": "Login to Your Account",
-  "@loginTitle": { "description": "Login page title" },
-
-  "loginSubtitle": "Enter your registered phone number to continue.",
-  "@loginSubtitle": { "description": "Login page subtitle" },
-
-  "authNeedHelp": "Need Help?",
-  "@authNeedHelp": { "description": "Help section title on auth pages" },
-
-  "loginHelpText": "For account issues or inquiries, contact:",
-  "@loginHelpText": { "description": "Login help text" },
-
-  "authPhoneNumber": "Phone Number",
-  "@authPhoneNumber": { "description": "Phone number field label" },
-
+  "authSubtitle": "Prepare for your provisional license driving theory exam",
+  "loginTitle": "Sign in to your account",
+  "loginSubtitle": "Enter your phone number (used during registration) to continue.",
+  "authNeedHelp": "Need help?",
+  "loginHelpText": "For account issues, contact:",
+  "authPhoneNumber": "Enter your phone number",
   "authPhoneHint": "07** *** ***",
-  "@authPhoneHint": { "description": "Phone number placeholder" },
-
   "authContinue": "Continue",
-  "@authContinue": { "description": "Continue button text" },
-
   "loginNoAccount": "Don't have an account? ",
-  "@loginNoAccount": { "description": "No account prompt" },
-
-  "loginSignUp": "Sign Up",
-  "@loginSignUp": { "description": "Sign up link text" },
-
-  "authSecureTag": "Secure • Fast • Pass",
-  "@authSecureTag": { "description": "Brand tagline on auth pages" },
-
+  "loginSignUp": "Sign up",
+  "authSecureTag": "Learn • Prepare • Pass",
   "loginPhoneRequired": "Please enter your phone number",
-  "@loginPhoneRequired": { "description": "Phone validation error" },
-  "loginInvalidPhone": "Enter a valid phone number (e.g. 078... or +250 78...)",
-  "@loginInvalidPhone": { "description": "Login phone format validation error" },
-
-  "registerTitle": "Create Your Account",
-  "@registerTitle": { "description": "Registration page title" },
-
-  "registerSubtitle": "Register using your full name and phone number to begin learning.",
-  "@registerSubtitle": { "description": "Registration page subtitle" },
-
-  "registerHelpText": "For registration issues or inquiries, contact:",
-  "@registerHelpText": { "description": "Registration help text" },
-
-  "authFullName": "Full Name",
-  "@authFullName": { "description": "Full name field label" },
-
-  "authFullNameHint": "Enter your full name",
-  "@authFullNameHint": { "description": "Full name placeholder" },
-
-  "registerTerms": "I agree to the Terms of Service and Privacy Policy.",
-  "@registerTerms": { "description": "Terms agreement text" },
-
-  "registerSignUp": "Sign Up",
-  "@registerSignUp": { "description": "Sign up button text" },
-
+  "loginInvalidPhone": "Enter a valid phone number (e.g., 07... or +250 7...)",
+  "registerTitle": "Create your account",
+  "registerSubtitle": "Sign up using your full name and phone number to start learning.",
+  "registerHelpText": "For sign-up issues or other questions, contact:",
+  "authFullName": "Enter your name",
+  "authFullNameHint": "Enter your name",
+  "registerTerms": "Accept the usage and privacy policies.",
+  "registerSignUp": "Confirm",
   "registerHaveAccount": "Already have an account? ",
-  "@registerHaveAccount": { "description": "Have account prompt" },
-
-  "registerLogIn": "Log In",
-  "@registerLogIn": { "description": "Log in link text" },
-
+  "registerLogIn": "Sign in",
   "registerFillAllFields": "Please fill all fields",
-  "@registerFillAllFields": { "description": "Validation error" },
-
-  "registerAgreeTerms": "Please agree to terms and conditions",
-  "@registerAgreeTerms": { "description": "Terms validation error" },
-
-  "forgotPasswordTitle": "Password reset is not available",
-  "@forgotPasswordTitle": { "description": "Forgot password page title" },
-
-  "forgotPasswordDescription": "This backend uses phone number + device binding (no password reset flow).",
-  "@forgotPasswordDescription": { "description": "Forgot password page description" },
-
-  "forgotPasswordBackToLogin": "Back to Login",
-  "@forgotPasswordBackToLogin": { "description": "Back to login button" },
-
+  "registerAgreeTerms": "Please accept required terms",
+  "forgotPasswordTitle": "Reset password not possible",
+  "forgotPasswordDescription": "The system uses phone number and device link (no password reset).",
+  "forgotPasswordBackToLogin": "Back to sign in",
   "navHome": "Home",
-  "@navHome": { "description": "Bottom nav home label" },
-
   "navPractice": "Practice",
-  "@navPractice": { "description": "Bottom nav practice label" },
-
   "navProgress": "Progress",
-  "@navProgress": { "description": "Bottom nav progress label" },
-
   "navProfile": "Profile",
-  "@navProfile": { "description": "Bottom nav profile label" },
-
-  "practiceTitle": "Practice ",
-  "@practiceTitle": { "description": "Practice page title" },
-
-  "practiceCategorySpeedLimits": "Speed Limits",
-  "@practiceCategorySpeedLimits": { "description": "Practice category" },
-
-  "practiceCategoryRoadSigns": "Road Signs",
-  "@practiceCategoryRoadSigns": { "description": "Practice category" },
-
-  "practiceCategoryLaneControl": "Lane Control",
-  "@practiceCategoryLaneControl": { "description": "Practice category" },
-
-  "practiceCategoryParkingRules": "Parking Rules",
-  "@practiceCategoryParkingRules": { "description": "Practice category" },
-
+  "practiceTitle": "Practice Exams",
+  "practiceCategorySpeedLimits": "Speed limits",
+  "practiceCategoryRoadSigns": "Traffic signs",
+  "practiceCategoryLaneControl": "Lane guidance",
+  "practiceCategoryParkingRules": "Parking rules",
   "practiceStart": "Start →",
-  "@practiceStart": { "description": "Start quiz prompt" },
-
-  "quizComplete": "Quiz Complete!",
-  "@quizComplete": { "description": "Quiz completion title" },
-
+  "quizComplete": "Exam complete!",
   "quizScore": "Score: {score}%",
-  "@quizScore": {
-    "description": "Quiz score display",
-    "placeholders": { "score": { "type": "int" } }
-  },
-
-  "quizResult": "You got {correct} out of {total} correct",
-  "@quizResult": {
-    "description": "Quiz result text",
-    "placeholders": { "correct": { "type": "int" }, "total": { "type": "int" } }
-  },
-
-  "quizBackToPractice": "Back to Practice",
-  "@quizBackToPractice": { "description": "Back button in quiz results" },
-
-  "quizQuestion": "Question {current}/{total}",
-  "@quizQuestion": {
-    "description": "Question counter",
-    "placeholders": { "current": { "type": "int" }, "total": { "type": "int" } }
-  },
-
-  "quizFinish": "Finish Quiz",
-  "@quizFinish": { "description": "Finish quiz button" },
-
-  "quizNextQuestion": "Next Question",
-  "@quizNextQuestion": { "description": "Next question button" },
-
-  "examMockExam": "Practice Exam",
-  "@examMockExam": { "description": "Mock exam title" },
-
-  "examInstructions": "Exam Instructions",
-  "@examInstructions": { "description": "Exam instructions title" },
-
-  "examTimeLimit": "Time Limit",
-  "@examTimeLimit": { "description": "Time limit instruction title" },
-
-  "examTimeLimitDesc": "30 minutes total for 20 questions",
-  "@examTimeLimitDesc": { "description": "Time limit description" },
-
-  "examQuestionCount": "20 Questions",
-  "@examQuestionCount": { "description": "Question count instruction title" },
-
-  "examQuestionCountDesc": "Multiple choice format with 4 options each",
-  "@examQuestionCountDesc": { "description": "Question count description" },
-
-  "examPassingScore": "Passing Score",
-  "@examPassingScore": { "description": "Passing score instruction title" },
-
-  "examPassingScoreDesc": "You need 70% or higher to pass",
-  "@examPassingScoreDesc": { "description": "Passing score description" },
-
-  "examNoGoingBack": "No Going Back",
-  "@examNoGoingBack": { "description": "No going back instruction title" },
-
-  "examNoGoingBackDesc": "You cannot revisit previous questions",
-  "@examNoGoingBackDesc": { "description": "No going back description" },
-
-  "examWarning": "Make sure you have stable internet and won't be interrupted",
-  "@examWarning": { "description": "Exam warning message" },
-
+  "quizResult": "You answered {correct} out of {total} correctly",
+  "quizBackToPractice": "Try another exam",
+  "quizNextQuestion": "Next question",
+  "examMockExam": "Practice Exams",
+  "examInstructions": "Exam instructions",
+  "examTimeLimit": "Time limit",
+  "examTimeLimitDesc": "30 minutes total with 20 questions",
+  "examQuestionCount": "20 questions",
+  "examQuestionCountDesc": "Multiple choice with 4 options each",
+  "examPassingScore": "Passing score",
+  "examPassingScoreDesc": "You need 70% or above to pass",
+  "examNoGoingBack": "No going back",
+  "examNoGoingBackDesc": "You cannot go back to previous questions",
+  "examWarning": "Make sure you have a stable internet connection and won't be interrupted",
   "examStartExam": "Start Exam",
-  "@examStartExam": { "description": "Start exam button" },
-
   "examSubmit": "Submit Exam",
-  "@examSubmit": { "description": "Submit exam button" },
-
   "examCongratulations": "Congratulations!",
-  "@examCongratulations": { "description": "Exam passed title" },
-
-  "examGoodEffort": "Good Effort",
-  "@examGoodEffort": { "description": "Exam failed title" },
-
+  "examGoodEffort": "Good effort",
   "examPassedMessage": "You passed the exam with flying colors!",
-  "@examPassedMessage": { "description": "Exam passed message" },
-
   "examFailedMessage": "Keep practicing to improve your score",
-  "@examFailedMessage": { "description": "Exam failed message" },
-
-  "examYourScore": "Your Score",
-  "@examYourScore": { "description": "Score label" },
-
-  "examCorrect": "Correct",
-  "@examCorrect": { "description": "Correct answers label" },
-
+  "examYourScore": "Your score",
+  "examCorrect": "Correct answers",
   "examAccuracy": "Accuracy",
-  "@examAccuracy": { "description": "Accuracy label" },
-
-  "examNeedMorePractice": "You need 70% to pass. Practice more to improve!",
-  "@examNeedMorePractice": { "description": "Encouragement for failing" },
-
+  "examNeedMorePractice": "You need 70% to pass. Keep practicing!",
   "examBadgeEarned": "You earned a badge for passing the exam!",
-  "@examBadgeEarned": { "description": "Badge earned message" },
-
-  "examRetakeTest": "Retake Test",
-  "@examRetakeTest": { "description": "Retake test button" },
-
-  "examBackHome": "Back Home",
-  "@examBackHome": { "description": "Back home button" },
-
+  "examRetakeTest": "Retake Exam",
+  "examBackHome": "Back to Home",
   "progressTitle": "Your Progress",
-  "@progressTitle": { "description": "Progress page title" },
-
   "progressPerformanceSummary": "Performance Summary",
-  "@progressPerformanceSummary": { "description": "Performance section title" },
-
   "progressTotalAttempts": "Total Attempts",
-  "@progressTotalAttempts": { "description": "Total attempts stat" },
-
   "progressBestScore": "Best Score",
-  "@progressBestScore": { "description": "Best score stat" },
-
   "progressAverageScore": "Average Score",
-  "@progressAverageScore": { "description": "Average score stat" },
-
   "progressSignsLearned": "Signs Learned",
-  "@progressSignsLearned": { "description": "Signs learned stat" },
-
   "progressRecentExams": "Recent Exams",
-  "@progressRecentExams": { "description": "Recent exams section title" },
-
   "progressOverall": "Overall Progress",
-  "@progressOverall": { "description": "Overall progress card title" },
-
   "progressComplete": "Complete",
-  "@progressComplete": { "description": "Complete metric label" },
-
-  "progressAvgScore": "Avg Score",
-  "@progressAvgScore": { "description": "Average score metric label" },
-
+  "progressAvgScore": "Avg. score",
   "progressSigns": "Signs",
-  "@progressSigns": { "description": "Signs metric label" },
-
   "progressPassed": "Passed",
-  "@progressPassed": { "description": "Passed status label" },
-
   "progressExcellent": "Excellent",
-  "@progressExcellent": { "description": "Excellent status label" },
-
-  "progressMockExam": "Mock Exam {number}",
-  "@progressMockExam": {
-    "description": "Mock exam name",
-    "placeholders": { "number": { "type": "int" } }
-  },
-
-  "progressPracticeQuiz": "Practice Exams",
-  "@progressPracticeQuiz": { "description": "Practice Exams name" },
-
+  "progressMockExam": "Practice Exam {number}",
+  "progressPracticeQuiz": "Practice Quiz",
   "profileTitle": "Profile",
-  "@profileTitle": { "description": "Profile page title" },
-
   "profileLocation": "Kigali, Rwanda",
-  "@profileLocation": { "description": "User location" },
-
-  "profileOverallProgress": "Overall Learning Progress",
-  "@profileOverallProgress": { "description": "Learning progress card title" },
-
-  "profileModulesCompleted": "{completed}/{total} Modules Completed",
-  "@profileModulesCompleted": {
-    "description": "Module completion text",
-    "placeholders": { "completed": { "type": "int" }, "total": { "type": "int" } }
-  },
-
+  "profileOverallProgress": "Overall Progress",
+  "profileModulesCompleted": "{completed}/{total} exams completed",
   "profileAccount": "Account",
-  "@profileAccount": { "description": "Account section header" },
-
   "profileSettings": "Settings",
-  "@profileSettings": { "description": "Settings menu item" },
-
-  "profileSettingsSubtitle": "Notifications, language, privacy",
-  "@profileSettingsSubtitle": { "description": "Settings menu subtitle" },
-
-  "profileDeleteAccount": "Delete Account",
-  "@profileDeleteAccount": { "description": "Delete account option" },
-
-  "profileSignOut": "Sign Out",
-  "@profileSignOut": { "description": "Sign out option" },
-
-  "profileDeleteConfirmTitle": "Delete Account",
-  "@profileDeleteConfirmTitle": { "description": "Delete confirmation dialog title" },
-
-  "profileDeleteConfirmMessage": "Are you sure you want to permanently delete your account? This action cannot be undone.",
-  "@profileDeleteConfirmMessage": { "description": "Delete confirmation message" },
-
+  "profileSettingsSubtitle": "Notifications, language, data",
+  "profileDeleteAccount": "Delete account",
+  "profileSignOut": "Sign out",
+  "profileDeleteConfirmTitle": "Delete account",
+  "profileDeleteConfirmMessage": "Are you sure you want to delete your account entirely? This action cannot be undone.",
   "profileDelete": "Delete",
-  "@profileDelete": { "description": "Delete button" },
-
   "certificatesTitle": "My Certificates",
-  "@certificatesTitle": { "description": "Certificates page title" },
-
-  "certificatesAchievements": "Your Achievements",
-  "@certificatesAchievements": { "description": "Achievements section title" },
-
+  "certificatesAchievements": "Achievements",
   "certificatesEarned": "Earned",
-  "@certificatesEarned": { "description": "Earned status" },
-
   "certificatesPending": "Pending",
-  "@certificatesPending": { "description": "Pending status" },
-
   "certificatesInProgress": "In Progress",
-  "@certificatesInProgress": { "description": "In progress date placeholder" },
-
-  "certificateRoadSignsMastery": "Road Signs Mastery",
-  "@certificateRoadSignsMastery": { "description": "Certificate name" },
-
-  "certificateTrafficRulesTest": "Traffic Rules Final Test",
-  "@certificateTrafficRulesTest": { "description": "Certificate name" },
-
-  "certificateDefensiveDriving": "Defensive Driving",
-  "@certificateDefensiveDriving": { "description": "Certificate name" },
-
+  "certificateRoadSignsMastery": "Traffic sign mastery",
+  "certificateTrafficRulesTest": "Traffic rules test",
+  "certificateDefensiveDriving": "Defensive driving",
   "signsTitle": "Traffic Signs",
-  "@signsTitle": { "description": "Signs page title" },
-
-  "signsSearchHint": "Search traffic signs...",
-  "@signsSearchHint": { "description": "Search hint text" },
-
+  "signsSearchHint": "Search for traffic signs...",
   "signsNotFound": "No traffic signs found",
-  "@signsNotFound": { "description": "Empty state text" },
-
   "signsLearned": "Learned",
-  "@signsLearned": { "description": "Learned badge text" },
-
   "signsAll": "All",
-  "@signsAll": { "description": "All category filter" },
-
   "signDetailTitle": "Traffic Sign",
-  "@signDetailTitle": { "description": "Sign detail page title" },
-
   "signDetailNotFound": "Sign not found",
-  "@signDetailNotFound": { "description": "Sign not found message" },
-
   "signDetailDescription": "Description",
-  "@signDetailDescription": { "description": "Description section header" },
-
-  "signDetailScenario": "Real-Life Scenario",
-  "@signDetailScenario": { "description": "Scenario section header" },
-
-  "signDetailLearned": "You've learned this sign!",
-  "@signDetailLearned": { "description": "Learned status message" },
-
-  "signDetailMarkAsLearned": "Mark as Learned",
-  "@signDetailMarkAsLearned": { "description": "Mark as learned button" },
-
-  "signDetailMarkedSuccess": "Traffic sign marked as learned!",
-  "@signDetailMarkedSuccess": { "description": "Success snackbar message" },
-
-  "subscriptionTitle": "Practice Exam Access",
-  "@subscriptionTitle": { "description": "Subscription page title" },
-
-  "subscriptionSubtitle": "Unlock All Practice Exams",
-  "@subscriptionSubtitle": { "description": "Subscription page subtitle" },
-  "subscriptionTrafficRulesMsg": "If you want to learn traffic rules, kindly call, text us on WhatsApp and help to be prepared for official provisional driving license.",
-  "@subscriptionTrafficRulesMsg": { "description": "Support message for learning traffic rules" },
-
-  "subscriptionCurrentPlan": "Your Current Plan",
-  "@subscriptionCurrentPlan": { "description": "Current plan section label" },
-
+  "signDetailScenario": "Real-life scenario",
+  "signDetailLearned": "You learned this sign!",
+  "signDetailMarkAsLearned": "Mark as learned",
+  "signDetailMarkedSuccess": "Sign marked as learned!",
+  "subscriptionTitle": "Request exam access",
+  "subscriptionSubtitle": "request exam access",
+  "subscriptionTrafficRulesMsg": "If you want to learn traffic rules, contact us or send us a WhatsApp message and we will help you prepare well for your provisional license driving theory exam.",
+  "subscriptionCurrentPlan": "Your current plan",
   "subscriptionNoPlan": "No active plan",
-  "@subscriptionNoPlan": { "description": "No plan label" },
-
   "subscriptionMonth1": "1 Month",
-  "@subscriptionMonth1": { "description": "1 month plan label" },
-
   "subscriptionMonth3": "3 Months",
-  "@subscriptionMonth3": { "description": "3 months plan label" },
-
   "subscriptionMonth6": "6 Months",
-  "@subscriptionMonth6": { "description": "6 months plan label" },
-
   "subscriptionPrice": "{amount} RWF",
-  "@subscriptionPrice": {
-    "description": "Price label with amount",
-    "placeholders": {
-      "amount": { "type": "int", "example": "3000" }
-    }
-  },
-
   "subscriptionRequestAccess": "Request Access",
-  "@subscriptionRequestAccess": { "description": "Request access button" },
-
-  "subscriptionRequestSent": "Your request has been submitted. You will be activated once payment is confirmed.",
-  "@subscriptionRequestSent": { "description": "Request sent success message" },
-
-  "subscriptionPaymentInstructions": "Payment Instructions",
-  "@subscriptionPaymentInstructions": { "description": "Payment instructions section title" },
-
+  "subscriptionRequestSent": "Your request has been sent successfully.Wait a moment for them to see that you have been approved.",
+  "subscriptionPaymentInstructions": "Payment instructions",
   "subscriptionPaymentMomo": "MoMo Pay: 329494",
-  "@subscriptionPaymentMomo": { "description": "MoMo pay number" },
-
   "subscriptionPaymentMobile": "Mobile Money: 0788659575",
-  "@subscriptionPaymentMobile": { "description": "Mobile money number" },
- "subscriptionPaymentTigoCash": "Tigo Cash: 0728877442",
+  "subscriptionPaymentTigoCash": "Tigo Cash: 0728877442",
   "subscriptionHelpCall": "Call: 0788659575",
-  "@subscriptionHelpCall": { "description": "Help call number" },
-
   "subscriptionHelpWhatsapp": "WhatsApp: 0788659575",
-  "@subscriptionHelpWhatsapp": { "description": "Help WhatsApp number" },
-
-  "subscriptionChoosePlan": "Choose a Plan to",
-  "@subscriptionChoosePlan": { "description": "Choose plan label" },
-
-  "subscriptionCurrency": "Months to learn",
-  "@subscriptionCurrency": { "description": "Currency label" },
-
-  "subscriptionAccessActive": "Access Active",
-  "@subscriptionAccessActive": { "description": "Access active label" },
-
+  "subscriptionChoosePlan": "Choose a learning plan",
+  "subscriptionCurrency": "Months you want to learn",
+  "subscriptionAccessActive": "Access available",
   "subscriptionExpires": "Expires: {date}",
-  "@subscriptionExpires": {
-    "description": "Expiry date label",
-    "placeholders": {
-      "date": { "type": "String", "example": "2025-01-01" }
-    }
-  },
-
   "subscriptionDays": "{days} days",
-  "@subscriptionDays": {
-    "description": "Days label",
-    "placeholders": {
-      "days": { "type": "int", "example": "30" }
-    }
-  },
-
-  "subscriptionNeedHelp": "Need Help?",
-  "@subscriptionNeedHelp": { "description": "Need help label" },
-
-  "subscriptionGetAccess": "Get access to all {count}+ premium practice exams",
-  "@subscriptionGetAccess": {
-    "description": "Get access subtitle",
-    "placeholders": {
-      "count": { "type": "int", "example": "20" }
-    }
-  },
-
-  "adminDashboard": "Dashboard",
-  "@adminDashboard": { "description": "Admin dashboard page title" },
-
+  "subscriptionNeedHelp": "Need help?",
+  "subscriptionGetAccess": "Get {count}+ exam practice access",
+  "adminDashboard": "Admin Dashboard",
   "adminUsers": "Users",
-  "@adminUsers": { "description": "Admin users page title" },
-
-  "adminAccess": "Access Management",
-  "@adminAccess": { "description": "Admin access page title" },
-
+  "adminAccess": "Manage Access",
   "adminProgress": "User Progress",
-  "@adminProgress": { "description": "Admin progress page title" },
-
   "adminTotalUsers": "Total Users",
-  "@adminTotalUsers": { "description": "Total users stat label" },
-
   "adminActiveSubscriptions": "Active Subscriptions",
-  "@adminActiveSubscriptions": { "description": "Active subscriptions stat label" },
-
   "adminUsersByLanguage": "Users by Language",
-  "@adminUsersByLanguage": { "description": "Users by language stat label" },
-
   "adminRecentRegistrations": "Recent Registrations",
-  "@adminRecentRegistrations": { "description": "Recent registrations stat label" },
-
   "adminGrantAccess": "Grant Access",
-  "@adminGrantAccess": { "description": "Grant access button" },
-
   "adminCallUser": "Call User",
-  "@adminCallUser": { "description": "Call user button" },
-
   "adminCallNotes": "Call Notes",
-  "@adminCallNotes": { "description": "Call notes label" },
-
   "adminLastCalled": "Last Called",
-  "@adminLastCalled": { "description": "Last called label" },
-
   "adminNoAccess": "No Access",
-  "@adminNoAccess": { "description": "No access badge" },
-
   "adminHasAccess": "Has Access",
-  "@adminHasAccess": { "description": "Has access badge" },
-
   "adminAccessExpired": "Access Expired",
-  "@adminAccessExpired": { "description": "Access expired badge" },
-
   "adminAccessExpires": "Expires: {date}",
-  "@adminAccessExpires": {
-    "description": "Access expiry date",
-    "placeholders": {
-      "date": { "type": "String", "example": "2025-01-01" }
-    }
-  },
-
   "adminSearchUsers": "Search users...",
-  "@adminSearchUsers": { "description": "Search users hint" },
-
   "adminFilterAll": "All",
-  "@adminFilterAll": { "description": "Filter all chip" },
-
   "adminFilterHasAccess": "Has Access",
-  "@adminFilterHasAccess": { "description": "Filter has access chip" },
-
   "adminFilterNoAccess": "No Access",
-  "@adminFilterNoAccess": { "description": "Filter no access chip" },
-
   "adminManageUsers": "Manage Users",
-  "@adminManageUsers": { "description": "Manage users quick action" },
-
   "adminManageAccess": "Manage Access",
-  "@adminManageAccess": { "description": "Manage access quick action" },
-
   "adminViewProgress": "View Progress",
-  "@adminViewProgress": { "description": "View progress quick action" },
-
   "adminRegistrationDate": "Registered: {date}",
-  "@adminRegistrationDate": {
-    "description": "Registration date label",
-    "placeholders": {
-      "date": { "type": "String", "example": "2025-01-01" }
-    }
-  },
-
   "adminEnterCallNotes": "Enter call notes...",
-  "@adminEnterCallNotes": { "description": "Call notes hint text" },
-
   "adminSubmitCall": "Submit",
-  "@adminSubmitCall": { "description": "Submit call notes button" },
-
   "adminCallLogged": "Call logged successfully",
-  "@adminCallLogged": { "description": "Call logged success message" },
-
   "adminAccessGranted": "Access granted successfully",
-  "@adminAccessGranted": { "description": "Access granted success message" },
-
-  "adminSelectTier": "Select Access Tier",
-  "@adminSelectTier": { "description": "Select tier label" },
-
-  "adminCustomDays": "Custom Duration (days)",
-  "@adminCustomDays": { "description": "Custom days label" },
-
-  "adminPaymentAmount": "Amount (RWF)",
-  "@adminPaymentAmount": { "description": "Payment amount label" },
-
+  "adminSelectTier": "Select Access Level",
+  "adminCustomDays": "Custom Days",
+  "adminPaymentAmount": "Payment Amount (RWF)",
   "adminEnterDays": "Enter number of days",
-  "@adminEnterDays": { "description": "Days input hint" },
-
   "adminEnterAmount": "Enter amount in RWF",
-  "@adminEnterAmount": { "description": "Amount input hint" },
-
-  "adminOrCustom": "Or set custom days",
-  "@adminOrCustom": { "description": "Custom days toggle label" },
-
-  "adminPendingRequests": "Pending Payment Requests",
-  "@adminPendingRequests": { "description": "Pending requests section title" },
-
+  "adminOrCustom": "Or enter custom days",
+  "adminPendingRequests": "Pending payment requests",
   "adminAllUsersList": "All Users",
-  "@adminAllUsersList": { "description": "All users section title" },
-
   "adminInvalidAmount": "Please enter a valid amount greater than 0",
-  "@adminInvalidAmount": { "description": "Invalid amount error" },
-
   "adminInvalidDays": "Please enter a valid number of days greater than 0",
-  "@adminInvalidDays": { "description": "Invalid days error" },
-
   "adminAccessRevoked": "Access revoked",
-  "@adminAccessRevoked": { "description": "Access revoked message" },
-
   "adminNoUsers": "No users found",
-  "@adminNoUsers": { "description": "No users found message" },
-
   "examListTitle": "Practice Exams",
-  "@examListTitle": { "description": "Exam list page title" },
-
   "examFree": "FREE",
-  "@examFree": { "description": "Free exam badge" },
-
   "examPaid": "PAID",
-  "@examPaid": { "description": "Paid exam badge" },
-
-  "examLocked": "Locked",
-  "@examLocked": { "description": "Locked exam label" },
-
+  "examLocked": "locked",
   "examQuestions": "{count} questions",
-  "@examQuestions": {
-    "description": "Question count label",
-    "placeholders": {
-      "count": { "type": "int", "example": "20" }
-    }
-  },
-
   "quizProgress": "Progress",
-  "@quizProgress": { "description": "Quiz progress label" },
-
   "quizAnswered": "Answered: {answered}/{total}",
-  "@quizAnswered": {
-    "description": "Answered counter",
-    "placeholders": {
-      "answered": { "type": "int", "example": "5" },
-      "total": { "type": "int", "example": "20" }
-    }
-  },
-
-  "quizSubmitPractice": "Submit exam",
-  "@quizSubmitPractice": { "description": "Submit practice button" },
-
-  "quizPrevious": "Previous",
-  "@quizPrevious": { "description": "Previous question button" },
-
-  "quizNext": "Next",
-  "@quizNext": { "description": "Next question button" },
-
+  "quizSubmitPractice": "Submit Exam",
+  "quizPrevious": "previous",
+  "quizNext": "next",
   "quizTimeRemaining": "Time: {time}",
-  "@quizTimeRemaining": {
-    "description": "Time remaining label",
-    "placeholders": {
-      "time": { "type": "String", "example": "19:34" }
-    }
-  },
-
-  "quizResults": "Quiz Results",
-  "@quizResults": { "description": "Quiz results title" },
-
+  "quizResults": "Exam Results",
   "quizPassed": "Passed!",
-  "@quizPassed": { "description": "Quiz passed label" },
-
-  "quizFailed": "Keep Practicing",
-  "@quizFailed": { "description": "Quiz failed label" },
-
+  "quizFailed": "Failed",
   "quizQuestionOf": "Question {current} of {total}",
-  "@quizQuestionOf": {
-    "description": "Question counter",
-    "placeholders": {
-      "current": { "type": "int", "example": "1" },
-      "total": { "type": "int", "example": "20" }
-    }
-  },
-
-  "quizSubmitConfirmTitle": "Submit Quiz?",
-  "@quizSubmitConfirmTitle": { "description": "Submit confirmation dialog title" },
-
+  "quizSubmitConfirmTitle": "Submit Exam?",
   "quizSubmitConfirmMessage": "You have answered {answered} out of {total} questions. Are you sure you want to submit?",
-  "@quizSubmitConfirmMessage": {
-    "description": "Submit confirmation dialog message",
-    "placeholders": {
-      "answered": { "type": "int", "example": "15" },
-      "total": { "type": "int", "example": "20" }
-    }
-  },
-
-  "quizTimeUp": "Time's up! Quiz submitted automatically.",
-  "@quizTimeUp": { "description": "Time up message" },
-
+  "quizTimeUp": "Time's up! The practice exam has been submitted automatically.",
   "quizReviewAnswers": "Review Answers",
-  "@quizReviewAnswers": { "description": "Review answers button" },
-
-  "quizRetake": "Retake Quiz",
-  "@quizRetake": { "description": "Retake quiz button" },
-
+  "quizRetake": "Retake Exam",
   "profileRole": "Role",
-  "@profileRole": { "description": "Profile role label" },
-
   "profileLanguage": "Preferred Language",
-  "@profileLanguage": { "description": "Profile language label" },
-
   "profileRegistered": "Registered: {date}",
-  "@profileRegistered": {
-    "description": "Registration date",
-    "placeholders": {
-      "date": { "type": "String", "example": "2025-01-01" }
-    }
-  },
-
   "profileAccessStatus": "Access Status",
-  "@profileAccessStatus": { "description": "Access status label" },
-
   "profileExamHistory": "Exam History",
-  "@profileExamHistory": { "description": "Exam history label" },
-
   "profileCallHistory": "Call History",
-  "@profileCallHistory": { "description": "Call history label" },
-
   "paymentInstructionsTitle": "Payment Instructions",
-  "@paymentInstructionsTitle": { "description": "Payment instructions title" },
-
   "paymentMomoPayNumber": "MoMo Pay: 329494",
-  "@paymentMomoPayNumber": { "description": "MoMo pay number" },
-
   "paymentMomoPayDial": "To pay with MoMo Pay, dial: *182*8*1*329494*amount#",
-  "@paymentMomoPayDial": { "description": "MoMo Pay dial instruction" },
-
   "paymentMobileMoneyNumber": "Mobile Money: 0788659575",
-  "@paymentMobileMoneyNumber": { "description": "Mobile money number" },
   "paymentTigoCashNumber": "Tigo Cash: 0728877442",
-
   "paymentMobileMoneyDial": "To pay with Mobile Money, dial: *182*1*1*0788659575*amount#",
-  "@paymentMobileMoneyDial": { "description": "Mobile Money dial instruction" },
- "paymentTigoCashDial": "To pay with Tigo Cash, dial *182*1*1*0728877442*amount#",
+  "paymentTigoCashDial": "To pay with Tigo Cash, dial: *182*1*1*0728877442*amount#",
   "paymentHelpText": "Need help? Call or WhatsApp: 0788659575",
-  "@paymentHelpText": { "description": "Payment help text" },
-
   "paymentHelpContact": "You can copy or call: 0788659575 or WhatsApp: 0788659575 for help.",
-  "@paymentHelpContact": { "description": "Payment help contact line" },
-
-  "paymentError": "Payment request failed. Please pay manually using the instructions below.",
-  "@paymentError": { "description": "Payment error message" },
-
-  "paymentCopyNumber": "Copy Number",
-  "@paymentCopyNumber": { "description": "Copy phone number button" },
-
+  "paymentError": "Payment request conflict. Please pay using the instructions provided here.",
+  "paymentCopyNumber": "Copy number",
   "paymentCallNumber": "Call 0788659575",
-  "@paymentCallNumber": { "description": "Call phone number button" },
-"paymentCallTigoNumber": "Call 0728877442",
-  "paymentWhatsApp": "Send Message on WhatsApp",
-  "@paymentWhatsApp": { "description": "WhatsApp button label" },
-
-  "paymentWhatsAppMessage": "Request access for driving exam app",
-  "@paymentWhatsAppMessage": { "description": "WhatsApp message text for payment request" },
-
-  "paymentRequestExists": "A payment request for this plan is already pending. Please wait for activation or contact support.",
-  "@paymentRequestExists": { "description": "Duplicate payment request error" },
-
+  "paymentCallTigoNumber": "Call 0728877442",
+  "paymentWhatsApp": "Send message to WhatsApp",
+  "paymentWhatsAppMessage": "Request access to use the driving theory exam app",
+  "paymentRequestExists": "Payment request already sent. Wait a moment for them to help you or contact help numbers and send a WhatsApp message which will appear below the page",
   "commonError": "Something went wrong. Please try again.",
-  "@commonError": { "description": "Generic error message" },
-
-  "commonRetry": "Retry",
-  "@commonRetry": { "description": "Retry button label" },
-
-  "adminTierLabel": "Tier",
-
+  "commonRetry": "Try again",
+  "adminTierLabel": "Level",
   "adminExpiresLabel": "Expires",
-
   "adminRenewAccess": "Renew / Extend Access",
-
   "adminManagePlatform": "Manage Platform",
-
   "adminManageExams": "Manage Exams",
-
   "adminManageExamsDesc": "View and manage all practice exams",
-
-  "adminManageUsersDesc": "View, search, and manage all users",
-
-  "adminAccessCodesDesc": "Manage access codes and payments",
-
+  "adminManageUsersDesc": "View, search and manage all users",
+  "adminAccessCodesDesc": "Manage access codes and payment",
   "adminQuickStats": "Quick Stats",
-
   "adminActionsTitle": "Admin Actions",
-
   "adminTotalPractices": "Total Practices",
-
-  "adminManagePlatformDesc": "Manage your traffic rules learning platform",
-
+  "adminManagePlatformDesc": "Manage the traffic rules platform",
   "adminNotifications": "Notifications",
-
   "settingsAppearance": "Appearance",
-
   "settingsAppearanceDesc": "Choose how the app looks",
-
   "settingsThemeSystem": "System",
-
   "settingsThemeLight": "Light",
-
   "settingsThemeDark": "Dark",
-
   "examWrong": "Wrong",
-  "@examWrong": { "description": "Wrong answers label in exam result" },
-
   "examTimeSpent": "Time",
-  "@examTimeSpent": { "description": "Time spent label in exam result" },
-
-  "profileLogoutConfirmTitle": "Sign Out?",
-  "@profileLogoutConfirmTitle": { "description": "Logout confirmation title" },
-
-  "profileLogoutConfirmMessage": "Are you sure you want to sign out of your account?",
-  "@profileLogoutConfirmMessage": { "description": "Logout confirmation message" },
-
-  "profileDeleteInstructions": "Before deleting your account:\n• All your exam results will be permanently erased\n• Your access subscription will be removed\n• This action cannot be undone\n• You will need to re-register to use the app again",
-  "@profileDeleteInstructions": { "description": "Instructions shown before deleting account" },
-
+  "profileLogoutConfirmTitle": "Sign out?",
+  "profileLogoutConfirmMessage": "Do you want to sign out of your account?",
+  "profileDeleteInstructions": "Before deleting your account:\n• All your answers will be deleted\n• Your subscription will be deleted\n• You will need to sign up again to use the app",
   "progressExamsTaken": "Exams Taken",
-  "@progressExamsTaken": { "description": "Total exams taken label" },
-
-  "progressPassedCount": "Passed",
-  "@progressPassedCount": { "description": "Number of passed exams label" },
-
-  "progressFailedCount": "Failed",
-  "@progressFailedCount": { "description": "Number of failed exams label" },
-
+  "progressPassedCount": "Exams Passed",
+  "progressFailedCount": "Exams Failed",
   "progressPassRate": "Pass Rate",
-  "@progressPassRate": { "description": "Pass rate label" },
-
-  "progressNoExams": "No exams taken yet. Start practicing!",
-  "@progressNoExams": { "description": "Empty state for progress page" },
-
-  "certificateReadyTitle": "Ready for Official Exam!",
-  "@certificateReadyTitle": { "description": "Certificate ready title" },
-
-  "certificateReadySubtitle": "You have passed {count} exams. You are ready for the official driving license test.",
-  "@certificateReadySubtitle": {
-    "description": "Certificate subtitle with count",
-    "placeholders": { "count": { "type": "int" } }
-  },
-
-  "certificateIremboLink": "Register for Official Exam on irembo.gov.rw",
-  "@certificateIremboLink": { "description": "Irembo link button label" },
-
-  "certificateIremboDesc": "Click below to register for the official provisional driving license computer-based test",
-  "@certificateIremboDesc": { "description": "Irembo link description" },
-
-  "certificateExamsNeeded": "Pass {needed} more exams to earn your certificate",
-  "@certificateExamsNeeded": {
-    "description": "How many more exams needed",
-    "placeholders": { "needed": { "type": "int" } }
-  },
-
-  "certificateProgressLabel": "{passed} of {total} required exams passed",
-  "@certificateProgressLabel": {
-    "description": "Certificate progress label",
-    "placeholders": {
-      "passed": { "type": "int" },
-      "total": { "type": "int" }
-    }
-  },
-
-  "adminSortAsc": "Oldest First",
-  "@adminSortAsc": { "description": "Sort ascending label" },
-
-  "adminSortDesc": "Newest First",
-  "@adminSortDesc": { "description": "Sort descending label" },
-
+  "progressNoExams": "No exams taken. Start taking exams!",
+  "certificateReadyTitle": "Ready for the real exam!",
+  "certificateReadySubtitle": "You have completed {count} exams. You are ready for the driving license access exam.",
+  "certificateIremboLink": "Apply for the government exam at irembo.gov.rw",
+  "certificateIremboDesc": "Click here to apply for the online government driving license theory exam",
+  "certificateExamsNeeded": "Pass {needed} more exams to get the certificate proving you are ready for the provisional license driving theory exam",
+  "certificateProgressLabel": "{passed} of {total} required exams",
+  "adminSortAsc": "Oldest first",
+  "adminSortDesc": "Newest first",
   "adminFilterToday": "Today",
-  "@adminFilterToday": { "description": "Filter today label" },
-
   "adminDateRange": "Date Range",
-  "@adminDateRange": { "description": "Date range filter label" },
-
   "adminFilterRole": "Role",
-  "@adminFilterRole": { "description": "Filter by role label" },
-
   "adminBlockUser": "Block User",
-  "@adminBlockUser": { "description": "Block user action" },
-
   "adminUnblockUser": "Unblock User",
-  "@adminUnblockUser": { "description": "Unblock user action" },
-
   "adminDeleteUserAction": "Delete User",
-  "@adminDeleteUserAction": { "description": "Delete user action" },
-
-  "adminBlockUserConfirm": "Block {name}? They will lose access and cannot log in.",
-  "@adminBlockUserConfirm": {
-    "description": "Block user confirmation",
-    "placeholders": { "name": { "type": "String" } }
-  },
-
-  "adminDeleteUserConfirm": "Permanently delete {name}? All their data will be erased. This cannot be undone.",
-  "@adminDeleteUserConfirm": {
-    "description": "Delete user confirmation",
-    "placeholders": { "name": { "type": "String" } }
-  },
-
+  "adminBlockUserConfirm": "Are you sure you want to block {name}? They will no longer be able to sign in.",
+  "adminDeleteUserConfirm": "Delete {name} entirely? All their data will be deleted.",
   "adminUserBlocked": "User blocked successfully",
-  "@adminUserBlocked": { "description": "User blocked success message" },
-
   "adminUserUnblocked": "User unblocked successfully",
-  "@adminUserUnblocked": { "description": "User unblocked success message" },
-
   "adminUserDeleted": "User deleted successfully",
-  "@adminUserDeleted": { "description": "User deleted success message" },
-
-  "adminMustBlockFirst": "You must block the user before deleting them.",
-  "@adminMustBlockFirst": { "description": "Must block first error message" },
-
+  "adminMustBlockFirst": "You must block the user first before deleting them.",
   "adminBlockAccess": "Block Access",
-  "@adminBlockAccess": { "description": "Block access action" },
-
   "adminDeleteAccess": "Delete Access",
-  "@adminDeleteAccess": { "description": "Delete access action" },
-
-  "adminBlockAccessConfirm": "Block this access code? The user will lose access immediately.",
-  "@adminBlockAccessConfirm": { "description": "Block access confirmation" },
-
-  "adminDeleteAccessConfirm": "Delete this access code permanently?",
-  "@adminDeleteAccessConfirm": { "description": "Delete access confirmation" },
-
+  "adminBlockAccessConfirm": "Block access code? The user will no longer be able to use the app.",
+  "adminDeleteAccessConfirm": "Delete this access code?",
   "adminAccessBlocked": "Access code blocked",
-  "@adminAccessBlocked": { "description": "Access blocked success message" },
-
   "adminAccessDeleted": "Access code deleted",
-  "@adminAccessDeleted": { "description": "Access deleted success message" },
-
   "adminPage": "Page {page} of {total}",
-  "@adminPage": {
-    "description": "Pagination label",
-    "placeholders": {
-      "page": { "type": "int" },
-      "total": { "type": "int" }
-    }
-  },
-
-  "adminLearningLanguage": "Learning",
-  "@adminLearningLanguage": { "description": "Learning language label" },
-
+  "adminLearningLanguage": "Language of Interest",
   "adminIsBlocked": "Blocked",
-  "@adminIsBlocked": { "description": "Blocked status label" },
-
   "adminIsActive": "Active",
-  "@adminIsActive": { "description": "Active status label" },
-
   "generalCopied": "Copied!",
-  "@generalCopied": { "description": "Shown in snackbar after copying text to clipboard" },
-
-  "adminRetry": "Retry",
-  "@adminRetry": { "description": "Retry button label" },
-
-  "languageSelectDescription": "You can change this later in Settings — get localized traffic alerts and routing.",
-  "@languageSelectDescription": { "description": "Full subtitle on language selector page" },
-
+  "adminRetry": "Try again",
+  "languageSelectDescription": "You can change the language later in Settings.",
   "languageSelectDeviceLanguage": "Use device language",
-  "@languageSelectDeviceLanguage": { "description": "Button to auto-detect device language" },
-
   "languageSelectHelpTooltip": "Language help",
-  "@languageSelectHelpTooltip": { "description": "Tooltip for help icon on language selector" },
-
   "languageSelectMaybeLater": "Maybe later",
-  "@languageSelectMaybeLater": { "description": "Skip button on language selector" },
-
   "languageSelectHelpTitle": "Why choose a language?",
-  "@languageSelectHelpTitle": { "description": "Help modal title on language selector" },
-
-  "languageSelectHelpContent": "Selecting a language ensures that alerts, maps, and voice prompts are shown in your preferred language. You can change this later in Settings.",
-  "@languageSelectHelpContent": { "description": "Help modal content on language selector" },
-
+  "languageSelectHelpContent": "Choosing a language makes text, icons, and voice prompts appear in your language. You can change the language later in Settings.",
   "commonGotIt": "Got it",
-  "@commonGotIt": { "description": "Acknowledge button" },
-
-  "languageSelectDialogTitle": "Select language",
-  "@languageSelectDialogTitle": { "description": "Dialog title for language picker" },
-
+  "languageSelectDialogTitle": "Choose Language",
   "examNotFound": "Exam not found",
-  "@examNotFound": { "description": "Error when exam cannot be loaded" },
-
   "errorWithDetail": "Error: {detail}",
-  "@errorWithDetail": {
-    "description": "Error message with detail",
-    "placeholders": { "detail": { "type": "String" } }
-  },
-
   "errorUnexpected": "Unexpected error: {detail}",
-  "@errorUnexpected": {
-    "description": "Unexpected error message with detail",
-    "placeholders": { "detail": { "type": "String" } }
-  },
-
   "priceRwf": "{amount} RWF",
-  "@priceRwf": {
-    "description": "Price formatted in RWF",
-    "placeholders": { "amount": { "type": "String" } }
-  },
-
   "errorHttpStatus": "HTTP {code}",
-  "@errorHttpStatus": {
-    "description": "HTTP error status",
-    "placeholders": { "code": { "type": "int" } }
-  },
-
-  "examSampleQ1": "What is the speed limit on highways?",
-  "@examSampleQ1": { "description": "Sample exam question 1" },
+  "examSampleQ1": "What is the maximum speed on a major road?",
   "examSampleQ1A1": "90 km/h",
   "examSampleQ1A2": "100 km/h",
   "examSampleQ1A3": "110 km/h",
   "examSampleQ1A4": "120 km/h",
-
-  "examSampleQ2": "What does a yellow traffic light mean?",
-  "@examSampleQ2": { "description": "Sample exam question 2" },
-  "examSampleQ2A1": "Stop immediately",
-  "examSampleQ2A2": "Go ahead",
-  "examSampleQ2A3": "Be prepared to stop",
-  "examSampleQ2A4": "Turn around",
-
-  "examSampleQ3": "How far from a fire hydrant can you park?",
-  "@examSampleQ3": { "description": "Sample exam question 3" },
+  "examSampleQ2": "What does this traffic sign mean?",
+  "examSampleQ2A1": "Stop right there",
+  "examSampleQ2A2": "Continue",
+  "examSampleQ2A3": "Prepare to stop",
+  "examSampleQ2A4": "Change lane",
+  "examSampleQ3": "How far can you park from a water fire hydrant?",
   "examSampleQ3A1": "1 meter",
   "examSampleQ3A2": "3 meters",
   "examSampleQ3A3": "5 meters",
   "examSampleQ3A4": "10 meters",
-
-  "examShareResult": "Share Result",
-  "@examShareResult": { "description": "Share result button on exam result page" },
-  "examCopiedToClipboard": "Result copied to clipboard",
-  "@examCopiedToClipboard": { "description": "Snackbar after copying result to clipboard" },
-  "examGradeLabel": "Grade",
-  "@examGradeLabel": { "description": "Grade label on exam result page" },
-
+  "examShareResult": "Share Results",
+  "examCopiedToClipboard": "Results copied",
+  "examGradeLabel": "Score",
   "subscriptionPopular": "★ Popular",
-  "@subscriptionPopular": { "description": "Popular badge on subscription plan card" },
-
-  "quizTimeTaken": "Time Taken",
-  "@quizTimeTaken": { "description": "Label for time spent on quiz results" },
-
-  "progressTotalQuestions": "Total Questions",
-  "@progressTotalQuestions": { "description": "Label for total questions stat" },
-
-  "progressCorrectAnswers": "Correct",
-  "@progressCorrectAnswers": { "description": "Label for correct answers stat" },
-
-  "progressIncorrect": "Incorrect",
-  "@progressIncorrect": { "description": "Label for incorrect answers stat" },
-
-  "errorNetwork": "Unable to connect. Please check your internet connection and try again.",
-  "@errorNetwork": { "description": "Network error message shown when device is offline" },
-
-  "paymentChooseMethod": "Choose Payment Method",
-  "@paymentChooseMethod": { "description": "Title for payment method modal" },
-
+  "quizTimeTaken": "Time Used",
+  "progressTotalQuestions": "Questions",
+  "progressCorrectAnswers": "Questions Correct",
+  "progressIncorrect": "Questions Wrong",
+  "errorNetwork": "Cannot connect. Check your internet and try again.",
+  "paymentChooseMethod": "Choose payment method",
   "aboutTitle": "About",
-  "@aboutTitle": { "description": "About page title" },
-
   "aboutAppName": "Rwanda Traffic Rule",
-  "@aboutAppName": { "description": "App name on about page" },
-
-  "aboutDescription": "Rwanda Traffic Rule is your companion for learning Rwanda traffic rules, road signs, and practicing theory questions to prepare for the provisional driving licence test. This is an independent educational app and is not affiliated with any government authority.",
-  "@aboutDescription": { "description": "About app description" },
-
+  "aboutDescription": "Rwanda Traffic Rule is your helper for learning traffic rules, traffic signs, and practicing exam questions to prepare for your provisional license driving theory exam. This is an independent educational app and is not affiliated with any government or testing center.",
   "aboutFeatures": "Key Features",
-  "@aboutFeatures": { "description": "Features section title" },
-
   "aboutFeaturePractice": "Practice Exams",
-  "@aboutFeaturePractice": { "description": "Practice feature" },
-
   "aboutFeatureProgress": "Track Progress",
-  "@aboutFeatureProgress": { "description": "Progress feature" },
-
   "aboutFeatureMultilingual": "3 Languages",
-  "@aboutFeatureMultilingual": { "description": "Multilingual feature" },
-
   "aboutFeatureCertificate": "Certificates",
-  "@aboutFeatureCertificate": { "description": "Certificate feature" },
-
   "aboutContact": "Contact Us",
-  "@aboutContact": { "description": "Contact section title" },
-
-  "aboutContactInfo": "Phone/WhatsApp: 0788659575 / 0728877442\nEmail: info@Rwanda Traffic Rule.rw",
-  "@aboutContactInfo": { "description": "Contact info" },
-
-  "aboutCopyright": "Copyright",
-  "@aboutCopyright": { "description": "Copyright section title" },
-
-  "aboutCopyrightText": "© 2026 Rwanda Traffic Rule. All rights reserved.",
-  "@aboutCopyrightText": { "description": "Copyright text" },
-
-  "privacyLastUpdated": "Last updated: March 2026",
-  "@privacyLastUpdated": { "description": "Privacy policy last updated" },
-
-  "privacyIntro": "Rwanda Traffic Rule is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you use our educational application. We are an independent educational service and are not affiliated with any government authority.",
-  "@privacyIntro": { "description": "Privacy policy intro" },
-
+  "aboutContactInfo": "Tel/WhatsApp: 0788659575 / 0728877442",
+  "aboutCopyright": "App owner rights",
+  "aboutCopyrightText": "© 2026 Rwanda Traffic Rule. App owner rights reserved.",
+  "privacyLastUpdated": "Last updated: February 2026",
+  "privacyIntro": "Rwanda Traffic Rule cares about your privacy. These guidelines explain how we collect, use, and protect your data. We are an independent educational service and are not affiliated with any government agency.",
   "privacyDataCollection": "Data Collection",
-  "@privacyDataCollection": { "description": "Data collection section" },
-
-  "privacyDataCollectionBody": "We collect your phone number and full name when you register. We also collect your practice quiz results and progress data to provide personalized learning insights. A unique device identifier is generated to secure your account.",
-  "@privacyDataCollectionBody": { "description": "Data collection body" },
-
+  "privacyDataCollectionBody": "We collect your phone number and full name when you sign up. We also collect your device fingerprint, which is a unique identifier used to protect your account. We collect your exam answers and progress data. A unique device ID is created to secure your account.",
   "privacyDataUsage": "How We Use Your Data",
-  "@privacyDataUsage": { "description": "Data usage section" },
-
-  "privacyDataUsageBody": "Your data is used to provide and improve our services, track your learning progress, manage your subscription, and communicate important updates about the application.",
-  "@privacyDataUsageBody": { "description": "Data usage body" },
-
+  "privacyDataUsageBody": "Your data is used to provide and improve our services, track your progress, manage your subscriptions, and send you important information.",
   "privacyDataProtection": "Data Protection",
-  "@privacyDataProtection": { "description": "Data protection section" },
-
-  "privacyDataProtectionBody": "We use industry-standard security measures including encrypted data transmission and secure server storage. Your personal data is never shared with third parties without your consent.",
-  "@privacyDataProtectionBody": { "description": "Data protection body" },
-
+  "privacyDataProtectionBody": "We use high-level security measures, including encrypted transmission and secure storage. Your personal data is never shared without your consent.",
   "privacyDataSharing": "Data Sharing",
-  "@privacyDataSharing": { "description": "Data sharing section" },
-
-  "privacyDataSharingBody": "We do not sell, trade, or rent your personal data. We may share anonymous aggregated data for statistical purposes only.",
-  "@privacyDataSharingBody": { "description": "Data sharing body" },
-
+  "privacyDataSharingBody": "We do not sell your personal information to third parties. We may share anonymized data for statistical purposes.",
   "privacyUserRights": "Your Rights",
-  "@privacyUserRights": { "description": "User rights section" },
-
-  "privacyUserRightsBody": "You have the right to access, update, or delete your personal data at any time. You can request data deletion by contacting our support team or using the Delete Account option in Settings.",
-  "@privacyUserRightsBody": { "description": "User rights body" },
-
-  "termsLastUpdated": "Last updated: March 2026",
-  "@termsLastUpdated": { "description": "Terms last updated" },
-
-  "termsIntro": "By using Rwanda Traffic Rule, you agree to the following terms and conditions. Please read them carefully before using the application. Rwanda Traffic Rule is an independent educational app designed to help you prepare for the driving theory test. We are not affiliated with any government body or the official exam provider.",
-  "@termsIntro": { "description": "Terms intro" },
-
+  "privacyUserRightsBody": "You have the right to access, correct, or delete your personal data at any time through the Delete Account option in Settings.",
+  "termsLastUpdated": "Last updated: February 2026",
+  "termsIntro": "By using Rwanda Traffic Rule, you agree to the following terms. Rwanda Traffic Rule is an independent educational app that helps you prepare for your theory exam. We are not affiliated with any government or testing center.",
   "termsAcceptance": "Acceptance of Terms",
-  "@termsAcceptance": { "description": "Acceptance section" },
-
-  "termsAcceptanceBody": "By creating an account and using this application, you agree to be bound by these terms. If you do not agree, please discontinue use immediately.",
-  "@termsAcceptanceBody": { "description": "Acceptance body" },
-
+  "termsAcceptanceBody": "By creating an account and using this app, you agree to these terms. If you do not agree, please stop using this app.",
   "termsUserAccount": "User Account",
-  "@termsUserAccount": { "description": "User account section" },
-
-  "termsUserAccountBody": "You are responsible for maintaining the security of your account. Each account is linked to a single phone number and device. Sharing account credentials is not permitted.",
-  "@termsUserAccountBody": { "description": "User account body" },
-
-  "termsContent": "Content & Exams",
-  "@termsContent": { "description": "Content section" },
-
-  "termsContentBody": "All content is for educational and practice purposes only. It does not represent the official government exam. We strive for accuracy but make no guarantees about exam outcomes based on practice results. Rwanda Traffic Rule is not affiliated with any government authority.",
-  "@termsContentBody": { "description": "Content body" },
-
-  "termsPayment": "Requesting to unlock exams",
-  "@termsPayment": { "description": "Payment section" },
-
-  "termsPaymentBody": "To unlock exams, please contact us at 0788659575 or 0728877442.",
-  "@termsPaymentBody": { "description": "Payment body" },
-
-  "termsTermination": "Account Termination",
-  "@termsTermination": { "description": "Termination section" },
-
-  "termsTerminationBody": "We reserve the right to suspend or terminate accounts that violate these terms, engage in fraudulent activity, or misuse the platform. You may delete your account at any time from settings.",
-  "@termsTerminationBody": { "description": "Termination body" },
-
+  "termsUserAccountBody": "You are responsible for maintaining the security of your account. Each account is linked to one phone number and one device. Sharing account information is not allowed.",
+  "termsContent": "Exam Content",
+  "termsContentBody": "All exam questions are for practice and education only. They are not a substitute for the official government exam. We cannot guarantee exam results. Rwanda Traffic Rule is not affiliated with any government agency.",
+  "termsPayment": "Requesting Exam Access",
+  "termsPaymentBody": "To access the app, contact help at 0788659575 or 0728877442.",
+  "termsTermination": "Account Closure",
+  "termsTerminationBody": "We reserve the right to close accounts that violate these terms. You may delete your account at any time in Settings.",
   "aboutDisclaimer": "Disclaimer",
-  "@aboutDisclaimer": { "description": "Disclaimer section title" },
-
-  "aboutDisclaimerText": "Rwanda Traffic Rule is an independent educational app designed to help users learn traffic rules and prepare for the driving theory test. This app is not affiliated with, endorsed by, or connected to any government authority or official exam body. All content is for practice and learning purposes only.",
-  "@aboutDisclaimerText": { "description": "Disclaimer text" },
-
+  "aboutDisclaimerText": "Rwanda Traffic Rule is an independent educational app that helps you learn traffic rules and prepare for your theory exam. This app is not affiliated with, endorsed by, or connected to any government agency or testing center. All content in this app is for practice and education only.",
   "profileCertificatesTitle": "Certificates",
-  "@profileCertificatesTitle": { "description": "Profile certificates menu title" },
-  "profileCertificatesSubtitle": "Certificates earned and progress towards next one",
-  "@profileCertificatesSubtitle": { "description": "Profile certificates menu subtitle" },
-
-  "offlineBanner": "You are offline. Data shown may not be up to date.",
-  "@offlineBanner": { "description": "Offline mode banner" },
+  "profileCertificatesSubtitle": "Certificates earned and progress to next",
+  "offlineBanner": "You are offline. Cached data may not be up to date.",
   "syncingData": "Syncing data...",
-  "@syncingData": { "description": "Syncing data message" },
   "dataSynced": "Data synced successfully",
-  "@dataSynced": { "description": "Data synced success message" },
-  "savedOffline": "Saved offline. Will sync when connected.",
-  "@savedOffline": { "description": "Offline save confirmation" },
-
+  "savedOffline": "Saved offline. Will sync when you reconnect to the internet.",
   "certificateUniqueExamsPassed": "{count} of {total} unique exams passed",
-  "@certificateUniqueExamsPassed": {
-    "description": "Unique exams passed out of total",
-    "placeholders": {
-      "count": { "type": "int" },
-      "total": { "type": "int" }
-    }
-  },
-  "certificatePassMark": "Pass mark: {required}/{total} ({percent}%)",
-  "@certificatePassMark": {
-    "description": "Pass mark info",
-    "placeholders": {
-      "required": { "type": "int" },
-      "total": { "type": "int" },
-      "percent": { "type": "int" }
-    }
-  },
-  "certificateLatestAttempt": "Latest attempt",
-  "@certificateLatestAttempt": { "description": "Latest attempt label" },
+  "certificatePassMark": "Passing score: {required}/{total} ({percent}%)",
+  "certificateLatestAttempt": "Latest",
   "certificateExamStatus": "Exam {index}",
-  "@certificateExamStatus": {
-    "description": "Exam label with index",
-    "placeholders": {
-      "index": { "type": "int" }
-    }
-  },
   "certificateNotAttempted": "Not attempted",
-  "@certificateNotAttempted": { "description": "Legend label for exams not yet taken" },
-
-  "consentTitle": "Your Privacy Matters",
-  "@consentTitle": { "description": "Title of the data consent dialog" },
-  "consentBody": "Rwanda Traffic Rule collects and processes the following data to provide you with the best learning experience:\n\n• Phone number & name — for account creation and authentication\n• Device identifier — a hashed fingerprint to secure your account\n• Exam results & progress — to track your learning journey\n• Offline cache — so the app works without internet\n\nYour data is stored securely and is never sold to third parties. You can delete your account and all associated data at any time from your profile.",
-  "@consentBody": { "description": "Body text of the data consent dialog" },
-  "consentAccept": "I Understand & Accept",
-  "@consentAccept": { "description": "Accept button on consent dialog" },
-  "consentReadPolicy": "Read Privacy Policy",
-  "@consentReadPolicy": { "description": "Link to privacy policy from consent dialog" },
-
-  "registerInvalidName": "Name must contain only letters and spaces",
-  "@registerInvalidName": { "description": "Validation error for name field" },
-  "registerInvalidPhone": "Enter a valid phone number (e.g. 078... or +250 78...)",
-  "@registerInvalidPhone": { "description": "Validation error for phone field" },
-
-  "joinGroup": "WhatsApp Group",
-  "joinGroupSubtitle": "Join a WhatsApp group",
-
-  "adminOfflineTooltip": "Offline – showing cached data",
-  "@adminOfflineTooltip": { "description": "Tooltip shown when the dashboard is offline" },
-
-  "adminOfflineBadge": "OFFLINE",
-  "@adminOfflineBadge": { "description": "Badge shown in the app bar when offline" },
-
-  "adminActiveLabel": "{count} active",
-  "@adminActiveLabel": { "description": "Active subscriptions count label", "placeholders": { "count": { "type": "int" } } },
-
-  "adminFallbackName": "Admin",
-  "@adminFallbackName": { "description": "Fallback name for admin user" },
-
-  "adminNoNetworkError": "No network. No cached data available.",
-  "@adminNoNetworkError": { "description": "Error message when both network and cache fail" },
-
-  "commonErrorTitle": "Error",
-  "@commonErrorTitle": { "description": "General error title" },
-
-  "exitAppTitle": "Exit App",
-  "@exitAppTitle": { "description": "Exit app confirmation dialog title" },
-
-  "exitAppMessage": "Are you sure you want to exit the app?",
-  "@exitAppMessage": { "description": "Exit app confirmation dialog message" },
-
-  "exitAppYes": "Exit",
-  "@exitAppYes": { "description": "Exit app confirmation button" },
-
-  "exitAppNo": "Stay",
-  "@exitAppNo": { "description": "Cancel exit button" },
-  "consentTitle": "Your Privacy Matters",
+  "consentTitle": "Your survey is important",
+  "consentBody": "Rwanda Traffic Rule collects and works with the following information to give you the best learning experience:\n\n• Phone number and name — to open an account and verify\n• Device fingerprint — a unique identifier assigned by a hash to protect your account\n• Exam answers and progress — to track your learning journey\n• Offline cache — so the app works without internet\n\nYour data is securely stored and never leaked to others. You can delete your account and all associated data at any time using the profile settings.",
   "consentAccept": "I understand and agree",
   "consentReadPolicy": "Read Privacy Policy",
-  "consentItemPhone": "Phone number & name",
-  "consentItemPhoneDetail": "Account creation & authentication",
-  "consentItemDevice": "Device identifier",
-  "consentItemDeviceDetail": "Hashed fingerprint to secure your account",
-  "consentItemProgress": "Exam results & progress",
+  "registerInvalidName": "Name must contain only letters and spaces",
+  "registerInvalidPhone": "Enter a valid phone number (e.g., 078... or +250 78...)",
+  "joinGroup": "WhatsApp Group",
+  "joinGroupSubtitle": "Join WhatsApp group",
+  "adminOfflineTooltip": "Offline – show cached data",
+  "adminOfflineBadge": "OFFLINE",
+  "adminActiveLabel": "{count} active",
+  "adminFallbackName": "Admin",
+  "adminNoNetworkError": "No network. No cached data available.",
+  "commonErrorTitle": "Error",
+  "exitAppTitle": "Exit app",
+  "exitAppMessage": "Are you sure you want to exit the app?",
+  "exitAppYes": "Exit",
+  "exitAppNo": "Stay",
+  "consentItemPhone": "Phone number and name",
+  "consentItemPhoneDetail": "Open account and verify",
+  "consentItemDevice": "Device fingerprint",
+  "consentItemDeviceDetail": "Unique identifier used to protect your account",
+  "consentItemProgress": "Exam answers and progress",
   "consentItemProgressDetail": "Track your learning journey",
   "consentItemCache": "Offline cache",
   "consentItemCacheDetail": "App works without internet",
-  "consentSecurityNote": "Your data is stored securely and never sold to third parties.",
-  "consentIndependentTitle": "Independent Content",
-  "consentIndependentBody": "This is an independent educational tool. It is NOT affiliated with, endorsed by, or representing any government entity or the Rwanda National Police.",
-  "dashboardWelcome": "Welcome back",
+  "consentSecurityNote": "Your data is securely stored and never leaked to others.",
+  "consentIndependentTitle": "Independent content",
+  "consentIndependentBody": "This is an independent educational app. It is not affiliated with, endorsed by, or connected to any government or police level.",
+  "dashboardWelcome": "Welcome",
   "dashboardNotices": "NOTICES",
   "dashboardWhatsapp": "WhatsApp Group",
   "dashboardGazette": "NEW GAZETTE",
   "dashboardShare": "Share App",
-  "dashboardProfileUnavailable": "Profile unavailable",
-  "dashboardLoading": "Loading subscription…",
-  "dashboardSubscriptionUnavailable": "Subscription unavailable. Pull down to retry.",
-  "dashboardExpired": "Your learning access has expired",
-  "dashboardDurationUnavailable": "Not available",
+  "dashboardProfileUnavailable": "Account info unavailable",
+  "dashboardLoading": "Loading access info…",
+  "dashboardSubscriptionUnavailable": "Access info unavailable. Pull down to retry.",
+  "dashboardExpired": "Learning access expired",
+  "dashboardDurationUnavailable": "Unknown",
   "dashboardDuration": "Duration: {duration}",
-  "dashboardCached": "Saved status · pull down to refresh",
-  "dashboardNoticesUnavailable": "Notifications are unavailable right now. Please try again later.",
-  "dashboardNoNotices": "No notifications yet",
+  "dashboardCached": "Cached data · pull to refresh",
+  "dashboardNoticesUnavailable": "Notices unavailable now. Try again later.",
+  "dashboardNoNotices": "No notices",
   "dashboardCopyLink": "Copy link",
   "dashboardLinkCopied": "Link copied",
-  "dashboardOpenFailed": "Unable to complete this action. Please try again.",
+  "dashboardOpenFailed": "Unavailable. Try again.",
   "dashboardComingSoon": "Coming soon",
   "dashboardUnderDevelopment": "This feature is under development.",
-  "@dashboardDuration": {
-    "description": "Subscription duration displayed in the dashboard banner",
-    "placeholders": {
-      "duration": {
-        "type": "String"
-      }
-    }
-  },
-
-  "dashboardExamsLocked": "Exams are locked",
-  "dashboardRequestExamAccess": "Tap here to request exam access",
-
+  "dashboardExamsLocked": "Exams locked",
+  "dashboardRequestExamAccess": "Request exam access here",
   "paymentExamLanguage": "Exam language",
-  "paymentExamLanguageHint": "Choose the language of your exams. This does not change the app language.",
+  "paymentExamLanguageHint": "Choose exam language. This does not change app language.",
   "paymentAmountToPay": "Amount to pay: {amount} RWF",
   "paymentMethodLabel": "Payment method",
-  "paymentNotConfigured": "Payment details are not configured yet.",
-  "paymentUssdLabel": "Payment USSD code",
+  "paymentNotConfigured": "Payment info not configured.",
+  "paymentUssdLabel": "USSD dial code",
   "paymentCopyCode": "Copy code",
   "paymentCodeCopied": "Code copied",
-  "paymentCopyFailed": "Could not copy the code. Please try again or copy it manually.",
-  "paymentUssdInstruction": "Copy this code and dial it on your phone to make your payment.",
-  "paymentPayNow": "PAY NOW",
-  "paymentIntegrationPending": "Payment details are prepared. Payment initiation is not connected yet; no payment has been confirmed.",
-  "paymentPreparationFailed": "Unable to prepare payment. Please try again.",
-  "@paymentAmountToPay": {
-    "description": "Formatted amount due in RWF",
-    "placeholders": {
-      "amount": {
-        "type": "String"
-      }
-    }
-  },
-  "paymentRecipient": "{method} registered to: {name}",
-  "paymentVerifyRecipient": "Before confirming payment, check that the recipient name on your phone matches the name shown here. If it does not match, do not proceed.",
-  "@paymentRecipient": {
-    "description": "Expected recipient name for the selected payment method",
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "method": {
-        "type": "String"
-      }
-    }
-  },
-  "dashboardGazetteSubtitle": "Road rules",
-  "dashboardIremboSubtitle": "Online services",
-  "guideTitle": "Instructions",
+  "paymentCopyFailed": "Code not copied. Try again or copy manually.",
+  "paymentUssdInstruction": "Copy this code and use it on your phone to pay.",
+  "paymentPayNow": "Pay now",
+  "paymentIntegrationPending": "Payment info pending. Payment initiation method not connected; no payment approved.",
+  "paymentPreparationFailed": "Payment preparation failed. Try again.",
+  "paymentRecipient": "{method} merchant: {name}",
+  "paymentVerifyRecipient": "Before confirming payment, check that the recipient name shown on your phone matches what you entered here. If not, do not proceed.",
+  "dashboardGazetteSubtitle": "Traffic rules",
+  "dashboardIremboSubtitle": "Irembo services",
+  "guideTitle": "GUIDELINES",
   "guideWelcome": "Welcome to RWANDA TRAFFIC RULE",
-  "guideAboutTitle": "1. About the app",
-  "guideAboutBody": "RWANDA TRAFFIC RULE helps you learn road rules and prepare for the provisional driving licence exam through practice questions.",
-  "guideUseTitle": "2. How to use the app",
-  "guideUseBody": "1. On your first visit, register using your full name and phone number.\n\n2. If you already have an account, choose Sign in and enter your registered phone number. Follow any additional sign-in prompts.\n\n3. Open Practice from the dashboard and choose an exam. Exams marked free are available without paid access; locked exams require active access.\n\n4. Choose an answer and review the feedback. Green indicates a correct answer; red indicates an incorrect answer. Continue to the next question, finish the exam to see your score, and use Progress to review your results.",
-  "guideExamTitle": "3. Preparing for the computer-based exam",
-  "guideExamBody": "Use practice questions to learn how to read questions and choose answers on a screen. Follow the instructions shown during your official exam, including how to move between questions and submit your answers.\n\nPractice feedback helps you learn. The official exam may use different questions, timing and feedback; this app does not guarantee identical exam content.",
-  "guidePaymentTitle": "4. Payment and exam access",
-  "guidePaymentBody": "1. Tap the access banner on the dashboard or a locked practice exam to open Practice Exam Access.\n\n2. Choose 1, 3 or 6 months. The app initially selects 1 month in Kinyarwanda and 3 months in English or French. The amount in RWF updates when you change the plan; pricing follows the app language.\n\n3. MoMo Pay is selected first. You can switch to MTN or Tigo. Check the account name shown: Alexis for MoMo Pay, or NSHIMIYIMANA Alexis for MTN and Tigo. Compare it with the name your phone displays before confirming payment.\n\n4. Tap PAY NOW to copy the complete USSD code and open the dialer. Complete the payment on your phone. The copy icon beside the code also lets you copy and dial it manually.\n\n5. After paying, use the call or WhatsApp buttons under Need Help to request activation for the phone number registered in the app. Opening the dialer or copying a code does not activate the exams.\n\n6. Once an administrator has assigned active access to your account, return to the dashboard with an internet connection and tap a circular refresh arrow. The access banner updates and the paid practice exams become available. You do not need to enter the access code on this page. The app also checks on opening the dashboard, returning to the app and periodically while the dashboard is active.\n\n7. If exams remain locked, confirm that support used your registered phone number and that your access has not expired. Contact support using the buttons below.",
-  "guideOpenAccess": "View plans and pay",
-  "dashboardRefresh": "Refresh app access",
-  "dashboardRefreshDone": "Access status refreshed.",
-  "dashboardRefreshFailed": "Could not refresh access. Check your internet connection and try again.",
-"resourcesTitle": "Resources",
-  "resourcesDescription": "Read the Gazette and road signs inside the app. Documents are included for offline reading and keep their original language.",
+  "guideAboutTitle": "1. App description",
+  "guideAboutBody": "This app called ``RWANDA TRAFFIC RULE`` is an app that teaches traffic rules, consisting of questions asked in the provisional exam (learner permit)",
+  "guideUseTitle": "2. HOW THE APP WORKS",
+  "guideUseBody": "1. To use this app you must first sign up when you first download it where you are asked to write your full name, your phone number; confirm and sign up approved\n\n2. When you already signed up you do not need to sign up again but instead sign up \\\"SIGN IN\\\" then you can enter your phone number then sign up \\\"APPROVED\\\" then you will be taken to dashboard where you will see items in the app.\n\n3. To start learning, sign up \\\"PRACTICE\\\" when you open it consists of 21 exams each consisting of 20 questions, but the first exam is free (free) the rest require payment.\n\n4. When you are practicing in this app, the row you make changes from green to red and when you mark it changes from green to red because practice always shows the correct answer so you can try to capture it (remember it) then sign up written \\\"NEXT\\\" go to the next question when you reach the end sign up written \\\"SUBMIT EXAM\\\" then you will see the score then choose another exam to learn",
+  "guideExamTitle": "3. HOW YOU SEE QUESTIONS ON THE PROVISOIRE EXAM NYIRIZINA",
+  "guideExamBody": "A. Go to the provisoireform on the machine First they will assess (evaluate) that you do not have disability, vision, hearing, reading and writing skills, proper identification number (identification) and that day's code, many others,... example fingerprint, on the thumb left index,...\n\nB. You will see these questions in this app as they are in the exam no questions they will ask you in the provisoire exam that are not in this app, If you choose an answer you will continue then the next question then you sign up \\\"NEXT\\\" continue with other questions when you finish you sign up \\\"SUBMIT EXAM\\\" then you will know the score so choose another exam to learn",
+  "guidePaymentTitle": "4. PAY TO UNLOCK ALL EXAMS",
+  "guidePaymentBody": "1. As I explained earlier the first exam is free the other 20 require payment 1500Rwf to learn one month, 3000Rwf to learn three months or 5000 Rwf to learn six months on 0788659575/ 0728877442 or on MOMO PAY: 329494 merchant Alexis.\n\nTo pay using any number you choose is valid not mandatory to mention but if you use another number when you finish paying you will receive a message\n\nA. Pay using MTN:\na. *182*1*1*0788659575*1500#\nb. *182*8*1*329494*1500#\n\nB. Pay using Tigo or Airtel\na. *500*1*1*0728877442*1500#\nb. *182*8*1*88329494*1500#\nMerchant Alexis\n\n2. When you finish paying go check if you have connection (internet) wait two minutes then sign in before writing language on the screen then open practice you will see them unlocked all of them.\n\n4. OTHER MEANINGS THAT CAUSED YOU TO RECEIVE A MESSAGE:",
+  "guideOpenAccess": "View payment prices",
+  "dashboardRefresh": "Refresh access",
+  "dashboardRefreshDone": "Access refreshed.",
+  "dashboardRefreshFailed": "Failed to refresh access. Check your internet and try again.",
+  "resourcesTitle": "Resources",
+  "resourcesDescription": "Read gazette and signs in the app. These resources are included and readable without internet; choose your preferred language.",
   "resourcesGazette": "Gazette",
-  "resourcesRoadSigns": "Road signs",
+  "resourcesRoadSigns": "Signs",
   "resourcesOfflinePdf": "PDF • Read offline",
-  "resourcesReadError": "This document could not be opened. Try again.",
+  "resourcesReadError": "Failed to open this resource. Try again.",
   "resourcesPreviousPage": "Previous page",
   "resourcesNextPage": "Next page",
   "resourcesZoomOut": "Zoom out",
   "resourcesZoomIn": "Zoom in",
-  "resourcesLoading": "Loading document…",
+  "resourcesLoading": "Resource loading…",
   "resourcesPageCount": "Page {page} of {total}",
   "@resourcesPageCount": {
     "placeholders": {
       "page": {
-        "type": "int"
+        "type": "Object"
       },
       "total": {
-        "type": "int"
+        "type": "Object"
       }
     }
   },
   "irTitle": "Irembo services",
-  "irAlreadySubmitted": "Request received. One request per service slot.",
+  "irAlreadySubmitted": "Request submitted. One request per service.",
+  "permisOption": "Permis option",
+  "irOption": "Irembo option",
   "irServiceFee": "Registration assistance fee",
   "irPay": "Pay",
-  "irWorkspace": "Irembo Registrations",
-  "irMyRequests": "My Irembo Requests",
-  "irNew": "New service request",
+  "irWorkspace": "Irembo request",
+  "irMyRequests": "My Irembo requests",
+  "irNew": "New request",
   "irManual": "Manual",
   "irAutomatic": "Automatic",
-  "irNotice": "Get help registering for your exam. Official registration is confirmed separately. You can submit a request for each service you need.",
+  "irNotice": "Help with exam registration. Registration is approved automatically.",
   "irFullName": "Full name",
   "irPhone": "Phone number",
   "irNationalId": "National ID number",
   "irDob": "Date of birth",
   "irExamLanguage": "Exam language",
-  "irLanguageHint": "e.g., Kinyarwanda, English, French",
-  "irDistrict": "Preferred exam district",
+  "irLanguageHint": "Example: Kinyarwanda, English, French",
+  "irDistrict": "District where you want the exam done",
   "irExamDate": "Preferred exam date (optional)",
-  "irDateNotice": "Your preferred date is a request, not a confirmed appointment.",
+  "irDateNotice": "Preferred date is not the exam itinerary.",
   "irProvisoireCode": "Provisoire code",
-  "irCategory": "Driving category",
+  "irCategory": "Applicant category",
   "irService": "Service",
-  "irOption": "Permis option",
+  "irSelectRequest": "Choose request",
   "irReview": "Review request",
   "irConfirm": "Submit request",
-  "irEdit": "Edit details",
-  "irSaved": "Request saved",
-  "irReference": "Registration reference",
-  "irStatus": "Status",
-  "irSubmitted": "Submitted",
-  "irUpdated": "Last updated",
-  "irAssigned": "Assigned staff member",
-  "irUnassigned": "Unassigned",
+  "irEdit": "Edit request",
+  "irSaved": "Request submitted",
+  "irReference": "Request number",
+  "irStatus": "Current status",
+  "irSubmitted": "Submitted time",
+  "irUpdated": "Updated time",
+  "irAssigned": "Staff assigned",
+  "irUnassigned": "No staff assigned",
   "irPending": "Pending",
-  "irInReview": "In Review",
-  "irNeedsInformation": "Needs Information",
+  "irInReview": "Under review",
+  "irNeedsInformation": "Missing information",
   "irCompleted": "Completed",
   "irRejected": "Rejected",
   "irCancelled": "Cancelled",
-  "irSearch": "Search name, phone or national ID",
+  "irSearch": "Search name, phone or ID",
   "irFilters": "Filters",
-  "irApply": "Apply filters",
+  "irApply": "Apply",
   "irClear": "Clear filters",
   "irAll": "All",
   "irFrom": "Submitted from",
-  "irTo": "Submitted until",
+  "irTo": "Submitted to",
   "irNewest": "Newest first",
   "irOldest": "Oldest first",
   "irSort": "Sort by",
-  "irEmpty": "No matching requests.",
+  "irEmpty": "No matching request",
   "irView": "View details",
   "irCall": "Call applicant",
   "irCopy": "Copy",
   "irCopyAll": "Copy applicant details",
   "irCopied": "Copied",
-  "irCopyFailed": "Could not copy. Please try again.",
-  "irCallFailed": "Could not open the calling app.",
-  "irMessages": "Messages for the applicant",
-  "irInternalNotes": "Internal staff notes",
+  "irCopyFailed": "Copy failed. Try again.",
+  "irCallFailed": "Call substitution app failed to open.",
+  "irMessages": "Message required for applicant",
+  "irInternalNotes": "Staff only notes",
   "irInternalHint": "Visible to staff only",
-  "irMessage": "Message to applicant",
-  "irReason": "Reason (shown to applicant)",
-  "irReasonRequired": "Provide a reason for this status.",
-  "irAudit": "Audit history",
+  "irMessage": "Submitted message to applicant",
+  "irReason": "Reason (shows applicant)",
+  "irReasonRequired": "Provide reason for pending request.",
+  "irAudit": "Change history",
   "irSave": "Save changes",
-  "irRetry": "Retry",
+  "irRetry": "Try again",
   "irClose": "Close",
-  "irRequired": "This field is required.",
-  "irInvalid": "Check the entered details.",
+  "irRequired": "These fields are required.",
+  "irInvalid": "Check the info you entered.",
   "irInvalidId": "Enter exactly 16 digits.",
-  "irInvalidPhone": "Enter a valid Rwanda mobile number.",
-  "irUnavailable": "Unable to complete the request. Check your connection and retry. Your entered details are kept on this page.",
-  "irConflict": "This request changed or was already submitted. Refresh the list before trying again.",
+  "irInvalidPhone": "Enter a valid Rwandan phone number.",
+  "irUnavailable": "Cannot access this service. Check internet and try again. Info entered was lost.",
+  "irConflict": "This request was edited or submitted. Refresh the list before responding.",
   "irNext": "Next",
   "irPrevious": "Previous",
   "irCreated": "Request created",
   "irChange": "Change",
-  "irNoMessages": "No messages yet.",
-  "irResults": "Results",
-  "irSelectDistrict": "Search and select a district",
+  "irNoMessages": "No message received.",
+  "irResults": "Results found",
+  "irSelectDistrict": "Search district",
   "irEnglish": "English",
   "irFrench": "French",
   "irKinyarwanda": "Kinyarwanda",
-  "irChooseService": "Choose the exam service",
-  "irChooseOption": "Choose your Permis option",
-  "irProvisoireHelp": "Provisional driving licence exam",
-  "irPermisHelp": "Practical driving licence exam",
-  "irContinue": "Register",
-  "irRequestsUnavailable": "Your requests could not be loaded",
-  "irServerSetup": "The registration service is not ready on the server yet. Please contact support or try again later.",
-  "irServiceUnavailable": "The registration service is temporarily unavailable. Please try again later.",
-  "irAccessUnavailable": "You do not have access to this request. Check your signed-in account.",
-  "irNoRequests": "Choose a service to get started.",
-  "irStaffHelp": "Find applicants, review requests and coordinate registration assistance.",
-  "waIntro": "Learn together. Choose a study group to ask questions and share learning tips.",
-  "waManageIntro": "Manage the study groups available to your learners.",
-  "waCached": "Showing saved groups. An internet connection is needed to join or receive new messages.",
-  "progressSaved": "Showing results saved on this device. New results will sync when connected.",
+  "irChooseService": "Choose exam service",
+  "irChooseOption": "Choose permit type",
+  "irProvisoireHelp": "Provisional learner permit exam",
+  "irPermisHelp": "Provisional learner permit exam",
+  "irContinue": "Submit",
+  "irRequestsUnavailable": "Your request is unavailable.",
+  "irServerSetup": "Registration service not properly set up on server. Contact support or try again later.",
+  "irServiceUnavailable": "Registration service currently unavailable. Try again.",
+  "irAccessUnavailable": "Not authorized to view this bureau. Check your signed-in account.",
+  "irNoRequests": "Choose a service to begin.",
+  "irStaffHelp": "Search applicants, review request and track registration help.",
+  "waIntro": "Let's build together. Choose a group to discuss questions and get study tips.",
+  "waManageIntro": "Manage study groups for students.",
+  "waCached": "These are cached groups. Joining a group or receiving new messages requires internet.",
+  "progressSaved": "These are cached scores on this device. New scores will sync when internet is available.",
   "irDeleteRequest": "Delete request",
-  "irDeleteConfirm": "Permanently delete this request and its messages? This cannot be undone.",
-  "irSelectRequest": "Select request",
-  "irSelectPage": "Select this page",
+  "irDeleteConfirm": "Delete this request and its message permanently? This cannot be undone.",
+  "irSelectPage": "Choose all requests on this page",
   "irSelected": "Selected",
   "irDeleteSelected": "Delete selected",
-  "irOfflineSaved": "Showing saved requests. Connect to the internet to refresh, submit or delete requests.",
-  "irDeleteUnavailable": "Deletion is unavailable on this server. Update the Irembo backend routes and handler, then retry.",
+  "irOfflineSaved": "Saved request. Connect to internet to refresh, submit or delete request.",
+  "irDeleteUnavailable": "Deletion unavailable on this server. Update Irembo backend routes and handler, then retry.",
   "referralTitle": "Refer & Earn",
   "referralHeading": "Better prepared, together.",
   "referralDescription": "Help a friend prepare for their driving theory exam. Send your personal invitation and follow successful registrations here.",
@@ -1694,5 +672,14 @@
   "adminReferralSearch": "Search by name, referral code or phone",
   "adminReferralInvitees": "Invited users",
   "adminReferralDeletedUser": "Deleted account",
-  "dashboardReferrals": "Refer & Earn"
+  "dashboardReferrals": "Refer & Earn",
+  "@homePracticeSessions": {
+    "description": "Number of practice sessions completed",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  }
 }

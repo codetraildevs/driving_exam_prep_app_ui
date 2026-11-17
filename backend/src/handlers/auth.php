@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../ReferralService.php';
+require_once __DIR__ . '/../UserRegistrationTime.php';
 /**
  * Authentication route handlers.
  *
@@ -85,6 +87,31 @@ function _authError(string $message, int $status, string $errorCode): void
     exit();
 }
 
+function _registeredResponse($conn, array $user, string $referralStatus): void
+{
+    $id = $user['id'];
+    $token = SecurityUtils::generateToken(['userId' => $id, 'phoneNumber' => $user['phoneNumber'], 'role' => $user['role']]);
+    $refreshToken = _createRefreshToken($conn, $id);
+    respond([
+        'id' => $id, 'phoneNumber' => $user['phoneNumber'], 'fullName' => $user['fullName'], 'role' => $user['role'],
+        'token' => $token, 'refresh_token' => $refreshToken, 'referralStatus' => $referralStatus,
+    ], 201, 'User registered');
+}
+
+function _registrationRetryResponse($conn, ?string $keyHash, string $payloadHash): void
+{
+    try {
+        $receipt = ReferralService::receipt($conn, $keyHash, $payloadHash);
+        if ($receipt) {
+            _registeredResponse($conn, ['id' => $receipt['userId'], 'phoneNumber' => $receipt['phoneNumber'], 'fullName' => $receipt['fullName'], 'role' => $receipt['role']], $receipt['referralStatus']);
+        }
+    } catch (DomainException $e) {
+        _authError('Please log in or start a new registration.', 409, 'REGISTRATION_RETRY_REJECTED');
+    } catch (Throwable $e) {
+        error('Registration temporarily unavailable', 503);
+    }
+}
+
 function authRegister($conn, $params): void
 {
     $input = getInput();
@@ -124,9 +151,28 @@ function authRegister($conn, $params): void
         _authError('This phone number is reserved. Please log in.', 403, 'RESERVED_ACCOUNT');
     }
 
+    $referralCode = $input['referralCode'] ?? null;
+    $registrationKey = ReferralService::key($input['registrationKey'] ?? null);
+    if (isset($input['registrationKey']) && $registrationKey === null) {
+        _authError('Invalid registration request', 400, 'INVALID_REGISTRATION_KEY');
+    }
+    $payloadHash = ReferralService::payloadHash([$phone, $name, $device, $preferredLanguage], $referralCode);
+    try {
+        $receipt = ReferralService::receipt($conn, $registrationKey, $payloadHash);
+        if ($receipt) {
+            _registeredResponse($conn, ['id' => $receipt['userId'], 'phoneNumber' => $receipt['phoneNumber'], 'fullName' => $receipt['fullName'], 'role' => $receipt['role']], $receipt['referralStatus']);
+        }
+    } catch (DomainException $e) {
+        _authError('Please log in or start a new registration.', 409, 'REGISTRATION_RETRY_REJECTED');
+    } catch (Throwable $e) {
+        error('Registration temporarily unavailable', 503);
+    }
+
     // Check existing phone
     $existing = Database::fetchOne($conn, "SELECT id, deviceId, role FROM users WHERE (CASE WHEN REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') REGEXP '^([+]?250|0)?7[2389][0-9]{7}$' THEN CONCAT('0', RIGHT(REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', ''), 9)) ELSE REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') END) = ? LIMIT 1", 's', [&$phone]);
     if ($existing) {
+        // Another request may have committed since our first receipt lookup.
+        _registrationRetryResponse($conn, $registrationKey, $payloadHash);
         if ($existing['deviceId'] === $device || $existing['role'] === 'ADMIN' || $existing['role'] === 'MANAGER') {
             Logger::info('Registration attempt with existing phone', ['phone' => substr($phone, -4)]);
             _authError('You already have an account with this phone number. Please go back and tap "Log In".', 409, 'ACCOUNT_ALREADY_EXISTS');
@@ -139,6 +185,7 @@ function authRegister($conn, $params): void
     // Check existing device (Anti-Fraud: 1 device = 1 account)
     $existingDevice = Database::fetchOne($conn, 'SELECT id, phoneNumber, role FROM users WHERE deviceId = ? LIMIT 1', 's', [&$device]);
     if ($existingDevice) {
+        _registrationRetryResponse($conn, $registrationKey, $payloadHash);
         if ($existingDevice['role'] !== 'ADMIN' && $existingDevice['role'] !== 'MANAGER') {
             Logger::warning('Device already registered', ['device' => substr($device, -4)]);
             _authError('This phone is already registered to another user. For security, only one account is allowed per device.', 409, 'DEVICE_ALREADY_IN_USE');
@@ -146,35 +193,29 @@ function authRegister($conn, $params): void
     }
 
     $id = generateUUID();
-    $now = date('Y-m-d H:i:s');
+    $now = UserRegistrationTime::now();
 
-    $result = Database::insert($conn,
-        'INSERT INTO users (id, fullName, phoneNumber, deviceId, role, isActive, preferredLanguage, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?)',
-        'ssssssss',
-        [&$id, &$name, &$phone, &$device, &$role, &$preferredLanguage, &$now, &$now]
-    );
-
-    if ($result !== null) {
-        $token = SecurityUtils::generateToken([
-            'userId'      => $id,
-            'phoneNumber' => $phone,
-            'role'        => $role,
-        ]);
-        $refreshToken = _createRefreshToken($conn, $id);
-
-        Logger::info('User registered successfully', ['userId' => $id]);
-        respond([
-            'id'            => $id,
-            'phoneNumber'   => $phone,
-            'fullName'      => $name,
-            'role'          => $role,
-            'token'         => $token,
-            'refresh_token' => $refreshToken,
-        ], 201, 'User registered');
-    } else {
-        Logger::error('User registration failed', ['phone' => substr($phone, -4)]);
-        ErrorHandler::serverError('Registration failed');
+    try {
+        $conn->exec('START TRANSACTION');
+        ReferralService::query($conn,
+            'INSERT INTO users (id, fullName, phoneNumber, deviceId, role, isActive, preferredLanguage, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?)',
+            [$id, $name, $phone, $device, $role, $preferredLanguage, $now, $now]);
+        ReferralService::ensureCode($conn, $id);
+        $referralStatus = ReferralService::attributeNewAccount($conn, $id, $device, $referralCode);
+        if ($registrationKey !== null) {
+            ReferralService::query($conn, 'INSERT INTO referral_registration_receipts (keyHash, payloadHash, userId, referralStatus) VALUES (?, ?, ?, ?)',
+                [$registrationKey, $payloadHash, $id, $referralStatus]);
+        }
+        $conn->exec('COMMIT');
+    } catch (Throwable $e) {
+        $conn->exec('ROLLBACK');
+        // A concurrent identical request may have won the unique constraints.
+        _registrationRetryResponse($conn, $registrationKey, $payloadHash);
+        Logger::error('Registration transaction failed');
+        error('Registration could not be completed. Please retry or log in if the account already exists.', 503);
     }
+    Logger::info('User registered successfully', ['userId' => $id]);
+    _registeredResponse($conn, ['id' => $id, 'phoneNumber' => $phone, 'fullName' => $name, 'role' => $role], $referralStatus);
 }
 
 function authLogin($conn, $params): void

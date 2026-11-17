@@ -25,7 +25,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeWelcomeBack => 'Bon retour 👋';
 
   @override
-  String homeGreeting(String userName) {
+  String homeGreeting(Object userName) {
     return '$userName';
   }
 
@@ -37,12 +37,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homeContinueLearning => 'Continuer à apprendre';
 
   @override
-  String homeAccessActive(int daysLeft) {
+  String homeAccessActive(Object daysLeft) {
     return 'Accès actif - $daysLeft jours restants';
   }
 
   @override
-  String homePaymentTier(String tier) {
+  String homePaymentTier(Object tier) {
     return 'Forfait : $tier';
   }
 
@@ -120,7 +120,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsAboutApp => 'À propos de Rwanda Traffic Rule';
 
   @override
-  String settingsVersion(String version) {
+  String settingsVersion(Object version) {
     return 'Version $version';
   }
 
@@ -359,25 +359,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizComplete => 'Quiz terminé !';
 
   @override
-  String quizScore(int score) {
+  String quizScore(Object score) {
     return 'Score : $score%';
   }
 
   @override
-  String quizResult(int correct, int total) {
+  String quizResult(Object correct, Object total) {
     return 'Vous avez obtenu $correct sur $total correctes';
   }
 
   @override
   String get quizBackToPractice => 'Retour à la pratique';
-
-  @override
-  String quizQuestion(int current, int total) {
-    return 'Question $current/$total';
-  }
-
-  @override
-  String get quizFinish => 'Terminer le quiz';
 
   @override
   String get quizNextQuestion => 'Question suivante';
@@ -501,7 +493,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get progressExcellent => 'Excellent';
 
   @override
-  String progressMockExam(int number) {
+  String progressMockExam(Object number) {
     return 'Examen blanc $number';
   }
 
@@ -518,7 +510,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileOverallProgress => 'Progression globale d\'apprentissage';
 
   @override
-  String profileModulesCompleted(int completed, int total) {
+  String profileModulesCompleted(Object completed, Object total) {
     return '$completed/$total Modules terminés';
   }
 
@@ -634,7 +626,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get subscriptionMonth6 => '6 Mois';
 
   @override
-  String subscriptionPrice(int amount) {
+  String subscriptionPrice(Object amount) {
     return '$amount RWF';
   }
 
@@ -673,12 +665,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get subscriptionAccessActive => 'Accès actif';
 
   @override
-  String subscriptionExpires(String date) {
+  String subscriptionExpires(Object date) {
     return 'Expire: $date';
   }
 
   @override
-  String subscriptionDays(int days) {
+  String subscriptionDays(Object days) {
     return '$days jours';
   }
 
@@ -686,7 +678,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get subscriptionNeedHelp => 'Besoin d\'aide ?';
 
   @override
-  String subscriptionGetAccess(int count) {
+  String subscriptionGetAccess(Object count) {
     return 'Accédez à tous les $count+ examens pratiques premium';
   }
 
@@ -736,7 +728,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminAccessExpired => 'Accès expiré';
 
   @override
-  String adminAccessExpires(String date) {
+  String adminAccessExpires(Object date) {
     return 'Expire: $date';
   }
 
@@ -762,7 +754,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminViewProgress => 'Voir la progression';
 
   @override
-  String adminRegistrationDate(String date) {
+  String adminRegistrationDate(Object date) {
     return 'Inscrit: $date';
   }
 
@@ -829,7 +821,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get examLocked => 'Verrouillé';
 
   @override
-  String examQuestions(int count) {
+  String examQuestions(Object count) {
     return '$count questions';
   }
 
@@ -837,7 +829,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizProgress => 'Progression';
 
   @override
-  String quizAnswered(int answered, int total) {
+  String quizAnswered(Object answered, Object total) {
     return 'Répondu: $answered/$total';
   }
 
@@ -851,7 +843,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizNext => 'Suivant';
 
   @override
-  String quizTimeRemaining(String time) {
+  String quizTimeRemaining(Object time) {
     return 'Temps: $time';
   }
 
@@ -865,7 +857,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizFailed => 'Continuez à pratiquer';
 
   @override
-  String quizQuestionOf(int current, int total) {
+  String quizQuestionOf(Object current, Object total) {
     return 'Question $current sur $total';
   }
 
@@ -873,7 +865,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quizSubmitConfirmTitle => 'Soumettre le quiz ?';
 
   @override
-  String quizSubmitConfirmMessage(int answered, int total) {
+  String quizSubmitConfirmMessage(Object answered, Object total) {
     return 'Vous avez répondu à $answered questions sur $total. Êtes-vous sûr de vouloir soumettre ?';
   }
 
@@ -893,7 +885,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileLanguage => 'Langue préférée';
 
   @override
-  String profileRegistered(String date) {
+  String profileRegistered(Object date) {
     return 'Inscrit: $date';
   }
 
@@ -1063,7 +1055,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get certificateReadyTitle => 'Prêt pour l\'examen officiel!';
 
   @override
-  String certificateReadySubtitle(int count) {
+  String certificateReadySubtitle(Object count) {
     return 'Vous avez réussi $count examens. Vous êtes prêt pour le test officiel.';
   }
 
@@ -1076,12 +1068,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Cliquez ci-dessous pour vous inscrire au test informatisé officiel du permis de conduire provisoire';
 
   @override
-  String certificateExamsNeeded(int needed) {
+  String certificateExamsNeeded(Object needed) {
     return 'Réussissez $needed examens supplémentaires pour obtenir votre certificat';
   }
 
   @override
-  String certificateProgressLabel(int passed, int total) {
+  String certificateProgressLabel(Object passed, Object total) {
     return '$passed sur $total examens requis réussis';
   }
 
@@ -1110,12 +1102,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminDeleteUserAction => 'Supprimer l\'utilisateur';
 
   @override
-  String adminBlockUserConfirm(String name) {
+  String adminBlockUserConfirm(Object name) {
     return 'Bloquer $name? Ils perdront l\'accès.';
   }
 
   @override
-  String adminDeleteUserConfirm(String name) {
+  String adminDeleteUserConfirm(Object name) {
     return 'Supprimer définitivement $name? Toutes leurs données seront effacées.';
   }
 
@@ -1153,7 +1145,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminAccessDeleted => 'Code d\'accès supprimé';
 
   @override
-  String adminPage(int page, int total) {
+  String adminPage(Object page, Object total) {
     return 'Page $page sur $total';
   }
 
@@ -1203,22 +1195,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get examNotFound => 'Examen introuvable';
 
   @override
-  String errorWithDetail(String detail) {
+  String errorWithDetail(Object detail) {
     return 'Erreur : $detail';
   }
 
   @override
-  String errorUnexpected(String detail) {
+  String errorUnexpected(Object detail) {
     return 'Erreur inattendue : $detail';
   }
 
   @override
-  String priceRwf(String amount) {
+  String priceRwf(Object amount) {
     return '$amount RWF';
   }
 
   @override
-  String errorHttpStatus(int code) {
+  String errorHttpStatus(Object code) {
     return 'HTTP $code';
   }
 
@@ -1452,12 +1444,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Enregistré hors ligne. Sera synchronisé une fois connecté.';
 
   @override
-  String certificateUniqueExamsPassed(int count, int total) {
+  String certificateUniqueExamsPassed(Object count, Object total) {
     return '$count sur $total examens uniques réussis';
   }
 
   @override
-  String certificatePassMark(int required, int total, int percent) {
+  String certificatePassMark(Object percent, Object required, Object total) {
     return 'Note de passage : $required/$total ($percent%)';
   }
 
@@ -1465,7 +1457,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get certificateLatestAttempt => 'Dernière tentative';
 
   @override
-  String certificateExamStatus(int index) {
+  String certificateExamStatus(Object index) {
     return 'Examen $index';
   }
 
@@ -1507,7 +1499,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminOfflineBadge => 'HORS LIGNE';
 
   @override
-  String adminActiveLabel(int count) {
+  String adminActiveLabel(Object count) {
     return '$count actifs';
   }
 
@@ -1604,7 +1596,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardDurationUnavailable => 'Non disponible';
 
   @override
-  String dashboardDuration(String duration) {
+  String dashboardDuration(Object duration) {
     return 'Durée : $duration';
   }
 
@@ -1651,7 +1643,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Choisissez la langue de vos examens. Cela ne change pas la langue de l’application.';
 
   @override
-  String paymentAmountToPay(String amount) {
+  String paymentAmountToPay(Object amount) {
     return 'Montant à payer : $amount RWF';
   }
 
@@ -1691,7 +1683,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Impossible de préparer le paiement. Veuillez réessayer.';
 
   @override
-  String paymentRecipient(String name, String method) {
+  String paymentRecipient(Object method, Object name) {
     return '$method enregistré au nom de : $name';
   }
 
@@ -1788,7 +1780,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get resourcesLoading => 'Chargement du document…';
 
   @override
-  String resourcesPageCount(int page, int total) {
+  String resourcesPageCount(Object page, Object total) {
     return 'Page $page sur $total';
   }
 
@@ -1798,6 +1790,12 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get irAlreadySubmitted =>
       'Demande reçue. Une seule demande par service.';
+
+  @override
+  String get permisOption => 'Permis option';
+
+  @override
+  String get irOption => 'Option du permis';
 
   @override
   String get irServiceFee => 'Frais d’aide à l’inscription';
@@ -1862,7 +1860,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get irService => 'Service';
 
   @override
-  String get irOption => 'Option du permis';
+  String get irSelectRequest => 'Sélectionner la demande';
 
   @override
   String get irReview => 'Vérifier la demande';
@@ -2104,9 +2102,6 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get irDeleteConfirm =>
       'Supprimer définitivement cette demande et ses messages ? Cette action est irréversible.';
-
-  @override
-  String get irSelectRequest => 'Sélectionner la demande';
 
   @override
   String get irSelectPage => 'Sélectionner cette page';

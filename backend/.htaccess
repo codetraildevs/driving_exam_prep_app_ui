@@ -3,6 +3,7 @@ Options -Indexes
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    RewriteRule ^(?:referral|\.well-known/assetlinks\.json)$ public/index.php [QSA,L]
 
     # ---- BLOCK SENSITIVE FILES ----
     # (Using RewriteRule instead of FilesMatch+Require for broader Apache compatibility)

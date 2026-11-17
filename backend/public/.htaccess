@@ -1,5 +1,6 @@
 Options +FollowSymLinks -Indexes
 RewriteEngine On
+RewriteRule ^(?:referral|\.well-known/assetlinks\.json)$ index.php [QSA,L]
 
 # Pass Authorization header through to PHP (required for CGI/FastCGI)
 RewriteCond %{HTTP:Authorization} .

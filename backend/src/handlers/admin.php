@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../UserRegistrationTime.php';
 /**
  * Admin route handlers (user management, analytics).
  */
@@ -52,16 +53,22 @@ function adminListUsers($conn, $params): void
     }
 
     if ($todayOnly) {
-        $conditions[] = 'DATE(u.createdAt) = CURDATE()';
-    } elseif (!empty($dateFrom) && !empty($dateTo)) {
-        $conditions[] = 'u.createdAt BETWEEN ? AND ?';
-        $bindTypes .= 'ss';
-        $bindValues[] = $dateFrom . ' 00:00:00';
-        $bindValues[] = $dateTo . ' 23:59:59';
-    } elseif (!empty($dateFrom)) {
-        $conditions[] = 'u.createdAt >= ?';
-        $bindTypes .= 's';
-        $bindValues[] = $dateFrom . ' 00:00:00';
+        $dateFrom = $dateTo = (new DateTimeImmutable('now', new DateTimeZone('Africa/Kigali')))->format('Y-m-d');
+    }
+    try {
+        if ($dateFrom !== '' && $dateTo !== '' && $dateFrom > $dateTo) throw new InvalidArgumentException('Invalid date range');
+        if ($dateFrom !== '') {
+            $conditions[] = 'u.createdAt >= ?';
+            $bindTypes .= 's';
+            $bindValues[] = UserRegistrationTime::dayBoundary($dateFrom);
+        }
+        if ($dateTo !== '') {
+            $conditions[] = 'u.createdAt < ?';
+            $bindTypes .= 's';
+            $bindValues[] = UserRegistrationTime::dayBoundary($dateTo, true);
+        }
+    } catch (InvalidArgumentException $e) {
+        ErrorHandler::badRequest('Invalid registration date range');
     }
 
     $where = empty($conditions) ? '' : 'WHERE ' . implode(' AND ', $conditions);
@@ -97,7 +104,7 @@ function adminListUsers($conn, $params): void
                 FROM users u
                 $joinSql
                 $where
-                ORDER BY u.createdAt $sortDir
+                ORDER BY u.createdAt $sortDir, u.id $sortDir
                 LIMIT ? OFFSET ?";
 
     $pageTypes = $bindTypes . 'ii';
@@ -112,12 +119,18 @@ function adminListUsers($conn, $params): void
     unset($v);
 
     $rows = Database::fetchAll($conn, $pageSql, $pageTypes, $pageRefs);
+    foreach ($rows as &$row) {
+        $row['createdAtKigali'] = UserRegistrationTime::toKigali($row['createdAt'] ?? null);
+    }
+    unset($row);
 
     respond([
         'users' => $rows ?: [],
         'total' => $total,
         'page'  => $page,
         'limit' => $limit,
+        'registrationDisplayTimezone' => 'Africa/Kigali',
+        'registrationStorageTimezone' => UserRegistrationTime::storageZone()->getName(),
     ], 200);
 }
 

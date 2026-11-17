@@ -100,1177 +100,1165 @@ abstract class AppLocalizations {
     Locale('rw'),
   ];
 
-  /// The title of the application
+  /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
   /// **'Rwanda Traffic Rule'**
   String get appTitle;
 
-  /// Title on the first-run language selector screen
+  /// No description provided for @languageSelectTitle.
   ///
   /// In en, this message translates to:
   /// **'Choose Your Language'**
   String get languageSelectTitle;
 
-  /// Subtitle on language selector screen
+  /// No description provided for @languageSelectSubtitle.
   ///
   /// In en, this message translates to:
   /// **'You can change this later in Settings'**
   String get languageSelectSubtitle;
 
-  /// Confirm button on language selector
+  /// No description provided for @languageSelectConfirm.
   ///
   /// In en, this message translates to:
   /// **'Continue'**
   String get languageSelectConfirm;
 
-  /// Greeting label on home page header
+  /// No description provided for @homeWelcomeBack.
   ///
   /// In en, this message translates to:
   /// **'Welcome back 👋'**
   String get homeWelcomeBack;
 
-  /// User name displayed in home header
+  /// No description provided for @homeGreeting.
   ///
   /// In en, this message translates to:
   /// **'{userName}'**
-  String homeGreeting(String userName);
+  String homeGreeting(Object userName);
 
-  /// Motivational sub-text on home page
+  /// No description provided for @homeContinueMessage.
   ///
   /// In en, this message translates to:
   /// **'Continue mastering traffic rules today.'**
   String get homeContinueMessage;
 
-  /// CTA button text on home page
+  /// No description provided for @homeContinueLearning.
   ///
   /// In en, this message translates to:
   /// **'Continue Learning'**
   String get homeContinueLearning;
 
-  /// Access card status
+  /// No description provided for @homeAccessActive.
   ///
   /// In en, this message translates to:
   /// **'Access Active - {daysLeft} days left'**
-  String homeAccessActive(int daysLeft);
+  String homeAccessActive(Object daysLeft);
 
-  /// Payment tier label
+  /// No description provided for @homePaymentTier.
   ///
   /// In en, this message translates to:
   /// **'Payment Tier: {tier}'**
-  String homePaymentTier(String tier);
+  String homePaymentTier(Object tier);
 
-  /// Plural example: number of practice sessions completed
+  /// Number of practice sessions completed
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =0{No practice sessions} =1{1 practice session} other{{count} practice sessions}}'**
   String homePracticeSessions(int count);
 
-  /// Service card title
+  /// No description provided for @homePractices.
   ///
   /// In en, this message translates to:
   /// **'Practices'**
   String get homePractices;
 
-  /// Service card subtitle
+  /// No description provided for @homePracticesSubtitle.
   ///
   /// In en, this message translates to:
   /// **'Practice questions'**
   String get homePracticesSubtitle;
 
-  /// Service card title
+  /// No description provided for @homeCourses.
   ///
   /// In en, this message translates to:
   /// **'Courses'**
   String get homeCourses;
 
-  /// Service card subtitle
+  /// No description provided for @homeCoursesSubtitle.
   ///
   /// In en, this message translates to:
   /// **'Learning modules'**
   String get homeCoursesSubtitle;
 
-  /// Service card title
+  /// No description provided for @homeMockExams.
   ///
   /// In en, this message translates to:
   /// **'Practice Exams'**
   String get homeMockExams;
 
-  /// Service card subtitle
+  /// No description provided for @homeMockExamsSubtitle.
   ///
   /// In en, this message translates to:
   /// **'Test knowledge'**
   String get homeMockExamsSubtitle;
 
-  /// Service card title
+  /// No description provided for @homeProgress.
   ///
   /// In en, this message translates to:
   /// **'Progress'**
   String get homeProgress;
 
-  /// Service card subtitle
+  /// No description provided for @homeProgressSubtitle.
   ///
   /// In en, this message translates to:
   /// **'Track performance'**
   String get homeProgressSubtitle;
 
-  /// Service card title
+  /// No description provided for @homeShareApp.
   ///
   /// In en, this message translates to:
   /// **'Share App'**
   String get homeShareApp;
 
-  /// Service card subtitle
+  /// No description provided for @homeShareAppSubtitle.
   ///
   /// In en, this message translates to:
   /// **'Invite friends'**
   String get homeShareAppSubtitle;
 
-  /// Sharing message text
+  /// No description provided for @homeShareAppMessage.
   ///
   /// In en, this message translates to:
   /// **'Download Rwanda Traffic Rule to learn traffic rules and pass your exam!'**
   String get homeShareAppMessage;
 
-  /// Settings page app bar title
+  /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:
   /// **'Settings'**
   String get settingsTitle;
 
-  /// Settings section header
+  /// No description provided for @settingsPreferences.
   ///
   /// In en, this message translates to:
   /// **'Preferences'**
   String get settingsPreferences;
 
-  /// Dark mode toggle title
+  /// No description provided for @settingsDarkMode.
   ///
   /// In en, this message translates to:
   /// **'Dark Mode'**
   String get settingsDarkMode;
 
-  /// Dark mode toggle subtitle
+  /// No description provided for @settingsDarkModeSubtitle.
   ///
   /// In en, this message translates to:
   /// **'Use dark theme'**
   String get settingsDarkModeSubtitle;
 
-  /// Notifications toggle title
+  /// No description provided for @settingsNotifications.
   ///
   /// In en, this message translates to:
   /// **'Notifications'**
   String get settingsNotifications;
 
-  /// Notifications toggle subtitle
+  /// No description provided for @settingsNotificationsSubtitle.
   ///
   /// In en, this message translates to:
   /// **'Receive daily reminders'**
   String get settingsNotificationsSubtitle;
 
-  /// Language setting title
+  /// No description provided for @settingsLanguage.
   ///
   /// In en, this message translates to:
   /// **'Language'**
   String get settingsLanguage;
 
-  /// About section header
+  /// No description provided for @settingsAbout.
   ///
   /// In en, this message translates to:
   /// **'About'**
   String get settingsAbout;
 
-  /// About app title
+  /// No description provided for @settingsAboutApp.
   ///
   /// In en, this message translates to:
   /// **'About Rwanda Traffic Rule'**
   String get settingsAboutApp;
 
-  /// App version with interpolation
+  /// No description provided for @settingsVersion.
   ///
   /// In en, this message translates to:
   /// **'Version {version}'**
-  String settingsVersion(String version);
+  String settingsVersion(Object version);
 
-  /// Privacy policy link title
+  /// No description provided for @settingsPrivacyPolicy.
   ///
   /// In en, this message translates to:
   /// **'Privacy Policy'**
   String get settingsPrivacyPolicy;
 
-  /// Privacy policy subtitle
+  /// No description provided for @settingsPrivacyPolicySubtitle.
   ///
   /// In en, this message translates to:
   /// **'Read our privacy policy'**
   String get settingsPrivacyPolicySubtitle;
 
-  /// Terms of service link title
+  /// No description provided for @settingsTermsOfService.
   ///
   /// In en, this message translates to:
   /// **'Terms of Service'**
   String get settingsTermsOfService;
 
-  /// Terms subtitle
+  /// No description provided for @settingsTermsOfServiceSubtitle.
   ///
   /// In en, this message translates to:
   /// **'Read our terms'**
   String get settingsTermsOfServiceSubtitle;
 
-  /// Data section header
+  /// No description provided for @settingsData.
   ///
   /// In en, this message translates to:
   /// **'Data'**
   String get settingsData;
 
-  /// Reset progress button title
+  /// No description provided for @settingsResetProgress.
   ///
   /// In en, this message translates to:
   /// **'Reset Progress'**
   String get settingsResetProgress;
 
-  /// Reset progress subtitle
+  /// No description provided for @settingsResetProgressSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Clear all your data'**
+  /// **'Delete all your data'**
   String get settingsResetProgressSubtitle;
 
-  /// Reset confirm dialog title
+  /// No description provided for @settingsResetConfirmTitle.
   ///
   /// In en, this message translates to:
   /// **'Reset Progress'**
   String get settingsResetConfirmTitle;
 
-  /// Reset confirm dialog message
+  /// No description provided for @settingsResetConfirmMessage.
   ///
   /// In en, this message translates to:
   /// **'Are you sure you want to reset all your progress? This action cannot be undone.'**
   String get settingsResetConfirmMessage;
 
-  /// Reset success snackbar message
+  /// No description provided for @settingsResetSuccess.
   ///
   /// In en, this message translates to:
   /// **'Progress reset successfully'**
   String get settingsResetSuccess;
 
-  /// Language dialog title
+  /// No description provided for @settingsSelectLanguage.
   ///
   /// In en, this message translates to:
-  /// **'Select Language'**
+  /// **'Choose language'**
   String get settingsSelectLanguage;
 
-  /// Generic cancel button
+  /// No description provided for @commonCancel.
   ///
   /// In en, this message translates to:
   /// **'Cancel'**
   String get commonCancel;
 
-  /// Tooltip for the navigation drawer hamburger button
+  /// No description provided for @commonMenu.
   ///
   /// In en, this message translates to:
   /// **'Menu'**
   String get commonMenu;
 
-  /// Generic confirm button
+  /// No description provided for @commonConfirm.
   ///
   /// In en, this message translates to:
   /// **'Confirm'**
   String get commonConfirm;
 
-  /// Generic reset button
+  /// No description provided for @commonReset.
   ///
   /// In en, this message translates to:
   /// **'Reset'**
   String get commonReset;
 
-  /// Landing page hero title
+  /// No description provided for @landingHeroTitle.
   ///
   /// In en, this message translates to:
-  /// **'Master Traffic Rules Easily'**
+  /// **'Learn traffic rules easily'**
   String get landingHeroTitle;
 
-  /// Landing page hero subtitle
+  /// No description provided for @landingHeroSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Practice real exam questions and pass your driving test.'**
+  /// **'Practice on your own questions and pass your exam.'**
   String get landingHeroSubtitle;
 
-  /// Landing page CTA button
+  /// No description provided for @landingGetStarted.
   ///
   /// In en, this message translates to:
   /// **'Get Started'**
   String get landingGetStarted;
 
-  /// Landing page login link
+  /// No description provided for @landingAlreadyHaveAccount.
   ///
   /// In en, this message translates to:
-  /// **'Already have an account? Login'**
+  /// **'Already have an account? Sign in'**
   String get landingAlreadyHaveAccount;
 
-  /// Features section title
+  /// No description provided for @landingWhyUseApp.
   ///
   /// In en, this message translates to:
-  /// **'Why Use Our App?'**
+  /// **'Why use our app?'**
   String get landingWhyUseApp;
 
-  /// Feature card title
+  /// No description provided for @landingLearnRules.
   ///
   /// In en, this message translates to:
-  /// **'Learn Rules'**
+  /// **'Learn rules'**
   String get landingLearnRules;
 
-  /// Feature card description
+  /// No description provided for @landingLearnRulesDesc.
   ///
   /// In en, this message translates to:
-  /// **'Clear explanations of all traffic laws and road signs.'**
+  /// **'Clear explanations of all traffic rules and signs.'**
   String get landingLearnRulesDesc;
 
-  /// Feature card title
+  /// No description provided for @landingPracticeExams.
   ///
   /// In en, this message translates to:
-  /// **'Practice Exams'**
+  /// **'Practice exams'**
   String get landingPracticeExams;
 
-  /// Feature card description
+  /// No description provided for @landingPracticeExamsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Take mock exams similar to the real driving test.'**
+  /// **'Take practice exams similar to the real exam.'**
   String get landingPracticeExamsDesc;
 
-  /// Feature card title
+  /// No description provided for @landingTrackProgress.
   ///
   /// In en, this message translates to:
-  /// **'Track Progress'**
+  /// **'Track progress'**
   String get landingTrackProgress;
 
-  /// Feature card description
+  /// No description provided for @landingTrackProgressDesc.
   ///
   /// In en, this message translates to:
-  /// **'Monitor your performance and improve weak areas.'**
+  /// **'Track your performance and see where you want to go.'**
   String get landingTrackProgressDesc;
 
-  /// How it works section title
+  /// No description provided for @landingHowItWorks.
   ///
   /// In en, this message translates to:
-  /// **'How It Works'**
+  /// **'How it works'**
   String get landingHowItWorks;
 
-  /// How it works step 1
+  /// No description provided for @landingStep1.
   ///
   /// In en, this message translates to:
-  /// **'Create your free account'**
+  /// **'Open your free account'**
   String get landingStep1;
 
-  /// How it works step 2
+  /// No description provided for @landingStep2.
   ///
   /// In en, this message translates to:
   /// **'Start learning traffic rules'**
   String get landingStep2;
 
-  /// How it works step 3
+  /// No description provided for @landingStep3.
   ///
   /// In en, this message translates to:
-  /// **'Take mock exams'**
+  /// **'Take practice exams'**
   String get landingStep3;
 
-  /// How it works step 4
+  /// No description provided for @landingStep4.
   ///
   /// In en, this message translates to:
-  /// **'Pass your real test confidently'**
+  /// **'Pass the real exam with confidence'**
   String get landingStep4;
 
-  /// Landing CTA section title
+  /// No description provided for @landingReadyTitle.
   ///
   /// In en, this message translates to:
-  /// **'Ready to Pass Your Driving Exam?'**
+  /// **'Ready to pass your health driving license exam?'**
   String get landingReadyTitle;
 
-  /// Landing CTA button
+  /// No description provided for @landingStartLearning.
   ///
   /// In en, this message translates to:
-  /// **'Start Learning Now'**
+  /// **'Start learning now'**
   String get landingStartLearning;
 
-  /// Services section header on home page
+  /// No description provided for @homeServices.
   ///
   /// In en, this message translates to:
   /// **'Services'**
   String get homeServices;
 
-  /// App brand name on auth pages
+  /// No description provided for @authAppName.
   ///
   /// In en, this message translates to:
   /// **'Rwanda Traffic Rule'**
   String get authAppName;
 
-  /// Subtitle on auth pages
+  /// No description provided for @authSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Prepare for Your Provisional Driving Licence'**
+  /// **'Prepare for your provisional license driving theory exam'**
   String get authSubtitle;
 
-  /// Login page title
+  /// No description provided for @loginTitle.
   ///
   /// In en, this message translates to:
-  /// **'Login to Your Account'**
+  /// **'Sign in to your account'**
   String get loginTitle;
 
-  /// Login page subtitle
+  /// No description provided for @loginSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Enter your registered phone number to continue.'**
+  /// **'Enter your phone number (used during registration) to continue.'**
   String get loginSubtitle;
 
-  /// Help section title on auth pages
+  /// No description provided for @authNeedHelp.
   ///
   /// In en, this message translates to:
-  /// **'Need Help?'**
+  /// **'Need help?'**
   String get authNeedHelp;
 
-  /// Login help text
+  /// No description provided for @loginHelpText.
   ///
   /// In en, this message translates to:
-  /// **'For account issues or inquiries, contact:'**
+  /// **'For account issues, contact:'**
   String get loginHelpText;
 
-  /// Phone number field label
+  /// No description provided for @authPhoneNumber.
   ///
   /// In en, this message translates to:
-  /// **'Phone Number'**
+  /// **'Enter your phone number'**
   String get authPhoneNumber;
 
-  /// Phone number placeholder
+  /// No description provided for @authPhoneHint.
   ///
   /// In en, this message translates to:
   /// **'07** *** ***'**
   String get authPhoneHint;
 
-  /// Continue button text
+  /// No description provided for @authContinue.
   ///
   /// In en, this message translates to:
   /// **'Continue'**
   String get authContinue;
 
-  /// No account prompt
+  /// No description provided for @loginNoAccount.
   ///
   /// In en, this message translates to:
   /// **'Don\'t have an account? '**
   String get loginNoAccount;
 
-  /// Sign up link text
+  /// No description provided for @loginSignUp.
   ///
   /// In en, this message translates to:
-  /// **'Sign Up'**
+  /// **'Sign up'**
   String get loginSignUp;
 
-  /// Brand tagline on auth pages
+  /// No description provided for @authSecureTag.
   ///
   /// In en, this message translates to:
-  /// **'Secure • Fast • Pass'**
+  /// **'Learn • Prepare • Pass'**
   String get authSecureTag;
 
-  /// Phone validation error
+  /// No description provided for @loginPhoneRequired.
   ///
   /// In en, this message translates to:
   /// **'Please enter your phone number'**
   String get loginPhoneRequired;
 
-  /// Login phone format validation error
+  /// No description provided for @loginInvalidPhone.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid phone number (e.g. 078... or +250 78...)'**
+  /// **'Enter a valid phone number (e.g., 07... or +250 7...)'**
   String get loginInvalidPhone;
 
-  /// Registration page title
+  /// No description provided for @registerTitle.
   ///
   /// In en, this message translates to:
-  /// **'Create Your Account'**
+  /// **'Create your account'**
   String get registerTitle;
 
-  /// Registration page subtitle
+  /// No description provided for @registerSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Register using your full name and phone number to begin learning.'**
+  /// **'Sign up using your full name and phone number to start learning.'**
   String get registerSubtitle;
 
-  /// Registration help text
+  /// No description provided for @registerHelpText.
   ///
   /// In en, this message translates to:
-  /// **'For registration issues or inquiries, contact:'**
+  /// **'For sign-up issues or other questions, contact:'**
   String get registerHelpText;
 
-  /// Full name field label
+  /// No description provided for @authFullName.
   ///
   /// In en, this message translates to:
-  /// **'Full Name'**
+  /// **'Enter your name'**
   String get authFullName;
 
-  /// Full name placeholder
+  /// No description provided for @authFullNameHint.
   ///
   /// In en, this message translates to:
-  /// **'Enter your full name'**
+  /// **'Enter your name'**
   String get authFullNameHint;
 
-  /// Terms agreement text
+  /// No description provided for @registerTerms.
   ///
   /// In en, this message translates to:
-  /// **'I agree to the Terms of Service and Privacy Policy.'**
+  /// **'Accept the usage and privacy policies.'**
   String get registerTerms;
 
-  /// Sign up button text
+  /// No description provided for @registerSignUp.
   ///
   /// In en, this message translates to:
-  /// **'Sign Up'**
+  /// **'Confirm'**
   String get registerSignUp;
 
-  /// Have account prompt
+  /// No description provided for @registerHaveAccount.
   ///
   /// In en, this message translates to:
   /// **'Already have an account? '**
   String get registerHaveAccount;
 
-  /// Log in link text
+  /// No description provided for @registerLogIn.
   ///
   /// In en, this message translates to:
-  /// **'Log In'**
+  /// **'Sign in'**
   String get registerLogIn;
 
-  /// Validation error
+  /// No description provided for @registerFillAllFields.
   ///
   /// In en, this message translates to:
   /// **'Please fill all fields'**
   String get registerFillAllFields;
 
-  /// Terms validation error
+  /// No description provided for @registerAgreeTerms.
   ///
   /// In en, this message translates to:
-  /// **'Please agree to terms and conditions'**
+  /// **'Please accept required terms'**
   String get registerAgreeTerms;
 
-  /// Forgot password page title
+  /// No description provided for @forgotPasswordTitle.
   ///
   /// In en, this message translates to:
-  /// **'Password reset is not available'**
+  /// **'Reset password not possible'**
   String get forgotPasswordTitle;
 
-  /// Forgot password page description
+  /// No description provided for @forgotPasswordDescription.
   ///
   /// In en, this message translates to:
-  /// **'This backend uses phone number + device binding (no password reset flow).'**
+  /// **'The system uses phone number and device link (no password reset).'**
   String get forgotPasswordDescription;
 
-  /// Back to login button
+  /// No description provided for @forgotPasswordBackToLogin.
   ///
   /// In en, this message translates to:
-  /// **'Back to Login'**
+  /// **'Back to sign in'**
   String get forgotPasswordBackToLogin;
 
-  /// Bottom nav home label
+  /// No description provided for @navHome.
   ///
   /// In en, this message translates to:
   /// **'Home'**
   String get navHome;
 
-  /// Bottom nav practice label
+  /// No description provided for @navPractice.
   ///
   /// In en, this message translates to:
   /// **'Practice'**
   String get navPractice;
 
-  /// Bottom nav progress label
+  /// No description provided for @navProgress.
   ///
   /// In en, this message translates to:
   /// **'Progress'**
   String get navProgress;
 
-  /// Bottom nav profile label
+  /// No description provided for @navProfile.
   ///
   /// In en, this message translates to:
   /// **'Profile'**
   String get navProfile;
 
-  /// Practice page title
+  /// No description provided for @practiceTitle.
   ///
   /// In en, this message translates to:
-  /// **'Practice '**
+  /// **'Practice Exams'**
   String get practiceTitle;
 
-  /// Practice category
+  /// No description provided for @practiceCategorySpeedLimits.
   ///
   /// In en, this message translates to:
-  /// **'Speed Limits'**
+  /// **'Speed limits'**
   String get practiceCategorySpeedLimits;
 
-  /// Practice category
+  /// No description provided for @practiceCategoryRoadSigns.
   ///
   /// In en, this message translates to:
-  /// **'Road Signs'**
+  /// **'Traffic signs'**
   String get practiceCategoryRoadSigns;
 
-  /// Practice category
+  /// No description provided for @practiceCategoryLaneControl.
   ///
   /// In en, this message translates to:
-  /// **'Lane Control'**
+  /// **'Lane guidance'**
   String get practiceCategoryLaneControl;
 
-  /// Practice category
+  /// No description provided for @practiceCategoryParkingRules.
   ///
   /// In en, this message translates to:
-  /// **'Parking Rules'**
+  /// **'Parking rules'**
   String get practiceCategoryParkingRules;
 
-  /// Start quiz prompt
+  /// No description provided for @practiceStart.
   ///
   /// In en, this message translates to:
   /// **'Start →'**
   String get practiceStart;
 
-  /// Quiz completion title
+  /// No description provided for @quizComplete.
   ///
   /// In en, this message translates to:
-  /// **'Quiz Complete!'**
+  /// **'Exam complete!'**
   String get quizComplete;
 
-  /// Quiz score display
+  /// No description provided for @quizScore.
   ///
   /// In en, this message translates to:
   /// **'Score: {score}%'**
-  String quizScore(int score);
+  String quizScore(Object score);
 
-  /// Quiz result text
+  /// No description provided for @quizResult.
   ///
   /// In en, this message translates to:
-  /// **'You got {correct} out of {total} correct'**
-  String quizResult(int correct, int total);
+  /// **'You answered {correct} out of {total} correctly'**
+  String quizResult(Object correct, Object total);
 
-  /// Back button in quiz results
+  /// No description provided for @quizBackToPractice.
   ///
   /// In en, this message translates to:
-  /// **'Back to Practice'**
+  /// **'Try another exam'**
   String get quizBackToPractice;
 
-  /// Question counter
+  /// No description provided for @quizNextQuestion.
   ///
   /// In en, this message translates to:
-  /// **'Question {current}/{total}'**
-  String quizQuestion(int current, int total);
-
-  /// Finish quiz button
-  ///
-  /// In en, this message translates to:
-  /// **'Finish Quiz'**
-  String get quizFinish;
-
-  /// Next question button
-  ///
-  /// In en, this message translates to:
-  /// **'Next Question'**
+  /// **'Next question'**
   String get quizNextQuestion;
 
-  /// Mock exam title
+  /// No description provided for @examMockExam.
   ///
   /// In en, this message translates to:
-  /// **'Practice Exam'**
+  /// **'Practice Exams'**
   String get examMockExam;
 
-  /// Exam instructions title
+  /// No description provided for @examInstructions.
   ///
   /// In en, this message translates to:
-  /// **'Exam Instructions'**
+  /// **'Exam instructions'**
   String get examInstructions;
 
-  /// Time limit instruction title
+  /// No description provided for @examTimeLimit.
   ///
   /// In en, this message translates to:
-  /// **'Time Limit'**
+  /// **'Time limit'**
   String get examTimeLimit;
 
-  /// Time limit description
+  /// No description provided for @examTimeLimitDesc.
   ///
   /// In en, this message translates to:
-  /// **'30 minutes total for 20 questions'**
+  /// **'30 minutes total with 20 questions'**
   String get examTimeLimitDesc;
 
-  /// Question count instruction title
+  /// No description provided for @examQuestionCount.
   ///
   /// In en, this message translates to:
-  /// **'20 Questions'**
+  /// **'20 questions'**
   String get examQuestionCount;
 
-  /// Question count description
+  /// No description provided for @examQuestionCountDesc.
   ///
   /// In en, this message translates to:
-  /// **'Multiple choice format with 4 options each'**
+  /// **'Multiple choice with 4 options each'**
   String get examQuestionCountDesc;
 
-  /// Passing score instruction title
+  /// No description provided for @examPassingScore.
   ///
   /// In en, this message translates to:
-  /// **'Passing Score'**
+  /// **'Passing score'**
   String get examPassingScore;
 
-  /// Passing score description
+  /// No description provided for @examPassingScoreDesc.
   ///
   /// In en, this message translates to:
-  /// **'You need 70% or higher to pass'**
+  /// **'You need 70% or above to pass'**
   String get examPassingScoreDesc;
 
-  /// No going back instruction title
+  /// No description provided for @examNoGoingBack.
   ///
   /// In en, this message translates to:
-  /// **'No Going Back'**
+  /// **'No going back'**
   String get examNoGoingBack;
 
-  /// No going back description
+  /// No description provided for @examNoGoingBackDesc.
   ///
   /// In en, this message translates to:
-  /// **'You cannot revisit previous questions'**
+  /// **'You cannot go back to previous questions'**
   String get examNoGoingBackDesc;
 
-  /// Exam warning message
+  /// No description provided for @examWarning.
   ///
   /// In en, this message translates to:
-  /// **'Make sure you have stable internet and won\'t be interrupted'**
+  /// **'Make sure you have a stable internet connection and won\'t be interrupted'**
   String get examWarning;
 
-  /// Start exam button
+  /// No description provided for @examStartExam.
   ///
   /// In en, this message translates to:
   /// **'Start Exam'**
   String get examStartExam;
 
-  /// Submit exam button
+  /// No description provided for @examSubmit.
   ///
   /// In en, this message translates to:
   /// **'Submit Exam'**
   String get examSubmit;
 
-  /// Exam passed title
+  /// No description provided for @examCongratulations.
   ///
   /// In en, this message translates to:
   /// **'Congratulations!'**
   String get examCongratulations;
 
-  /// Exam failed title
+  /// No description provided for @examGoodEffort.
   ///
   /// In en, this message translates to:
-  /// **'Good Effort'**
+  /// **'Good effort'**
   String get examGoodEffort;
 
-  /// Exam passed message
+  /// No description provided for @examPassedMessage.
   ///
   /// In en, this message translates to:
   /// **'You passed the exam with flying colors!'**
   String get examPassedMessage;
 
-  /// Exam failed message
+  /// No description provided for @examFailedMessage.
   ///
   /// In en, this message translates to:
   /// **'Keep practicing to improve your score'**
   String get examFailedMessage;
 
-  /// Score label
+  /// No description provided for @examYourScore.
   ///
   /// In en, this message translates to:
-  /// **'Your Score'**
+  /// **'Your score'**
   String get examYourScore;
 
-  /// Correct answers label
+  /// No description provided for @examCorrect.
   ///
   /// In en, this message translates to:
-  /// **'Correct'**
+  /// **'Correct answers'**
   String get examCorrect;
 
-  /// Accuracy label
+  /// No description provided for @examAccuracy.
   ///
   /// In en, this message translates to:
   /// **'Accuracy'**
   String get examAccuracy;
 
-  /// Encouragement for failing
+  /// No description provided for @examNeedMorePractice.
   ///
   /// In en, this message translates to:
-  /// **'You need 70% to pass. Practice more to improve!'**
+  /// **'You need 70% to pass. Keep practicing!'**
   String get examNeedMorePractice;
 
-  /// Badge earned message
+  /// No description provided for @examBadgeEarned.
   ///
   /// In en, this message translates to:
   /// **'You earned a badge for passing the exam!'**
   String get examBadgeEarned;
 
-  /// Retake test button
+  /// No description provided for @examRetakeTest.
   ///
   /// In en, this message translates to:
-  /// **'Retake Test'**
+  /// **'Retake Exam'**
   String get examRetakeTest;
 
-  /// Back home button
+  /// No description provided for @examBackHome.
   ///
   /// In en, this message translates to:
-  /// **'Back Home'**
+  /// **'Back to Home'**
   String get examBackHome;
 
-  /// Progress page title
+  /// No description provided for @progressTitle.
   ///
   /// In en, this message translates to:
   /// **'Your Progress'**
   String get progressTitle;
 
-  /// Performance section title
+  /// No description provided for @progressPerformanceSummary.
   ///
   /// In en, this message translates to:
   /// **'Performance Summary'**
   String get progressPerformanceSummary;
 
-  /// Total attempts stat
+  /// No description provided for @progressTotalAttempts.
   ///
   /// In en, this message translates to:
   /// **'Total Attempts'**
   String get progressTotalAttempts;
 
-  /// Best score stat
+  /// No description provided for @progressBestScore.
   ///
   /// In en, this message translates to:
   /// **'Best Score'**
   String get progressBestScore;
 
-  /// Average score stat
+  /// No description provided for @progressAverageScore.
   ///
   /// In en, this message translates to:
   /// **'Average Score'**
   String get progressAverageScore;
 
-  /// Signs learned stat
+  /// No description provided for @progressSignsLearned.
   ///
   /// In en, this message translates to:
   /// **'Signs Learned'**
   String get progressSignsLearned;
 
-  /// Recent exams section title
+  /// No description provided for @progressRecentExams.
   ///
   /// In en, this message translates to:
   /// **'Recent Exams'**
   String get progressRecentExams;
 
-  /// Overall progress card title
+  /// No description provided for @progressOverall.
   ///
   /// In en, this message translates to:
   /// **'Overall Progress'**
   String get progressOverall;
 
-  /// Complete metric label
+  /// No description provided for @progressComplete.
   ///
   /// In en, this message translates to:
   /// **'Complete'**
   String get progressComplete;
 
-  /// Average score metric label
+  /// No description provided for @progressAvgScore.
   ///
   /// In en, this message translates to:
-  /// **'Avg Score'**
+  /// **'Avg. score'**
   String get progressAvgScore;
 
-  /// Signs metric label
+  /// No description provided for @progressSigns.
   ///
   /// In en, this message translates to:
   /// **'Signs'**
   String get progressSigns;
 
-  /// Passed status label
+  /// No description provided for @progressPassed.
   ///
   /// In en, this message translates to:
   /// **'Passed'**
   String get progressPassed;
 
-  /// Excellent status label
+  /// No description provided for @progressExcellent.
   ///
   /// In en, this message translates to:
   /// **'Excellent'**
   String get progressExcellent;
 
-  /// Mock exam name
+  /// No description provided for @progressMockExam.
   ///
   /// In en, this message translates to:
-  /// **'Mock Exam {number}'**
-  String progressMockExam(int number);
+  /// **'Practice Exam {number}'**
+  String progressMockExam(Object number);
 
-  /// Practice Exams name
+  /// No description provided for @progressPracticeQuiz.
   ///
   /// In en, this message translates to:
-  /// **'Practice Exams'**
+  /// **'Practice Quiz'**
   String get progressPracticeQuiz;
 
-  /// Profile page title
+  /// No description provided for @profileTitle.
   ///
   /// In en, this message translates to:
   /// **'Profile'**
   String get profileTitle;
 
-  /// User location
+  /// No description provided for @profileLocation.
   ///
   /// In en, this message translates to:
   /// **'Kigali, Rwanda'**
   String get profileLocation;
 
-  /// Learning progress card title
+  /// No description provided for @profileOverallProgress.
   ///
   /// In en, this message translates to:
-  /// **'Overall Learning Progress'**
+  /// **'Overall Progress'**
   String get profileOverallProgress;
 
-  /// Module completion text
+  /// No description provided for @profileModulesCompleted.
   ///
   /// In en, this message translates to:
-  /// **'{completed}/{total} Modules Completed'**
-  String profileModulesCompleted(int completed, int total);
+  /// **'{completed}/{total} exams completed'**
+  String profileModulesCompleted(Object completed, Object total);
 
-  /// Account section header
+  /// No description provided for @profileAccount.
   ///
   /// In en, this message translates to:
   /// **'Account'**
   String get profileAccount;
 
-  /// Settings menu item
+  /// No description provided for @profileSettings.
   ///
   /// In en, this message translates to:
   /// **'Settings'**
   String get profileSettings;
 
-  /// Settings menu subtitle
+  /// No description provided for @profileSettingsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Notifications, language, privacy'**
+  /// **'Notifications, language, data'**
   String get profileSettingsSubtitle;
 
-  /// Delete account option
+  /// No description provided for @profileDeleteAccount.
   ///
   /// In en, this message translates to:
-  /// **'Delete Account'**
+  /// **'Delete account'**
   String get profileDeleteAccount;
 
-  /// Sign out option
+  /// No description provided for @profileSignOut.
   ///
   /// In en, this message translates to:
-  /// **'Sign Out'**
+  /// **'Sign out'**
   String get profileSignOut;
 
-  /// Delete confirmation dialog title
+  /// No description provided for @profileDeleteConfirmTitle.
   ///
   /// In en, this message translates to:
-  /// **'Delete Account'**
+  /// **'Delete account'**
   String get profileDeleteConfirmTitle;
 
-  /// Delete confirmation message
+  /// No description provided for @profileDeleteConfirmMessage.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to permanently delete your account? This action cannot be undone.'**
+  /// **'Are you sure you want to delete your account entirely? This action cannot be undone.'**
   String get profileDeleteConfirmMessage;
 
-  /// Delete button
+  /// No description provided for @profileDelete.
   ///
   /// In en, this message translates to:
   /// **'Delete'**
   String get profileDelete;
 
-  /// Certificates page title
+  /// No description provided for @certificatesTitle.
   ///
   /// In en, this message translates to:
   /// **'My Certificates'**
   String get certificatesTitle;
 
-  /// Achievements section title
+  /// No description provided for @certificatesAchievements.
   ///
   /// In en, this message translates to:
-  /// **'Your Achievements'**
+  /// **'Achievements'**
   String get certificatesAchievements;
 
-  /// Earned status
+  /// No description provided for @certificatesEarned.
   ///
   /// In en, this message translates to:
   /// **'Earned'**
   String get certificatesEarned;
 
-  /// Pending status
+  /// No description provided for @certificatesPending.
   ///
   /// In en, this message translates to:
   /// **'Pending'**
   String get certificatesPending;
 
-  /// In progress date placeholder
+  /// No description provided for @certificatesInProgress.
   ///
   /// In en, this message translates to:
   /// **'In Progress'**
   String get certificatesInProgress;
 
-  /// Certificate name
+  /// No description provided for @certificateRoadSignsMastery.
   ///
   /// In en, this message translates to:
-  /// **'Road Signs Mastery'**
+  /// **'Traffic sign mastery'**
   String get certificateRoadSignsMastery;
 
-  /// Certificate name
+  /// No description provided for @certificateTrafficRulesTest.
   ///
   /// In en, this message translates to:
-  /// **'Traffic Rules Final Test'**
+  /// **'Traffic rules test'**
   String get certificateTrafficRulesTest;
 
-  /// Certificate name
+  /// No description provided for @certificateDefensiveDriving.
   ///
   /// In en, this message translates to:
-  /// **'Defensive Driving'**
+  /// **'Defensive driving'**
   String get certificateDefensiveDriving;
 
-  /// Signs page title
+  /// No description provided for @signsTitle.
   ///
   /// In en, this message translates to:
   /// **'Traffic Signs'**
   String get signsTitle;
 
-  /// Search hint text
+  /// No description provided for @signsSearchHint.
   ///
   /// In en, this message translates to:
-  /// **'Search traffic signs...'**
+  /// **'Search for traffic signs...'**
   String get signsSearchHint;
 
-  /// Empty state text
+  /// No description provided for @signsNotFound.
   ///
   /// In en, this message translates to:
   /// **'No traffic signs found'**
   String get signsNotFound;
 
-  /// Learned badge text
+  /// No description provided for @signsLearned.
   ///
   /// In en, this message translates to:
   /// **'Learned'**
   String get signsLearned;
 
-  /// All category filter
+  /// No description provided for @signsAll.
   ///
   /// In en, this message translates to:
   /// **'All'**
   String get signsAll;
 
-  /// Sign detail page title
+  /// No description provided for @signDetailTitle.
   ///
   /// In en, this message translates to:
   /// **'Traffic Sign'**
   String get signDetailTitle;
 
-  /// Sign not found message
+  /// No description provided for @signDetailNotFound.
   ///
   /// In en, this message translates to:
   /// **'Sign not found'**
   String get signDetailNotFound;
 
-  /// Description section header
+  /// No description provided for @signDetailDescription.
   ///
   /// In en, this message translates to:
   /// **'Description'**
   String get signDetailDescription;
 
-  /// Scenario section header
+  /// No description provided for @signDetailScenario.
   ///
   /// In en, this message translates to:
-  /// **'Real-Life Scenario'**
+  /// **'Real-life scenario'**
   String get signDetailScenario;
 
-  /// Learned status message
+  /// No description provided for @signDetailLearned.
   ///
   /// In en, this message translates to:
-  /// **'You\'ve learned this sign!'**
+  /// **'You learned this sign!'**
   String get signDetailLearned;
 
-  /// Mark as learned button
+  /// No description provided for @signDetailMarkAsLearned.
   ///
   /// In en, this message translates to:
-  /// **'Mark as Learned'**
+  /// **'Mark as learned'**
   String get signDetailMarkAsLearned;
 
-  /// Success snackbar message
+  /// No description provided for @signDetailMarkedSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Traffic sign marked as learned!'**
+  /// **'Sign marked as learned!'**
   String get signDetailMarkedSuccess;
 
-  /// Subscription page title
+  /// No description provided for @subscriptionTitle.
   ///
   /// In en, this message translates to:
-  /// **'Practice Exam Access'**
+  /// **'Request exam access'**
   String get subscriptionTitle;
 
-  /// Subscription page subtitle
+  /// No description provided for @subscriptionSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Unlock All Practice Exams'**
+  /// **'request exam access'**
   String get subscriptionSubtitle;
 
-  /// Support message for learning traffic rules
+  /// No description provided for @subscriptionTrafficRulesMsg.
   ///
   /// In en, this message translates to:
-  /// **'If you want to learn traffic rules, kindly call, text us on WhatsApp and help to be prepared for official provisional driving license.'**
+  /// **'If you want to learn traffic rules, contact us or send us a WhatsApp message and we will help you prepare well for your provisional license driving theory exam.'**
   String get subscriptionTrafficRulesMsg;
 
-  /// Current plan section label
+  /// No description provided for @subscriptionCurrentPlan.
   ///
   /// In en, this message translates to:
-  /// **'Your Current Plan'**
+  /// **'Your current plan'**
   String get subscriptionCurrentPlan;
 
-  /// No plan label
+  /// No description provided for @subscriptionNoPlan.
   ///
   /// In en, this message translates to:
   /// **'No active plan'**
   String get subscriptionNoPlan;
 
-  /// 1 month plan label
+  /// No description provided for @subscriptionMonth1.
   ///
   /// In en, this message translates to:
   /// **'1 Month'**
   String get subscriptionMonth1;
 
-  /// 3 months plan label
+  /// No description provided for @subscriptionMonth3.
   ///
   /// In en, this message translates to:
   /// **'3 Months'**
   String get subscriptionMonth3;
 
-  /// 6 months plan label
+  /// No description provided for @subscriptionMonth6.
   ///
   /// In en, this message translates to:
   /// **'6 Months'**
   String get subscriptionMonth6;
 
-  /// Price label with amount
+  /// No description provided for @subscriptionPrice.
   ///
   /// In en, this message translates to:
   /// **'{amount} RWF'**
-  String subscriptionPrice(int amount);
+  String subscriptionPrice(Object amount);
 
-  /// Request access button
+  /// No description provided for @subscriptionRequestAccess.
   ///
   /// In en, this message translates to:
   /// **'Request Access'**
   String get subscriptionRequestAccess;
 
-  /// Request sent success message
+  /// No description provided for @subscriptionRequestSent.
   ///
   /// In en, this message translates to:
-  /// **'Your request has been submitted. You will be activated once payment is confirmed.'**
+  /// **'Your request has been sent successfully.Wait a moment for them to see that you have been approved.'**
   String get subscriptionRequestSent;
 
-  /// Payment instructions section title
+  /// No description provided for @subscriptionPaymentInstructions.
   ///
   /// In en, this message translates to:
-  /// **'Payment Instructions'**
+  /// **'Payment instructions'**
   String get subscriptionPaymentInstructions;
 
-  /// MoMo pay number
+  /// No description provided for @subscriptionPaymentMomo.
   ///
   /// In en, this message translates to:
   /// **'MoMo Pay: 329494'**
   String get subscriptionPaymentMomo;
 
-  /// Mobile money number
+  /// No description provided for @subscriptionPaymentMobile.
   ///
   /// In en, this message translates to:
   /// **'Mobile Money: 0788659575'**
@@ -1282,475 +1270,475 @@ abstract class AppLocalizations {
   /// **'Tigo Cash: 0728877442'**
   String get subscriptionPaymentTigoCash;
 
-  /// Help call number
+  /// No description provided for @subscriptionHelpCall.
   ///
   /// In en, this message translates to:
   /// **'Call: 0788659575'**
   String get subscriptionHelpCall;
 
-  /// Help WhatsApp number
+  /// No description provided for @subscriptionHelpWhatsapp.
   ///
   /// In en, this message translates to:
   /// **'WhatsApp: 0788659575'**
   String get subscriptionHelpWhatsapp;
 
-  /// Choose plan label
+  /// No description provided for @subscriptionChoosePlan.
   ///
   /// In en, this message translates to:
-  /// **'Choose a Plan to'**
+  /// **'Choose a learning plan'**
   String get subscriptionChoosePlan;
 
-  /// Currency label
+  /// No description provided for @subscriptionCurrency.
   ///
   /// In en, this message translates to:
-  /// **'Months to learn'**
+  /// **'Months you want to learn'**
   String get subscriptionCurrency;
 
-  /// Access active label
+  /// No description provided for @subscriptionAccessActive.
   ///
   /// In en, this message translates to:
-  /// **'Access Active'**
+  /// **'Access available'**
   String get subscriptionAccessActive;
 
-  /// Expiry date label
+  /// No description provided for @subscriptionExpires.
   ///
   /// In en, this message translates to:
   /// **'Expires: {date}'**
-  String subscriptionExpires(String date);
+  String subscriptionExpires(Object date);
 
-  /// Days label
+  /// No description provided for @subscriptionDays.
   ///
   /// In en, this message translates to:
   /// **'{days} days'**
-  String subscriptionDays(int days);
+  String subscriptionDays(Object days);
 
-  /// Need help label
+  /// No description provided for @subscriptionNeedHelp.
   ///
   /// In en, this message translates to:
-  /// **'Need Help?'**
+  /// **'Need help?'**
   String get subscriptionNeedHelp;
 
-  /// Get access subtitle
+  /// No description provided for @subscriptionGetAccess.
   ///
   /// In en, this message translates to:
-  /// **'Get access to all {count}+ premium practice exams'**
-  String subscriptionGetAccess(int count);
+  /// **'Get {count}+ exam practice access'**
+  String subscriptionGetAccess(Object count);
 
-  /// Admin dashboard page title
+  /// No description provided for @adminDashboard.
   ///
   /// In en, this message translates to:
-  /// **'Dashboard'**
+  /// **'Admin Dashboard'**
   String get adminDashboard;
 
-  /// Admin users page title
+  /// No description provided for @adminUsers.
   ///
   /// In en, this message translates to:
   /// **'Users'**
   String get adminUsers;
 
-  /// Admin access page title
+  /// No description provided for @adminAccess.
   ///
   /// In en, this message translates to:
-  /// **'Access Management'**
+  /// **'Manage Access'**
   String get adminAccess;
 
-  /// Admin progress page title
+  /// No description provided for @adminProgress.
   ///
   /// In en, this message translates to:
   /// **'User Progress'**
   String get adminProgress;
 
-  /// Total users stat label
+  /// No description provided for @adminTotalUsers.
   ///
   /// In en, this message translates to:
   /// **'Total Users'**
   String get adminTotalUsers;
 
-  /// Active subscriptions stat label
+  /// No description provided for @adminActiveSubscriptions.
   ///
   /// In en, this message translates to:
   /// **'Active Subscriptions'**
   String get adminActiveSubscriptions;
 
-  /// Users by language stat label
+  /// No description provided for @adminUsersByLanguage.
   ///
   /// In en, this message translates to:
   /// **'Users by Language'**
   String get adminUsersByLanguage;
 
-  /// Recent registrations stat label
+  /// No description provided for @adminRecentRegistrations.
   ///
   /// In en, this message translates to:
   /// **'Recent Registrations'**
   String get adminRecentRegistrations;
 
-  /// Grant access button
+  /// No description provided for @adminGrantAccess.
   ///
   /// In en, this message translates to:
   /// **'Grant Access'**
   String get adminGrantAccess;
 
-  /// Call user button
+  /// No description provided for @adminCallUser.
   ///
   /// In en, this message translates to:
   /// **'Call User'**
   String get adminCallUser;
 
-  /// Call notes label
+  /// No description provided for @adminCallNotes.
   ///
   /// In en, this message translates to:
   /// **'Call Notes'**
   String get adminCallNotes;
 
-  /// Last called label
+  /// No description provided for @adminLastCalled.
   ///
   /// In en, this message translates to:
   /// **'Last Called'**
   String get adminLastCalled;
 
-  /// No access badge
+  /// No description provided for @adminNoAccess.
   ///
   /// In en, this message translates to:
   /// **'No Access'**
   String get adminNoAccess;
 
-  /// Has access badge
+  /// No description provided for @adminHasAccess.
   ///
   /// In en, this message translates to:
   /// **'Has Access'**
   String get adminHasAccess;
 
-  /// Access expired badge
+  /// No description provided for @adminAccessExpired.
   ///
   /// In en, this message translates to:
   /// **'Access Expired'**
   String get adminAccessExpired;
 
-  /// Access expiry date
+  /// No description provided for @adminAccessExpires.
   ///
   /// In en, this message translates to:
   /// **'Expires: {date}'**
-  String adminAccessExpires(String date);
+  String adminAccessExpires(Object date);
 
-  /// Search users hint
+  /// No description provided for @adminSearchUsers.
   ///
   /// In en, this message translates to:
   /// **'Search users...'**
   String get adminSearchUsers;
 
-  /// Filter all chip
+  /// No description provided for @adminFilterAll.
   ///
   /// In en, this message translates to:
   /// **'All'**
   String get adminFilterAll;
 
-  /// Filter has access chip
+  /// No description provided for @adminFilterHasAccess.
   ///
   /// In en, this message translates to:
   /// **'Has Access'**
   String get adminFilterHasAccess;
 
-  /// Filter no access chip
+  /// No description provided for @adminFilterNoAccess.
   ///
   /// In en, this message translates to:
   /// **'No Access'**
   String get adminFilterNoAccess;
 
-  /// Manage users quick action
+  /// No description provided for @adminManageUsers.
   ///
   /// In en, this message translates to:
   /// **'Manage Users'**
   String get adminManageUsers;
 
-  /// Manage access quick action
+  /// No description provided for @adminManageAccess.
   ///
   /// In en, this message translates to:
   /// **'Manage Access'**
   String get adminManageAccess;
 
-  /// View progress quick action
+  /// No description provided for @adminViewProgress.
   ///
   /// In en, this message translates to:
   /// **'View Progress'**
   String get adminViewProgress;
 
-  /// Registration date label
+  /// No description provided for @adminRegistrationDate.
   ///
   /// In en, this message translates to:
   /// **'Registered: {date}'**
-  String adminRegistrationDate(String date);
+  String adminRegistrationDate(Object date);
 
-  /// Call notes hint text
+  /// No description provided for @adminEnterCallNotes.
   ///
   /// In en, this message translates to:
   /// **'Enter call notes...'**
   String get adminEnterCallNotes;
 
-  /// Submit call notes button
+  /// No description provided for @adminSubmitCall.
   ///
   /// In en, this message translates to:
   /// **'Submit'**
   String get adminSubmitCall;
 
-  /// Call logged success message
+  /// No description provided for @adminCallLogged.
   ///
   /// In en, this message translates to:
   /// **'Call logged successfully'**
   String get adminCallLogged;
 
-  /// Access granted success message
+  /// No description provided for @adminAccessGranted.
   ///
   /// In en, this message translates to:
   /// **'Access granted successfully'**
   String get adminAccessGranted;
 
-  /// Select tier label
+  /// No description provided for @adminSelectTier.
   ///
   /// In en, this message translates to:
-  /// **'Select Access Tier'**
+  /// **'Select Access Level'**
   String get adminSelectTier;
 
-  /// Custom days label
+  /// No description provided for @adminCustomDays.
   ///
   /// In en, this message translates to:
-  /// **'Custom Duration (days)'**
+  /// **'Custom Days'**
   String get adminCustomDays;
 
-  /// Payment amount label
+  /// No description provided for @adminPaymentAmount.
   ///
   /// In en, this message translates to:
-  /// **'Amount (RWF)'**
+  /// **'Payment Amount (RWF)'**
   String get adminPaymentAmount;
 
-  /// Days input hint
+  /// No description provided for @adminEnterDays.
   ///
   /// In en, this message translates to:
   /// **'Enter number of days'**
   String get adminEnterDays;
 
-  /// Amount input hint
+  /// No description provided for @adminEnterAmount.
   ///
   /// In en, this message translates to:
   /// **'Enter amount in RWF'**
   String get adminEnterAmount;
 
-  /// Custom days toggle label
+  /// No description provided for @adminOrCustom.
   ///
   /// In en, this message translates to:
-  /// **'Or set custom days'**
+  /// **'Or enter custom days'**
   String get adminOrCustom;
 
-  /// Pending requests section title
+  /// No description provided for @adminPendingRequests.
   ///
   /// In en, this message translates to:
-  /// **'Pending Payment Requests'**
+  /// **'Pending payment requests'**
   String get adminPendingRequests;
 
-  /// All users section title
+  /// No description provided for @adminAllUsersList.
   ///
   /// In en, this message translates to:
   /// **'All Users'**
   String get adminAllUsersList;
 
-  /// Invalid amount error
+  /// No description provided for @adminInvalidAmount.
   ///
   /// In en, this message translates to:
   /// **'Please enter a valid amount greater than 0'**
   String get adminInvalidAmount;
 
-  /// Invalid days error
+  /// No description provided for @adminInvalidDays.
   ///
   /// In en, this message translates to:
   /// **'Please enter a valid number of days greater than 0'**
   String get adminInvalidDays;
 
-  /// Access revoked message
+  /// No description provided for @adminAccessRevoked.
   ///
   /// In en, this message translates to:
   /// **'Access revoked'**
   String get adminAccessRevoked;
 
-  /// No users found message
+  /// No description provided for @adminNoUsers.
   ///
   /// In en, this message translates to:
   /// **'No users found'**
   String get adminNoUsers;
 
-  /// Exam list page title
+  /// No description provided for @examListTitle.
   ///
   /// In en, this message translates to:
   /// **'Practice Exams'**
   String get examListTitle;
 
-  /// Free exam badge
+  /// No description provided for @examFree.
   ///
   /// In en, this message translates to:
   /// **'FREE'**
   String get examFree;
 
-  /// Paid exam badge
+  /// No description provided for @examPaid.
   ///
   /// In en, this message translates to:
   /// **'PAID'**
   String get examPaid;
 
-  /// Locked exam label
+  /// No description provided for @examLocked.
   ///
   /// In en, this message translates to:
-  /// **'Locked'**
+  /// **'locked'**
   String get examLocked;
 
-  /// Question count label
+  /// No description provided for @examQuestions.
   ///
   /// In en, this message translates to:
   /// **'{count} questions'**
-  String examQuestions(int count);
+  String examQuestions(Object count);
 
-  /// Quiz progress label
+  /// No description provided for @quizProgress.
   ///
   /// In en, this message translates to:
   /// **'Progress'**
   String get quizProgress;
 
-  /// Answered counter
+  /// No description provided for @quizAnswered.
   ///
   /// In en, this message translates to:
   /// **'Answered: {answered}/{total}'**
-  String quizAnswered(int answered, int total);
+  String quizAnswered(Object answered, Object total);
 
-  /// Submit practice button
+  /// No description provided for @quizSubmitPractice.
   ///
   /// In en, this message translates to:
-  /// **'Submit exam'**
+  /// **'Submit Exam'**
   String get quizSubmitPractice;
 
-  /// Previous question button
+  /// No description provided for @quizPrevious.
   ///
   /// In en, this message translates to:
-  /// **'Previous'**
+  /// **'previous'**
   String get quizPrevious;
 
-  /// Next question button
+  /// No description provided for @quizNext.
   ///
   /// In en, this message translates to:
-  /// **'Next'**
+  /// **'next'**
   String get quizNext;
 
-  /// Time remaining label
+  /// No description provided for @quizTimeRemaining.
   ///
   /// In en, this message translates to:
   /// **'Time: {time}'**
-  String quizTimeRemaining(String time);
+  String quizTimeRemaining(Object time);
 
-  /// Quiz results title
+  /// No description provided for @quizResults.
   ///
   /// In en, this message translates to:
-  /// **'Quiz Results'**
+  /// **'Exam Results'**
   String get quizResults;
 
-  /// Quiz passed label
+  /// No description provided for @quizPassed.
   ///
   /// In en, this message translates to:
   /// **'Passed!'**
   String get quizPassed;
 
-  /// Quiz failed label
+  /// No description provided for @quizFailed.
   ///
   /// In en, this message translates to:
-  /// **'Keep Practicing'**
+  /// **'Failed'**
   String get quizFailed;
 
-  /// Question counter
+  /// No description provided for @quizQuestionOf.
   ///
   /// In en, this message translates to:
   /// **'Question {current} of {total}'**
-  String quizQuestionOf(int current, int total);
+  String quizQuestionOf(Object current, Object total);
 
-  /// Submit confirmation dialog title
+  /// No description provided for @quizSubmitConfirmTitle.
   ///
   /// In en, this message translates to:
-  /// **'Submit Quiz?'**
+  /// **'Submit Exam?'**
   String get quizSubmitConfirmTitle;
 
-  /// Submit confirmation dialog message
+  /// No description provided for @quizSubmitConfirmMessage.
   ///
   /// In en, this message translates to:
   /// **'You have answered {answered} out of {total} questions. Are you sure you want to submit?'**
-  String quizSubmitConfirmMessage(int answered, int total);
+  String quizSubmitConfirmMessage(Object answered, Object total);
 
-  /// Time up message
+  /// No description provided for @quizTimeUp.
   ///
   /// In en, this message translates to:
-  /// **'Time\'s up! Quiz submitted automatically.'**
+  /// **'Time\'s up! The practice exam has been submitted automatically.'**
   String get quizTimeUp;
 
-  /// Review answers button
+  /// No description provided for @quizReviewAnswers.
   ///
   /// In en, this message translates to:
   /// **'Review Answers'**
   String get quizReviewAnswers;
 
-  /// Retake quiz button
+  /// No description provided for @quizRetake.
   ///
   /// In en, this message translates to:
-  /// **'Retake Quiz'**
+  /// **'Retake Exam'**
   String get quizRetake;
 
-  /// Profile role label
+  /// No description provided for @profileRole.
   ///
   /// In en, this message translates to:
   /// **'Role'**
   String get profileRole;
 
-  /// Profile language label
+  /// No description provided for @profileLanguage.
   ///
   /// In en, this message translates to:
   /// **'Preferred Language'**
   String get profileLanguage;
 
-  /// Registration date
+  /// No description provided for @profileRegistered.
   ///
   /// In en, this message translates to:
   /// **'Registered: {date}'**
-  String profileRegistered(String date);
+  String profileRegistered(Object date);
 
-  /// Access status label
+  /// No description provided for @profileAccessStatus.
   ///
   /// In en, this message translates to:
   /// **'Access Status'**
   String get profileAccessStatus;
 
-  /// Exam history label
+  /// No description provided for @profileExamHistory.
   ///
   /// In en, this message translates to:
   /// **'Exam History'**
   String get profileExamHistory;
 
-  /// Call history label
+  /// No description provided for @profileCallHistory.
   ///
   /// In en, this message translates to:
   /// **'Call History'**
   String get profileCallHistory;
 
-  /// Payment instructions title
+  /// No description provided for @paymentInstructionsTitle.
   ///
   /// In en, this message translates to:
   /// **'Payment Instructions'**
   String get paymentInstructionsTitle;
 
-  /// MoMo pay number
+  /// No description provided for @paymentMomoPayNumber.
   ///
   /// In en, this message translates to:
   /// **'MoMo Pay: 329494'**
   String get paymentMomoPayNumber;
 
-  /// MoMo Pay dial instruction
+  /// No description provided for @paymentMomoPayDial.
   ///
   /// In en, this message translates to:
   /// **'To pay with MoMo Pay, dial: *182*8*1*329494*amount#'**
   String get paymentMomoPayDial;
 
-  /// Mobile money number
+  /// No description provided for @paymentMobileMoneyNumber.
   ///
   /// In en, this message translates to:
   /// **'Mobile Money: 0788659575'**
@@ -1762,7 +1750,7 @@ abstract class AppLocalizations {
   /// **'Tigo Cash: 0728877442'**
   String get paymentTigoCashNumber;
 
-  /// Mobile Money dial instruction
+  /// No description provided for @paymentMobileMoneyDial.
   ///
   /// In en, this message translates to:
   /// **'To pay with Mobile Money, dial: *182*1*1*0788659575*amount#'**
@@ -1771,34 +1759,34 @@ abstract class AppLocalizations {
   /// No description provided for @paymentTigoCashDial.
   ///
   /// In en, this message translates to:
-  /// **'To pay with Tigo Cash, dial *182*1*1*0728877442*amount#'**
+  /// **'To pay with Tigo Cash, dial: *182*1*1*0728877442*amount#'**
   String get paymentTigoCashDial;
 
-  /// Payment help text
+  /// No description provided for @paymentHelpText.
   ///
   /// In en, this message translates to:
   /// **'Need help? Call or WhatsApp: 0788659575'**
   String get paymentHelpText;
 
-  /// Payment help contact line
+  /// No description provided for @paymentHelpContact.
   ///
   /// In en, this message translates to:
   /// **'You can copy or call: 0788659575 or WhatsApp: 0788659575 for help.'**
   String get paymentHelpContact;
 
-  /// Payment error message
+  /// No description provided for @paymentError.
   ///
   /// In en, this message translates to:
-  /// **'Payment request failed. Please pay manually using the instructions below.'**
+  /// **'Payment request conflict. Please pay using the instructions provided here.'**
   String get paymentError;
 
-  /// Copy phone number button
+  /// No description provided for @paymentCopyNumber.
   ///
   /// In en, this message translates to:
-  /// **'Copy Number'**
+  /// **'Copy number'**
   String get paymentCopyNumber;
 
-  /// Call phone number button
+  /// No description provided for @paymentCallNumber.
   ///
   /// In en, this message translates to:
   /// **'Call 0788659575'**
@@ -1810,40 +1798,40 @@ abstract class AppLocalizations {
   /// **'Call 0728877442'**
   String get paymentCallTigoNumber;
 
-  /// WhatsApp button label
+  /// No description provided for @paymentWhatsApp.
   ///
   /// In en, this message translates to:
-  /// **'Send Message on WhatsApp'**
+  /// **'Send message to WhatsApp'**
   String get paymentWhatsApp;
 
-  /// WhatsApp message text for payment request
+  /// No description provided for @paymentWhatsAppMessage.
   ///
   /// In en, this message translates to:
-  /// **'Request access for driving exam app'**
+  /// **'Request access to use the driving theory exam app'**
   String get paymentWhatsAppMessage;
 
-  /// Duplicate payment request error
+  /// No description provided for @paymentRequestExists.
   ///
   /// In en, this message translates to:
-  /// **'A payment request for this plan is already pending. Please wait for activation or contact support.'**
+  /// **'Payment request already sent. Wait a moment for them to help you or contact help numbers and send a WhatsApp message which will appear below the page'**
   String get paymentRequestExists;
 
-  /// Generic error message
+  /// No description provided for @commonError.
   ///
   /// In en, this message translates to:
   /// **'Something went wrong. Please try again.'**
   String get commonError;
 
-  /// Retry button label
+  /// No description provided for @commonRetry.
   ///
   /// In en, this message translates to:
-  /// **'Retry'**
+  /// **'Try again'**
   String get commonRetry;
 
   /// No description provided for @adminTierLabel.
   ///
   /// In en, this message translates to:
-  /// **'Tier'**
+  /// **'Level'**
   String get adminTierLabel;
 
   /// No description provided for @adminExpiresLabel.
@@ -1879,13 +1867,13 @@ abstract class AppLocalizations {
   /// No description provided for @adminManageUsersDesc.
   ///
   /// In en, this message translates to:
-  /// **'View, search, and manage all users'**
+  /// **'View, search and manage all users'**
   String get adminManageUsersDesc;
 
   /// No description provided for @adminAccessCodesDesc.
   ///
   /// In en, this message translates to:
-  /// **'Manage access codes and payments'**
+  /// **'Manage access codes and payment'**
   String get adminAccessCodesDesc;
 
   /// No description provided for @adminQuickStats.
@@ -1909,7 +1897,7 @@ abstract class AppLocalizations {
   /// No description provided for @adminManagePlatformDesc.
   ///
   /// In en, this message translates to:
-  /// **'Manage your traffic rules learning platform'**
+  /// **'Manage the traffic rules platform'**
   String get adminManagePlatformDesc;
 
   /// No description provided for @adminNotifications.
@@ -1948,340 +1936,340 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get settingsThemeDark;
 
-  /// Wrong answers label in exam result
+  /// No description provided for @examWrong.
   ///
   /// In en, this message translates to:
   /// **'Wrong'**
   String get examWrong;
 
-  /// Time spent label in exam result
+  /// No description provided for @examTimeSpent.
   ///
   /// In en, this message translates to:
   /// **'Time'**
   String get examTimeSpent;
 
-  /// Logout confirmation title
+  /// No description provided for @profileLogoutConfirmTitle.
   ///
   /// In en, this message translates to:
-  /// **'Sign Out?'**
+  /// **'Sign out?'**
   String get profileLogoutConfirmTitle;
 
-  /// Logout confirmation message
+  /// No description provided for @profileLogoutConfirmMessage.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to sign out of your account?'**
+  /// **'Do you want to sign out of your account?'**
   String get profileLogoutConfirmMessage;
 
-  /// Instructions shown before deleting account
+  /// No description provided for @profileDeleteInstructions.
   ///
   /// In en, this message translates to:
-  /// **'Before deleting your account:\n• All your exam results will be permanently erased\n• Your access subscription will be removed\n• This action cannot be undone\n• You will need to re-register to use the app again'**
+  /// **'Before deleting your account:\n• All your answers will be deleted\n• Your subscription will be deleted\n• You will need to sign up again to use the app'**
   String get profileDeleteInstructions;
 
-  /// Total exams taken label
+  /// No description provided for @progressExamsTaken.
   ///
   /// In en, this message translates to:
   /// **'Exams Taken'**
   String get progressExamsTaken;
 
-  /// Number of passed exams label
+  /// No description provided for @progressPassedCount.
   ///
   /// In en, this message translates to:
-  /// **'Passed'**
+  /// **'Exams Passed'**
   String get progressPassedCount;
 
-  /// Number of failed exams label
+  /// No description provided for @progressFailedCount.
   ///
   /// In en, this message translates to:
-  /// **'Failed'**
+  /// **'Exams Failed'**
   String get progressFailedCount;
 
-  /// Pass rate label
+  /// No description provided for @progressPassRate.
   ///
   /// In en, this message translates to:
   /// **'Pass Rate'**
   String get progressPassRate;
 
-  /// Empty state for progress page
+  /// No description provided for @progressNoExams.
   ///
   /// In en, this message translates to:
-  /// **'No exams taken yet. Start practicing!'**
+  /// **'No exams taken. Start taking exams!'**
   String get progressNoExams;
 
-  /// Certificate ready title
+  /// No description provided for @certificateReadyTitle.
   ///
   /// In en, this message translates to:
-  /// **'Ready for Official Exam!'**
+  /// **'Ready for the real exam!'**
   String get certificateReadyTitle;
 
-  /// Certificate subtitle with count
+  /// No description provided for @certificateReadySubtitle.
   ///
   /// In en, this message translates to:
-  /// **'You have passed {count} exams. You are ready for the official driving license test.'**
-  String certificateReadySubtitle(int count);
+  /// **'You have completed {count} exams. You are ready for the driving license access exam.'**
+  String certificateReadySubtitle(Object count);
 
-  /// Irembo link button label
+  /// No description provided for @certificateIremboLink.
   ///
   /// In en, this message translates to:
-  /// **'Register for Official Exam on irembo.gov.rw'**
+  /// **'Apply for the government exam at irembo.gov.rw'**
   String get certificateIremboLink;
 
-  /// Irembo link description
+  /// No description provided for @certificateIremboDesc.
   ///
   /// In en, this message translates to:
-  /// **'Click below to register for the official provisional driving license computer-based test'**
+  /// **'Click here to apply for the online government driving license theory exam'**
   String get certificateIremboDesc;
 
-  /// How many more exams needed
+  /// No description provided for @certificateExamsNeeded.
   ///
   /// In en, this message translates to:
-  /// **'Pass {needed} more exams to earn your certificate'**
-  String certificateExamsNeeded(int needed);
+  /// **'Pass {needed} more exams to get the certificate proving you are ready for the provisional license driving theory exam'**
+  String certificateExamsNeeded(Object needed);
 
-  /// Certificate progress label
+  /// No description provided for @certificateProgressLabel.
   ///
   /// In en, this message translates to:
-  /// **'{passed} of {total} required exams passed'**
-  String certificateProgressLabel(int passed, int total);
+  /// **'{passed} of {total} required exams'**
+  String certificateProgressLabel(Object passed, Object total);
 
-  /// Sort ascending label
+  /// No description provided for @adminSortAsc.
   ///
   /// In en, this message translates to:
-  /// **'Oldest First'**
+  /// **'Oldest first'**
   String get adminSortAsc;
 
-  /// Sort descending label
+  /// No description provided for @adminSortDesc.
   ///
   /// In en, this message translates to:
-  /// **'Newest First'**
+  /// **'Newest first'**
   String get adminSortDesc;
 
-  /// Filter today label
+  /// No description provided for @adminFilterToday.
   ///
   /// In en, this message translates to:
   /// **'Today'**
   String get adminFilterToday;
 
-  /// Date range filter label
+  /// No description provided for @adminDateRange.
   ///
   /// In en, this message translates to:
   /// **'Date Range'**
   String get adminDateRange;
 
-  /// Filter by role label
+  /// No description provided for @adminFilterRole.
   ///
   /// In en, this message translates to:
   /// **'Role'**
   String get adminFilterRole;
 
-  /// Block user action
+  /// No description provided for @adminBlockUser.
   ///
   /// In en, this message translates to:
   /// **'Block User'**
   String get adminBlockUser;
 
-  /// Unblock user action
+  /// No description provided for @adminUnblockUser.
   ///
   /// In en, this message translates to:
   /// **'Unblock User'**
   String get adminUnblockUser;
 
-  /// Delete user action
+  /// No description provided for @adminDeleteUserAction.
   ///
   /// In en, this message translates to:
   /// **'Delete User'**
   String get adminDeleteUserAction;
 
-  /// Block user confirmation
+  /// No description provided for @adminBlockUserConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Block {name}? They will lose access and cannot log in.'**
-  String adminBlockUserConfirm(String name);
+  /// **'Are you sure you want to block {name}? They will no longer be able to sign in.'**
+  String adminBlockUserConfirm(Object name);
 
-  /// Delete user confirmation
+  /// No description provided for @adminDeleteUserConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Permanently delete {name}? All their data will be erased. This cannot be undone.'**
-  String adminDeleteUserConfirm(String name);
+  /// **'Delete {name} entirely? All their data will be deleted.'**
+  String adminDeleteUserConfirm(Object name);
 
-  /// User blocked success message
+  /// No description provided for @adminUserBlocked.
   ///
   /// In en, this message translates to:
   /// **'User blocked successfully'**
   String get adminUserBlocked;
 
-  /// User unblocked success message
+  /// No description provided for @adminUserUnblocked.
   ///
   /// In en, this message translates to:
   /// **'User unblocked successfully'**
   String get adminUserUnblocked;
 
-  /// User deleted success message
+  /// No description provided for @adminUserDeleted.
   ///
   /// In en, this message translates to:
   /// **'User deleted successfully'**
   String get adminUserDeleted;
 
-  /// Must block first error message
+  /// No description provided for @adminMustBlockFirst.
   ///
   /// In en, this message translates to:
-  /// **'You must block the user before deleting them.'**
+  /// **'You must block the user first before deleting them.'**
   String get adminMustBlockFirst;
 
-  /// Block access action
+  /// No description provided for @adminBlockAccess.
   ///
   /// In en, this message translates to:
   /// **'Block Access'**
   String get adminBlockAccess;
 
-  /// Delete access action
+  /// No description provided for @adminDeleteAccess.
   ///
   /// In en, this message translates to:
   /// **'Delete Access'**
   String get adminDeleteAccess;
 
-  /// Block access confirmation
+  /// No description provided for @adminBlockAccessConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Block this access code? The user will lose access immediately.'**
+  /// **'Block access code? The user will no longer be able to use the app.'**
   String get adminBlockAccessConfirm;
 
-  /// Delete access confirmation
+  /// No description provided for @adminDeleteAccessConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Delete this access code permanently?'**
+  /// **'Delete this access code?'**
   String get adminDeleteAccessConfirm;
 
-  /// Access blocked success message
+  /// No description provided for @adminAccessBlocked.
   ///
   /// In en, this message translates to:
   /// **'Access code blocked'**
   String get adminAccessBlocked;
 
-  /// Access deleted success message
+  /// No description provided for @adminAccessDeleted.
   ///
   /// In en, this message translates to:
   /// **'Access code deleted'**
   String get adminAccessDeleted;
 
-  /// Pagination label
+  /// No description provided for @adminPage.
   ///
   /// In en, this message translates to:
   /// **'Page {page} of {total}'**
-  String adminPage(int page, int total);
+  String adminPage(Object page, Object total);
 
-  /// Learning language label
+  /// No description provided for @adminLearningLanguage.
   ///
   /// In en, this message translates to:
-  /// **'Learning'**
+  /// **'Language of Interest'**
   String get adminLearningLanguage;
 
-  /// Blocked status label
+  /// No description provided for @adminIsBlocked.
   ///
   /// In en, this message translates to:
   /// **'Blocked'**
   String get adminIsBlocked;
 
-  /// Active status label
+  /// No description provided for @adminIsActive.
   ///
   /// In en, this message translates to:
   /// **'Active'**
   String get adminIsActive;
 
-  /// Shown in snackbar after copying text to clipboard
+  /// No description provided for @generalCopied.
   ///
   /// In en, this message translates to:
   /// **'Copied!'**
   String get generalCopied;
 
-  /// Retry button label
+  /// No description provided for @adminRetry.
   ///
   /// In en, this message translates to:
-  /// **'Retry'**
+  /// **'Try again'**
   String get adminRetry;
 
-  /// Full subtitle on language selector page
+  /// No description provided for @languageSelectDescription.
   ///
   /// In en, this message translates to:
-  /// **'You can change this later in Settings — get localized traffic alerts and routing.'**
+  /// **'You can change the language later in Settings.'**
   String get languageSelectDescription;
 
-  /// Button to auto-detect device language
+  /// No description provided for @languageSelectDeviceLanguage.
   ///
   /// In en, this message translates to:
   /// **'Use device language'**
   String get languageSelectDeviceLanguage;
 
-  /// Tooltip for help icon on language selector
+  /// No description provided for @languageSelectHelpTooltip.
   ///
   /// In en, this message translates to:
   /// **'Language help'**
   String get languageSelectHelpTooltip;
 
-  /// Skip button on language selector
+  /// No description provided for @languageSelectMaybeLater.
   ///
   /// In en, this message translates to:
   /// **'Maybe later'**
   String get languageSelectMaybeLater;
 
-  /// Help modal title on language selector
+  /// No description provided for @languageSelectHelpTitle.
   ///
   /// In en, this message translates to:
   /// **'Why choose a language?'**
   String get languageSelectHelpTitle;
 
-  /// Help modal content on language selector
+  /// No description provided for @languageSelectHelpContent.
   ///
   /// In en, this message translates to:
-  /// **'Selecting a language ensures that alerts, maps, and voice prompts are shown in your preferred language. You can change this later in Settings.'**
+  /// **'Choosing a language makes text, icons, and voice prompts appear in your language. You can change the language later in Settings.'**
   String get languageSelectHelpContent;
 
-  /// Acknowledge button
+  /// No description provided for @commonGotIt.
   ///
   /// In en, this message translates to:
   /// **'Got it'**
   String get commonGotIt;
 
-  /// Dialog title for language picker
+  /// No description provided for @languageSelectDialogTitle.
   ///
   /// In en, this message translates to:
-  /// **'Select language'**
+  /// **'Choose Language'**
   String get languageSelectDialogTitle;
 
-  /// Error when exam cannot be loaded
+  /// No description provided for @examNotFound.
   ///
   /// In en, this message translates to:
   /// **'Exam not found'**
   String get examNotFound;
 
-  /// Error message with detail
+  /// No description provided for @errorWithDetail.
   ///
   /// In en, this message translates to:
   /// **'Error: {detail}'**
-  String errorWithDetail(String detail);
+  String errorWithDetail(Object detail);
 
-  /// Unexpected error message with detail
+  /// No description provided for @errorUnexpected.
   ///
   /// In en, this message translates to:
   /// **'Unexpected error: {detail}'**
-  String errorUnexpected(String detail);
+  String errorUnexpected(Object detail);
 
-  /// Price formatted in RWF
+  /// No description provided for @priceRwf.
   ///
   /// In en, this message translates to:
   /// **'{amount} RWF'**
-  String priceRwf(String amount);
+  String priceRwf(Object amount);
 
-  /// HTTP error status
+  /// No description provided for @errorHttpStatus.
   ///
   /// In en, this message translates to:
   /// **'HTTP {code}'**
-  String errorHttpStatus(int code);
+  String errorHttpStatus(Object code);
 
-  /// Sample exam question 1
+  /// No description provided for @examSampleQ1.
   ///
   /// In en, this message translates to:
-  /// **'What is the speed limit on highways?'**
+  /// **'What is the maximum speed on a major road?'**
   String get examSampleQ1;
 
   /// No description provided for @examSampleQ1A1.
@@ -2308,40 +2296,40 @@ abstract class AppLocalizations {
   /// **'120 km/h'**
   String get examSampleQ1A4;
 
-  /// Sample exam question 2
+  /// No description provided for @examSampleQ2.
   ///
   /// In en, this message translates to:
-  /// **'What does a yellow traffic light mean?'**
+  /// **'What does this traffic sign mean?'**
   String get examSampleQ2;
 
   /// No description provided for @examSampleQ2A1.
   ///
   /// In en, this message translates to:
-  /// **'Stop immediately'**
+  /// **'Stop right there'**
   String get examSampleQ2A1;
 
   /// No description provided for @examSampleQ2A2.
   ///
   /// In en, this message translates to:
-  /// **'Go ahead'**
+  /// **'Continue'**
   String get examSampleQ2A2;
 
   /// No description provided for @examSampleQ2A3.
   ///
   /// In en, this message translates to:
-  /// **'Be prepared to stop'**
+  /// **'Prepare to stop'**
   String get examSampleQ2A3;
 
   /// No description provided for @examSampleQ2A4.
   ///
   /// In en, this message translates to:
-  /// **'Turn around'**
+  /// **'Change lane'**
   String get examSampleQ2A4;
 
-  /// Sample exam question 3
+  /// No description provided for @examSampleQ3.
   ///
   /// In en, this message translates to:
-  /// **'How far from a fire hydrant can you park?'**
+  /// **'How far can you park from a water fire hydrant?'**
   String get examSampleQ3;
 
   /// No description provided for @examSampleQ3A1.
@@ -2368,394 +2356,394 @@ abstract class AppLocalizations {
   /// **'10 meters'**
   String get examSampleQ3A4;
 
-  /// Share result button on exam result page
+  /// No description provided for @examShareResult.
   ///
   /// In en, this message translates to:
-  /// **'Share Result'**
+  /// **'Share Results'**
   String get examShareResult;
 
-  /// Snackbar after copying result to clipboard
+  /// No description provided for @examCopiedToClipboard.
   ///
   /// In en, this message translates to:
-  /// **'Result copied to clipboard'**
+  /// **'Results copied'**
   String get examCopiedToClipboard;
 
-  /// Grade label on exam result page
+  /// No description provided for @examGradeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Grade'**
+  /// **'Score'**
   String get examGradeLabel;
 
-  /// Popular badge on subscription plan card
+  /// No description provided for @subscriptionPopular.
   ///
   /// In en, this message translates to:
   /// **'★ Popular'**
   String get subscriptionPopular;
 
-  /// Label for time spent on quiz results
+  /// No description provided for @quizTimeTaken.
   ///
   /// In en, this message translates to:
-  /// **'Time Taken'**
+  /// **'Time Used'**
   String get quizTimeTaken;
 
-  /// Label for total questions stat
+  /// No description provided for @progressTotalQuestions.
   ///
   /// In en, this message translates to:
-  /// **'Total Questions'**
+  /// **'Questions'**
   String get progressTotalQuestions;
 
-  /// Label for correct answers stat
+  /// No description provided for @progressCorrectAnswers.
   ///
   /// In en, this message translates to:
-  /// **'Correct'**
+  /// **'Questions Correct'**
   String get progressCorrectAnswers;
 
-  /// Label for incorrect answers stat
+  /// No description provided for @progressIncorrect.
   ///
   /// In en, this message translates to:
-  /// **'Incorrect'**
+  /// **'Questions Wrong'**
   String get progressIncorrect;
 
-  /// Network error message shown when device is offline
+  /// No description provided for @errorNetwork.
   ///
   /// In en, this message translates to:
-  /// **'Unable to connect. Please check your internet connection and try again.'**
+  /// **'Cannot connect. Check your internet and try again.'**
   String get errorNetwork;
 
-  /// Title for payment method modal
+  /// No description provided for @paymentChooseMethod.
   ///
   /// In en, this message translates to:
-  /// **'Choose Payment Method'**
+  /// **'Choose payment method'**
   String get paymentChooseMethod;
 
-  /// About page title
+  /// No description provided for @aboutTitle.
   ///
   /// In en, this message translates to:
   /// **'About'**
   String get aboutTitle;
 
-  /// App name on about page
+  /// No description provided for @aboutAppName.
   ///
   /// In en, this message translates to:
   /// **'Rwanda Traffic Rule'**
   String get aboutAppName;
 
-  /// About app description
+  /// No description provided for @aboutDescription.
   ///
   /// In en, this message translates to:
-  /// **'Rwanda Traffic Rule is your companion for learning Rwanda traffic rules, road signs, and practicing theory questions to prepare for the provisional driving licence test. This is an independent educational app and is not affiliated with any government authority.'**
+  /// **'Rwanda Traffic Rule is your helper for learning traffic rules, traffic signs, and practicing exam questions to prepare for your provisional license driving theory exam. This is an independent educational app and is not affiliated with any government or testing center.'**
   String get aboutDescription;
 
-  /// Features section title
+  /// No description provided for @aboutFeatures.
   ///
   /// In en, this message translates to:
   /// **'Key Features'**
   String get aboutFeatures;
 
-  /// Practice feature
+  /// No description provided for @aboutFeaturePractice.
   ///
   /// In en, this message translates to:
   /// **'Practice Exams'**
   String get aboutFeaturePractice;
 
-  /// Progress feature
+  /// No description provided for @aboutFeatureProgress.
   ///
   /// In en, this message translates to:
   /// **'Track Progress'**
   String get aboutFeatureProgress;
 
-  /// Multilingual feature
+  /// No description provided for @aboutFeatureMultilingual.
   ///
   /// In en, this message translates to:
   /// **'3 Languages'**
   String get aboutFeatureMultilingual;
 
-  /// Certificate feature
+  /// No description provided for @aboutFeatureCertificate.
   ///
   /// In en, this message translates to:
   /// **'Certificates'**
   String get aboutFeatureCertificate;
 
-  /// Contact section title
+  /// No description provided for @aboutContact.
   ///
   /// In en, this message translates to:
   /// **'Contact Us'**
   String get aboutContact;
 
-  /// Contact info
+  /// No description provided for @aboutContactInfo.
   ///
   /// In en, this message translates to:
-  /// **'Phone/WhatsApp: 0788659575 / 0728877442\nEmail: info@Rwanda Traffic Rule.rw'**
+  /// **'Tel/WhatsApp: 0788659575 / 0728877442'**
   String get aboutContactInfo;
 
-  /// Copyright section title
+  /// No description provided for @aboutCopyright.
   ///
   /// In en, this message translates to:
-  /// **'Copyright'**
+  /// **'App owner rights'**
   String get aboutCopyright;
 
-  /// Copyright text
+  /// No description provided for @aboutCopyrightText.
   ///
   /// In en, this message translates to:
-  /// **'© 2026 Rwanda Traffic Rule. All rights reserved.'**
+  /// **'© 2026 Rwanda Traffic Rule. App owner rights reserved.'**
   String get aboutCopyrightText;
 
-  /// Privacy policy last updated
+  /// No description provided for @privacyLastUpdated.
   ///
   /// In en, this message translates to:
-  /// **'Last updated: March 2026'**
+  /// **'Last updated: February 2026'**
   String get privacyLastUpdated;
 
-  /// Privacy policy intro
+  /// No description provided for @privacyIntro.
   ///
   /// In en, this message translates to:
-  /// **'Rwanda Traffic Rule is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you use our educational application. We are an independent educational service and are not affiliated with any government authority.'**
+  /// **'Rwanda Traffic Rule cares about your privacy. These guidelines explain how we collect, use, and protect your data. We are an independent educational service and are not affiliated with any government agency.'**
   String get privacyIntro;
 
-  /// Data collection section
+  /// No description provided for @privacyDataCollection.
   ///
   /// In en, this message translates to:
   /// **'Data Collection'**
   String get privacyDataCollection;
 
-  /// Data collection body
+  /// No description provided for @privacyDataCollectionBody.
   ///
   /// In en, this message translates to:
-  /// **'We collect your phone number and full name when you register. We also collect your practice quiz results and progress data to provide personalized learning insights. A unique device identifier is generated to secure your account.'**
+  /// **'We collect your phone number and full name when you sign up. We also collect your device fingerprint, which is a unique identifier used to protect your account. We collect your exam answers and progress data. A unique device ID is created to secure your account.'**
   String get privacyDataCollectionBody;
 
-  /// Data usage section
+  /// No description provided for @privacyDataUsage.
   ///
   /// In en, this message translates to:
   /// **'How We Use Your Data'**
   String get privacyDataUsage;
 
-  /// Data usage body
+  /// No description provided for @privacyDataUsageBody.
   ///
   /// In en, this message translates to:
-  /// **'Your data is used to provide and improve our services, track your learning progress, manage your subscription, and communicate important updates about the application.'**
+  /// **'Your data is used to provide and improve our services, track your progress, manage your subscriptions, and send you important information.'**
   String get privacyDataUsageBody;
 
-  /// Data protection section
+  /// No description provided for @privacyDataProtection.
   ///
   /// In en, this message translates to:
   /// **'Data Protection'**
   String get privacyDataProtection;
 
-  /// Data protection body
+  /// No description provided for @privacyDataProtectionBody.
   ///
   /// In en, this message translates to:
-  /// **'We use industry-standard security measures including encrypted data transmission and secure server storage. Your personal data is never shared with third parties without your consent.'**
+  /// **'We use high-level security measures, including encrypted transmission and secure storage. Your personal data is never shared without your consent.'**
   String get privacyDataProtectionBody;
 
-  /// Data sharing section
+  /// No description provided for @privacyDataSharing.
   ///
   /// In en, this message translates to:
   /// **'Data Sharing'**
   String get privacyDataSharing;
 
-  /// Data sharing body
+  /// No description provided for @privacyDataSharingBody.
   ///
   /// In en, this message translates to:
-  /// **'We do not sell, trade, or rent your personal data. We may share anonymous aggregated data for statistical purposes only.'**
+  /// **'We do not sell your personal information to third parties. We may share anonymized data for statistical purposes.'**
   String get privacyDataSharingBody;
 
-  /// User rights section
+  /// No description provided for @privacyUserRights.
   ///
   /// In en, this message translates to:
   /// **'Your Rights'**
   String get privacyUserRights;
 
-  /// User rights body
+  /// No description provided for @privacyUserRightsBody.
   ///
   /// In en, this message translates to:
-  /// **'You have the right to access, update, or delete your personal data at any time. You can request data deletion by contacting our support team or using the Delete Account option in Settings.'**
+  /// **'You have the right to access, correct, or delete your personal data at any time through the Delete Account option in Settings.'**
   String get privacyUserRightsBody;
 
-  /// Terms last updated
+  /// No description provided for @termsLastUpdated.
   ///
   /// In en, this message translates to:
-  /// **'Last updated: March 2026'**
+  /// **'Last updated: February 2026'**
   String get termsLastUpdated;
 
-  /// Terms intro
+  /// No description provided for @termsIntro.
   ///
   /// In en, this message translates to:
-  /// **'By using Rwanda Traffic Rule, you agree to the following terms and conditions. Please read them carefully before using the application. Rwanda Traffic Rule is an independent educational app designed to help you prepare for the driving theory test. We are not affiliated with any government body or the official exam provider.'**
+  /// **'By using Rwanda Traffic Rule, you agree to the following terms. Rwanda Traffic Rule is an independent educational app that helps you prepare for your theory exam. We are not affiliated with any government or testing center.'**
   String get termsIntro;
 
-  /// Acceptance section
+  /// No description provided for @termsAcceptance.
   ///
   /// In en, this message translates to:
   /// **'Acceptance of Terms'**
   String get termsAcceptance;
 
-  /// Acceptance body
+  /// No description provided for @termsAcceptanceBody.
   ///
   /// In en, this message translates to:
-  /// **'By creating an account and using this application, you agree to be bound by these terms. If you do not agree, please discontinue use immediately.'**
+  /// **'By creating an account and using this app, you agree to these terms. If you do not agree, please stop using this app.'**
   String get termsAcceptanceBody;
 
-  /// User account section
+  /// No description provided for @termsUserAccount.
   ///
   /// In en, this message translates to:
   /// **'User Account'**
   String get termsUserAccount;
 
-  /// User account body
+  /// No description provided for @termsUserAccountBody.
   ///
   /// In en, this message translates to:
-  /// **'You are responsible for maintaining the security of your account. Each account is linked to a single phone number and device. Sharing account credentials is not permitted.'**
+  /// **'You are responsible for maintaining the security of your account. Each account is linked to one phone number and one device. Sharing account information is not allowed.'**
   String get termsUserAccountBody;
 
-  /// Content section
+  /// No description provided for @termsContent.
   ///
   /// In en, this message translates to:
-  /// **'Content & Exams'**
+  /// **'Exam Content'**
   String get termsContent;
 
-  /// Content body
+  /// No description provided for @termsContentBody.
   ///
   /// In en, this message translates to:
-  /// **'All content is for educational and practice purposes only. It does not represent the official government exam. We strive for accuracy but make no guarantees about exam outcomes based on practice results. Rwanda Traffic Rule is not affiliated with any government authority.'**
+  /// **'All exam questions are for practice and education only. They are not a substitute for the official government exam. We cannot guarantee exam results. Rwanda Traffic Rule is not affiliated with any government agency.'**
   String get termsContentBody;
 
-  /// Payment section
+  /// No description provided for @termsPayment.
   ///
   /// In en, this message translates to:
-  /// **'Requesting to unlock exams'**
+  /// **'Requesting Exam Access'**
   String get termsPayment;
 
-  /// Payment body
+  /// No description provided for @termsPaymentBody.
   ///
   /// In en, this message translates to:
-  /// **'To unlock exams, please contact us at 0788659575 or 0728877442.'**
+  /// **'To access the app, contact help at 0788659575 or 0728877442.'**
   String get termsPaymentBody;
 
-  /// Termination section
+  /// No description provided for @termsTermination.
   ///
   /// In en, this message translates to:
-  /// **'Account Termination'**
+  /// **'Account Closure'**
   String get termsTermination;
 
-  /// Termination body
+  /// No description provided for @termsTerminationBody.
   ///
   /// In en, this message translates to:
-  /// **'We reserve the right to suspend or terminate accounts that violate these terms, engage in fraudulent activity, or misuse the platform. You may delete your account at any time from settings.'**
+  /// **'We reserve the right to close accounts that violate these terms. You may delete your account at any time in Settings.'**
   String get termsTerminationBody;
 
-  /// Disclaimer section title
+  /// No description provided for @aboutDisclaimer.
   ///
   /// In en, this message translates to:
   /// **'Disclaimer'**
   String get aboutDisclaimer;
 
-  /// Disclaimer text
+  /// No description provided for @aboutDisclaimerText.
   ///
   /// In en, this message translates to:
-  /// **'Rwanda Traffic Rule is an independent educational app designed to help users learn traffic rules and prepare for the driving theory test. This app is not affiliated with, endorsed by, or connected to any government authority or official exam body. All content is for practice and learning purposes only.'**
+  /// **'Rwanda Traffic Rule is an independent educational app that helps you learn traffic rules and prepare for your theory exam. This app is not affiliated with, endorsed by, or connected to any government agency or testing center. All content in this app is for practice and education only.'**
   String get aboutDisclaimerText;
 
-  /// Profile certificates menu title
+  /// No description provided for @profileCertificatesTitle.
   ///
   /// In en, this message translates to:
   /// **'Certificates'**
   String get profileCertificatesTitle;
 
-  /// Profile certificates menu subtitle
+  /// No description provided for @profileCertificatesSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Certificates earned and progress towards next one'**
+  /// **'Certificates earned and progress to next'**
   String get profileCertificatesSubtitle;
 
-  /// Offline mode banner
+  /// No description provided for @offlineBanner.
   ///
   /// In en, this message translates to:
-  /// **'You are offline. Data shown may not be up to date.'**
+  /// **'You are offline. Cached data may not be up to date.'**
   String get offlineBanner;
 
-  /// Syncing data message
+  /// No description provided for @syncingData.
   ///
   /// In en, this message translates to:
   /// **'Syncing data...'**
   String get syncingData;
 
-  /// Data synced success message
+  /// No description provided for @dataSynced.
   ///
   /// In en, this message translates to:
   /// **'Data synced successfully'**
   String get dataSynced;
 
-  /// Offline save confirmation
+  /// No description provided for @savedOffline.
   ///
   /// In en, this message translates to:
-  /// **'Saved offline. Will sync when connected.'**
+  /// **'Saved offline. Will sync when you reconnect to the internet.'**
   String get savedOffline;
 
-  /// Unique exams passed out of total
+  /// No description provided for @certificateUniqueExamsPassed.
   ///
   /// In en, this message translates to:
   /// **'{count} of {total} unique exams passed'**
-  String certificateUniqueExamsPassed(int count, int total);
+  String certificateUniqueExamsPassed(Object count, Object total);
 
-  /// Pass mark info
+  /// No description provided for @certificatePassMark.
   ///
   /// In en, this message translates to:
-  /// **'Pass mark: {required}/{total} ({percent}%)'**
-  String certificatePassMark(int required, int total, int percent);
+  /// **'Passing score: {required}/{total} ({percent}%)'**
+  String certificatePassMark(Object percent, Object required, Object total);
 
-  /// Latest attempt label
+  /// No description provided for @certificateLatestAttempt.
   ///
   /// In en, this message translates to:
-  /// **'Latest attempt'**
+  /// **'Latest'**
   String get certificateLatestAttempt;
 
-  /// Exam label with index
+  /// No description provided for @certificateExamStatus.
   ///
   /// In en, this message translates to:
   /// **'Exam {index}'**
-  String certificateExamStatus(int index);
+  String certificateExamStatus(Object index);
 
-  /// Legend label for exams not yet taken
+  /// No description provided for @certificateNotAttempted.
   ///
   /// In en, this message translates to:
   /// **'Not attempted'**
   String get certificateNotAttempted;
 
-  /// Title of the data consent dialog
+  /// No description provided for @consentTitle.
   ///
   /// In en, this message translates to:
-  /// **'Your Privacy Matters'**
+  /// **'Your survey is important'**
   String get consentTitle;
 
-  /// Body text of the data consent dialog
+  /// No description provided for @consentBody.
   ///
   /// In en, this message translates to:
-  /// **'Rwanda Traffic Rule collects and processes the following data to provide you with the best learning experience:\n\n• Phone number & name — for account creation and authentication\n• Device identifier — a hashed fingerprint to secure your account\n• Exam results & progress — to track your learning journey\n• Offline cache — so the app works without internet\n\nYour data is stored securely and is never sold to third parties. You can delete your account and all associated data at any time from your profile.'**
+  /// **'Rwanda Traffic Rule collects and works with the following information to give you the best learning experience:\n\n• Phone number and name — to open an account and verify\n• Device fingerprint — a unique identifier assigned by a hash to protect your account\n• Exam answers and progress — to track your learning journey\n• Offline cache — so the app works without internet\n\nYour data is securely stored and never leaked to others. You can delete your account and all associated data at any time using the profile settings.'**
   String get consentBody;
 
-  /// Accept button on consent dialog
+  /// No description provided for @consentAccept.
   ///
   /// In en, this message translates to:
   /// **'I understand and agree'**
   String get consentAccept;
 
-  /// Link to privacy policy from consent dialog
+  /// No description provided for @consentReadPolicy.
   ///
   /// In en, this message translates to:
   /// **'Read Privacy Policy'**
   String get consentReadPolicy;
 
-  /// Validation error for name field
+  /// No description provided for @registerInvalidName.
   ///
   /// In en, this message translates to:
   /// **'Name must contain only letters and spaces'**
   String get registerInvalidName;
 
-  /// Validation error for phone field
+  /// No description provided for @registerInvalidPhone.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid phone number (e.g. 078... or +250 78...)'**
+  /// **'Enter a valid phone number (e.g., 078... or +250 78...)'**
   String get registerInvalidPhone;
 
   /// No description provided for @joinGroup.
@@ -2767,64 +2755,64 @@ abstract class AppLocalizations {
   /// No description provided for @joinGroupSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Join a WhatsApp group'**
+  /// **'Join WhatsApp group'**
   String get joinGroupSubtitle;
 
-  /// Tooltip shown when the dashboard is offline
+  /// No description provided for @adminOfflineTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Offline – showing cached data'**
+  /// **'Offline – show cached data'**
   String get adminOfflineTooltip;
 
-  /// Badge shown in the app bar when offline
+  /// No description provided for @adminOfflineBadge.
   ///
   /// In en, this message translates to:
   /// **'OFFLINE'**
   String get adminOfflineBadge;
 
-  /// Active subscriptions count label
+  /// No description provided for @adminActiveLabel.
   ///
   /// In en, this message translates to:
   /// **'{count} active'**
-  String adminActiveLabel(int count);
+  String adminActiveLabel(Object count);
 
-  /// Fallback name for admin user
+  /// No description provided for @adminFallbackName.
   ///
   /// In en, this message translates to:
   /// **'Admin'**
   String get adminFallbackName;
 
-  /// Error message when both network and cache fail
+  /// No description provided for @adminNoNetworkError.
   ///
   /// In en, this message translates to:
   /// **'No network. No cached data available.'**
   String get adminNoNetworkError;
 
-  /// General error title
+  /// No description provided for @commonErrorTitle.
   ///
   /// In en, this message translates to:
   /// **'Error'**
   String get commonErrorTitle;
 
-  /// Exit app confirmation dialog title
+  /// No description provided for @exitAppTitle.
   ///
   /// In en, this message translates to:
-  /// **'Exit App'**
+  /// **'Exit app'**
   String get exitAppTitle;
 
-  /// Exit app confirmation dialog message
+  /// No description provided for @exitAppMessage.
   ///
   /// In en, this message translates to:
   /// **'Are you sure you want to exit the app?'**
   String get exitAppMessage;
 
-  /// Exit app confirmation button
+  /// No description provided for @exitAppYes.
   ///
   /// In en, this message translates to:
   /// **'Exit'**
   String get exitAppYes;
 
-  /// Cancel exit button
+  /// No description provided for @exitAppNo.
   ///
   /// In en, this message translates to:
   /// **'Stay'**
@@ -2833,31 +2821,31 @@ abstract class AppLocalizations {
   /// No description provided for @consentItemPhone.
   ///
   /// In en, this message translates to:
-  /// **'Phone number & name'**
+  /// **'Phone number and name'**
   String get consentItemPhone;
 
   /// No description provided for @consentItemPhoneDetail.
   ///
   /// In en, this message translates to:
-  /// **'Account creation & authentication'**
+  /// **'Open account and verify'**
   String get consentItemPhoneDetail;
 
   /// No description provided for @consentItemDevice.
   ///
   /// In en, this message translates to:
-  /// **'Device identifier'**
+  /// **'Device fingerprint'**
   String get consentItemDevice;
 
   /// No description provided for @consentItemDeviceDetail.
   ///
   /// In en, this message translates to:
-  /// **'Hashed fingerprint to secure your account'**
+  /// **'Unique identifier used to protect your account'**
   String get consentItemDeviceDetail;
 
   /// No description provided for @consentItemProgress.
   ///
   /// In en, this message translates to:
-  /// **'Exam results & progress'**
+  /// **'Exam answers and progress'**
   String get consentItemProgress;
 
   /// No description provided for @consentItemProgressDetail.
@@ -2881,25 +2869,25 @@ abstract class AppLocalizations {
   /// No description provided for @consentSecurityNote.
   ///
   /// In en, this message translates to:
-  /// **'Your data is stored securely and never sold to third parties.'**
+  /// **'Your data is securely stored and never leaked to others.'**
   String get consentSecurityNote;
 
   /// No description provided for @consentIndependentTitle.
   ///
   /// In en, this message translates to:
-  /// **'Independent Content'**
+  /// **'Independent content'**
   String get consentIndependentTitle;
 
   /// No description provided for @consentIndependentBody.
   ///
   /// In en, this message translates to:
-  /// **'This is an independent educational tool. It is NOT affiliated with, endorsed by, or representing any government entity or the Rwanda National Police.'**
+  /// **'This is an independent educational app. It is not affiliated with, endorsed by, or connected to any government or police level.'**
   String get consentIndependentBody;
 
   /// No description provided for @dashboardWelcome.
   ///
   /// In en, this message translates to:
-  /// **'Welcome back'**
+  /// **'Welcome'**
   String get dashboardWelcome;
 
   /// No description provided for @dashboardNotices.
@@ -2929,55 +2917,55 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardProfileUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'Profile unavailable'**
+  /// **'Account info unavailable'**
   String get dashboardProfileUnavailable;
 
   /// No description provided for @dashboardLoading.
   ///
   /// In en, this message translates to:
-  /// **'Loading subscription…'**
+  /// **'Loading access info…'**
   String get dashboardLoading;
 
   /// No description provided for @dashboardSubscriptionUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'Subscription unavailable. Pull down to retry.'**
+  /// **'Access info unavailable. Pull down to retry.'**
   String get dashboardSubscriptionUnavailable;
 
   /// No description provided for @dashboardExpired.
   ///
   /// In en, this message translates to:
-  /// **'Your learning access has expired'**
+  /// **'Learning access expired'**
   String get dashboardExpired;
 
   /// No description provided for @dashboardDurationUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'Not available'**
+  /// **'Unknown'**
   String get dashboardDurationUnavailable;
 
-  /// Subscription duration displayed in the dashboard banner
+  /// No description provided for @dashboardDuration.
   ///
   /// In en, this message translates to:
   /// **'Duration: {duration}'**
-  String dashboardDuration(String duration);
+  String dashboardDuration(Object duration);
 
   /// No description provided for @dashboardCached.
   ///
   /// In en, this message translates to:
-  /// **'Saved status · pull down to refresh'**
+  /// **'Cached data · pull to refresh'**
   String get dashboardCached;
 
   /// No description provided for @dashboardNoticesUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'Notifications are unavailable right now. Please try again later.'**
+  /// **'Notices unavailable now. Try again later.'**
   String get dashboardNoticesUnavailable;
 
   /// No description provided for @dashboardNoNotices.
   ///
   /// In en, this message translates to:
-  /// **'No notifications yet'**
+  /// **'No notices'**
   String get dashboardNoNotices;
 
   /// No description provided for @dashboardCopyLink.
@@ -2995,7 +2983,7 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardOpenFailed.
   ///
   /// In en, this message translates to:
-  /// **'Unable to complete this action. Please try again.'**
+  /// **'Unavailable. Try again.'**
   String get dashboardOpenFailed;
 
   /// No description provided for @dashboardComingSoon.
@@ -3013,13 +3001,13 @@ abstract class AppLocalizations {
   /// No description provided for @dashboardExamsLocked.
   ///
   /// In en, this message translates to:
-  /// **'Exams are locked'**
+  /// **'Exams locked'**
   String get dashboardExamsLocked;
 
   /// No description provided for @dashboardRequestExamAccess.
   ///
   /// In en, this message translates to:
-  /// **'Tap here to request exam access'**
+  /// **'Request exam access here'**
   String get dashboardRequestExamAccess;
 
   /// No description provided for @paymentExamLanguage.
@@ -3031,14 +3019,14 @@ abstract class AppLocalizations {
   /// No description provided for @paymentExamLanguageHint.
   ///
   /// In en, this message translates to:
-  /// **'Choose the language of your exams. This does not change the app language.'**
+  /// **'Choose exam language. This does not change app language.'**
   String get paymentExamLanguageHint;
 
-  /// Formatted amount due in RWF
+  /// No description provided for @paymentAmountToPay.
   ///
   /// In en, this message translates to:
   /// **'Amount to pay: {amount} RWF'**
-  String paymentAmountToPay(String amount);
+  String paymentAmountToPay(Object amount);
 
   /// No description provided for @paymentMethodLabel.
   ///
@@ -3049,13 +3037,13 @@ abstract class AppLocalizations {
   /// No description provided for @paymentNotConfigured.
   ///
   /// In en, this message translates to:
-  /// **'Payment details are not configured yet.'**
+  /// **'Payment info not configured.'**
   String get paymentNotConfigured;
 
   /// No description provided for @paymentUssdLabel.
   ///
   /// In en, this message translates to:
-  /// **'Payment USSD code'**
+  /// **'USSD dial code'**
   String get paymentUssdLabel;
 
   /// No description provided for @paymentCopyCode.
@@ -3073,61 +3061,61 @@ abstract class AppLocalizations {
   /// No description provided for @paymentCopyFailed.
   ///
   /// In en, this message translates to:
-  /// **'Could not copy the code. Please try again or copy it manually.'**
+  /// **'Code not copied. Try again or copy manually.'**
   String get paymentCopyFailed;
 
   /// No description provided for @paymentUssdInstruction.
   ///
   /// In en, this message translates to:
-  /// **'Copy this code and dial it on your phone to make your payment.'**
+  /// **'Copy this code and use it on your phone to pay.'**
   String get paymentUssdInstruction;
 
   /// No description provided for @paymentPayNow.
   ///
   /// In en, this message translates to:
-  /// **'PAY NOW'**
+  /// **'Pay now'**
   String get paymentPayNow;
 
   /// No description provided for @paymentIntegrationPending.
   ///
   /// In en, this message translates to:
-  /// **'Payment details are prepared. Payment initiation is not connected yet; no payment has been confirmed.'**
+  /// **'Payment info pending. Payment initiation method not connected; no payment approved.'**
   String get paymentIntegrationPending;
 
   /// No description provided for @paymentPreparationFailed.
   ///
   /// In en, this message translates to:
-  /// **'Unable to prepare payment. Please try again.'**
+  /// **'Payment preparation failed. Try again.'**
   String get paymentPreparationFailed;
 
-  /// Expected recipient name for the selected payment method
+  /// No description provided for @paymentRecipient.
   ///
   /// In en, this message translates to:
-  /// **'{method} registered to: {name}'**
-  String paymentRecipient(String name, String method);
+  /// **'{method} merchant: {name}'**
+  String paymentRecipient(Object method, Object name);
 
   /// No description provided for @paymentVerifyRecipient.
   ///
   /// In en, this message translates to:
-  /// **'Before confirming payment, check that the recipient name on your phone matches the name shown here. If it does not match, do not proceed.'**
+  /// **'Before confirming payment, check that the recipient name shown on your phone matches what you entered here. If not, do not proceed.'**
   String get paymentVerifyRecipient;
 
   /// No description provided for @dashboardGazetteSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Road rules'**
+  /// **'Traffic rules'**
   String get dashboardGazetteSubtitle;
 
   /// No description provided for @dashboardIremboSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Online services'**
+  /// **'Irembo services'**
   String get dashboardIremboSubtitle;
 
   /// No description provided for @guideTitle.
   ///
   /// In en, this message translates to:
-  /// **'Instructions'**
+  /// **'GUIDELINES'**
   String get guideTitle;
 
   /// No description provided for @guideWelcome.
@@ -3139,73 +3127,73 @@ abstract class AppLocalizations {
   /// No description provided for @guideAboutTitle.
   ///
   /// In en, this message translates to:
-  /// **'1. About the app'**
+  /// **'1. App description'**
   String get guideAboutTitle;
 
   /// No description provided for @guideAboutBody.
   ///
   /// In en, this message translates to:
-  /// **'RWANDA TRAFFIC RULE helps you learn road rules and prepare for the provisional driving licence exam through practice questions.'**
+  /// **'This app called ``RWANDA TRAFFIC RULE`` is an app that teaches traffic rules, consisting of questions asked in the provisional exam (learner permit)'**
   String get guideAboutBody;
 
   /// No description provided for @guideUseTitle.
   ///
   /// In en, this message translates to:
-  /// **'2. How to use the app'**
+  /// **'2. HOW THE APP WORKS'**
   String get guideUseTitle;
 
   /// No description provided for @guideUseBody.
   ///
   /// In en, this message translates to:
-  /// **'1. On your first visit, register using your full name and phone number.\n\n2. If you already have an account, choose Sign in and enter your registered phone number. Follow any additional sign-in prompts.\n\n3. Open Practice from the dashboard and choose an exam. Exams marked free are available without paid access; locked exams require active access.\n\n4. Choose an answer and review the feedback. Green indicates a correct answer; red indicates an incorrect answer. Continue to the next question, finish the exam to see your score, and use Progress to review your results.'**
+  /// **'1. To use this app you must first sign up when you first download it where you are asked to write your full name, your phone number; confirm and sign up approved\n\n2. When you already signed up you do not need to sign up again but instead sign up \\\"SIGN IN\\\" then you can enter your phone number then sign up \\\"APPROVED\\\" then you will be taken to dashboard where you will see items in the app.\n\n3. To start learning, sign up \\\"PRACTICE\\\" when you open it consists of 21 exams each consisting of 20 questions, but the first exam is free (free) the rest require payment.\n\n4. When you are practicing in this app, the row you make changes from green to red and when you mark it changes from green to red because practice always shows the correct answer so you can try to capture it (remember it) then sign up written \\\"NEXT\\\" go to the next question when you reach the end sign up written \\\"SUBMIT EXAM\\\" then you will see the score then choose another exam to learn'**
   String get guideUseBody;
 
   /// No description provided for @guideExamTitle.
   ///
   /// In en, this message translates to:
-  /// **'3. Preparing for the computer-based exam'**
+  /// **'3. HOW YOU SEE QUESTIONS ON THE PROVISOIRE EXAM NYIRIZINA'**
   String get guideExamTitle;
 
   /// No description provided for @guideExamBody.
   ///
   /// In en, this message translates to:
-  /// **'Use practice questions to learn how to read questions and choose answers on a screen. Follow the instructions shown during your official exam, including how to move between questions and submit your answers.\n\nPractice feedback helps you learn. The official exam may use different questions, timing and feedback; this app does not guarantee identical exam content.'**
+  /// **'A. Go to the provisoireform on the machine First they will assess (evaluate) that you do not have disability, vision, hearing, reading and writing skills, proper identification number (identification) and that day\'s code, many others,... example fingerprint, on the thumb left index,...\n\nB. You will see these questions in this app as they are in the exam no questions they will ask you in the provisoire exam that are not in this app, If you choose an answer you will continue then the next question then you sign up \\\"NEXT\\\" continue with other questions when you finish you sign up \\\"SUBMIT EXAM\\\" then you will know the score so choose another exam to learn'**
   String get guideExamBody;
 
   /// No description provided for @guidePaymentTitle.
   ///
   /// In en, this message translates to:
-  /// **'4. Payment and exam access'**
+  /// **'4. PAY TO UNLOCK ALL EXAMS'**
   String get guidePaymentTitle;
 
   /// No description provided for @guidePaymentBody.
   ///
   /// In en, this message translates to:
-  /// **'1. Tap the access banner on the dashboard or a locked practice exam to open Practice Exam Access.\n\n2. Choose 1, 3 or 6 months. The app initially selects 1 month in Kinyarwanda and 3 months in English or French. The amount in RWF updates when you change the plan; pricing follows the app language.\n\n3. MoMo Pay is selected first. You can switch to MTN or Tigo. Check the account name shown: Alexis for MoMo Pay, or NSHIMIYIMANA Alexis for MTN and Tigo. Compare it with the name your phone displays before confirming payment.\n\n4. Tap PAY NOW to copy the complete USSD code and open the dialer. Complete the payment on your phone. The copy icon beside the code also lets you copy and dial it manually.\n\n5. After paying, use the call or WhatsApp buttons under Need Help to request activation for the phone number registered in the app. Opening the dialer or copying a code does not activate the exams.\n\n6. Once an administrator has assigned active access to your account, return to the dashboard with an internet connection and tap a circular refresh arrow. The access banner updates and the paid practice exams become available. You do not need to enter the access code on this page. The app also checks on opening the dashboard, returning to the app and periodically while the dashboard is active.\n\n7. If exams remain locked, confirm that support used your registered phone number and that your access has not expired. Contact support using the buttons below.'**
+  /// **'1. As I explained earlier the first exam is free the other 20 require payment 1500Rwf to learn one month, 3000Rwf to learn three months or 5000 Rwf to learn six months on 0788659575/ 0728877442 or on MOMO PAY: 329494 merchant Alexis.\n\nTo pay using any number you choose is valid not mandatory to mention but if you use another number when you finish paying you will receive a message\n\nA. Pay using MTN:\na. *182*1*1*0788659575*1500#\nb. *182*8*1*329494*1500#\n\nB. Pay using Tigo or Airtel\na. *500*1*1*0728877442*1500#\nb. *182*8*1*88329494*1500#\nMerchant Alexis\n\n2. When you finish paying go check if you have connection (internet) wait two minutes then sign in before writing language on the screen then open practice you will see them unlocked all of them.\n\n4. OTHER MEANINGS THAT CAUSED YOU TO RECEIVE A MESSAGE:'**
   String get guidePaymentBody;
 
   /// No description provided for @guideOpenAccess.
   ///
   /// In en, this message translates to:
-  /// **'View plans and pay'**
+  /// **'View payment prices'**
   String get guideOpenAccess;
 
   /// No description provided for @dashboardRefresh.
   ///
   /// In en, this message translates to:
-  /// **'Refresh app access'**
+  /// **'Refresh access'**
   String get dashboardRefresh;
 
   /// No description provided for @dashboardRefreshDone.
   ///
   /// In en, this message translates to:
-  /// **'Access status refreshed.'**
+  /// **'Access refreshed.'**
   String get dashboardRefreshDone;
 
   /// No description provided for @dashboardRefreshFailed.
   ///
   /// In en, this message translates to:
-  /// **'Could not refresh access. Check your internet connection and try again.'**
+  /// **'Failed to refresh access. Check your internet and try again.'**
   String get dashboardRefreshFailed;
 
   /// No description provided for @resourcesTitle.
@@ -3217,7 +3205,7 @@ abstract class AppLocalizations {
   /// No description provided for @resourcesDescription.
   ///
   /// In en, this message translates to:
-  /// **'Read the Gazette and road signs inside the app. Documents are included for offline reading and keep their original language.'**
+  /// **'Read gazette and signs in the app. These resources are included and readable without internet; choose your preferred language.'**
   String get resourcesDescription;
 
   /// No description provided for @resourcesGazette.
@@ -3229,7 +3217,7 @@ abstract class AppLocalizations {
   /// No description provided for @resourcesRoadSigns.
   ///
   /// In en, this message translates to:
-  /// **'Road signs'**
+  /// **'Signs'**
   String get resourcesRoadSigns;
 
   /// No description provided for @resourcesOfflinePdf.
@@ -3241,7 +3229,7 @@ abstract class AppLocalizations {
   /// No description provided for @resourcesReadError.
   ///
   /// In en, this message translates to:
-  /// **'This document could not be opened. Try again.'**
+  /// **'Failed to open this resource. Try again.'**
   String get resourcesReadError;
 
   /// No description provided for @resourcesPreviousPage.
@@ -3271,14 +3259,14 @@ abstract class AppLocalizations {
   /// No description provided for @resourcesLoading.
   ///
   /// In en, this message translates to:
-  /// **'Loading document…'**
+  /// **'Resource loading…'**
   String get resourcesLoading;
 
   /// No description provided for @resourcesPageCount.
   ///
   /// In en, this message translates to:
   /// **'Page {page} of {total}'**
-  String resourcesPageCount(int page, int total);
+  String resourcesPageCount(Object page, Object total);
 
   /// No description provided for @irTitle.
   ///
@@ -3289,8 +3277,20 @@ abstract class AppLocalizations {
   /// No description provided for @irAlreadySubmitted.
   ///
   /// In en, this message translates to:
-  /// **'Request received. One request per service slot.'**
+  /// **'Request submitted. One request per service.'**
   String get irAlreadySubmitted;
+
+  /// No description provided for @permisOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Permis option'**
+  String get permisOption;
+
+  /// No description provided for @irOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Irembo option'**
+  String get irOption;
 
   /// No description provided for @irServiceFee.
   ///
@@ -3307,19 +3307,19 @@ abstract class AppLocalizations {
   /// No description provided for @irWorkspace.
   ///
   /// In en, this message translates to:
-  /// **'Irembo Registrations'**
+  /// **'Irembo request'**
   String get irWorkspace;
 
   /// No description provided for @irMyRequests.
   ///
   /// In en, this message translates to:
-  /// **'My Irembo Requests'**
+  /// **'My Irembo requests'**
   String get irMyRequests;
 
   /// No description provided for @irNew.
   ///
   /// In en, this message translates to:
-  /// **'New service request'**
+  /// **'New request'**
   String get irNew;
 
   /// No description provided for @irManual.
@@ -3337,7 +3337,7 @@ abstract class AppLocalizations {
   /// No description provided for @irNotice.
   ///
   /// In en, this message translates to:
-  /// **'Get help registering for your exam. Official registration is confirmed separately. You can submit a request for each service you need.'**
+  /// **'Help with exam registration. Registration is approved automatically.'**
   String get irNotice;
 
   /// No description provided for @irFullName.
@@ -3373,13 +3373,13 @@ abstract class AppLocalizations {
   /// No description provided for @irLanguageHint.
   ///
   /// In en, this message translates to:
-  /// **'e.g., Kinyarwanda, English, French'**
+  /// **'Example: Kinyarwanda, English, French'**
   String get irLanguageHint;
 
   /// No description provided for @irDistrict.
   ///
   /// In en, this message translates to:
-  /// **'Preferred exam district'**
+  /// **'District where you want the exam done'**
   String get irDistrict;
 
   /// No description provided for @irExamDate.
@@ -3391,7 +3391,7 @@ abstract class AppLocalizations {
   /// No description provided for @irDateNotice.
   ///
   /// In en, this message translates to:
-  /// **'Your preferred date is a request, not a confirmed appointment.'**
+  /// **'Preferred date is not the exam itinerary.'**
   String get irDateNotice;
 
   /// No description provided for @irProvisoireCode.
@@ -3403,7 +3403,7 @@ abstract class AppLocalizations {
   /// No description provided for @irCategory.
   ///
   /// In en, this message translates to:
-  /// **'Driving category'**
+  /// **'Applicant category'**
   String get irCategory;
 
   /// No description provided for @irService.
@@ -3412,11 +3412,11 @@ abstract class AppLocalizations {
   /// **'Service'**
   String get irService;
 
-  /// No description provided for @irOption.
+  /// No description provided for @irSelectRequest.
   ///
   /// In en, this message translates to:
-  /// **'Permis option'**
-  String get irOption;
+  /// **'Choose request'**
+  String get irSelectRequest;
 
   /// No description provided for @irReview.
   ///
@@ -3433,49 +3433,49 @@ abstract class AppLocalizations {
   /// No description provided for @irEdit.
   ///
   /// In en, this message translates to:
-  /// **'Edit details'**
+  /// **'Edit request'**
   String get irEdit;
 
   /// No description provided for @irSaved.
   ///
   /// In en, this message translates to:
-  /// **'Request saved'**
+  /// **'Request submitted'**
   String get irSaved;
 
   /// No description provided for @irReference.
   ///
   /// In en, this message translates to:
-  /// **'Registration reference'**
+  /// **'Request number'**
   String get irReference;
 
   /// No description provided for @irStatus.
   ///
   /// In en, this message translates to:
-  /// **'Status'**
+  /// **'Current status'**
   String get irStatus;
 
   /// No description provided for @irSubmitted.
   ///
   /// In en, this message translates to:
-  /// **'Submitted'**
+  /// **'Submitted time'**
   String get irSubmitted;
 
   /// No description provided for @irUpdated.
   ///
   /// In en, this message translates to:
-  /// **'Last updated'**
+  /// **'Updated time'**
   String get irUpdated;
 
   /// No description provided for @irAssigned.
   ///
   /// In en, this message translates to:
-  /// **'Assigned staff member'**
+  /// **'Staff assigned'**
   String get irAssigned;
 
   /// No description provided for @irUnassigned.
   ///
   /// In en, this message translates to:
-  /// **'Unassigned'**
+  /// **'No staff assigned'**
   String get irUnassigned;
 
   /// No description provided for @irPending.
@@ -3487,13 +3487,13 @@ abstract class AppLocalizations {
   /// No description provided for @irInReview.
   ///
   /// In en, this message translates to:
-  /// **'In Review'**
+  /// **'Under review'**
   String get irInReview;
 
   /// No description provided for @irNeedsInformation.
   ///
   /// In en, this message translates to:
-  /// **'Needs Information'**
+  /// **'Missing information'**
   String get irNeedsInformation;
 
   /// No description provided for @irCompleted.
@@ -3517,7 +3517,7 @@ abstract class AppLocalizations {
   /// No description provided for @irSearch.
   ///
   /// In en, this message translates to:
-  /// **'Search name, phone or national ID'**
+  /// **'Search name, phone or ID'**
   String get irSearch;
 
   /// No description provided for @irFilters.
@@ -3529,7 +3529,7 @@ abstract class AppLocalizations {
   /// No description provided for @irApply.
   ///
   /// In en, this message translates to:
-  /// **'Apply filters'**
+  /// **'Apply'**
   String get irApply;
 
   /// No description provided for @irClear.
@@ -3553,7 +3553,7 @@ abstract class AppLocalizations {
   /// No description provided for @irTo.
   ///
   /// In en, this message translates to:
-  /// **'Submitted until'**
+  /// **'Submitted to'**
   String get irTo;
 
   /// No description provided for @irNewest.
@@ -3577,7 +3577,7 @@ abstract class AppLocalizations {
   /// No description provided for @irEmpty.
   ///
   /// In en, this message translates to:
-  /// **'No matching requests.'**
+  /// **'No matching request'**
   String get irEmpty;
 
   /// No description provided for @irView.
@@ -3613,25 +3613,25 @@ abstract class AppLocalizations {
   /// No description provided for @irCopyFailed.
   ///
   /// In en, this message translates to:
-  /// **'Could not copy. Please try again.'**
+  /// **'Copy failed. Try again.'**
   String get irCopyFailed;
 
   /// No description provided for @irCallFailed.
   ///
   /// In en, this message translates to:
-  /// **'Could not open the calling app.'**
+  /// **'Call substitution app failed to open.'**
   String get irCallFailed;
 
   /// No description provided for @irMessages.
   ///
   /// In en, this message translates to:
-  /// **'Messages for the applicant'**
+  /// **'Message required for applicant'**
   String get irMessages;
 
   /// No description provided for @irInternalNotes.
   ///
   /// In en, this message translates to:
-  /// **'Internal staff notes'**
+  /// **'Staff only notes'**
   String get irInternalNotes;
 
   /// No description provided for @irInternalHint.
@@ -3643,25 +3643,25 @@ abstract class AppLocalizations {
   /// No description provided for @irMessage.
   ///
   /// In en, this message translates to:
-  /// **'Message to applicant'**
+  /// **'Submitted message to applicant'**
   String get irMessage;
 
   /// No description provided for @irReason.
   ///
   /// In en, this message translates to:
-  /// **'Reason (shown to applicant)'**
+  /// **'Reason (shows applicant)'**
   String get irReason;
 
   /// No description provided for @irReasonRequired.
   ///
   /// In en, this message translates to:
-  /// **'Provide a reason for this status.'**
+  /// **'Provide reason for pending request.'**
   String get irReasonRequired;
 
   /// No description provided for @irAudit.
   ///
   /// In en, this message translates to:
-  /// **'Audit history'**
+  /// **'Change history'**
   String get irAudit;
 
   /// No description provided for @irSave.
@@ -3673,7 +3673,7 @@ abstract class AppLocalizations {
   /// No description provided for @irRetry.
   ///
   /// In en, this message translates to:
-  /// **'Retry'**
+  /// **'Try again'**
   String get irRetry;
 
   /// No description provided for @irClose.
@@ -3685,13 +3685,13 @@ abstract class AppLocalizations {
   /// No description provided for @irRequired.
   ///
   /// In en, this message translates to:
-  /// **'This field is required.'**
+  /// **'These fields are required.'**
   String get irRequired;
 
   /// No description provided for @irInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Check the entered details.'**
+  /// **'Check the info you entered.'**
   String get irInvalid;
 
   /// No description provided for @irInvalidId.
@@ -3703,19 +3703,19 @@ abstract class AppLocalizations {
   /// No description provided for @irInvalidPhone.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid Rwanda mobile number.'**
+  /// **'Enter a valid Rwandan phone number.'**
   String get irInvalidPhone;
 
   /// No description provided for @irUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'Unable to complete the request. Check your connection and retry. Your entered details are kept on this page.'**
+  /// **'Cannot access this service. Check internet and try again. Info entered was lost.'**
   String get irUnavailable;
 
   /// No description provided for @irConflict.
   ///
   /// In en, this message translates to:
-  /// **'This request changed or was already submitted. Refresh the list before trying again.'**
+  /// **'This request was edited or submitted. Refresh the list before responding.'**
   String get irConflict;
 
   /// No description provided for @irNext.
@@ -3745,19 +3745,19 @@ abstract class AppLocalizations {
   /// No description provided for @irNoMessages.
   ///
   /// In en, this message translates to:
-  /// **'No messages yet.'**
+  /// **'No message received.'**
   String get irNoMessages;
 
   /// No description provided for @irResults.
   ///
   /// In en, this message translates to:
-  /// **'Results'**
+  /// **'Results found'**
   String get irResults;
 
   /// No description provided for @irSelectDistrict.
   ///
   /// In en, this message translates to:
-  /// **'Search and select a district'**
+  /// **'Search district'**
   String get irSelectDistrict;
 
   /// No description provided for @irEnglish.
@@ -3781,91 +3781,91 @@ abstract class AppLocalizations {
   /// No description provided for @irChooseService.
   ///
   /// In en, this message translates to:
-  /// **'Choose the exam service'**
+  /// **'Choose exam service'**
   String get irChooseService;
 
   /// No description provided for @irChooseOption.
   ///
   /// In en, this message translates to:
-  /// **'Choose your Permis option'**
+  /// **'Choose permit type'**
   String get irChooseOption;
 
   /// No description provided for @irProvisoireHelp.
   ///
   /// In en, this message translates to:
-  /// **'Provisional driving licence exam'**
+  /// **'Provisional learner permit exam'**
   String get irProvisoireHelp;
 
   /// No description provided for @irPermisHelp.
   ///
   /// In en, this message translates to:
-  /// **'Practical driving licence exam'**
+  /// **'Provisional learner permit exam'**
   String get irPermisHelp;
 
   /// No description provided for @irContinue.
   ///
   /// In en, this message translates to:
-  /// **'Register'**
+  /// **'Submit'**
   String get irContinue;
 
   /// No description provided for @irRequestsUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'Your requests could not be loaded'**
+  /// **'Your request is unavailable.'**
   String get irRequestsUnavailable;
 
   /// No description provided for @irServerSetup.
   ///
   /// In en, this message translates to:
-  /// **'The registration service is not ready on the server yet. Please contact support or try again later.'**
+  /// **'Registration service not properly set up on server. Contact support or try again later.'**
   String get irServerSetup;
 
   /// No description provided for @irServiceUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'The registration service is temporarily unavailable. Please try again later.'**
+  /// **'Registration service currently unavailable. Try again.'**
   String get irServiceUnavailable;
 
   /// No description provided for @irAccessUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'You do not have access to this request. Check your signed-in account.'**
+  /// **'Not authorized to view this bureau. Check your signed-in account.'**
   String get irAccessUnavailable;
 
   /// No description provided for @irNoRequests.
   ///
   /// In en, this message translates to:
-  /// **'Choose a service to get started.'**
+  /// **'Choose a service to begin.'**
   String get irNoRequests;
 
   /// No description provided for @irStaffHelp.
   ///
   /// In en, this message translates to:
-  /// **'Find applicants, review requests and coordinate registration assistance.'**
+  /// **'Search applicants, review request and track registration help.'**
   String get irStaffHelp;
 
   /// No description provided for @waIntro.
   ///
   /// In en, this message translates to:
-  /// **'Learn together. Choose a study group to ask questions and share learning tips.'**
+  /// **'Let\'s build together. Choose a group to discuss questions and get study tips.'**
   String get waIntro;
 
   /// No description provided for @waManageIntro.
   ///
   /// In en, this message translates to:
-  /// **'Manage the study groups available to your learners.'**
+  /// **'Manage study groups for students.'**
   String get waManageIntro;
 
   /// No description provided for @waCached.
   ///
   /// In en, this message translates to:
-  /// **'Showing saved groups. An internet connection is needed to join or receive new messages.'**
+  /// **'These are cached groups. Joining a group or receiving new messages requires internet.'**
   String get waCached;
 
   /// No description provided for @progressSaved.
   ///
   /// In en, this message translates to:
-  /// **'Showing results saved on this device. New results will sync when connected.'**
+  /// **'These are cached scores on this device. New scores will sync when internet is available.'**
   String get progressSaved;
 
   /// No description provided for @irDeleteRequest.
@@ -3877,19 +3877,13 @@ abstract class AppLocalizations {
   /// No description provided for @irDeleteConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Permanently delete this request and its messages? This cannot be undone.'**
+  /// **'Delete this request and its message permanently? This cannot be undone.'**
   String get irDeleteConfirm;
-
-  /// No description provided for @irSelectRequest.
-  ///
-  /// In en, this message translates to:
-  /// **'Select request'**
-  String get irSelectRequest;
 
   /// No description provided for @irSelectPage.
   ///
   /// In en, this message translates to:
-  /// **'Select this page'**
+  /// **'Choose all requests on this page'**
   String get irSelectPage;
 
   /// No description provided for @irSelected.
@@ -3907,13 +3901,13 @@ abstract class AppLocalizations {
   /// No description provided for @irOfflineSaved.
   ///
   /// In en, this message translates to:
-  /// **'Showing saved requests. Connect to the internet to refresh, submit or delete requests.'**
+  /// **'Saved request. Connect to internet to refresh, submit or delete request.'**
   String get irOfflineSaved;
 
   /// No description provided for @irDeleteUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'Deletion is unavailable on this server. Update the Irembo backend routes and handler, then retry.'**
+  /// **'Deletion unavailable on this server. Update Irembo backend routes and handler, then retry.'**
   String get irDeleteUnavailable;
 
   /// No description provided for @referralTitle.

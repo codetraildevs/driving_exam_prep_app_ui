@@ -1,0 +1,104 @@
+# Feature: Implement Automatic Link-Based Referral System — Rwanda Traffic Rules App
+
+Analyze the existing project architecture and implement a complete referral program integrated with the existing Share functionality or a new “Refer & Earn” dashboard card.
+
+## 1. Referral Dashboard
+- Inspect the existing dashboard and Share feature before making changes.
+- Enhance the existing Share feature or add a dedicated “Refer & Earn” card.
+- Display the logged-in user's unique referral code, referral statistics, and reward status if rewards are configured.
+- Provide buttons for “Invite Friends,” “Copy Referral Link,” and “Referral History.”
+- Maintain the existing UI design and support English, French, and Kinyarwanda.
+
+## 2. Generate a Unique Referral Link for Each User
+- Automatically generate a unique, permanent referral code for every registered user.
+- Generate a referral invitation link associated with that code.
+- Example:
+
+  `https://yourdomain.com/referral?code=RW8K2P`
+
+- Replace the example domain with the actual production domain and implement the appropriate Android App Links or Firebase Dynamic Links alternative.
+- If Firebase Dynamic Links is unavailable or unsuitable, use verified Android App Links with a web-based installation fallback and deferred referral attribution where technically supported.
+- Never use a placeholder domain in production.
+- Ensure the referral code belongs to the currently authenticated user and is validated by the backend.
+
+## 3. Share the Referral Link — No Manual Code Entry
+When the user taps “Invite Friends,” open the native Android sharing sheet with a message containing the referral invitation link.
+
+Example:
+
+“Prepare for your Rwanda driving theory exam with Rwanda Traffic Rules! Download the app and start learning using my invitation: [PERSONALIZED REFERRAL LINK]”
+
+The referral link must be generated dynamically for the logged-in user.
+
+**The recipient must not need to type or manually enter a referral code.** The app must capture the referral code from the invitation link and apply it automatically when the recipient registers.
+
+## 4. Referral Link Registration Flow
+Implement the complete referral journey:
+
+1. User A opens the app and taps “Invite Friends.”
+2. The app generates and shares User A's personalized referral link.
+3. User B taps the link.
+4. If the app is installed, open it directly and pass the referral information to the app.
+5. If the app is not installed, open a landing page with a button to download the app from the official Google Play Store.
+6. After installation, preserve and recover the referral information using an appropriate deferred deep-link or install-referrer implementation.
+7. When User B opens the app, store the pending referral attribution securely.
+8. When User B registers successfully, automatically associate User B's account with User A's referral code.
+9. Confirm the referral with the backend and update User A's referral statistics.
+
+Do not require User B to enter a referral code on any screen.
+
+## 5. Deep Links and Deferred Attribution
+- Inspect the current Android package name, application architecture, website domain, Firebase configuration, and Play Store listing.
+- Use Android App Links with domain verification to open referral links directly in the app.
+- Implement the Google Play Install Referrer API or a suitable supported deferred deep-link solution to recover referral information after installation.
+- If deferred attribution cannot be guaranteed for a particular installation path, provide a clear fallback and document the limitation.
+- Preserve the referral token across onboarding, app restarts, and registration screens until attribution is completed or rejected.
+- Clear pending referral data after successful attribution or when it is invalidated.
+- Do not rely solely on local storage for final referral ownership; confirm attribution on the backend.
+
+## 6. Referral Validation and Fraud Prevention
+- Validate every referral code on the server.
+- Prevent self-referrals, duplicate attribution, repeated rewards, and changes to an already confirmed referral.
+- Do not allow existing users to gain referral credit simply by reopening another user's invitation link.
+- Apply attribution only to eligible new accounts.
+- Make referral attribution atomic and idempotent so retries cannot create duplicate records.
+- Never expose sensitive user information in referral links.
+- Avoid trusting referral data supplied only by the client.
+
+## 7. Referral History and Rewards
+- Track the referrer, referred account, referral code, date, and status.
+- Display pending and successful referrals in the referral history.
+- Integrate with the existing subscription or reward system only after inspecting its rules.
+- If rewards are not configured, implement tracking first without automatically granting benefits.
+- Ensure each eligible referral can receive a reward only once.
+
+## 8. Backend, Website, and Database
+- Inspect the existing backend, user model, authentication, APIs, database, and website before implementation.
+- Implement the necessary referral records, migrations, deep-link endpoints, and secure validation.
+- Configure the actual production domain, Android App Links, and website fallback.
+- Ensure the fallback page directs users to the correct Play Store listing.
+- Do not create duplicate user accounts or interfere with existing login and registration.
+- Do not break existing exam access, subscriptions, offline exams, or profile functionality.
+
+## 9. Localization
+Support English, French, and Kinyarwanda for the dashboard, invitation messages, referral history, and error states.
+
+## 10. Testing and Deliverables
+Test the complete referral journey in these scenarios:
+- App already installed.
+- App not installed.
+- Link opened from WhatsApp, SMS, and other sharing apps.
+- Installation followed by first launch and registration.
+- Existing user opens a referral link.
+- Invalid referral link or unavailable network.
+- User cancels registration and resumes later.
+- Duplicate link clicks and repeated registration requests.
+
+After implementation, report:
+1. Files and components changed.
+2. Backend and database changes.
+3. Domain and Firebase configuration required.
+4. How referral attribution works before and after installation.
+5. Test results and any remaining limitations.
+
+**Acceptance criteria:** Sharing creates a personalized referral link. Tapping it opens the app or Play Store as appropriate. After installation, the referral is automatically attributed to the correct inviter when an eligible new user registers. The recipient never needs to manually enter a referral code, and existing app features remain intact.

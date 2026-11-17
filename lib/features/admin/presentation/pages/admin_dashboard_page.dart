@@ -378,6 +378,10 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
   // ──────────────────────────────────────────────────────────────────────────
   Widget _buildActionsGrid(BuildContext context, AppLocalizations l10n) {
     final cards = [
+      _ActionCard(icon: Icons.group_add_outlined, title: l10n.adminReferrals,
+        description: l10n.adminReferralSearch,
+        gradientColors: const [AppColors.primary, AppColors.primaryLight],
+        onTap: () => context.push('/admin/referrals')),
       _ActionCard(icon: Icons.assignment_outlined, title: l10n.irWorkspace,
         description: l10n.irView,
         gradientColors: const [AppColors.primary, AppColors.primaryLight],
@@ -407,21 +411,13 @@ class _AdminDashboardPageState extends State<AdminDashboardPage>
           ],
         ]);
       }
-      if (constraints.maxWidth >= 720) {
-        return IntrinsicHeight(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            for (var i = 0; i < cards.length; i++) ...[
-              if (i > 0) const SizedBox(width: 12),
-              Expanded(child: cards[i]),
-            ],
-          ]));
-      }
       return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        IntrinsicHeight(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [Expanded(child: cards[0]), const SizedBox(width: 12),
-            Expanded(child: cards[1])])),
-        const SizedBox(height: 12),
-        cards[2],
+        for (var i = 0; i < cards.length; i += 2) ...[
+          if (i > 0) const SizedBox(height: 12),
+          IntrinsicHeight(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [Expanded(child: cards[i]), const SizedBox(width: 12),
+              Expanded(child: i + 1 < cards.length ? cards[i + 1] : const SizedBox.shrink())])),
+        ],
       ]);
     });
   }

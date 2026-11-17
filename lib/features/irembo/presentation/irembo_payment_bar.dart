@@ -51,6 +51,8 @@ class IremboPaymentBar extends StatelessWidget {
     final l = AppLocalizations.of(context);
     final amount = fee(service, option);
     final code = ussdCode(service, option);
+    final feeLabel = amount == null ? null : '$amount RWF';
+    final irServiceFee = l.irServiceFee;
     return Material(
       elevation: 8,
       color: Theme.of(context).colorScheme.surface,
@@ -66,18 +68,44 @@ class IremboPaymentBar extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      l.irServiceFee,
+                      irServiceFee,
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ),
-                  if (amount != null)
-                    Text(
-                      '$amount RWF',
-                      style: Theme.of(context).textTheme.titleMedium,
+                  if (feeLabel != null) ...[
+                    const SizedBox(width: 6),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.titleMedium,
+                          children: [
+                            TextSpan(text: feeLabel),
+                            const TextSpan(text: ' '),
+                            WidgetSpan(
+                              child: Semantics(
+                                button: true,
+                                label: 'Copy service fee amount',
+                                child: IconButton(
+                                  visualDensity: VisualDensity.compact,
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(
+                                    minWidth: 36,
+                                    minHeight: 36,
+                                  ),
+                                  onPressed: () => _copy(context, feeLabel),
+                                  icon: const Icon(Icons.copy, size: 18),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
+                  ],
                 ],
               ),
-              const SizedBox(height: 8),
+              if (amount != null) const SizedBox(height: 8),
               FilledButton.icon(
                 key: const ValueKey('irembo-pay'),
                 icon: const Icon(Icons.phone_outlined),

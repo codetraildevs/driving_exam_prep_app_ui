@@ -1,6 +1,7 @@
 package com.trafficrules.rwanda.app
 
 import android.os.Bundle
+import android.content.Intent
 import android.provider.Settings
 import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +11,18 @@ import io.flutter.plugin.common.MethodChannel
 import java.security.MessageDigest
 
 class MainActivity : FlutterFragmentActivity() {
+    private var referralBridge: ReferralBridge? = null
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        referralBridge?.onLink(intent.dataString)
+    }
+
+    override fun onDestroy() {
+        referralBridge?.dispose()
+        super.onDestroy()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -20,6 +33,7 @@ class MainActivity : FlutterFragmentActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        referralBridge = ReferralBridge(this, flutterEngine.dartExecutor.binaryMessenger) { intent?.dataString }
 
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
             .setMethodCallHandler { call, result ->

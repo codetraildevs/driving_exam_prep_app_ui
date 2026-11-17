@@ -28,8 +28,10 @@ nul
 # Local-only docs and data (README.md is tracked)
 !README.md
 *.md
+!REFERRAL_SETUP.md
 *.zip
 *.sql
+!backend/migrations/20261028_referrals.sql
 *.csv
 BUILD_SUMMARY.txt
 FILE_MANIFEST.txt

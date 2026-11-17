@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'config/theme/app_theme.dart';
 import 'config/router/app_router.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/referrals/data/referral_session.dart';
 import 'l10n/generated/app_localizations.dart';
 import 'shared/locale/fallback_localizations.dart';
 import 'shared/locale/locale_notifier.dart';
@@ -137,6 +138,9 @@ class _TrafficRulesAppState extends ConsumerState<TrafficRulesApp> {
   @override
   void initState() {
     super.initState();
+    unawaited(ReferralSession.instance.initialize().catchError((Object _) {
+      // Onboarding remains available if the platform service is temporarily unavailable.
+    }));
     // Use the pre-loaded initialLocale to determine if a locale was selected,
     // avoiding a ref.read() call during initState which would trigger the
     // Riverpod provider's lazy creation before the element tree is fully mounted.

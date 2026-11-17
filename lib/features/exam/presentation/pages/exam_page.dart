@@ -181,7 +181,7 @@ class _ExamPageState extends State<ExamPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          l10n.quizQuestion(
+                          l10n.quizQuestionOf(
                             _currentQuestion + 1,
                             examQuestions.length,
                           ),

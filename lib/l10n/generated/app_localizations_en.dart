@@ -24,7 +24,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeWelcomeBack => 'Welcome back 👋';
 
   @override
-  String homeGreeting(String userName) {
+  String homeGreeting(Object userName) {
     return '$userName';
   }
 
@@ -35,12 +35,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeContinueLearning => 'Continue Learning';
 
   @override
-  String homeAccessActive(int daysLeft) {
+  String homeAccessActive(Object daysLeft) {
     return 'Access Active - $daysLeft days left';
   }
 
   @override
-  String homePaymentTier(String tier) {
+  String homePaymentTier(Object tier) {
     return 'Payment Tier: $tier';
   }
 
@@ -118,7 +118,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAboutApp => 'About Rwanda Traffic Rule';
 
   @override
-  String settingsVersion(String version) {
+  String settingsVersion(Object version) {
     return 'Version $version';
   }
 
@@ -141,7 +141,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsResetProgress => 'Reset Progress';
 
   @override
-  String get settingsResetProgressSubtitle => 'Clear all your data';
+  String get settingsResetProgressSubtitle => 'Delete all your data';
 
   @override
   String get settingsResetConfirmTitle => 'Reset Progress';
@@ -154,7 +154,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsResetSuccess => 'Progress reset successfully';
 
   @override
-  String get settingsSelectLanguage => 'Select Language';
+  String get settingsSelectLanguage => 'Choose language';
 
   @override
   String get commonCancel => 'Cancel';
@@ -169,62 +169,63 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonReset => 'Reset';
 
   @override
-  String get landingHeroTitle => 'Master Traffic Rules Easily';
+  String get landingHeroTitle => 'Learn traffic rules easily';
 
   @override
   String get landingHeroSubtitle =>
-      'Practice real exam questions and pass your driving test.';
+      'Practice on your own questions and pass your exam.';
 
   @override
   String get landingGetStarted => 'Get Started';
 
   @override
-  String get landingAlreadyHaveAccount => 'Already have an account? Login';
+  String get landingAlreadyHaveAccount => 'Already have an account? Sign in';
 
   @override
-  String get landingWhyUseApp => 'Why Use Our App?';
+  String get landingWhyUseApp => 'Why use our app?';
 
   @override
-  String get landingLearnRules => 'Learn Rules';
+  String get landingLearnRules => 'Learn rules';
 
   @override
   String get landingLearnRulesDesc =>
-      'Clear explanations of all traffic laws and road signs.';
+      'Clear explanations of all traffic rules and signs.';
 
   @override
-  String get landingPracticeExams => 'Practice Exams';
+  String get landingPracticeExams => 'Practice exams';
 
   @override
   String get landingPracticeExamsDesc =>
-      'Take mock exams similar to the real driving test.';
+      'Take practice exams similar to the real exam.';
 
   @override
-  String get landingTrackProgress => 'Track Progress';
+  String get landingTrackProgress => 'Track progress';
 
   @override
   String get landingTrackProgressDesc =>
-      'Monitor your performance and improve weak areas.';
+      'Track your performance and see where you want to go.';
 
   @override
-  String get landingHowItWorks => 'How It Works';
+  String get landingHowItWorks => 'How it works';
 
   @override
-  String get landingStep1 => 'Create your free account';
+  String get landingStep1 => 'Open your free account';
 
   @override
   String get landingStep2 => 'Start learning traffic rules';
 
   @override
-  String get landingStep3 => 'Take mock exams';
+  String get landingStep3 => 'Take practice exams';
 
   @override
-  String get landingStep4 => 'Pass your real test confidently';
+  String get landingStep4 => 'Pass the real exam with confidence';
 
   @override
-  String get landingReadyTitle => 'Ready to Pass Your Driving Exam?';
+  String get landingReadyTitle =>
+      'Ready to pass your health driving license exam?';
 
   @override
-  String get landingStartLearning => 'Start Learning Now';
+  String get landingStartLearning => 'Start learning now';
 
   @override
   String get homeServices => 'Services';
@@ -233,22 +234,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authAppName => 'Rwanda Traffic Rule';
 
   @override
-  String get authSubtitle => 'Prepare for Your Provisional Driving Licence';
+  String get authSubtitle =>
+      'Prepare for your provisional license driving theory exam';
 
   @override
-  String get loginTitle => 'Login to Your Account';
+  String get loginTitle => 'Sign in to your account';
 
   @override
-  String get loginSubtitle => 'Enter your registered phone number to continue.';
+  String get loginSubtitle =>
+      'Enter your phone number (used during registration) to continue.';
 
   @override
-  String get authNeedHelp => 'Need Help?';
+  String get authNeedHelp => 'Need help?';
 
   @override
-  String get loginHelpText => 'For account issues or inquiries, contact:';
+  String get loginHelpText => 'For account issues, contact:';
 
   @override
-  String get authPhoneNumber => 'Phone Number';
+  String get authPhoneNumber => 'Enter your phone number';
 
   @override
   String get authPhoneHint => '07** *** ***';
@@ -260,63 +263,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginNoAccount => 'Don\'t have an account? ';
 
   @override
-  String get loginSignUp => 'Sign Up';
+  String get loginSignUp => 'Sign up';
 
   @override
-  String get authSecureTag => 'Secure • Fast • Pass';
+  String get authSecureTag => 'Learn • Prepare • Pass';
 
   @override
   String get loginPhoneRequired => 'Please enter your phone number';
 
   @override
   String get loginInvalidPhone =>
-      'Enter a valid phone number (e.g. 078... or +250 78...)';
+      'Enter a valid phone number (e.g., 07... or +250 7...)';
 
   @override
-  String get registerTitle => 'Create Your Account';
+  String get registerTitle => 'Create your account';
 
   @override
   String get registerSubtitle =>
-      'Register using your full name and phone number to begin learning.';
+      'Sign up using your full name and phone number to start learning.';
 
   @override
   String get registerHelpText =>
-      'For registration issues or inquiries, contact:';
+      'For sign-up issues or other questions, contact:';
 
   @override
-  String get authFullName => 'Full Name';
+  String get authFullName => 'Enter your name';
 
   @override
-  String get authFullNameHint => 'Enter your full name';
+  String get authFullNameHint => 'Enter your name';
 
   @override
-  String get registerTerms =>
-      'I agree to the Terms of Service and Privacy Policy.';
+  String get registerTerms => 'Accept the usage and privacy policies.';
 
   @override
-  String get registerSignUp => 'Sign Up';
+  String get registerSignUp => 'Confirm';
 
   @override
   String get registerHaveAccount => 'Already have an account? ';
 
   @override
-  String get registerLogIn => 'Log In';
+  String get registerLogIn => 'Sign in';
 
   @override
   String get registerFillAllFields => 'Please fill all fields';
 
   @override
-  String get registerAgreeTerms => 'Please agree to terms and conditions';
+  String get registerAgreeTerms => 'Please accept required terms';
 
   @override
-  String get forgotPasswordTitle => 'Password reset is not available';
+  String get forgotPasswordTitle => 'Reset password not possible';
 
   @override
   String get forgotPasswordDescription =>
-      'This backend uses phone number + device binding (no password reset flow).';
+      'The system uses phone number and device link (no password reset).';
 
   @override
-  String get forgotPasswordBackToLogin => 'Back to Login';
+  String get forgotPasswordBackToLogin => 'Back to sign in';
 
   @override
   String get navHome => 'Home';
@@ -331,84 +333,75 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navProfile => 'Profile';
 
   @override
-  String get practiceTitle => 'Practice ';
+  String get practiceTitle => 'Practice Exams';
 
   @override
-  String get practiceCategorySpeedLimits => 'Speed Limits';
+  String get practiceCategorySpeedLimits => 'Speed limits';
 
   @override
-  String get practiceCategoryRoadSigns => 'Road Signs';
+  String get practiceCategoryRoadSigns => 'Traffic signs';
 
   @override
-  String get practiceCategoryLaneControl => 'Lane Control';
+  String get practiceCategoryLaneControl => 'Lane guidance';
 
   @override
-  String get practiceCategoryParkingRules => 'Parking Rules';
+  String get practiceCategoryParkingRules => 'Parking rules';
 
   @override
   String get practiceStart => 'Start →';
 
   @override
-  String get quizComplete => 'Quiz Complete!';
+  String get quizComplete => 'Exam complete!';
 
   @override
-  String quizScore(int score) {
+  String quizScore(Object score) {
     return 'Score: $score%';
   }
 
   @override
-  String quizResult(int correct, int total) {
-    return 'You got $correct out of $total correct';
+  String quizResult(Object correct, Object total) {
+    return 'You answered $correct out of $total correctly';
   }
 
   @override
-  String get quizBackToPractice => 'Back to Practice';
+  String get quizBackToPractice => 'Try another exam';
 
   @override
-  String quizQuestion(int current, int total) {
-    return 'Question $current/$total';
-  }
+  String get quizNextQuestion => 'Next question';
 
   @override
-  String get quizFinish => 'Finish Quiz';
+  String get examMockExam => 'Practice Exams';
 
   @override
-  String get quizNextQuestion => 'Next Question';
+  String get examInstructions => 'Exam instructions';
 
   @override
-  String get examMockExam => 'Practice Exam';
+  String get examTimeLimit => 'Time limit';
 
   @override
-  String get examInstructions => 'Exam Instructions';
+  String get examTimeLimitDesc => '30 minutes total with 20 questions';
 
   @override
-  String get examTimeLimit => 'Time Limit';
+  String get examQuestionCount => '20 questions';
 
   @override
-  String get examTimeLimitDesc => '30 minutes total for 20 questions';
+  String get examQuestionCountDesc => 'Multiple choice with 4 options each';
 
   @override
-  String get examQuestionCount => '20 Questions';
+  String get examPassingScore => 'Passing score';
 
   @override
-  String get examQuestionCountDesc =>
-      'Multiple choice format with 4 options each';
+  String get examPassingScoreDesc => 'You need 70% or above to pass';
 
   @override
-  String get examPassingScore => 'Passing Score';
+  String get examNoGoingBack => 'No going back';
 
   @override
-  String get examPassingScoreDesc => 'You need 70% or higher to pass';
-
-  @override
-  String get examNoGoingBack => 'No Going Back';
-
-  @override
-  String get examNoGoingBackDesc => 'You cannot revisit previous questions';
+  String get examNoGoingBackDesc => 'You cannot go back to previous questions';
 
   @override
   String get examWarning =>
-      'Make sure you have stable internet and won\'t be interrupted';
+      'Make sure you have a stable internet connection and won\'t be interrupted';
 
   @override
   String get examStartExam => 'Start Exam';
@@ -420,7 +413,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get examCongratulations => 'Congratulations!';
 
   @override
-  String get examGoodEffort => 'Good Effort';
+  String get examGoodEffort => 'Good effort';
 
   @override
   String get examPassedMessage => 'You passed the exam with flying colors!';
@@ -429,26 +422,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get examFailedMessage => 'Keep practicing to improve your score';
 
   @override
-  String get examYourScore => 'Your Score';
+  String get examYourScore => 'Your score';
 
   @override
-  String get examCorrect => 'Correct';
+  String get examCorrect => 'Correct answers';
 
   @override
   String get examAccuracy => 'Accuracy';
 
   @override
-  String get examNeedMorePractice =>
-      'You need 70% to pass. Practice more to improve!';
+  String get examNeedMorePractice => 'You need 70% to pass. Keep practicing!';
 
   @override
   String get examBadgeEarned => 'You earned a badge for passing the exam!';
 
   @override
-  String get examRetakeTest => 'Retake Test';
+  String get examRetakeTest => 'Retake Exam';
 
   @override
-  String get examBackHome => 'Back Home';
+  String get examBackHome => 'Back to Home';
 
   @override
   String get progressTitle => 'Your Progress';
@@ -478,7 +470,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get progressComplete => 'Complete';
 
   @override
-  String get progressAvgScore => 'Avg Score';
+  String get progressAvgScore => 'Avg. score';
 
   @override
   String get progressSigns => 'Signs';
@@ -490,12 +482,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get progressExcellent => 'Excellent';
 
   @override
-  String progressMockExam(int number) {
-    return 'Mock Exam $number';
+  String progressMockExam(Object number) {
+    return 'Practice Exam $number';
   }
 
   @override
-  String get progressPracticeQuiz => 'Practice Exams';
+  String get progressPracticeQuiz => 'Practice Quiz';
 
   @override
   String get profileTitle => 'Profile';
@@ -504,11 +496,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileLocation => 'Kigali, Rwanda';
 
   @override
-  String get profileOverallProgress => 'Overall Learning Progress';
+  String get profileOverallProgress => 'Overall Progress';
 
   @override
-  String profileModulesCompleted(int completed, int total) {
-    return '$completed/$total Modules Completed';
+  String profileModulesCompleted(Object completed, Object total) {
+    return '$completed/$total exams completed';
   }
 
   @override
@@ -518,20 +510,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileSettings => 'Settings';
 
   @override
-  String get profileSettingsSubtitle => 'Notifications, language, privacy';
+  String get profileSettingsSubtitle => 'Notifications, language, data';
 
   @override
-  String get profileDeleteAccount => 'Delete Account';
+  String get profileDeleteAccount => 'Delete account';
 
   @override
-  String get profileSignOut => 'Sign Out';
+  String get profileSignOut => 'Sign out';
 
   @override
-  String get profileDeleteConfirmTitle => 'Delete Account';
+  String get profileDeleteConfirmTitle => 'Delete account';
 
   @override
   String get profileDeleteConfirmMessage =>
-      'Are you sure you want to permanently delete your account? This action cannot be undone.';
+      'Are you sure you want to delete your account entirely? This action cannot be undone.';
 
   @override
   String get profileDelete => 'Delete';
@@ -540,7 +532,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get certificatesTitle => 'My Certificates';
 
   @override
-  String get certificatesAchievements => 'Your Achievements';
+  String get certificatesAchievements => 'Achievements';
 
   @override
   String get certificatesEarned => 'Earned';
@@ -552,19 +544,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get certificatesInProgress => 'In Progress';
 
   @override
-  String get certificateRoadSignsMastery => 'Road Signs Mastery';
+  String get certificateRoadSignsMastery => 'Traffic sign mastery';
 
   @override
-  String get certificateTrafficRulesTest => 'Traffic Rules Final Test';
+  String get certificateTrafficRulesTest => 'Traffic rules test';
 
   @override
-  String get certificateDefensiveDriving => 'Defensive Driving';
+  String get certificateDefensiveDriving => 'Defensive driving';
 
   @override
   String get signsTitle => 'Traffic Signs';
 
   @override
-  String get signsSearchHint => 'Search traffic signs...';
+  String get signsSearchHint => 'Search for traffic signs...';
 
   @override
   String get signsNotFound => 'No traffic signs found';
@@ -585,29 +577,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signDetailDescription => 'Description';
 
   @override
-  String get signDetailScenario => 'Real-Life Scenario';
+  String get signDetailScenario => 'Real-life scenario';
 
   @override
-  String get signDetailLearned => 'You\'ve learned this sign!';
+  String get signDetailLearned => 'You learned this sign!';
 
   @override
-  String get signDetailMarkAsLearned => 'Mark as Learned';
+  String get signDetailMarkAsLearned => 'Mark as learned';
 
   @override
-  String get signDetailMarkedSuccess => 'Traffic sign marked as learned!';
+  String get signDetailMarkedSuccess => 'Sign marked as learned!';
 
   @override
-  String get subscriptionTitle => 'Practice Exam Access';
+  String get subscriptionTitle => 'Request exam access';
 
   @override
-  String get subscriptionSubtitle => 'Unlock All Practice Exams';
+  String get subscriptionSubtitle => 'request exam access';
 
   @override
   String get subscriptionTrafficRulesMsg =>
-      'If you want to learn traffic rules, kindly call, text us on WhatsApp and help to be prepared for official provisional driving license.';
+      'If you want to learn traffic rules, contact us or send us a WhatsApp message and we will help you prepare well for your provisional license driving theory exam.';
 
   @override
-  String get subscriptionCurrentPlan => 'Your Current Plan';
+  String get subscriptionCurrentPlan => 'Your current plan';
 
   @override
   String get subscriptionNoPlan => 'No active plan';
@@ -622,7 +614,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionMonth6 => '6 Months';
 
   @override
-  String subscriptionPrice(int amount) {
+  String subscriptionPrice(Object amount) {
     return '$amount RWF';
   }
 
@@ -631,10 +623,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscriptionRequestSent =>
-      'Your request has been submitted. You will be activated once payment is confirmed.';
+      'Your request has been sent successfully.Wait a moment for them to see that you have been approved.';
 
   @override
-  String get subscriptionPaymentInstructions => 'Payment Instructions';
+  String get subscriptionPaymentInstructions => 'Payment instructions';
 
   @override
   String get subscriptionPaymentMomo => 'MoMo Pay: 329494';
@@ -652,40 +644,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptionHelpWhatsapp => 'WhatsApp: 0788659575';
 
   @override
-  String get subscriptionChoosePlan => 'Choose a Plan to';
+  String get subscriptionChoosePlan => 'Choose a learning plan';
 
   @override
-  String get subscriptionCurrency => 'Months to learn';
+  String get subscriptionCurrency => 'Months you want to learn';
 
   @override
-  String get subscriptionAccessActive => 'Access Active';
+  String get subscriptionAccessActive => 'Access available';
 
   @override
-  String subscriptionExpires(String date) {
+  String subscriptionExpires(Object date) {
     return 'Expires: $date';
   }
 
   @override
-  String subscriptionDays(int days) {
+  String subscriptionDays(Object days) {
     return '$days days';
   }
 
   @override
-  String get subscriptionNeedHelp => 'Need Help?';
+  String get subscriptionNeedHelp => 'Need help?';
 
   @override
-  String subscriptionGetAccess(int count) {
-    return 'Get access to all $count+ premium practice exams';
+  String subscriptionGetAccess(Object count) {
+    return 'Get $count+ exam practice access';
   }
 
   @override
-  String get adminDashboard => 'Dashboard';
+  String get adminDashboard => 'Admin Dashboard';
 
   @override
   String get adminUsers => 'Users';
 
   @override
-  String get adminAccess => 'Access Management';
+  String get adminAccess => 'Manage Access';
 
   @override
   String get adminProgress => 'User Progress';
@@ -724,7 +716,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminAccessExpired => 'Access Expired';
 
   @override
-  String adminAccessExpires(String date) {
+  String adminAccessExpires(Object date) {
     return 'Expires: $date';
   }
 
@@ -750,7 +742,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminViewProgress => 'View Progress';
 
   @override
-  String adminRegistrationDate(String date) {
+  String adminRegistrationDate(Object date) {
     return 'Registered: $date';
   }
 
@@ -767,13 +759,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminAccessGranted => 'Access granted successfully';
 
   @override
-  String get adminSelectTier => 'Select Access Tier';
+  String get adminSelectTier => 'Select Access Level';
 
   @override
-  String get adminCustomDays => 'Custom Duration (days)';
+  String get adminCustomDays => 'Custom Days';
 
   @override
-  String get adminPaymentAmount => 'Amount (RWF)';
+  String get adminPaymentAmount => 'Payment Amount (RWF)';
 
   @override
   String get adminEnterDays => 'Enter number of days';
@@ -782,10 +774,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminEnterAmount => 'Enter amount in RWF';
 
   @override
-  String get adminOrCustom => 'Or set custom days';
+  String get adminOrCustom => 'Or enter custom days';
 
   @override
-  String get adminPendingRequests => 'Pending Payment Requests';
+  String get adminPendingRequests => 'Pending payment requests';
 
   @override
   String get adminAllUsersList => 'All Users';
@@ -813,10 +805,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get examPaid => 'PAID';
 
   @override
-  String get examLocked => 'Locked';
+  String get examLocked => 'locked';
 
   @override
-  String examQuestions(int count) {
+  String examQuestions(Object count) {
     return '$count questions';
   }
 
@@ -824,54 +816,55 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizProgress => 'Progress';
 
   @override
-  String quizAnswered(int answered, int total) {
+  String quizAnswered(Object answered, Object total) {
     return 'Answered: $answered/$total';
   }
 
   @override
-  String get quizSubmitPractice => 'Submit exam';
+  String get quizSubmitPractice => 'Submit Exam';
 
   @override
-  String get quizPrevious => 'Previous';
+  String get quizPrevious => 'previous';
 
   @override
-  String get quizNext => 'Next';
+  String get quizNext => 'next';
 
   @override
-  String quizTimeRemaining(String time) {
+  String quizTimeRemaining(Object time) {
     return 'Time: $time';
   }
 
   @override
-  String get quizResults => 'Quiz Results';
+  String get quizResults => 'Exam Results';
 
   @override
   String get quizPassed => 'Passed!';
 
   @override
-  String get quizFailed => 'Keep Practicing';
+  String get quizFailed => 'Failed';
 
   @override
-  String quizQuestionOf(int current, int total) {
+  String quizQuestionOf(Object current, Object total) {
     return 'Question $current of $total';
   }
 
   @override
-  String get quizSubmitConfirmTitle => 'Submit Quiz?';
+  String get quizSubmitConfirmTitle => 'Submit Exam?';
 
   @override
-  String quizSubmitConfirmMessage(int answered, int total) {
+  String quizSubmitConfirmMessage(Object answered, Object total) {
     return 'You have answered $answered out of $total questions. Are you sure you want to submit?';
   }
 
   @override
-  String get quizTimeUp => 'Time\'s up! Quiz submitted automatically.';
+  String get quizTimeUp =>
+      'Time\'s up! The practice exam has been submitted automatically.';
 
   @override
   String get quizReviewAnswers => 'Review Answers';
 
   @override
-  String get quizRetake => 'Retake Quiz';
+  String get quizRetake => 'Retake Exam';
 
   @override
   String get profileRole => 'Role';
@@ -880,7 +873,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileLanguage => 'Preferred Language';
 
   @override
-  String profileRegistered(String date) {
+  String profileRegistered(Object date) {
     return 'Registered: $date';
   }
 
@@ -915,7 +908,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paymentTigoCashDial =>
-      'To pay with Tigo Cash, dial *182*1*1*0728877442*amount#';
+      'To pay with Tigo Cash, dial: *182*1*1*0728877442*amount#';
 
   @override
   String get paymentHelpText => 'Need help? Call or WhatsApp: 0788659575';
@@ -926,10 +919,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paymentError =>
-      'Payment request failed. Please pay manually using the instructions below.';
+      'Payment request conflict. Please pay using the instructions provided here.';
 
   @override
-  String get paymentCopyNumber => 'Copy Number';
+  String get paymentCopyNumber => 'Copy number';
 
   @override
   String get paymentCallNumber => 'Call 0788659575';
@@ -938,23 +931,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentCallTigoNumber => 'Call 0728877442';
 
   @override
-  String get paymentWhatsApp => 'Send Message on WhatsApp';
+  String get paymentWhatsApp => 'Send message to WhatsApp';
 
   @override
-  String get paymentWhatsAppMessage => 'Request access for driving exam app';
+  String get paymentWhatsAppMessage =>
+      'Request access to use the driving theory exam app';
 
   @override
   String get paymentRequestExists =>
-      'A payment request for this plan is already pending. Please wait for activation or contact support.';
+      'Payment request already sent. Wait a moment for them to help you or contact help numbers and send a WhatsApp message which will appear below the page';
 
   @override
   String get commonError => 'Something went wrong. Please try again.';
 
   @override
-  String get commonRetry => 'Retry';
+  String get commonRetry => 'Try again';
 
   @override
-  String get adminTierLabel => 'Tier';
+  String get adminTierLabel => 'Level';
 
   @override
   String get adminExpiresLabel => 'Expires';
@@ -972,10 +966,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminManageExamsDesc => 'View and manage all practice exams';
 
   @override
-  String get adminManageUsersDesc => 'View, search, and manage all users';
+  String get adminManageUsersDesc => 'View, search and manage all users';
 
   @override
-  String get adminAccessCodesDesc => 'Manage access codes and payments';
+  String get adminAccessCodesDesc => 'Manage access codes and payment';
 
   @override
   String get adminQuickStats => 'Quick Stats';
@@ -987,8 +981,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminTotalPractices => 'Total Practices';
 
   @override
-  String get adminManagePlatformDesc =>
-      'Manage your traffic rules learning platform';
+  String get adminManagePlatformDesc => 'Manage the traffic rules platform';
 
   @override
   String get adminNotifications => 'Notifications';
@@ -1015,62 +1008,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String get examTimeSpent => 'Time';
 
   @override
-  String get profileLogoutConfirmTitle => 'Sign Out?';
+  String get profileLogoutConfirmTitle => 'Sign out?';
 
   @override
   String get profileLogoutConfirmMessage =>
-      'Are you sure you want to sign out of your account?';
+      'Do you want to sign out of your account?';
 
   @override
   String get profileDeleteInstructions =>
-      'Before deleting your account:\n• All your exam results will be permanently erased\n• Your access subscription will be removed\n• This action cannot be undone\n• You will need to re-register to use the app again';
+      'Before deleting your account:\n• All your answers will be deleted\n• Your subscription will be deleted\n• You will need to sign up again to use the app';
 
   @override
   String get progressExamsTaken => 'Exams Taken';
 
   @override
-  String get progressPassedCount => 'Passed';
+  String get progressPassedCount => 'Exams Passed';
 
   @override
-  String get progressFailedCount => 'Failed';
+  String get progressFailedCount => 'Exams Failed';
 
   @override
   String get progressPassRate => 'Pass Rate';
 
   @override
-  String get progressNoExams => 'No exams taken yet. Start practicing!';
+  String get progressNoExams => 'No exams taken. Start taking exams!';
 
   @override
-  String get certificateReadyTitle => 'Ready for Official Exam!';
+  String get certificateReadyTitle => 'Ready for the real exam!';
 
   @override
-  String certificateReadySubtitle(int count) {
-    return 'You have passed $count exams. You are ready for the official driving license test.';
+  String certificateReadySubtitle(Object count) {
+    return 'You have completed $count exams. You are ready for the driving license access exam.';
   }
 
   @override
   String get certificateIremboLink =>
-      'Register for Official Exam on irembo.gov.rw';
+      'Apply for the government exam at irembo.gov.rw';
 
   @override
   String get certificateIremboDesc =>
-      'Click below to register for the official provisional driving license computer-based test';
+      'Click here to apply for the online government driving license theory exam';
 
   @override
-  String certificateExamsNeeded(int needed) {
-    return 'Pass $needed more exams to earn your certificate';
+  String certificateExamsNeeded(Object needed) {
+    return 'Pass $needed more exams to get the certificate proving you are ready for the provisional license driving theory exam';
   }
 
   @override
-  String certificateProgressLabel(int passed, int total) {
-    return '$passed of $total required exams passed';
+  String certificateProgressLabel(Object passed, Object total) {
+    return '$passed of $total required exams';
   }
 
   @override
-  String get adminSortAsc => 'Oldest First';
+  String get adminSortAsc => 'Oldest first';
 
   @override
-  String get adminSortDesc => 'Newest First';
+  String get adminSortDesc => 'Newest first';
 
   @override
   String get adminFilterToday => 'Today';
@@ -1091,13 +1084,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminDeleteUserAction => 'Delete User';
 
   @override
-  String adminBlockUserConfirm(String name) {
-    return 'Block $name? They will lose access and cannot log in.';
+  String adminBlockUserConfirm(Object name) {
+    return 'Are you sure you want to block $name? They will no longer be able to sign in.';
   }
 
   @override
-  String adminDeleteUserConfirm(String name) {
-    return 'Permanently delete $name? All their data will be erased. This cannot be undone.';
+  String adminDeleteUserConfirm(Object name) {
+    return 'Delete $name entirely? All their data will be deleted.';
   }
 
   @override
@@ -1111,7 +1104,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminMustBlockFirst =>
-      'You must block the user before deleting them.';
+      'You must block the user first before deleting them.';
 
   @override
   String get adminBlockAccess => 'Block Access';
@@ -1121,10 +1114,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminBlockAccessConfirm =>
-      'Block this access code? The user will lose access immediately.';
+      'Block access code? The user will no longer be able to use the app.';
 
   @override
-  String get adminDeleteAccessConfirm => 'Delete this access code permanently?';
+  String get adminDeleteAccessConfirm => 'Delete this access code?';
 
   @override
   String get adminAccessBlocked => 'Access code blocked';
@@ -1133,12 +1126,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminAccessDeleted => 'Access code deleted';
 
   @override
-  String adminPage(int page, int total) {
+  String adminPage(Object page, Object total) {
     return 'Page $page of $total';
   }
 
   @override
-  String get adminLearningLanguage => 'Learning';
+  String get adminLearningLanguage => 'Language of Interest';
 
   @override
   String get adminIsBlocked => 'Blocked';
@@ -1150,11 +1143,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generalCopied => 'Copied!';
 
   @override
-  String get adminRetry => 'Retry';
+  String get adminRetry => 'Try again';
 
   @override
   String get languageSelectDescription =>
-      'You can change this later in Settings — get localized traffic alerts and routing.';
+      'You can change the language later in Settings.';
 
   @override
   String get languageSelectDeviceLanguage => 'Use device language';
@@ -1170,39 +1163,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageSelectHelpContent =>
-      'Selecting a language ensures that alerts, maps, and voice prompts are shown in your preferred language. You can change this later in Settings.';
+      'Choosing a language makes text, icons, and voice prompts appear in your language. You can change the language later in Settings.';
 
   @override
   String get commonGotIt => 'Got it';
 
   @override
-  String get languageSelectDialogTitle => 'Select language';
+  String get languageSelectDialogTitle => 'Choose Language';
 
   @override
   String get examNotFound => 'Exam not found';
 
   @override
-  String errorWithDetail(String detail) {
+  String errorWithDetail(Object detail) {
     return 'Error: $detail';
   }
 
   @override
-  String errorUnexpected(String detail) {
+  String errorUnexpected(Object detail) {
     return 'Unexpected error: $detail';
   }
 
   @override
-  String priceRwf(String amount) {
+  String priceRwf(Object amount) {
     return '$amount RWF';
   }
 
   @override
-  String errorHttpStatus(int code) {
+  String errorHttpStatus(Object code) {
     return 'HTTP $code';
   }
 
   @override
-  String get examSampleQ1 => 'What is the speed limit on highways?';
+  String get examSampleQ1 => 'What is the maximum speed on a major road?';
 
   @override
   String get examSampleQ1A1 => '90 km/h';
@@ -1217,22 +1210,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get examSampleQ1A4 => '120 km/h';
 
   @override
-  String get examSampleQ2 => 'What does a yellow traffic light mean?';
+  String get examSampleQ2 => 'What does this traffic sign mean?';
 
   @override
-  String get examSampleQ2A1 => 'Stop immediately';
+  String get examSampleQ2A1 => 'Stop right there';
 
   @override
-  String get examSampleQ2A2 => 'Go ahead';
+  String get examSampleQ2A2 => 'Continue';
 
   @override
-  String get examSampleQ2A3 => 'Be prepared to stop';
+  String get examSampleQ2A3 => 'Prepare to stop';
 
   @override
-  String get examSampleQ2A4 => 'Turn around';
+  String get examSampleQ2A4 => 'Change lane';
 
   @override
-  String get examSampleQ3 => 'How far from a fire hydrant can you park?';
+  String get examSampleQ3 => 'How far can you park from a water fire hydrant?';
 
   @override
   String get examSampleQ3A1 => '1 meter';
@@ -1247,35 +1240,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get examSampleQ3A4 => '10 meters';
 
   @override
-  String get examShareResult => 'Share Result';
+  String get examShareResult => 'Share Results';
 
   @override
-  String get examCopiedToClipboard => 'Result copied to clipboard';
+  String get examCopiedToClipboard => 'Results copied';
 
   @override
-  String get examGradeLabel => 'Grade';
+  String get examGradeLabel => 'Score';
 
   @override
   String get subscriptionPopular => '★ Popular';
 
   @override
-  String get quizTimeTaken => 'Time Taken';
+  String get quizTimeTaken => 'Time Used';
 
   @override
-  String get progressTotalQuestions => 'Total Questions';
+  String get progressTotalQuestions => 'Questions';
 
   @override
-  String get progressCorrectAnswers => 'Correct';
+  String get progressCorrectAnswers => 'Questions Correct';
 
   @override
-  String get progressIncorrect => 'Incorrect';
+  String get progressIncorrect => 'Questions Wrong';
 
   @override
   String get errorNetwork =>
-      'Unable to connect. Please check your internet connection and try again.';
+      'Cannot connect. Check your internet and try again.';
 
   @override
-  String get paymentChooseMethod => 'Choose Payment Method';
+  String get paymentChooseMethod => 'Choose payment method';
 
   @override
   String get aboutTitle => 'About';
@@ -1285,7 +1278,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutDescription =>
-      'Rwanda Traffic Rule is your companion for learning Rwanda traffic rules, road signs, and practicing theory questions to prepare for the provisional driving licence test. This is an independent educational app and is not affiliated with any government authority.';
+      'Rwanda Traffic Rule is your helper for learning traffic rules, traffic signs, and practicing exam questions to prepare for your provisional license driving theory exam. This is an independent educational app and is not affiliated with any government or testing center.';
 
   @override
   String get aboutFeatures => 'Key Features';
@@ -1306,117 +1299,116 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutContact => 'Contact Us';
 
   @override
-  String get aboutContactInfo =>
-      'Phone/WhatsApp: 0788659575 / 0728877442\nEmail: info@Rwanda Traffic Rule.rw';
+  String get aboutContactInfo => 'Tel/WhatsApp: 0788659575 / 0728877442';
 
   @override
-  String get aboutCopyright => 'Copyright';
+  String get aboutCopyright => 'App owner rights';
 
   @override
   String get aboutCopyrightText =>
-      '© 2026 Rwanda Traffic Rule. All rights reserved.';
+      '© 2026 Rwanda Traffic Rule. App owner rights reserved.';
 
   @override
-  String get privacyLastUpdated => 'Last updated: March 2026';
+  String get privacyLastUpdated => 'Last updated: February 2026';
 
   @override
   String get privacyIntro =>
-      'Rwanda Traffic Rule is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you use our educational application. We are an independent educational service and are not affiliated with any government authority.';
+      'Rwanda Traffic Rule cares about your privacy. These guidelines explain how we collect, use, and protect your data. We are an independent educational service and are not affiliated with any government agency.';
 
   @override
   String get privacyDataCollection => 'Data Collection';
 
   @override
   String get privacyDataCollectionBody =>
-      'We collect your phone number and full name when you register. We also collect your practice quiz results and progress data to provide personalized learning insights. A unique device identifier is generated to secure your account.';
+      'We collect your phone number and full name when you sign up. We also collect your device fingerprint, which is a unique identifier used to protect your account. We collect your exam answers and progress data. A unique device ID is created to secure your account.';
 
   @override
   String get privacyDataUsage => 'How We Use Your Data';
 
   @override
   String get privacyDataUsageBody =>
-      'Your data is used to provide and improve our services, track your learning progress, manage your subscription, and communicate important updates about the application.';
+      'Your data is used to provide and improve our services, track your progress, manage your subscriptions, and send you important information.';
 
   @override
   String get privacyDataProtection => 'Data Protection';
 
   @override
   String get privacyDataProtectionBody =>
-      'We use industry-standard security measures including encrypted data transmission and secure server storage. Your personal data is never shared with third parties without your consent.';
+      'We use high-level security measures, including encrypted transmission and secure storage. Your personal data is never shared without your consent.';
 
   @override
   String get privacyDataSharing => 'Data Sharing';
 
   @override
   String get privacyDataSharingBody =>
-      'We do not sell, trade, or rent your personal data. We may share anonymous aggregated data for statistical purposes only.';
+      'We do not sell your personal information to third parties. We may share anonymized data for statistical purposes.';
 
   @override
   String get privacyUserRights => 'Your Rights';
 
   @override
   String get privacyUserRightsBody =>
-      'You have the right to access, update, or delete your personal data at any time. You can request data deletion by contacting our support team or using the Delete Account option in Settings.';
+      'You have the right to access, correct, or delete your personal data at any time through the Delete Account option in Settings.';
 
   @override
-  String get termsLastUpdated => 'Last updated: March 2026';
+  String get termsLastUpdated => 'Last updated: February 2026';
 
   @override
   String get termsIntro =>
-      'By using Rwanda Traffic Rule, you agree to the following terms and conditions. Please read them carefully before using the application. Rwanda Traffic Rule is an independent educational app designed to help you prepare for the driving theory test. We are not affiliated with any government body or the official exam provider.';
+      'By using Rwanda Traffic Rule, you agree to the following terms. Rwanda Traffic Rule is an independent educational app that helps you prepare for your theory exam. We are not affiliated with any government or testing center.';
 
   @override
   String get termsAcceptance => 'Acceptance of Terms';
 
   @override
   String get termsAcceptanceBody =>
-      'By creating an account and using this application, you agree to be bound by these terms. If you do not agree, please discontinue use immediately.';
+      'By creating an account and using this app, you agree to these terms. If you do not agree, please stop using this app.';
 
   @override
   String get termsUserAccount => 'User Account';
 
   @override
   String get termsUserAccountBody =>
-      'You are responsible for maintaining the security of your account. Each account is linked to a single phone number and device. Sharing account credentials is not permitted.';
+      'You are responsible for maintaining the security of your account. Each account is linked to one phone number and one device. Sharing account information is not allowed.';
 
   @override
-  String get termsContent => 'Content & Exams';
+  String get termsContent => 'Exam Content';
 
   @override
   String get termsContentBody =>
-      'All content is for educational and practice purposes only. It does not represent the official government exam. We strive for accuracy but make no guarantees about exam outcomes based on practice results. Rwanda Traffic Rule is not affiliated with any government authority.';
+      'All exam questions are for practice and education only. They are not a substitute for the official government exam. We cannot guarantee exam results. Rwanda Traffic Rule is not affiliated with any government agency.';
 
   @override
-  String get termsPayment => 'Requesting to unlock exams';
+  String get termsPayment => 'Requesting Exam Access';
 
   @override
   String get termsPaymentBody =>
-      'To unlock exams, please contact us at 0788659575 or 0728877442.';
+      'To access the app, contact help at 0788659575 or 0728877442.';
 
   @override
-  String get termsTermination => 'Account Termination';
+  String get termsTermination => 'Account Closure';
 
   @override
   String get termsTerminationBody =>
-      'We reserve the right to suspend or terminate accounts that violate these terms, engage in fraudulent activity, or misuse the platform. You may delete your account at any time from settings.';
+      'We reserve the right to close accounts that violate these terms. You may delete your account at any time in Settings.';
 
   @override
   String get aboutDisclaimer => 'Disclaimer';
 
   @override
   String get aboutDisclaimerText =>
-      'Rwanda Traffic Rule is an independent educational app designed to help users learn traffic rules and prepare for the driving theory test. This app is not affiliated with, endorsed by, or connected to any government authority or official exam body. All content is for practice and learning purposes only.';
+      'Rwanda Traffic Rule is an independent educational app that helps you learn traffic rules and prepare for your theory exam. This app is not affiliated with, endorsed by, or connected to any government agency or testing center. All content in this app is for practice and education only.';
 
   @override
   String get profileCertificatesTitle => 'Certificates';
 
   @override
   String get profileCertificatesSubtitle =>
-      'Certificates earned and progress towards next one';
+      'Certificates earned and progress to next';
 
   @override
   String get offlineBanner =>
-      'You are offline. Data shown may not be up to date.';
+      'You are offline. Cached data may not be up to date.';
 
   @override
   String get syncingData => 'Syncing data...';
@@ -1425,23 +1417,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dataSynced => 'Data synced successfully';
 
   @override
-  String get savedOffline => 'Saved offline. Will sync when connected.';
+  String get savedOffline =>
+      'Saved offline. Will sync when you reconnect to the internet.';
 
   @override
-  String certificateUniqueExamsPassed(int count, int total) {
+  String certificateUniqueExamsPassed(Object count, Object total) {
     return '$count of $total unique exams passed';
   }
 
   @override
-  String certificatePassMark(int required, int total, int percent) {
-    return 'Pass mark: $required/$total ($percent%)';
+  String certificatePassMark(Object percent, Object required, Object total) {
+    return 'Passing score: $required/$total ($percent%)';
   }
 
   @override
-  String get certificateLatestAttempt => 'Latest attempt';
+  String get certificateLatestAttempt => 'Latest';
 
   @override
-  String certificateExamStatus(int index) {
+  String certificateExamStatus(Object index) {
     return 'Exam $index';
   }
 
@@ -1449,11 +1442,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get certificateNotAttempted => 'Not attempted';
 
   @override
-  String get consentTitle => 'Your Privacy Matters';
+  String get consentTitle => 'Your survey is important';
 
   @override
   String get consentBody =>
-      'Rwanda Traffic Rule collects and processes the following data to provide you with the best learning experience:\n\n• Phone number & name — for account creation and authentication\n• Device identifier — a hashed fingerprint to secure your account\n• Exam results & progress — to track your learning journey\n• Offline cache — so the app works without internet\n\nYour data is stored securely and is never sold to third parties. You can delete your account and all associated data at any time from your profile.';
+      'Rwanda Traffic Rule collects and works with the following information to give you the best learning experience:\n\n• Phone number and name — to open an account and verify\n• Device fingerprint — a unique identifier assigned by a hash to protect your account\n• Exam answers and progress — to track your learning journey\n• Offline cache — so the app works without internet\n\nYour data is securely stored and never leaked to others. You can delete your account and all associated data at any time using the profile settings.';
 
   @override
   String get consentAccept => 'I understand and agree';
@@ -1466,22 +1459,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get registerInvalidPhone =>
-      'Enter a valid phone number (e.g. 078... or +250 78...)';
+      'Enter a valid phone number (e.g., 078... or +250 78...)';
 
   @override
   String get joinGroup => 'WhatsApp Group';
 
   @override
-  String get joinGroupSubtitle => 'Join a WhatsApp group';
+  String get joinGroupSubtitle => 'Join WhatsApp group';
 
   @override
-  String get adminOfflineTooltip => 'Offline – showing cached data';
+  String get adminOfflineTooltip => 'Offline – show cached data';
 
   @override
   String get adminOfflineBadge => 'OFFLINE';
 
   @override
-  String adminActiveLabel(int count) {
+  String adminActiveLabel(Object count) {
     return '$count active';
   }
 
@@ -1495,7 +1488,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonErrorTitle => 'Error';
 
   @override
-  String get exitAppTitle => 'Exit App';
+  String get exitAppTitle => 'Exit app';
 
   @override
   String get exitAppMessage => 'Are you sure you want to exit the app?';
@@ -1507,20 +1500,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exitAppNo => 'Stay';
 
   @override
-  String get consentItemPhone => 'Phone number & name';
+  String get consentItemPhone => 'Phone number and name';
 
   @override
-  String get consentItemPhoneDetail => 'Account creation & authentication';
+  String get consentItemPhoneDetail => 'Open account and verify';
 
   @override
-  String get consentItemDevice => 'Device identifier';
+  String get consentItemDevice => 'Device fingerprint';
 
   @override
   String get consentItemDeviceDetail =>
-      'Hashed fingerprint to secure your account';
+      'Unique identifier used to protect your account';
 
   @override
-  String get consentItemProgress => 'Exam results & progress';
+  String get consentItemProgress => 'Exam answers and progress';
 
   @override
   String get consentItemProgressDetail => 'Track your learning journey';
@@ -1533,17 +1526,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get consentSecurityNote =>
-      'Your data is stored securely and never sold to third parties.';
+      'Your data is securely stored and never leaked to others.';
 
   @override
-  String get consentIndependentTitle => 'Independent Content';
+  String get consentIndependentTitle => 'Independent content';
 
   @override
   String get consentIndependentBody =>
-      'This is an independent educational tool. It is NOT affiliated with, endorsed by, or representing any government entity or the Rwanda National Police.';
+      'This is an independent educational app. It is not affiliated with, endorsed by, or connected to any government or police level.';
 
   @override
-  String get dashboardWelcome => 'Welcome back';
+  String get dashboardWelcome => 'Welcome';
 
   @override
   String get dashboardNotices => 'NOTICES';
@@ -1558,35 +1551,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardShare => 'Share App';
 
   @override
-  String get dashboardProfileUnavailable => 'Profile unavailable';
+  String get dashboardProfileUnavailable => 'Account info unavailable';
 
   @override
-  String get dashboardLoading => 'Loading subscription…';
+  String get dashboardLoading => 'Loading access info…';
 
   @override
   String get dashboardSubscriptionUnavailable =>
-      'Subscription unavailable. Pull down to retry.';
+      'Access info unavailable. Pull down to retry.';
 
   @override
-  String get dashboardExpired => 'Your learning access has expired';
+  String get dashboardExpired => 'Learning access expired';
 
   @override
-  String get dashboardDurationUnavailable => 'Not available';
+  String get dashboardDurationUnavailable => 'Unknown';
 
   @override
-  String dashboardDuration(String duration) {
+  String dashboardDuration(Object duration) {
     return 'Duration: $duration';
   }
 
   @override
-  String get dashboardCached => 'Saved status · pull down to refresh';
+  String get dashboardCached => 'Cached data · pull to refresh';
 
   @override
   String get dashboardNoticesUnavailable =>
-      'Notifications are unavailable right now. Please try again later.';
+      'Notices unavailable now. Try again later.';
 
   @override
-  String get dashboardNoNotices => 'No notifications yet';
+  String get dashboardNoNotices => 'No notices';
 
   @override
   String get dashboardCopyLink => 'Copy link';
@@ -1595,8 +1588,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardLinkCopied => 'Link copied';
 
   @override
-  String get dashboardOpenFailed =>
-      'Unable to complete this action. Please try again.';
+  String get dashboardOpenFailed => 'Unavailable. Try again.';
 
   @override
   String get dashboardComingSoon => 'Coming soon';
@@ -1605,20 +1597,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardUnderDevelopment => 'This feature is under development.';
 
   @override
-  String get dashboardExamsLocked => 'Exams are locked';
+  String get dashboardExamsLocked => 'Exams locked';
 
   @override
-  String get dashboardRequestExamAccess => 'Tap here to request exam access';
+  String get dashboardRequestExamAccess => 'Request exam access here';
 
   @override
   String get paymentExamLanguage => 'Exam language';
 
   @override
   String get paymentExamLanguageHint =>
-      'Choose the language of your exams. This does not change the app language.';
+      'Choose exam language. This does not change app language.';
 
   @override
-  String paymentAmountToPay(String amount) {
+  String paymentAmountToPay(Object amount) {
     return 'Amount to pay: $amount RWF';
   }
 
@@ -1626,10 +1618,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentMethodLabel => 'Payment method';
 
   @override
-  String get paymentNotConfigured => 'Payment details are not configured yet.';
+  String get paymentNotConfigured => 'Payment info not configured.';
 
   @override
-  String get paymentUssdLabel => 'Payment USSD code';
+  String get paymentUssdLabel => 'USSD dial code';
 
   @override
   String get paymentCopyCode => 'Copy code';
@@ -1639,104 +1631,104 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paymentCopyFailed =>
-      'Could not copy the code. Please try again or copy it manually.';
+      'Code not copied. Try again or copy manually.';
 
   @override
   String get paymentUssdInstruction =>
-      'Copy this code and dial it on your phone to make your payment.';
+      'Copy this code and use it on your phone to pay.';
 
   @override
-  String get paymentPayNow => 'PAY NOW';
+  String get paymentPayNow => 'Pay now';
 
   @override
   String get paymentIntegrationPending =>
-      'Payment details are prepared. Payment initiation is not connected yet; no payment has been confirmed.';
+      'Payment info pending. Payment initiation method not connected; no payment approved.';
 
   @override
   String get paymentPreparationFailed =>
-      'Unable to prepare payment. Please try again.';
+      'Payment preparation failed. Try again.';
 
   @override
-  String paymentRecipient(String name, String method) {
-    return '$method registered to: $name';
+  String paymentRecipient(Object method, Object name) {
+    return '$method merchant: $name';
   }
 
   @override
   String get paymentVerifyRecipient =>
-      'Before confirming payment, check that the recipient name on your phone matches the name shown here. If it does not match, do not proceed.';
+      'Before confirming payment, check that the recipient name shown on your phone matches what you entered here. If not, do not proceed.';
 
   @override
-  String get dashboardGazetteSubtitle => 'Road rules';
+  String get dashboardGazetteSubtitle => 'Traffic rules';
 
   @override
-  String get dashboardIremboSubtitle => 'Online services';
+  String get dashboardIremboSubtitle => 'Irembo services';
 
   @override
-  String get guideTitle => 'Instructions';
+  String get guideTitle => 'GUIDELINES';
 
   @override
   String get guideWelcome => 'Welcome to RWANDA TRAFFIC RULE';
 
   @override
-  String get guideAboutTitle => '1. About the app';
+  String get guideAboutTitle => '1. App description';
 
   @override
   String get guideAboutBody =>
-      'RWANDA TRAFFIC RULE helps you learn road rules and prepare for the provisional driving licence exam through practice questions.';
+      'This app called ``RWANDA TRAFFIC RULE`` is an app that teaches traffic rules, consisting of questions asked in the provisional exam (learner permit)';
 
   @override
-  String get guideUseTitle => '2. How to use the app';
+  String get guideUseTitle => '2. HOW THE APP WORKS';
 
   @override
   String get guideUseBody =>
-      '1. On your first visit, register using your full name and phone number.\n\n2. If you already have an account, choose Sign in and enter your registered phone number. Follow any additional sign-in prompts.\n\n3. Open Practice from the dashboard and choose an exam. Exams marked free are available without paid access; locked exams require active access.\n\n4. Choose an answer and review the feedback. Green indicates a correct answer; red indicates an incorrect answer. Continue to the next question, finish the exam to see your score, and use Progress to review your results.';
+      '1. To use this app you must first sign up when you first download it where you are asked to write your full name, your phone number; confirm and sign up approved\n\n2. When you already signed up you do not need to sign up again but instead sign up \\\"SIGN IN\\\" then you can enter your phone number then sign up \\\"APPROVED\\\" then you will be taken to dashboard where you will see items in the app.\n\n3. To start learning, sign up \\\"PRACTICE\\\" when you open it consists of 21 exams each consisting of 20 questions, but the first exam is free (free) the rest require payment.\n\n4. When you are practicing in this app, the row you make changes from green to red and when you mark it changes from green to red because practice always shows the correct answer so you can try to capture it (remember it) then sign up written \\\"NEXT\\\" go to the next question when you reach the end sign up written \\\"SUBMIT EXAM\\\" then you will see the score then choose another exam to learn';
 
   @override
-  String get guideExamTitle => '3. Preparing for the computer-based exam';
+  String get guideExamTitle =>
+      '3. HOW YOU SEE QUESTIONS ON THE PROVISOIRE EXAM NYIRIZINA';
 
   @override
   String get guideExamBody =>
-      'Use practice questions to learn how to read questions and choose answers on a screen. Follow the instructions shown during your official exam, including how to move between questions and submit your answers.\n\nPractice feedback helps you learn. The official exam may use different questions, timing and feedback; this app does not guarantee identical exam content.';
+      'A. Go to the provisoireform on the machine First they will assess (evaluate) that you do not have disability, vision, hearing, reading and writing skills, proper identification number (identification) and that day\'s code, many others,... example fingerprint, on the thumb left index,...\n\nB. You will see these questions in this app as they are in the exam no questions they will ask you in the provisoire exam that are not in this app, If you choose an answer you will continue then the next question then you sign up \\\"NEXT\\\" continue with other questions when you finish you sign up \\\"SUBMIT EXAM\\\" then you will know the score so choose another exam to learn';
 
   @override
-  String get guidePaymentTitle => '4. Payment and exam access';
+  String get guidePaymentTitle => '4. PAY TO UNLOCK ALL EXAMS';
 
   @override
   String get guidePaymentBody =>
-      '1. Tap the access banner on the dashboard or a locked practice exam to open Practice Exam Access.\n\n2. Choose 1, 3 or 6 months. The app initially selects 1 month in Kinyarwanda and 3 months in English or French. The amount in RWF updates when you change the plan; pricing follows the app language.\n\n3. MoMo Pay is selected first. You can switch to MTN or Tigo. Check the account name shown: Alexis for MoMo Pay, or NSHIMIYIMANA Alexis for MTN and Tigo. Compare it with the name your phone displays before confirming payment.\n\n4. Tap PAY NOW to copy the complete USSD code and open the dialer. Complete the payment on your phone. The copy icon beside the code also lets you copy and dial it manually.\n\n5. After paying, use the call or WhatsApp buttons under Need Help to request activation for the phone number registered in the app. Opening the dialer or copying a code does not activate the exams.\n\n6. Once an administrator has assigned active access to your account, return to the dashboard with an internet connection and tap a circular refresh arrow. The access banner updates and the paid practice exams become available. You do not need to enter the access code on this page. The app also checks on opening the dashboard, returning to the app and periodically while the dashboard is active.\n\n7. If exams remain locked, confirm that support used your registered phone number and that your access has not expired. Contact support using the buttons below.';
+      '1. As I explained earlier the first exam is free the other 20 require payment 1500Rwf to learn one month, 3000Rwf to learn three months or 5000 Rwf to learn six months on 0788659575/ 0728877442 or on MOMO PAY: 329494 merchant Alexis.\n\nTo pay using any number you choose is valid not mandatory to mention but if you use another number when you finish paying you will receive a message\n\nA. Pay using MTN:\na. *182*1*1*0788659575*1500#\nb. *182*8*1*329494*1500#\n\nB. Pay using Tigo or Airtel\na. *500*1*1*0728877442*1500#\nb. *182*8*1*88329494*1500#\nMerchant Alexis\n\n2. When you finish paying go check if you have connection (internet) wait two minutes then sign in before writing language on the screen then open practice you will see them unlocked all of them.\n\n4. OTHER MEANINGS THAT CAUSED YOU TO RECEIVE A MESSAGE:';
 
   @override
-  String get guideOpenAccess => 'View plans and pay';
+  String get guideOpenAccess => 'View payment prices';
 
   @override
-  String get dashboardRefresh => 'Refresh app access';
+  String get dashboardRefresh => 'Refresh access';
 
   @override
-  String get dashboardRefreshDone => 'Access status refreshed.';
+  String get dashboardRefreshDone => 'Access refreshed.';
 
   @override
   String get dashboardRefreshFailed =>
-      'Could not refresh access. Check your internet connection and try again.';
+      'Failed to refresh access. Check your internet and try again.';
 
   @override
   String get resourcesTitle => 'Resources';
 
   @override
   String get resourcesDescription =>
-      'Read the Gazette and road signs inside the app. Documents are included for offline reading and keep their original language.';
+      'Read gazette and signs in the app. These resources are included and readable without internet; choose your preferred language.';
 
   @override
   String get resourcesGazette => 'Gazette';
 
   @override
-  String get resourcesRoadSigns => 'Road signs';
+  String get resourcesRoadSigns => 'Signs';
 
   @override
   String get resourcesOfflinePdf => 'PDF • Read offline';
 
   @override
-  String get resourcesReadError =>
-      'This document could not be opened. Try again.';
+  String get resourcesReadError => 'Failed to open this resource. Try again.';
 
   @override
   String get resourcesPreviousPage => 'Previous page';
@@ -1751,10 +1743,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resourcesZoomIn => 'Zoom in';
 
   @override
-  String get resourcesLoading => 'Loading document…';
+  String get resourcesLoading => 'Resource loading…';
 
   @override
-  String resourcesPageCount(int page, int total) {
+  String resourcesPageCount(Object page, Object total) {
     return 'Page $page of $total';
   }
 
@@ -1763,7 +1755,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get irAlreadySubmitted =>
-      'Request received. One request per service slot.';
+      'Request submitted. One request per service.';
+
+  @override
+  String get permisOption => 'Permis option';
+
+  @override
+  String get irOption => 'Irembo option';
 
   @override
   String get irServiceFee => 'Registration assistance fee';
@@ -1772,13 +1770,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irPay => 'Pay';
 
   @override
-  String get irWorkspace => 'Irembo Registrations';
+  String get irWorkspace => 'Irembo request';
 
   @override
-  String get irMyRequests => 'My Irembo Requests';
+  String get irMyRequests => 'My Irembo requests';
 
   @override
-  String get irNew => 'New service request';
+  String get irNew => 'New request';
 
   @override
   String get irManual => 'Manual';
@@ -1788,7 +1786,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get irNotice =>
-      'Get help registering for your exam. Official registration is confirmed separately. You can submit a request for each service you need.';
+      'Help with exam registration. Registration is approved automatically.';
 
   @override
   String get irFullName => 'Full name';
@@ -1806,29 +1804,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irExamLanguage => 'Exam language';
 
   @override
-  String get irLanguageHint => 'e.g., Kinyarwanda, English, French';
+  String get irLanguageHint => 'Example: Kinyarwanda, English, French';
 
   @override
-  String get irDistrict => 'Preferred exam district';
+  String get irDistrict => 'District where you want the exam done';
 
   @override
   String get irExamDate => 'Preferred exam date (optional)';
 
   @override
-  String get irDateNotice =>
-      'Your preferred date is a request, not a confirmed appointment.';
+  String get irDateNotice => 'Preferred date is not the exam itinerary.';
 
   @override
   String get irProvisoireCode => 'Provisoire code';
 
   @override
-  String get irCategory => 'Driving category';
+  String get irCategory => 'Applicant category';
 
   @override
   String get irService => 'Service';
 
   @override
-  String get irOption => 'Permis option';
+  String get irSelectRequest => 'Choose request';
 
   @override
   String get irReview => 'Review request';
@@ -1837,37 +1834,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irConfirm => 'Submit request';
 
   @override
-  String get irEdit => 'Edit details';
+  String get irEdit => 'Edit request';
 
   @override
-  String get irSaved => 'Request saved';
+  String get irSaved => 'Request submitted';
 
   @override
-  String get irReference => 'Registration reference';
+  String get irReference => 'Request number';
 
   @override
-  String get irStatus => 'Status';
+  String get irStatus => 'Current status';
 
   @override
-  String get irSubmitted => 'Submitted';
+  String get irSubmitted => 'Submitted time';
 
   @override
-  String get irUpdated => 'Last updated';
+  String get irUpdated => 'Updated time';
 
   @override
-  String get irAssigned => 'Assigned staff member';
+  String get irAssigned => 'Staff assigned';
 
   @override
-  String get irUnassigned => 'Unassigned';
+  String get irUnassigned => 'No staff assigned';
 
   @override
   String get irPending => 'Pending';
 
   @override
-  String get irInReview => 'In Review';
+  String get irInReview => 'Under review';
 
   @override
-  String get irNeedsInformation => 'Needs Information';
+  String get irNeedsInformation => 'Missing information';
 
   @override
   String get irCompleted => 'Completed';
@@ -1879,13 +1876,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irCancelled => 'Cancelled';
 
   @override
-  String get irSearch => 'Search name, phone or national ID';
+  String get irSearch => 'Search name, phone or ID';
 
   @override
   String get irFilters => 'Filters';
 
   @override
-  String get irApply => 'Apply filters';
+  String get irApply => 'Apply';
 
   @override
   String get irClear => 'Clear filters';
@@ -1897,7 +1894,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irFrom => 'Submitted from';
 
   @override
-  String get irTo => 'Submitted until';
+  String get irTo => 'Submitted to';
 
   @override
   String get irNewest => 'Newest first';
@@ -1909,7 +1906,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irSort => 'Sort by';
 
   @override
-  String get irEmpty => 'No matching requests.';
+  String get irEmpty => 'No matching request';
 
   @override
   String get irView => 'View details';
@@ -1927,60 +1924,60 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irCopied => 'Copied';
 
   @override
-  String get irCopyFailed => 'Could not copy. Please try again.';
+  String get irCopyFailed => 'Copy failed. Try again.';
 
   @override
-  String get irCallFailed => 'Could not open the calling app.';
+  String get irCallFailed => 'Call substitution app failed to open.';
 
   @override
-  String get irMessages => 'Messages for the applicant';
+  String get irMessages => 'Message required for applicant';
 
   @override
-  String get irInternalNotes => 'Internal staff notes';
+  String get irInternalNotes => 'Staff only notes';
 
   @override
   String get irInternalHint => 'Visible to staff only';
 
   @override
-  String get irMessage => 'Message to applicant';
+  String get irMessage => 'Submitted message to applicant';
 
   @override
-  String get irReason => 'Reason (shown to applicant)';
+  String get irReason => 'Reason (shows applicant)';
 
   @override
-  String get irReasonRequired => 'Provide a reason for this status.';
+  String get irReasonRequired => 'Provide reason for pending request.';
 
   @override
-  String get irAudit => 'Audit history';
+  String get irAudit => 'Change history';
 
   @override
   String get irSave => 'Save changes';
 
   @override
-  String get irRetry => 'Retry';
+  String get irRetry => 'Try again';
 
   @override
   String get irClose => 'Close';
 
   @override
-  String get irRequired => 'This field is required.';
+  String get irRequired => 'These fields are required.';
 
   @override
-  String get irInvalid => 'Check the entered details.';
+  String get irInvalid => 'Check the info you entered.';
 
   @override
   String get irInvalidId => 'Enter exactly 16 digits.';
 
   @override
-  String get irInvalidPhone => 'Enter a valid Rwanda mobile number.';
+  String get irInvalidPhone => 'Enter a valid Rwandan phone number.';
 
   @override
   String get irUnavailable =>
-      'Unable to complete the request. Check your connection and retry. Your entered details are kept on this page.';
+      'Cannot access this service. Check internet and try again. Info entered was lost.';
 
   @override
   String get irConflict =>
-      'This request changed or was already submitted. Refresh the list before trying again.';
+      'This request was edited or submitted. Refresh the list before responding.';
 
   @override
   String get irNext => 'Next';
@@ -1995,13 +1992,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irChange => 'Change';
 
   @override
-  String get irNoMessages => 'No messages yet.';
+  String get irNoMessages => 'No message received.';
 
   @override
-  String get irResults => 'Results';
+  String get irResults => 'Results found';
 
   @override
-  String get irSelectDistrict => 'Search and select a district';
+  String get irSelectDistrict => 'Search district';
 
   @override
   String get irEnglish => 'English';
@@ -2013,70 +2010,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String get irKinyarwanda => 'Kinyarwanda';
 
   @override
-  String get irChooseService => 'Choose the exam service';
+  String get irChooseService => 'Choose exam service';
 
   @override
-  String get irChooseOption => 'Choose your Permis option';
+  String get irChooseOption => 'Choose permit type';
 
   @override
-  String get irProvisoireHelp => 'Provisional driving licence exam';
+  String get irProvisoireHelp => 'Provisional learner permit exam';
 
   @override
-  String get irPermisHelp => 'Practical driving licence exam';
+  String get irPermisHelp => 'Provisional learner permit exam';
 
   @override
-  String get irContinue => 'Register';
+  String get irContinue => 'Submit';
 
   @override
-  String get irRequestsUnavailable => 'Your requests could not be loaded';
+  String get irRequestsUnavailable => 'Your request is unavailable.';
 
   @override
   String get irServerSetup =>
-      'The registration service is not ready on the server yet. Please contact support or try again later.';
+      'Registration service not properly set up on server. Contact support or try again later.';
 
   @override
   String get irServiceUnavailable =>
-      'The registration service is temporarily unavailable. Please try again later.';
+      'Registration service currently unavailable. Try again.';
 
   @override
   String get irAccessUnavailable =>
-      'You do not have access to this request. Check your signed-in account.';
+      'Not authorized to view this bureau. Check your signed-in account.';
 
   @override
-  String get irNoRequests => 'Choose a service to get started.';
+  String get irNoRequests => 'Choose a service to begin.';
 
   @override
   String get irStaffHelp =>
-      'Find applicants, review requests and coordinate registration assistance.';
+      'Search applicants, review request and track registration help.';
 
   @override
   String get waIntro =>
-      'Learn together. Choose a study group to ask questions and share learning tips.';
+      'Let\'s build together. Choose a group to discuss questions and get study tips.';
 
   @override
-  String get waManageIntro =>
-      'Manage the study groups available to your learners.';
+  String get waManageIntro => 'Manage study groups for students.';
 
   @override
   String get waCached =>
-      'Showing saved groups. An internet connection is needed to join or receive new messages.';
+      'These are cached groups. Joining a group or receiving new messages requires internet.';
 
   @override
   String get progressSaved =>
-      'Showing results saved on this device. New results will sync when connected.';
+      'These are cached scores on this device. New scores will sync when internet is available.';
 
   @override
   String get irDeleteRequest => 'Delete request';
 
   @override
   String get irDeleteConfirm =>
-      'Permanently delete this request and its messages? This cannot be undone.';
+      'Delete this request and its message permanently? This cannot be undone.';
 
   @override
-  String get irSelectRequest => 'Select request';
-
-  @override
-  String get irSelectPage => 'Select this page';
+  String get irSelectPage => 'Choose all requests on this page';
 
   @override
   String get irSelected => 'Selected';
@@ -2086,11 +2079,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get irOfflineSaved =>
-      'Showing saved requests. Connect to the internet to refresh, submit or delete requests.';
+      'Saved request. Connect to internet to refresh, submit or delete request.';
 
   @override
   String get irDeleteUnavailable =>
-      'Deletion is unavailable on this server. Update the Irembo backend routes and handler, then retry.';
+      'Deletion unavailable on this server. Update Irembo backend routes and handler, then retry.';
 
   @override
   String get referralTitle => 'Refer & Earn';

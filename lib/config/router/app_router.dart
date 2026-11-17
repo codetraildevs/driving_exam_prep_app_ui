@@ -14,6 +14,7 @@ import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/home/presentation/pages/main_layout.dart';
+import '../../features/referrals/presentation/referral_page.dart';
 import '../../shared/locale/language_selector_page.dart';
 import '../../shared/subscription/subscription_notifier.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -34,6 +35,7 @@ import '../../features/subscription/presentation/pages/subscription_page.dart';
 import '../../features/admin/presentation/pages/admin_dashboard_page.dart';
 import '../../shared/responsive/responsive_layout.dart';
 import '../../features/admin/presentation/pages/admin_users_page.dart';
+import '../../features/admin/presentation/pages/admin_referrals_page.dart';
 import '../../features/admin/presentation/pages/admin_access_page.dart';
 import '../../features/admin/presentation/pages/admin_progress_page.dart';
 import '../../features/admin/presentation/pages/admin_analytics_page.dart';
@@ -105,6 +107,7 @@ class AppRouter {
           location == '/language-select';
 
       final isProtectedPage =
+          location.startsWith('/referrals') ||
           location.startsWith('/irembo') ||
           location.startsWith('/home') ||
           location.startsWith('/practice') ||
@@ -186,6 +189,7 @@ class AppRouter {
           child: child,
         ),
         routes: [
+          GoRoute(path: '/referrals', builder: (_, __) => const ReferralPage()),
           GoRoute(
             path: '/home',
             name: 'home',
@@ -297,6 +301,8 @@ class AppRouter {
           ),
 
           // Admin routes
+          GoRoute(path: '/admin/referrals', builder: (_, __) => const AdminReferralsPage()),
+          GoRoute(path: '/admin/referrals/:userId', builder: (_, state) => AdminReferralsPage(userId: state.pathParameters['userId'])),
           GoRoute(
             path: '/admin',
             name: 'admin',

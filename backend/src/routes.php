@@ -5,6 +5,9 @@
  */
 
 return [
+    ['GET', '/referral', 'referralLanding'],
+    ['GET', '/.well-known/assetlinks.json', 'referralAssetLinks'],
+    ['GET', '/api/referrals/me', 'referralDashboard'],
     // Health & Root
     ['GET', '/', 'rootHandler'],
     ['GET', '/health', 'healthCheck'],
@@ -88,6 +91,8 @@ return [
 
     // Admin
     ['GET', '/api/admin/users', 'adminListUsers'],
+    ['GET', '/api/admin/referrals', 'adminReferrals'],
+    ['GET', '/api/admin/referrals/:userId', 'adminReferrals'],
     ['GET', '/api/admin/analytics', 'adminAnalytics'],
     ['PATCH', '/api/admin/users/:userId/block', 'adminBlockUser'],
     ['DELETE', '/api/admin/users/:userId', 'adminDeleteUser'],

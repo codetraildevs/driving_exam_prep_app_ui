@@ -63,6 +63,7 @@ android {
 }
 
 dependencies {
+    implementation("com.android.installreferrer:installreferrer:2.2")
     implementation("androidx.activity:activity-ktx:1.13.0")
 }
 
