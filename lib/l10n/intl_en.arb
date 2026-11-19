@@ -656,6 +656,7 @@
   "referralDescription": "Help a friend prepare for their driving theory exam. Send your personal invitation and follow successful registrations here.",
   "referralSubtitle": "Invite friends. Track your invitations.",
   "referralYourCode": "Your personal invitation code",
+  "referralCodeLabel": "Code: {code}",
   "referralInvite": "Invite friends",
   "referralCopy": "Copy referral link",
   "referralHistory": "Referral history",
@@ -681,5 +682,34 @@
         "example": "5"
       }
     }
-  }
+  },
+  "authRecoverTitle": "Recover account on this device",
+  "authRecoverBody": "Your account is linked to another device. Enter your full name to move this account to this phone.",
+  "authRecoverNameLabel": "Full name",
+  "authRecoverConfirm": "Recover",
+  "authRecoverNameRequired": "Please enter your full name to recover this account.",
+  "authMoveTitle": "Move account to this device",
+  "authMoveBody": "This phone number already exists on another device. Do you want to move that account to this phone?",
+  "authMoveConfirm": "Move account",
+  "authMoveDetailsRequired": "Enter your full name and phone number to recover this account.",
+  "languageConfirmLabel": "Confirm language",
+  "profileUserNotFound": "User not found",
+  "profileUserLoadFailed": "Failed to load user",
+  "referralNotAuthenticated": "Not authenticated",
+  "waLoadError": "Unable to load WhatsApp groups. Check your internet connection and try again.",
+  "waAddTitle": "Add WhatsApp group",
+  "waEditTitle": "Edit WhatsApp group",
+  "waGroupName": "Group name",
+  "waNameRequired": "Enter a name",
+  "waInviteLink": "WhatsApp invite link",
+  "waInviteLinkInvalid": "Enter a valid WhatsApp invite link",
+  "waCancel": "Cancel",
+  "waSave": "Save",
+  "waSaveError": "Unable to save group",
+  "waDeleteTitle": "Delete group?",
+  "waDelete": "Delete",
+  "waDeleteError": "Unable to delete group",
+  "waEmpty": "No WhatsApp groups available yet.",
+  "waOpenError": "Unable to open group",
+  "waEditTooltip": "Edit"
 }

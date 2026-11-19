@@ -7,7 +7,8 @@ import '../../../../shared/widgets/app_page_header.dart';
 import '../../../../shared/widgets/need_help_section.dart';
 
 class InstructionsPage extends StatelessWidget {
-  const InstructionsPage({super.key});
+  final VoidCallback? onNotices;
+  const InstructionsPage({super.key, this.onNotices});
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +61,15 @@ class InstructionsPage extends StatelessWidget {
               icon: const Icon(Icons.group_add_outlined),
               label: Text(l10n.referralTitle),
             ),
+            if (onNotices != null) ...[
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                key: const ValueKey('instructions-notices'),
+                onPressed: onNotices,
+                icon: const Icon(Icons.notifications_none),
+                label: Text(l10n.settingsNotifications),
+              ),
+            ],
           ]),
         )),
       )),

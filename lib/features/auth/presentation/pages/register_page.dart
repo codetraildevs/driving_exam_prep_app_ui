@@ -109,10 +109,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> _promptRecoveryFromRegister() async {
     if (_isRecoveryDialogOpen || !mounted) return;
+    final l10n = AppLocalizations.of(context);
     final phone = _phoneController.text.replaceAll(RegExp(r'[\s\-]'), '');
     final name = _nameController.text.trim();
     if (phone.isEmpty || name.length < 2) {
-      _showError('Enter your full name and phone number to recover this account.');
+      _showError(AppLocalizations.of(context).authMoveDetailsRequired);
       return;
     }
 
@@ -122,18 +123,16 @@ class _RegisterPageState extends State<RegisterPage> {
         context: context,
         builder: (ctx) {
           return AlertDialog(
-            title: const Text('Move account to this device'),
-            content: const Text(
-              'This phone number already exists on another device. Do you want to move that account to this phone?',
-            ),
+            title: Text(l10n.authMoveTitle),
+            content: Text(l10n.authMoveBody),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(ctx).pop(false),
-                child: const Text('Cancel'),
+                child: Text(l10n.commonCancel),
               ),
               ElevatedButton(
                 onPressed: () => Navigator.of(ctx).pop(true),
-                child: const Text('Move account'),
+                child: Text(l10n.authMoveConfirm),
               ),
             ],
           );

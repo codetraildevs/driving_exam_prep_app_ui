@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../data/models/sign_model.dart';
 import '../../data/repositories/signs_repository.dart';
@@ -82,13 +82,13 @@ class _SignDetailPageState extends State<SignDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(
+          kToolbarHeight + MediaQuery.of(context).padding.top,
         ),
-        title: Text(AppLocalizations.of(context).signDetailTitle),
+        child: AppPageHeader(
+          title: AppLocalizations.of(context).signDetailTitle,
+        ),
       ),
       body: FutureBuilder<TrafficSignModel?>(
         future: _signFuture,

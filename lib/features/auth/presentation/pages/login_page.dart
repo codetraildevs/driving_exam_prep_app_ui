@@ -87,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _promptRecovery(String phoneNumber) async {
     if (_isRecoveryDialogOpen || !mounted) return;
+    final l10n = AppLocalizations.of(context);
     _isRecoveryDialogOpen = true;
     // The TextField owns its controller until the dialog finishes unmounting.
     var recoveryName = '';
@@ -96,20 +97,18 @@ class _LoginPageState extends State<LoginPage> {
         barrierDismissible: true,
         builder: (ctx) {
           return AlertDialog(
-            title: const Text('Recover account on this device'),
+            title: Text(l10n.authRecoverTitle),
             scrollable: true,
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Your account is linked to another device. Enter your full name to move this account to this phone.',
-                ),
+                Text(l10n.authRecoverBody),
                 const SizedBox(height: 12),
                 TextField(
                   onChanged: (value) => recoveryName = value,
                   textCapitalization: TextCapitalization.words,
-                  decoration: const InputDecoration(
-                    labelText: 'Full name',
+                  decoration: InputDecoration(
+                    labelText: l10n.authRecoverNameLabel,
                   ),
                 ),
               ],
@@ -117,11 +116,11 @@ class _LoginPageState extends State<LoginPage> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(ctx).pop(false),
-                child: const Text('Cancel'),
+                child: Text(l10n.commonCancel),
               ),
               ElevatedButton(
                 onPressed: () => Navigator.of(ctx).pop(true),
-                child: const Text('Recover'),
+                child: Text(l10n.authRecoverConfirm),
               ),
             ],
           );
@@ -131,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
       if (confirmed == true && mounted) {
         final fullName = recoveryName.trim();
         if (fullName.length < 2) {
-          _showError('Please enter your full name to recover this account.');
+          _showError(l10n.authRecoverNameRequired);
           return;
         }
         context.read<AuthBloc>().add(

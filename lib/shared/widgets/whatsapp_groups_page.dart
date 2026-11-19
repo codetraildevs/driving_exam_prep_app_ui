@@ -18,17 +18,6 @@ class WhatsappGroupsPage extends StatefulWidget {
 }
 
 class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
-  String _text(String en, String rw, String fr) {
-    switch (Localizations.localeOf(context).languageCode) {
-      case 'rw':
-        return rw;
-      case 'fr':
-        return fr;
-      default:
-        return en;
-    }
-  }
-
   List<dynamic> _groups = [];
   bool _loading = true;
   bool _saving = false;
@@ -75,7 +64,7 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
           _groups = result.dataList;
           _saved = false;
         } else {
-          _error = _loadError;
+          _error = AppLocalizations.of(context).waLoadError;
         }
       });
       if (result.isSuccess && _cacheKey != null && !widget.manage) {
@@ -84,18 +73,12 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
         } catch (_) {}
       }
     } catch (_) {
-      if (mounted) setState(() => _error = _loadError);
+      if (mounted) setState(() => _error = AppLocalizations.of(context).waLoadError);
     } finally {
       _requestInFlight = false;
       if (mounted) setState(() => _loading = false);
     }
   }
-
-  String get _loadError => _text(
-    'Unable to load WhatsApp groups. Check your internet connection and try again.',
-    'Ntibishobotse kubona amatsinda ya WhatsApp. Reba ko ufite interineti wongere ugerageze.',
-    'Impossible de charger les groupes WhatsApp. Vérifiez votre connexion Internet et réessayez.',
-  );
 
   void _message(String text) {
     if (mounted) {
@@ -104,6 +87,7 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
   }
 
   Future<void> _edit([Map<String, dynamic>? group]) async {
+    final l10n = AppLocalizations.of(context);
     final name = TextEditingController(text: group?['name'] as String? ?? '');
     final url = TextEditingController(
       text: group?['inviteUrl'] as String? ?? '',
@@ -114,16 +98,8 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
       builder: (ctx) => AlertDialog(
         title: Text(
           group == null
-              ? _text(
-                  'Add WhatsApp group',
-                  'Ongeramo itsinda rya WhatsApp',
-                  'Ajouter un groupe WhatsApp',
-                )
-              : _text(
-                  'Edit WhatsApp group',
-                  'Hindura itsinda rya WhatsApp',
-                  'Modifier le groupe WhatsApp',
-                ),
+              ? l10n.waAddTitle
+              : l10n.waEditTitle,
         ),
         content: Form(
           key: form,
@@ -135,29 +111,17 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
                   controller: name,
                   maxLength: 120,
                   decoration: InputDecoration(
-                    labelText: _text(
-                      'Group name',
-                      'Izina ry’itsinda',
-                      'Nom du groupe',
-                    ),
+                    labelText: l10n.waGroupName,
                   ),
                   validator: (v) => (v?.trim().isEmpty ?? true)
-                      ? _text(
-                          'Enter a name',
-                          'Andika izina',
-                          'Saisissez un nom',
-                        )
+                      ? l10n.waNameRequired
                       : null,
                 ),
                 TextFormField(
                   controller: url,
                   maxLength: 500,
                   decoration: InputDecoration(
-                    labelText: _text(
-                      'WhatsApp invite link',
-                      'Ihuza ryo kwinjira muri WhatsApp',
-                      'Lien d’invitation WhatsApp',
-                    ),
+                    labelText: l10n.waInviteLink,
                   ),
                   validator: (v) {
                     final uri = Uri.tryParse(v?.trim() ?? '');
@@ -169,11 +133,7 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
                             !uri.hasPort &&
                             !uri.hasFragment
                         ? null
-                        : _text(
-                            'Enter a valid WhatsApp invite link',
-                            'Andika ihuza rya WhatsApp rikwiye',
-                            'Saisissez un lien WhatsApp valide',
-                          );
+                        : l10n.waInviteLinkInvalid;
                   },
                 ),
               ],
@@ -183,7 +143,7 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text(_text('Cancel', 'Reka', 'Annuler')),
+            child: Text(l10n.waCancel),
           ),
           FilledButton(
             onPressed: () {
@@ -194,7 +154,7 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
                 });
               }
             },
-            child: Text(_text('Save', 'Bika', 'Enregistrer')),
+            child: Text(l10n.waSave),
           ),
         ],
       ),
@@ -218,31 +178,28 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
     } else {
       _message(
         result.errorMessage ??
-            _text(
-              'Unable to save group',
-              'Ntibishobotse kubika itsinda',
-              'Impossible d’enregistrer le groupe',
-            ),
+            l10n.waSaveError,
       );
     }
   }
 
   Future<void> _delete(Map<String, dynamic> group) async {
+    final l10n = AppLocalizations.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(
-          _text('Delete group?', 'Siba itsinda?', 'Supprimer le groupe ?'),
+          l10n.waDeleteTitle,
         ),
         content: Text(group['name'] as String),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: Text(_text('Cancel', 'Reka', 'Annuler')),
+            child: Text(l10n.waCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: Text(_text('Delete', 'Siba', 'Supprimer')),
+            child: Text(l10n.waDelete),
           ),
         ],
       ),
@@ -259,17 +216,15 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
     } else {
       _message(
         result.errorMessage ??
-            _text(
-              'Unable to delete group',
-              'Ntibishobotse gusiba itsinda',
-              'Impossible de supprimer le groupe',
-            ),
+            l10n.waDeleteError,
       );
     }
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Scaffold(
     floatingActionButton: widget.manage
         ? FloatingActionButton(
             onPressed: _saving ? null : () => _edit(),
@@ -350,11 +305,7 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
                               Padding(
                                 padding: const EdgeInsets.all(24),
                                 child: Text(
-                                  _text(
-                                    'No WhatsApp groups available yet.',
-                                    'Nta matsinda ya WhatsApp arahari.',
-                                    'Aucun groupe WhatsApp disponible.',
-                                  ),
+                                  l10n.waEmpty,
                                 ),
                               ),
                             for (final item in _groups)
@@ -403,20 +354,12 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
                                                       .externalApplication,
                                                 )) {
                                               _message(
-                                                _text(
-                                                  'Unable to open group',
-                                                  'Ntibishobotse gufungura itsinda',
-                                                  'Impossible d’ouvrir le groupe',
-                                                ),
+                                                l10n.waOpenError,
                                               );
                                             }
                                           } catch (_) {
                                             _message(
-                                              _text(
-                                                'Unable to open group',
-                                                'Ntibishobotse gufungura itsinda',
-                                                'Impossible d’ouvrir le groupe',
-                                              ),
+                                              l10n.waOpenError,
                                             );
                                           }
                                         },
@@ -425,11 +368,7 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             IconButton(
-                                              tooltip: _text(
-                                                'Edit',
-                                                'Hindura',
-                                                'Modifier',
-                                              ),
+                                              tooltip: l10n.waEditTooltip,
                                               onPressed: _saving
                                                   ? null
                                                   : () => _edit(
@@ -440,11 +379,7 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
                                               icon: const Icon(Icons.edit),
                                             ),
                                             IconButton(
-                                              tooltip: _text(
-                                                'Delete',
-                                                'Siba',
-                                                'Supprimer',
-                                              ),
+                                              tooltip: l10n.waDelete,
                                               onPressed: _saving
                                                   ? null
                                                   : () => _delete(
@@ -472,4 +407,5 @@ class _WhatsappGroupsPageState extends State<WhatsappGroupsPage> {
       ],
     ),
   );
+  }
 }

@@ -2102,6 +2102,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get referralYourCode => 'Your personal invitation code';
 
   @override
+  String referralCodeLabel(Object code) {
+    return 'Code: $code';
+  }
+
+  @override
   String get referralInvite => 'Invite friends';
 
   @override
@@ -2156,4 +2161,96 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboardReferrals => 'Refer & Earn';
+
+  @override
+  String get authRecoverTitle => 'Recover account on this device';
+
+  @override
+  String get authRecoverBody =>
+      'Your account is linked to another device. Enter your full name to move this account to this phone.';
+
+  @override
+  String get authRecoverNameLabel => 'Full name';
+
+  @override
+  String get authRecoverConfirm => 'Recover';
+
+  @override
+  String get authRecoverNameRequired =>
+      'Please enter your full name to recover this account.';
+
+  @override
+  String get authMoveTitle => 'Move account to this device';
+
+  @override
+  String get authMoveBody =>
+      'This phone number already exists on another device. Do you want to move that account to this phone?';
+
+  @override
+  String get authMoveConfirm => 'Move account';
+
+  @override
+  String get authMoveDetailsRequired =>
+      'Enter your full name and phone number to recover this account.';
+
+  @override
+  String get languageConfirmLabel => 'Confirm language';
+
+  @override
+  String get profileUserNotFound => 'User not found';
+
+  @override
+  String get profileUserLoadFailed => 'Failed to load user';
+
+  @override
+  String get referralNotAuthenticated => 'Not authenticated';
+
+  @override
+  String get waLoadError =>
+      'Unable to load WhatsApp groups. Check your internet connection and try again.';
+
+  @override
+  String get waAddTitle => 'Add WhatsApp group';
+
+  @override
+  String get waEditTitle => 'Edit WhatsApp group';
+
+  @override
+  String get waGroupName => 'Group name';
+
+  @override
+  String get waNameRequired => 'Enter a name';
+
+  @override
+  String get waInviteLink => 'WhatsApp invite link';
+
+  @override
+  String get waInviteLinkInvalid => 'Enter a valid WhatsApp invite link';
+
+  @override
+  String get waCancel => 'Cancel';
+
+  @override
+  String get waSave => 'Save';
+
+  @override
+  String get waSaveError => 'Unable to save group';
+
+  @override
+  String get waDeleteTitle => 'Delete group?';
+
+  @override
+  String get waDelete => 'Delete';
+
+  @override
+  String get waDeleteError => 'Unable to delete group';
+
+  @override
+  String get waEmpty => 'No WhatsApp groups available yet.';
+
+  @override
+  String get waOpenError => 'Unable to open group';
+
+  @override
+  String get waEditTooltip => 'Edit';
 }

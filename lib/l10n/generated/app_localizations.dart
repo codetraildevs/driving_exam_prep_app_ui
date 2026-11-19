@@ -3940,6 +3940,12 @@ abstract class AppLocalizations {
   /// **'Your personal invitation code'**
   String get referralYourCode;
 
+  /// No description provided for @referralCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Code: {code}'**
+  String referralCodeLabel(Object code);
+
   /// No description provided for @referralInvite.
   ///
   /// In en, this message translates to:
@@ -4041,6 +4047,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Refer & Earn'**
   String get dashboardReferrals;
+
+  /// No description provided for @authRecoverTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recover account on this device'**
+  String get authRecoverTitle;
+
+  /// No description provided for @authRecoverBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is linked to another device. Enter your full name to move this account to this phone.'**
+  String get authRecoverBody;
+
+  /// No description provided for @authRecoverNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get authRecoverNameLabel;
+
+  /// No description provided for @authRecoverConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Recover'**
+  String get authRecoverConfirm;
+
+  /// No description provided for @authRecoverNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your full name to recover this account.'**
+  String get authRecoverNameRequired;
+
+  /// No description provided for @authMoveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Move account to this device'**
+  String get authMoveTitle;
+
+  /// No description provided for @authMoveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone number already exists on another device. Do you want to move that account to this phone?'**
+  String get authMoveBody;
+
+  /// No description provided for @authMoveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Move account'**
+  String get authMoveConfirm;
+
+  /// No description provided for @authMoveDetailsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your full name and phone number to recover this account.'**
+  String get authMoveDetailsRequired;
+
+  /// No description provided for @languageConfirmLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm language'**
+  String get languageConfirmLabel;
+
+  /// No description provided for @profileUserNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'User not found'**
+  String get profileUserNotFound;
+
+  /// No description provided for @profileUserLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load user'**
+  String get profileUserLoadFailed;
+
+  /// No description provided for @referralNotAuthenticated.
+  ///
+  /// In en, this message translates to:
+  /// **'Not authenticated'**
+  String get referralNotAuthenticated;
+
+  /// No description provided for @waLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load WhatsApp groups. Check your internet connection and try again.'**
+  String get waLoadError;
+
+  /// No description provided for @waAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add WhatsApp group'**
+  String get waAddTitle;
+
+  /// No description provided for @waEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit WhatsApp group'**
+  String get waEditTitle;
+
+  /// No description provided for @waGroupName.
+  ///
+  /// In en, this message translates to:
+  /// **'Group name'**
+  String get waGroupName;
+
+  /// No description provided for @waNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a name'**
+  String get waNameRequired;
+
+  /// No description provided for @waInviteLink.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp invite link'**
+  String get waInviteLink;
+
+  /// No description provided for @waInviteLinkInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid WhatsApp invite link'**
+  String get waInviteLinkInvalid;
+
+  /// No description provided for @waCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get waCancel;
+
+  /// No description provided for @waSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get waSave;
+
+  /// No description provided for @waSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to save group'**
+  String get waSaveError;
+
+  /// No description provided for @waDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete group?'**
+  String get waDeleteTitle;
+
+  /// No description provided for @waDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get waDelete;
+
+  /// No description provided for @waDeleteError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to delete group'**
+  String get waDeleteError;
+
+  /// No description provided for @waEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No WhatsApp groups available yet.'**
+  String get waEmpty;
+
+  /// No description provided for @waOpenError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to open group'**
+  String get waOpenError;
+
+  /// No description provided for @waEditTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get waEditTooltip;
 }
 
 class _AppLocalizationsDelegate

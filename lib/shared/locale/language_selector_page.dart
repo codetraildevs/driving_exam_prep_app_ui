@@ -202,7 +202,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
   Widget _buildConfirmButton(BuildContext context, AppLocalizations l10n) {
     return Semantics(
       button: true,
-      label: 'Confirm language',
+      label: l10n.languageConfirmLabel,
       child: ElevatedButton(
         onPressed: _onConfirm,
         style: ElevatedButton.styleFrom(

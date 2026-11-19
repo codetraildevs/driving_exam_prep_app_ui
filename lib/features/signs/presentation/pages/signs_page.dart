@@ -6,6 +6,7 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 import '../../../../shared/widgets/interactive_card.dart';
 import '../../../../shared/widgets/skeleton.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
@@ -72,9 +73,13 @@ class _SignsPageState extends State<SignsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).signsTitle),
-        elevation: 0,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(
+          kToolbarHeight + MediaQuery.of(context).padding.top,
+        ),
+        child: AppPageHeader(
+          title: AppLocalizations.of(context).signsTitle,
+        ),
       ),
       body: SafeArea(
         child: Column(

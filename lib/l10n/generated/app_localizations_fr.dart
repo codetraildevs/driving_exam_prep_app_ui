@@ -1792,7 +1792,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Demande reçue. Une seule demande par service.';
 
   @override
-  String get permisOption => 'Permis option';
+  String get permisOption => 'Option du permis';
 
   @override
   String get irOption => 'Option du permis';
@@ -2137,6 +2137,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get referralYourCode => 'Votre code d’invitation personnel';
 
   @override
+  String referralCodeLabel(Object code) {
+    return 'Code : $code';
+  }
+
+  @override
   String get referralInvite => 'Inviter des amis';
 
   @override
@@ -2191,4 +2196,96 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dashboardReferrals => 'Inviter et gagner';
+
+  @override
+  String get authRecoverTitle => 'Récupérer le compte sur cet appareil';
+
+  @override
+  String get authRecoverBody =>
+      'Votre compte est lié à un autre appareil. Saisissez votre nom complet pour déplacer ce compte vers ce téléphone.';
+
+  @override
+  String get authRecoverNameLabel => 'Nom complet';
+
+  @override
+  String get authRecoverConfirm => 'Récupérer';
+
+  @override
+  String get authRecoverNameRequired =>
+      'Saisissez votre nom complet pour récupérer ce compte.';
+
+  @override
+  String get authMoveTitle => 'Déplacer le compte vers cet appareil';
+
+  @override
+  String get authMoveBody =>
+      'Ce numéro de téléphone existe déjà sur un autre appareil. Voulez-vous déplacer ce compte vers ce téléphone ?';
+
+  @override
+  String get authMoveConfirm => 'Déplacer le compte';
+
+  @override
+  String get authMoveDetailsRequired =>
+      'Saisissez votre nom complet et votre numéro de téléphone pour récupérer ce compte.';
+
+  @override
+  String get languageConfirmLabel => 'Confirmer la langue';
+
+  @override
+  String get profileUserNotFound => 'Utilisateur introuvable';
+
+  @override
+  String get profileUserLoadFailed => 'Échec du chargement de l’utilisateur';
+
+  @override
+  String get referralNotAuthenticated => 'Non authentifié';
+
+  @override
+  String get waLoadError =>
+      'Impossible de charger les groupes WhatsApp. Vérifiez votre connexion Internet et réessayez.';
+
+  @override
+  String get waAddTitle => 'Ajouter un groupe WhatsApp';
+
+  @override
+  String get waEditTitle => 'Modifier le groupe WhatsApp';
+
+  @override
+  String get waGroupName => 'Nom du groupe';
+
+  @override
+  String get waNameRequired => 'Saisissez un nom';
+
+  @override
+  String get waInviteLink => 'Lien d’invitation WhatsApp';
+
+  @override
+  String get waInviteLinkInvalid => 'Saisissez un lien WhatsApp valide';
+
+  @override
+  String get waCancel => 'Annuler';
+
+  @override
+  String get waSave => 'Enregistrer';
+
+  @override
+  String get waSaveError => 'Impossible d’enregistrer le groupe';
+
+  @override
+  String get waDeleteTitle => 'Supprimer le groupe ?';
+
+  @override
+  String get waDelete => 'Supprimer';
+
+  @override
+  String get waDeleteError => 'Impossible de supprimer le groupe';
+
+  @override
+  String get waEmpty => 'Aucun groupe WhatsApp disponible.';
+
+  @override
+  String get waOpenError => 'Impossible d’ouvrir le groupe';
+
+  @override
+  String get waEditTooltip => 'Modifier';
 }

@@ -24,6 +24,27 @@ class ReferralSummary {
       throw const FormatException('Invalid invitation');
     }
   }
+
+  ReferralSummary._(
+    this.code,
+    this.link,
+    this.total,
+    this.confirmed,
+    this.pending,
+    this.history,
+    this.nextOffset,
+  );
+
+  /// Appends the next page of history to this summary.
+  ReferralSummary append(ReferralSummary next) => ReferralSummary._(
+    next.code,
+    next.link,
+    next.total,
+    next.confirmed,
+    next.pending,
+    [...history, ...next.history],
+    next.nextOffset,
+  );
 }
 
 class ReferralRepository {

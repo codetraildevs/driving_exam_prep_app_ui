@@ -4,6 +4,7 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 
 class ExamPage extends StatefulWidget {
   const ExamPage({Key? key}) : super(key: key);
@@ -134,35 +135,37 @@ class _ExamPageState extends State<ExamPage> {
     final l10n = AppLocalizations.of(context);
     final question = examQuestions[_currentQuestion];
     final progress = (_currentQuestion + 1) / examQuestions.length;
-    final timeColor = _remainingSeconds < 300
-        ? AppColors.error
-        : AppColors.primary;
+    final lowTime = _remainingSeconds < 300;
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text(AppLocalizations.of(context).examMockExam),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: timeColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  _formatTime(_remainingSeconds),
-                  style: AppTextStyles.labelLarge.copyWith(color: timeColor),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(
+          kToolbarHeight + MediaQuery.of(context).padding.top,
+        ),
+        child: AppPageHeader(
+          title: AppLocalizations.of(context).examMockExam,
+          trailing: Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 6,
+              ),
+              decoration: BoxDecoration(
+                color: lowTime
+                    ? AppColors.error
+                    : Colors.white.withValues(alpha: 0.18),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                _formatTime(_remainingSeconds),
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: AppColors.textInverse,
                 ),
               ),
             ),
           ),
-        ],
+        ),
       ),
       body: SafeArea(
         child: Column(

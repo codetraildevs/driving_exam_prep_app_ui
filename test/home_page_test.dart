@@ -147,9 +147,12 @@ void main() {
         }
         expect(tester.getSize(find.byType(GridView)).width, lessThanOrEqualTo(720));
         final l10n = AppLocalizations.of(tester.element(find.byType(HomePage)));
+        // The referral shortcut may reuse a subtitle string elsewhere on
+        // the page, so scope these assertions to the shortcut grid.
         for (final text in [l10n.dashboardGazetteSubtitle, l10n.dashboardIremboSubtitle,
           l10n.homeProgressSubtitle, l10n.homeShareAppSubtitle]) {
-          expect(find.text(text), findsOneWidget);
+          expect(find.descendant(of: find.byKey(const ValueKey('dashboard-shortcuts')),
+            matching: find.text(text)), findsOneWidget);
         }
         final help = find.byKey(const ValueKey('dashboard-help'));
         expect(tester.getTopLeft(help).dy,
@@ -175,12 +178,14 @@ void main() {
   testWidgets('expired access is not rendered as active', (tester) async {
     await _pump(tester, language: 'en', sub: SubscriptionState(hasLoaded: true,
       hasActiveAccess: true, expiresAt: DateTime.now().subtract(const Duration(seconds: 1))));
-    expect(find.text('Your learning access has expired'), findsOneWidget);
+    final l10n = AppLocalizations.of(tester.element(find.byType(HomePage)));
+    expect(find.text(l10n.dashboardExpired), findsOneWidget);
   });
 
   testWidgets('missing subscription and unavailable status are different', (tester) async {
     await _pump(tester, language: 'en', sub: const SubscriptionState(hasError: true));
-    expect(find.textContaining('Subscription unavailable.'), findsOneWidget);
+    final l10n = AppLocalizations.of(tester.element(find.byType(HomePage)));
+    expect(find.textContaining(l10n.dashboardSubscriptionUnavailable), findsOneWidget);
     expect(find.text('No active plan'), findsNothing);
   });
 
@@ -248,16 +253,17 @@ void main() {
     await _pump(tester, language: 'en', refreshed: SubscriptionState(
       hasLoaded: true, hasActiveAccess: true,
       expiresAt: DateTime.now().add(const Duration(days: 30)), paymentTier: '1_MONTH'));
+    final l10n = AppLocalizations.of(tester.element(find.byType(HomePage)));
     final container = ProviderScope.containerOf(tester.element(find.byType(HomePage)));
     expect(container.read(subscriptionProvider).hasActiveAccess, isFalse);
-    final refresh = find.byTooltip('Refresh app access');
+    final refresh = find.byTooltip(l10n.dashboardRefresh);
     expect(refresh, findsOneWidget);
     expect(find.byKey(const ValueKey('dashboard-refresh')), findsOneWidget);
     await tester.tap(refresh.first);
     await tester.pumpAndSettle();
     expect(container.read(subscriptionProvider).hasActiveAccess, isTrue);
     expect(find.text('Duration: 1 Month'), findsOneWidget);
-    expect(find.text('Access status refreshed.'), findsOneWidget);
+    expect(find.text(l10n.dashboardRefreshDone), findsOneWidget);
     expect(find.byType(HomePage), findsOneWidget);
   });
 
@@ -265,9 +271,10 @@ void main() {
     await _pump(tester, language: 'en',
       sub: const SubscriptionState(hasLoaded: true, hasActiveAccess: true),
       refreshed: const SubscriptionState(hasLoaded: true, hasActiveAccess: true, hasError: true));
-    await tester.tap(find.byTooltip('Refresh app access').last);
+    final l10n = AppLocalizations.of(tester.element(find.byType(HomePage)));
+    await tester.tap(find.byTooltip(l10n.dashboardRefresh).last);
     await tester.pumpAndSettle();
-    expect(find.text('Could not refresh access. Check your internet connection and try again.'), findsOneWidget);
+    expect(find.text(l10n.dashboardRefreshFailed), findsOneWidget);
     final container = ProviderScope.containerOf(tester.element(find.byType(HomePage)));
     expect(container.read(subscriptionProvider).hasActiveAccess, isTrue);
   });

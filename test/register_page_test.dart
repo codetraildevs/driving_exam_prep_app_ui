@@ -92,38 +92,33 @@ void main() {
         ),
       );
       await _pumpFrames(tester);
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(RegisterPage)),
+      );
 
       // Header
-      expect(find.text('Rwanda Traffic Rule'), findsOneWidget);
-      expect(
-        find.text('Prepare for Your Provisional Driving Licence'),
-        findsOneWidget,
-      );
+      expect(find.text(l10n.authAppName), findsOneWidget);
+      expect(find.text(l10n.authSubtitle), findsOneWidget);
 
       // Form title & subtitle
-      expect(find.text('Create Your Account'), findsOneWidget);
-      expect(
-        find.text(
-          'Register using your full name and phone number to begin learning.',
-        ),
-        findsOneWidget,
-      );
+      expect(find.text(l10n.registerTitle), findsOneWidget);
+      expect(find.text(l10n.registerSubtitle), findsOneWidget);
 
       // Input fields
-      expect(find.text('Full Name'), findsOneWidget);
-      expect(find.text('Enter your full name'), findsOneWidget);
-      expect(find.text('Phone Number'), findsOneWidget);
-      expect(find.text('07** *** ***'), findsOneWidget);
+      expect(find.text(l10n.authFullName), findsWidgets);
+      expect(find.text(l10n.authFullNameHint), findsWidgets);
+      expect(find.text(l10n.authPhoneNumber), findsWidgets);
+      expect(find.text(l10n.authPhoneHint), findsWidgets);
 
       // Sign Up button
-      expect(find.text('Sign Up'), findsOneWidget);
+      expect(find.text(l10n.registerSignUp), findsOneWidget);
 
       // Login link
-      expect(find.text('Already have an account? '), findsOneWidget);
-      expect(find.text('Log In'), findsOneWidget);
+      expect(find.text(l10n.registerHaveAccount), findsOneWidget);
+      expect(find.text(l10n.registerLogIn), findsOneWidget);
 
       // Secure tag
-      expect(find.text('Secure • Fast • Pass'), findsOneWidget);
+      expect(find.text(l10n.authSecureTag), findsOneWidget);
     });
 
     // ──────────────────────────────────────────────────────────────────────
@@ -143,13 +138,16 @@ void main() {
         ),
       );
       await _pumpFrames(tester);
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(RegisterPage)),
+      );
 
       // Tap Sign Up without entering anything
-      await tester.tap(find.text('Sign Up'));
+      await tester.tap(find.text(l10n.registerSignUp));
       await _pumpFrames(tester);
 
       // Snackbar with validation error
-      expect(find.text('Please fill all fields'), findsOneWidget);
+      expect(find.text(l10n.registerFillAllFields), findsOneWidget);
     });
 
     // ──────────────────────────────────────────────────────────────────────
@@ -205,14 +203,14 @@ void main() {
       await _pumpFrames(tester);
 
       // Tap Sign Up
-      await tester.tap(find.text('Sign Up'));
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(RegisterPage)),
+      );
+      await tester.tap(find.text(l10n.registerSignUp));
       await _pumpFrames(tester);
 
       // Snackbar with invalid phone error
-      expect(
-        find.text('Enter a valid phone number (e.g. 078... or +250 78...)'),
-        findsOneWidget,
-      );
+      expect(find.text(l10n.registerInvalidPhone), findsOneWidget);
     });
 
     // ──────────────────────────────────────────────────────────────────────

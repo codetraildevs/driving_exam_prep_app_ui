@@ -4,6 +4,7 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 
 class ExamIntroPage extends StatelessWidget {
   const ExamIntroPage({Key? key}) : super(key: key);
@@ -12,11 +13,12 @@ class ExamIntroPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(
+          kToolbarHeight + MediaQuery.of(context).padding.top,
+        ),
+        child: AppPageHeader(
+          title: l10n.examMockExam,
         ),
       ),
       body: SafeArea(

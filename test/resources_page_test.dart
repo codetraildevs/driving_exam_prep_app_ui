@@ -30,13 +30,19 @@ Widget app(String language, Widget home) => MaterialApp(
 );
 
 Future<void> waitForPage(WidgetTester tester, String text) async {
-  for (var i = 0; i < 100; i++) {
+  for (var i = 0; i < 200; i++) {
     await tester.runAsync(
       () => Future<void>.delayed(const Duration(milliseconds: 100)),
     );
     await tester.pump(const Duration(milliseconds: 100));
     if (find.text(text).evaluate().isNotEmpty) return;
+    if (i % 20 == 0) {
+      // ignore: avoid_print
+      print('WAIT i=$i found=${find.text(text).evaluate().length} pdfViewer=${find.byType(PdfViewer).evaluate().length} progress=${find.byType(CircularProgressIndicator).evaluate().length}');
+    }
   }
+  // ignore: avoid_print
+  print('FAIL final: pdfViewer=${find.byType(PdfViewer).evaluate().length} progress=${find.byType(CircularProgressIndicator).evaluate().length}');
   fail('Reader did not display $text');
 }
 

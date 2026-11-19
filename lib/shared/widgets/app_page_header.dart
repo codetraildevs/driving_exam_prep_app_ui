@@ -20,6 +20,9 @@ class AppPageHeader extends StatelessWidget {
   /// bottom-navigation (home, practice, progress, profile …).
   final bool showBack;
 
+  /// Optional handler for the back arrow; defaults to popping the route.
+  final VoidCallback? onBack;
+
   /// Optional widget placed on the right side of the header (e.g. an icon
   /// button). Ignored when [showBack] is true and no [trailing] is supplied.
   final Widget? trailing;
@@ -29,6 +32,7 @@ class AppPageHeader extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.showBack = true,
+    this.onBack,
     this.trailing,
   }) : super(key: key);
 
@@ -64,7 +68,8 @@ class AppPageHeader extends StatelessWidget {
                   Icons.arrow_back,
                   color: AppColors.textInverse,
                 ),
-                onPressed: () => Navigator.of(context).maybePop(),
+                onPressed:
+                    onBack ?? () => Navigator.of(context).maybePop(),
               )
             else
               // Shell pages (showBack: false) get the drawer hamburger on

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../../../shared/network/api_helper.dart';
@@ -99,6 +100,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _loadTargetUser() async {
+    final l10n = AppLocalizations.of(context);
     setState(() {
       _loadingTarget = true;
       _loadError = null;
@@ -116,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
         );
         setState(() {
           _targetUser = found != null ? Map<String, dynamic>.from(found) : null;
-          if (_targetUser == null) _loadError = 'User not found';
+          if (_targetUser == null) _loadError = l10n.profileUserNotFound;
         });
       } else if (result.statusCode == 401) {
         if (mounted) {
@@ -126,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
         return;
       } else {
         setState(
-          () => _loadError = result.errorMessage ?? 'Failed to load user',
+          () => _loadError = result.errorMessage ?? l10n.profileUserLoadFailed,
         );
       }
     } catch (e) {
@@ -337,28 +339,24 @@ class _ProfilePageState extends State<ProfilePage> {
     if (_isAdminView) {
       if (_loadingTarget) {
         return Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => context.pop(),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(
+              kToolbarHeight + MediaQuery.of(context).padding.top,
             ),
-            title: Text(l10n.profileTitle),
+            child: AppPageHeader(title: l10n.profileTitle),
           ),
           body: const Center(child: CircularProgressIndicator()),
         );
       }
       if (_loadError != null || _targetUser == null) {
         return Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => context.pop(),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(
+              kToolbarHeight + MediaQuery.of(context).padding.top,
             ),
-            title: Text(l10n.profileTitle),
+            child: AppPageHeader(title: l10n.profileTitle),
           ),
-          body: Center(child: Text(_loadError ?? 'User not found')),
+          body: Center(child: Text(_loadError ?? l10n.profileUserNotFound)),
         );
       }
       return _buildAdminUserProfile(context, l10n, _targetUser!);
@@ -769,14 +767,11 @@ class _ProfilePageState extends State<ProfilePage> {
         : AppColors.error;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(
+          kToolbarHeight + MediaQuery.of(context).padding.top,
         ),
-        title: Text(l10n.profileTitle),
+        child: AppPageHeader(title: l10n.profileTitle),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

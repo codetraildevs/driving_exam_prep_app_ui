@@ -6,83 +6,207 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rwanda Traffic Rule - Pro Store Designer</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Montserrat:wght@400;700;900&family=Poppins:wght@400;700;900&family=Roboto:wght@400;700;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;700;900&family=Poppins:wght@400;500;600;700;800;900&family=Roboto:wght@400;700;900&display=swap"
         rel="stylesheet">
     <style>
         :root {
-            --primary-bg: linear-gradient(135deg, #1a237e 0%, #0d47a1 50%, #01579b 100%);
+            --brand: #602C91;
+            --brand-light: #9D6FCB;
+            --brand-dark: #46206A;
+            --accent: #F97316;
+            --bg: #F5F7FB;
+            --card: #FFFFFF;
+            --text: #1E293B;
+            --muted: #64748B;
+            --border: #E2E8F0;
+            --radius: 14px;
+            --shadow: 0 10px 30px rgba(30, 41, 59, 0.08);
         }
+
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
-            background: #f4f7f9;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 32px 24px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            color: #2c3e50;
         }
 
-        h1 {
-            margin-bottom: 20px;
-            font-weight: 900;
-            letter-spacing: -1px;
-        }
-
-        .dashboard {
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        .page-header {
             width: 100%;
-            max-width: 1000px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
+            max-width: 1240px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        .control-item {
+        .page-header h1 {
+            margin: 0;
+            font-weight: 900;
+            font-size: 28px;
+            letter-spacing: -0.5px;
+            color: var(--brand);
+        }
+
+        .page-header p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, var(--brand), var(--brand-light));
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 16px rgba(96, 44, 145, 0.25);
+        }
+
+        .layout {
+            width: 100%;
+            max-width: 1240px;
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 960px) {
+            .layout { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            padding: 22px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section:last-child { margin-bottom: 0; }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 12px;
             display: flex;
-            flex-direction: column;
+            align-items: center;
             gap: 8px;
         }
 
-        label {
-            font-size: 10px;
-            font-weight: 700;
-            color: #7f8c8d;
-            text-transform: uppercase;
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
         }
 
-        input,
-        select,
-        button {
-            padding: 10px;
-            border: 1px solid #dfe6e9;
-            border-radius: 8px;
-            font-size: 13px;
-            outline: none;
-            transition: all 0.2s;
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
         }
+
+        .field label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .field input,
+        .field select {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: inherit;
+            color: var(--text);
+            background: #fff;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            width: 100%;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            outline: none;
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px rgba(96, 44, 145, 0.12);
+        }
+
+        .field input[type="range"] {
+            padding: 0;
+            accent-color: var(--brand);
+            height: 6px;
+        }
+
+        .field input[type="file"] {
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 
         .btn-primary {
-            background: #1a237e;
-            color: white;
+            background: linear-gradient(135deg, var(--brand), var(--brand-light));
+            color: #fff;
             border: none;
             font-weight: 700;
             cursor: pointer;
-            grid-column: span 4;
-            padding: 15px;
-            font-size: 16px;
-            margin-top: 10px;
+            padding: 14px 18px;
+            font-size: 14px;
+            border-radius: 12px;
+            width: 100%;
+            margin-top: 6px;
+            box-shadow: 0 8px 20px rgba(96, 44, 145, 0.3);
+            transition: transform 0.15s, box-shadow 0.15s;
+            letter-spacing: 0.3px;
         }
 
         .btn-primary:hover {
-            background: #0d1a6e;
             transform: translateY(-1px);
+            box-shadow: 0 10px 24px rgba(96, 44, 145, 0.35);
+        }
+
+        .btn-primary:active { transform: translateY(0); }
+
+        .preview-panel {
+            position: sticky;
+            top: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .preview-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            padding: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         /* Preview Display */
@@ -90,7 +214,6 @@
             display: flex;
             justify-content: center;
             width: 100%;
-            margin-bottom: 40px;
         }
 
         .preview-wrapper {
@@ -103,30 +226,15 @@
         }
 
         /* Layout Modes */
-        .mode-portrait .preview-wrapper {
-            width: 340px;
-            height: 604px;
-        }
-
-        .mode-landscape .preview-wrapper {
-            width: 640px;
-            height: 360px;
-        }
-
-        .mode-feature .preview-wrapper {
-            width: 716px;
-            height: 350px;
-        }
-
-        .mode-icon .preview-wrapper {
-            width: 350px;
-            height: 350px;
-        }
+        body.mode-portrait .preview-wrapper { width: 340px; height: 604px; }
+        body.mode-landscape .preview-wrapper { width: 640px; height: 360px; }
+        body.mode-feature .preview-wrapper { width: 716px; height: 350px; }
+        body.mode-icon .preview-wrapper { width: 350px; height: 350px; }
 
         #virtualCanvas {
             width: 100%;
             height: 100%;
-            background: var(--primary-bg);
+            background: var(--primary-bg, linear-gradient(135deg, #602C91, #9D6FCB));
             position: relative;
             display: flex;
             flex-direction: column;
@@ -135,7 +243,6 @@
             overflow: hidden;
         }
 
-        /* Header Previews */
         .header-preview {
             color: white;
             font-weight: 900;
@@ -144,17 +251,9 @@
             z-index: 5;
         }
 
-        .mode-portrait .header-preview {
-            font-size: 28px;
-            padding: 40px 20px;
-        }
-
-        .mode-landscape .header-preview {
-            font-size: 32px;
-            padding: 25px 40px;
-        }
-
-        .mode-feature .header-preview {
+        body.mode-portrait .header-preview { font-size: 28px; padding: 40px 20px; }
+        body.mode-landscape .header-preview { font-size: 32px; padding: 25px 40px; }
+        body.mode-feature .header-preview {
             font-size: 38px;
             text-align: left;
             max-width: 500px;
@@ -175,11 +274,8 @@
             display: none;
         }
 
-        .mode-feature .subtitle-preview {
-            display: block;
-        }
+        body.mode-feature .subtitle-preview { display: block; }
 
-        /* Decorative Blobs */
         .blob {
             position: absolute;
             background: rgba(255, 255, 255, 0.1);
@@ -191,13 +287,12 @@
         .blob-1 { width: 300px; height: 300px; top: -100px; left: -100px; }
         .blob-2 { width: 400px; height: 400px; bottom: -150px; right: -50px; }
 
-        /* Branding Badge */
         .brand-badge {
             position: absolute;
             top: 20px;
             right: 20px;
             background: white;
-            color: #1a237e;
+            color: #602C91;
             padding: 5px 12px;
             border-radius: 20px;
             font-weight: 900;
@@ -207,49 +302,23 @@
             display: none;
         }
 
-        .mode-feature .brand-badge {
-            display: block;
-        }
+        body.mode-feature .brand-badge { display: block; }
 
-        /* Mockup Containers */
         .mockup-container {
             position: relative;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
         }
 
-        /* Portrait Phone */
-        .mode-portrait .mockup-container {
-            width: 220px;
-            height: 440px;
-        }
-
-        .mode-portrait .mockup-frame {
-            border-radius: 28px;
-            border-width: 3px;
-        }
-
-        /* Landscape Tablet (16:10 standard) */
-        .mode-landscape .mockup-container {
-            width: 448px;
-            height: 280px;
-            margin-top: 10px;
-        }
-
-        .mode-landscape .mockup-frame {
-            border-radius: 12px;
-            border-width: 6px;
-            padding: 4px;
-        }
-
-        /* Feature Graphic Banner */
-        .mode-feature .mockup-container {
-            width: 180px;
-            height: 360px;
+        body.mode-portrait .mockup-container { width: 220px; height: 440px; }
+        body.mode-portrait .mockup-frame { border-radius: 28px; border-width: 3px; }
+        body.mode-landscape .mockup-container { width: 448px; height: 280px; margin-top: 10px; }
+        body.mode-landscape .mockup-frame { border-radius: 12px; border-width: 6px; padding: 4px; }
+        body.mode-feature .mockup-container {
+            width: 180px; height: 360px;
             transform: rotateY(-25deg) rotateX(10deg);
             margin-right: 40px;
-            margin-top: auto;
-            margin-bottom: auto;
+            margin-top: auto; margin-bottom: auto;
         }
 
         .mockup-frame {
@@ -274,158 +343,193 @@
 
         .screen-area img {
             position: absolute;
-            left: 50%;
-            top: 50%;
+            left: 50%; top: 50%;
             transform: translate(-50%, -50%);
             transition: none;
         }
 
-        /* Perspective Angles */
-        .angle-left .mockup-container {
-            transform: rotateY(-20deg) rotateX(10deg);
-        }
+        .angle-left .mockup-container { transform: rotateY(-20deg) rotateX(10deg); }
+        .angle-right .mockup-container { transform: rotateY(20deg) rotateX(10deg); }
+        .angle-tilted .mockup-container { transform: rotateZ(-5deg) translateY(20px); }
 
-        .angle-right .mockup-container {
-            transform: rotateY(20deg) rotateX(10deg);
-        }
-
-        .angle-tilted .mockup-container {
-            transform: rotateZ(-5deg) translateY(20px);
-        }
-
-        /* Icon View */
         #iconPreview {
             display: none;
-            width: 220px;
-            height: 220px;
+            width: 220px; height: 220px;
             border-radius: 45px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             overflow: hidden;
             margin-top: 65px;
         }
 
-        .mode-icon #iconPreview {
-            display: block;
-        }
+        body.mode-icon #iconPreview { display: block; }
+        body.mode-icon .mockup-container { display: none; }
 
-        .mode-icon .mockup-container {
-            display: none;
-        }
-
-        #exportCanvas {
-            display: none;
-        }
+        #exportCanvas { display: none; }
 
         .hint {
-            margin-top: 20px;
-            color: #7f8c8d;
+            color: var(--muted);
             font-size: 13px;
             text-align: center;
+            max-width: 600px;
         }
+
+        .hint b { color: var(--brand); }
+
+        .tips {
+            background: linear-gradient(135deg, rgba(96,44,145,0.06), rgba(157,111,203,0.06));
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .tips b { color: var(--brand); }
     </style>
 </head>
 
 <body class="mode-portrait">
 
-    <h1>Pro Play Store Designer</h1>
+    <header class="page-header">
+        <div>
+            <h1>Pro Play Store Designer</h1>
+            <p>Generate on-brand Play Store assets for Rwanda Traffic Rule</p>
+        </div>
+        <span class="badge">PREMIUM ASSET STUDIO</span>
+    </header>
 
-    <div class="dashboard">
-        <div class="control-item">
-            <label>Asset Type</label>
-            <select id="typeSelect" onchange="updateMode()">
-                <option value="portrait">Phone Screenshot (1080x1920)</option>
-                <option value="landscape">Tablet Screenshot (1920x1080)</option>
-                <option value="feature">Feature Graphic (1024x500)</option>
-                <option value="icon">App Icon (512x512)</option>
-            </select>
-        </div>
-        <div class="control-item" style="grid-column: span 2;">
-            <label>Marketing Text</label>
-            <input type="text" id="headerInput" value="RWANDA'S MOST TRUSTED TRAFFIC APP" oninput="drawPreview()">
-        </div>
-        <div class="control-item" style="grid-column: span 2;">
-            <label>Subtitle Text (Feature Only)</label>
-            <input type="text" id="subtitleInput" value="Master Driving Rules & Pass Your Exams with Confidence" oninput="drawPreview()">
-        </div>
-        <div class="control-item">
-            <label>Screenshot Upload</label>
-            <input type="file" id="fileInput" accept="image/*" onchange="handleImage(event)">
-        </div>
-
-        <div class="control-item">
-            <label>Text Size</label>
-            <input type="range" id="sizeInput" min="10" max="80" value="28" oninput="drawPreview()">
-        </div>
-        <div class="control-item">
-            <label>Content Zoom</label>
-            <input type="range" id="zoomInput" min="5" max="200" value="100" oninput="drawPreview()">
-        </div>
-        <div class="control-item">
-            <label>Vertical Position</label>
-            <input type="range" id="offsetYInput" min="-500" max="500" value="0" oninput="drawPreview()">
-        </div>
-        <div class="control-item">
-            <label>Theme Color</label>
-            <select id="themeSelect" onchange="drawPreview()">
-                <option value="#1a237e,#01579b">Premium Blue</option>
-                <option value="#4a148c,#9c27b0">Creative Purple</option>
-                <option value="#004d40,#009688">Safety Teal</option>
-                <option value="#212121,#424242">Dark Mode Sleek</option>
-                <option value="#b71c1c,#ef5350">Urgent Red</option>
-            </select>
-        </div>
-        <div class="control-item">
-            <label>Font Family</label>
-            <select id="fontSelect" onchange="drawPreview()">
-                <option value="'Inter', sans-serif">Inter</option>
-                <option value="'Montserrat', sans-serif">Montserrat</option>
-                <option value="'Poppins', sans-serif">Poppins</option>
-                <option value="'Roboto', sans-serif">Roboto</option>
-            </select>
-        </div>
-        <div class="control-item">
-            <label>Perspective</label>
-            <select id="angleSelect" onchange="updatePerspective()">
-                <option value="angle-none">Straight</option>
-                <option value="angle-left">Oblique Left</option>
-                <option value="angle-right">Oblique Right</option>
-                <option value="angle-tilted">Angle Tilt</option>
-            </select>
-        </div>
-        <button class="btn-primary" onclick="generateAndDownload()">DOWNLOAD PRODUCTION ASSET (PNG)</button>
-    </div>
-
-    <div class="preview-outer">
-        <div class="preview-wrapper">
-            <div id="virtualCanvas" class="angle-none" style="background: linear-gradient(135deg, #1a237e, #01579b);">
-                <div class="blob blob-1"></div>
-                <div class="blob blob-2"></div>
-                <div class="brand-badge">TRAFFIC RULE RWANDA</div>
-                <div class="header-preview" id="headerDisplay">RWANDA'S MOST TRUSTED TRAFFIC APP</div>
-                <div class="subtitle-preview" id="subtitleDisplay">Master Driving Rules & Pass Your Exams with Confidence</div>
-
-                <div id="iconPreview">
-                    <img id="iconImg" src="" style="display:none;">
-                    <div id="iconPlaceholder"
-                        style="background:#fff; height:100%; display:flex; align-items:center; justify-content:center; color:#333; font-weight:bold; font-size:12px;">
-                        App Logo</div>
+    <div class="layout">
+        <!-- Controls -->
+        <aside class="card">
+            <div class="section">
+                <h3 class="section-title">Asset</h3>
+                <div class="field">
+                    <label>Asset Type</label>
+                    <select id="typeSelect" onchange="updateMode()">
+                        <option value="portrait">Phone Screenshot (1080x1920)</option>
+                        <option value="landscape">Tablet Screenshot (1920x1080)</option>
+                        <option value="feature">Feature Graphic (1024x500)</option>
+                        <option value="icon">App Icon (512x512)</option>
+                    </select>
                 </div>
+                <div class="field">
+                    <label>Screenshot Upload</label>
+                    <input type="file" id="fileInput" accept="image/*" onchange="handleImage(event)">
+                </div>
+            </div>
 
-                <div class="mockup-container">
-                    <div class="mockup-frame">
-                        <div class="screen-area">
-                            <img id="screenImg" src="" style="display:none;">
-                            <div id="screenPlaceholder"
-                                style="height:100%; display:flex; align-items:center; justify-content:center; color:#555; text-align:center; padding:20px; font-size:12px;">
-                                Screenshot</div>
+            <div class="section">
+                <h3 class="section-title">Content</h3>
+                <div class="field">
+                    <label>Marketing Text</label>
+                    <input type="text" id="headerInput" value="RWANDA'S MOST TRUSTED TRAFFIC APP" oninput="drawPreview()">
+                </div>
+                <div class="field">
+                    <label>Subtitle Text (Feature Only)</label>
+                    <input type="text" id="subtitleInput" value="Master Driving Rules & Pass Your Exams with Confidence" oninput="drawPreview()">
+                </div>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">Typography</h3>
+                <div class="grid-2">
+                    <div class="field">
+                        <label>Text Size</label>
+                        <input type="range" id="sizeInput" min="10" max="80" value="28" oninput="drawPreview()">
+                    </div>
+                    <div class="field">
+                        <label>Font Family</label>
+                        <select id="fontSelect" onchange="drawPreview()">
+                            <option value="'Inter', sans-serif">Inter</option>
+                            <option value="'Montserrat', sans-serif">Montserrat</option>
+                            <option value="'Poppins', sans-serif" selected>Poppins</option>
+                            <option value="'Roboto', sans-serif">Roboto</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="field">
+                        <label>Content Zoom</label>
+                        <input type="range" id="zoomInput" min="5" max="200" value="100" oninput="drawPreview()">
+                    </div>
+                    <div class="field">
+                        <label>Vertical Position</label>
+                        <input type="range" id="offsetYInput" min="-500" max="500" value="0" oninput="drawPreview()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">Theme & Effects</h3>
+                <div class="grid-2">
+                    <div class="field">
+                        <label>Theme Color</label>
+                        <select id="themeSelect" onchange="drawPreview()">
+                            <option value="#602C91,#9D6FCB">Brand Purple (Primary)</option>
+                            <option value="#F8FAFC,#E2E8F0">Clean White (Light)</option>
+                            <option value="#16A34A,#4ADE80">Success Green</option>
+                            <option value="#DC2626,#F87171">Error Red</option>
+                            <option value="#F59E0B,#FBBF24">Warning Amber</option>
+                            <option value="#0F0F23,#1E293B">Dark Mode</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Perspective</label>
+                        <select id="angleSelect" onchange="updatePerspective()">
+                            <option value="angle-none">Straight</option>
+                            <option value="angle-left">Oblique Left</option>
+                            <option value="angle-right">Oblique Right</option>
+                            <option value="angle-tilted">Angle Tilt</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="generateAndDownload()">DOWNLOAD PRODUCTION ASSET (PNG)</button>
+
+            <div class="tips" style="margin-top:14px;">
+                <b>Tip:</b> Use <b>Content Zoom</b> and <b>Vertical Position</b> to fit your screenshot perfectly inside the device frame. Feature Graphic mode adds a 3D tilted phone and branding badge automatically.
+            </div>
+        </aside>
+
+        <!-- Preview -->
+        <section class="preview-panel">
+            <div class="preview-card">
+                <div class="preview-outer">
+                    <div class="preview-wrapper">
+                        <div id="virtualCanvas" class="angle-none">
+                            <div class="blob blob-1"></div>
+                            <div class="blob blob-2"></div>
+                            <div class="brand-badge">TRAFFIC RULE RWANDA</div>
+                            <div class="header-preview" id="headerDisplay">RWANDA'S MOST TRUSTED TRAFFIC APP</div>
+                            <div class="subtitle-preview" id="subtitleDisplay">Master Driving Rules & Pass Your Exams with Confidence</div>
+
+                            <div id="iconPreview">
+                                <img id="iconImg" src="" style="display:none;">
+                                <div id="iconPlaceholder"
+                                    style="background:#fff; height:100%; display:flex; align-items:center; justify-content:center; color:#333; font-weight:bold; font-size:12px;">
+                                    App Logo</div>
+                            </div>
+
+                            <div class="mockup-container">
+                                <div class="mockup-frame">
+                                    <div class="screen-area">
+                                        <img id="screenImg" src="" style="display:none;">
+                                        <div id="screenPlaceholder"
+                                            style="height:100%; display:flex; align-items:center; justify-content:center; color:#555; text-align:center; padding:20px; font-size:12px;">
+                                            Screenshot</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <p class="hint">Adjust <b>Content Zoom</b> and <b>Vertical Position</b> to fit your screenshot perfectly inside the frame.</p>
+        </section>
     </div>
 
-    <div class="hint">Adjust <b>Content Zoom</b> and <b>Vertical Position</b> to fit your screenshot perfectly.</div>
     <canvas id="exportCanvas"></canvas>
 
     <script>
@@ -437,7 +541,6 @@
             if (mode === 'icon') document.getElementById('headerInput').disabled = true;
             else document.getElementById('headerInput').disabled = false;
 
-            // Default fits
             document.getElementById('zoomInput').value = 100;
             document.getElementById('offsetYInput').value = 0;
 
@@ -466,6 +569,12 @@
             document.getElementById('virtualCanvas').className = document.getElementById('angleSelect').value;
         }
 
+        function isLightTheme(hex) {
+            const c = parseInt(hex.replace('#', ''), 16);
+            const r = (c >> 16) & 255, g = (c >> 8) & 255, b = c & 255;
+            return (r * 299 + g * 587 + b * 114) / 1000 > 150;
+        }
+
         function drawPreview() {
             const mode = document.getElementById('typeSelect').value;
             const text = document.getElementById('headerInput').value;
@@ -474,31 +583,31 @@
             const offsetY = document.getElementById('offsetYInput').value;
             const font = document.getElementById('fontSelect').value;
             const theme = document.getElementById('themeSelect').value.split(',');
+            const lightTheme = isLightTheme(theme[0]) && isLightTheme(theme[1]);
+            const textColor = lightTheme ? '#1e293b' : 'white';
 
             const header = document.getElementById('headerDisplay');
             header.innerText = text;
             header.style.fontSize = size + 'px';
             header.style.fontFamily = font;
+            header.style.color = textColor;
 
             const subtitle = document.getElementById('subtitleDisplay');
             subtitle.innerText = document.getElementById('subtitleInput').value;
             subtitle.style.fontFamily = font;
+            subtitle.style.color = lightTheme ? 'rgba(30,41,59,0.8)' : 'rgba(255,255,255,0.8)';
 
             const img = document.getElementById('screenImg');
             if (uploadedImg) {
-                // UI Scale factor
-                const containerW = mode === 'landscape' ? 448 : (mode === 'feature' ? 220 : 220);
+                const containerW = mode === 'landscape' ? 448 : 220;
                 const containerH = mode === 'landscape' ? 280 : (mode === 'feature' ? 440 : 440);
-
-                // For screenshots, we want to see the WHOLE screen inside the frame by default (Math.min)
                 const baseScale = Math.min(containerW / uploadedImg.width, containerH / uploadedImg.height);
                 img.style.width = (uploadedImg.width * baseScale * zoom) + 'px';
                 img.style.height = 'auto';
                 img.style.top = `calc(50% + ${offsetY / 4}px)`;
             }
 
-            // Update badge color
-            document.querySelector('.brand-badge').style.color = theme[0];
+            document.querySelector('.brand-badge').style.color = lightTheme ? '#334155' : theme[0];
 
             document.getElementById('virtualCanvas').style.background = `linear-gradient(135deg, ${theme[0]}, ${theme[1]})`;
         }
@@ -508,6 +617,10 @@
             const canvas = document.getElementById('exportCanvas');
             const ctx = canvas.getContext('2d');
             const theme = document.getElementById('themeSelect').value.split(',');
+            const lightTheme = isLightTheme(theme[0]) && isLightTheme(theme[1]);
+            const textColor = lightTheme ? '#1e293b' : 'white';
+            const subtitleColor = lightTheme ? 'rgba(30,41,59,0.85)' : 'rgba(255,255,255,0.85)';
+            const badgeColor = lightTheme ? '#334155' : theme[0];
             const text = document.getElementById('headerInput').value;
             const size = document.getElementById('sizeInput').value;
             const font = document.getElementById('fontSelect').value;
@@ -523,14 +636,12 @@
 
             canvas.width = W; canvas.height = H;
 
-            // 1. Background
             const grad = ctx.createLinearGradient(0, 0, W, H);
             grad.addColorStop(0, theme[0]); grad.addColorStop(1, theme[1]);
             ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
 
-            // 2. Content
             const fs = Math.round(size / 0.3);
-            ctx.fillStyle = "white"; ctx.font = `900 ${fs}px ${font}`;
+            ctx.fillStyle = textColor; ctx.font = `900 ${fs}px ${font}`;
 
             if (mode === 'portrait') {
                 ctx.textAlign = "center"; wrapText(ctx, text.toUpperCase(), W / 2, H * 0.15, W * 0.9, fs * 1.1);
@@ -539,32 +650,27 @@
                 ctx.textAlign = "center"; wrapText(ctx, text.toUpperCase(), W / 2, H * 0.18, W * 0.9, fs * 1.1);
                 drawMockup(ctx, W / 2, H * 0.62, 1400, 875, 50, angle, uploadedImg, zoom, offsetY);
             } else if (mode === 'feature') {
-                // 1a. Background Decorative Blobs
                 ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
-                ctx.beginPath(); ctx.arc(0, 0, 300, 0, Math.PI * 2); ctx.fill(); 
+                ctx.beginPath(); ctx.arc(0, 0, 300, 0, Math.PI * 2); ctx.fill();
                 ctx.beginPath(); ctx.arc(W, H, 400, 0, Math.PI * 2); ctx.fill();
 
-                // 2a. Branding Badge
                 ctx.fillStyle = "white";
                 roundRect(ctx, W - 250, 40, 210, 40, 20, true, false);
-                ctx.fillStyle = theme[0];
+                ctx.fillStyle = badgeColor;
                 ctx.font = `bold 16px ${font}`;
                 ctx.textAlign = "center";
                 ctx.fillText("TRAFFIC RULE RWANDA", W - 145, 67);
 
-                // 2b. Main Content
                 ctx.textAlign = "left";
-                ctx.fillStyle = "white";
+                ctx.fillStyle = textColor;
                 ctx.font = `900 ${fs}px ${font}`;
                 wrapText(ctx, text.toUpperCase(), 60, 160, 550, fs * 1.1);
-                
-                // 2c. Subtitle
+
                 const subText = document.getElementById('subtitleInput').value;
                 ctx.font = `400 ${fs * 0.45}px ${font}`;
-                ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+                ctx.fillStyle = subtitleColor;
                 wrapText(ctx, subText, 60, 320, 500, fs * 0.6);
 
-                // 2d. Mockup with Glow & Shadow
                 ctx.save();
                 ctx.shadowColor = "rgba(0,0,0,0.4)";
                 ctx.shadowBlur = 50;
@@ -597,7 +703,6 @@
             ctx.strokeStyle = "#444"; ctx.lineWidth = 14; ctx.stroke();
             if (img) {
                 ctx.save(); ctx.beginPath(); roundRect(ctx, -w / 2 + 24, -h / 2 + 24, w - 48, h - 48, r - 10, false, false); ctx.clip();
-                // Default fit strategy: Math.min (keep entire screen visible)
                 const baseScale = Math.min((w - 48) / img.width, (h - 48) / img.height);
                 const finalScale = baseScale * zoom;
                 ctx.drawImage(img, -(img.width * finalScale) / 2, -(img.height * finalScale) / 2 + offset, img.width * finalScale, img.height * finalScale);

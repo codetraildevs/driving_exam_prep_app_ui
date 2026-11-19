@@ -1681,7 +1681,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get paymentVerifyRecipient =>
-      'Mbere yo kwemeza kwishyura, genzura ko izina ry\'uwakira amafaranga rigaragara kuri telefoni yawe rihuye n\'iryanditse hano. Niba bidahuye, ntukomeze.';
+      'Genzura ko MoMo pay ibaruye kuri ALEXIS nugira ikibazo uduhamagare kuri 0788659575 cga 0728877442';
 
   @override
   String get dashboardGazetteSubtitle => 'Amategeko y\'umuhanda';
@@ -1779,7 +1779,7 @@ class AppLocalizationsRw extends AppLocalizations {
   }
 
   @override
-  String get irTitle => 'Serivisi esere';
+  String get irTitle => 'Serivisi z’irembo';
 
   @override
   String get irAlreadySubmitted => 'Ubusabe yarakoze yerekwa';
@@ -1803,16 +1803,17 @@ class AppLocalizationsRw extends AppLocalizations {
   String get irMyRequests => 'Ubusabe bwanajye';
 
   @override
-  String get irNew => 'Ubusabe munsi';
+  String get irNew => 'Ubusabe bushya';
 
   @override
-  String get irManual => 'Imigambi';
+  String get irManual => 'Manuweli';
 
   @override
   String get irAutomatic => 'Otomatike';
 
   @override
-  String get irNotice => 'Kugira ngo wandikishe gusa kuri iki cyajyana.';
+  String get irNotice =>
+      'Iyo umaze kwishyura bihita bikunda ukabona code ukeneye';
 
   @override
   String get irFullName => 'Amazina yose';
@@ -1821,7 +1822,7 @@ class AppLocalizationsRw extends AppLocalizations {
   String get irPhone => 'Nimero ya telefoni';
 
   @override
-  String get irNationalId => 'Nimero y’umukinnyi';
+  String get irNationalId => 'Nimero y’indangamuntu';
 
   @override
   String get irDob => 'Itariki y’amavuko';
@@ -2114,7 +2115,7 @@ class AppLocalizationsRw extends AppLocalizations {
       'Gusiba ntibiraboneka kuri seriveri. Vugurura inzira za API n’igice gishinzwe ubusabe bwa Irembo kuri seriveri, hanyuma wongere ugerageze.';
 
   @override
-  String get referralTitle => 'Tumira inshuti';
+  String get referralTitle => 'Tumira abandi';
 
   @override
   String get referralHeading => 'Twitegure neza, turi kumwe.';
@@ -2128,6 +2129,11 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get referralYourCode => 'Kode yawe y’ubutumire';
+
+  @override
+  String referralCodeLabel(Object code) {
+    return 'Kode: $code';
+  }
 
   @override
   String get referralInvite => 'Tumira inshuti';
@@ -2185,4 +2191,96 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get dashboardReferrals => 'Tumira inshuti';
+
+  @override
+  String get authRecoverTitle => 'Garuka kuri konti kuri iki gikoresho';
+
+  @override
+  String get authRecoverBody =>
+      'Konti yawe iri ku kindi gikoresho. Andika amazina yawe yombi kugira ngo uzane iyi konti kuri iyi telefoni.';
+
+  @override
+  String get authRecoverNameLabel => 'Amazina yombi';
+
+  @override
+  String get authRecoverConfirm => 'Garuka kuri konti';
+
+  @override
+  String get authRecoverNameRequired =>
+      'Andika amazina yawe yombi kugira ngo ugaruke kuri iyi konti.';
+
+  @override
+  String get authMoveTitle => 'Zana konti kuri iki gikoresho';
+
+  @override
+  String get authMoveBody =>
+      'Iyi nimero ya telefoni isanzweho ku kindi gikoresho. Ushaka kuzana iyi konti kuri iyi telefoni?';
+
+  @override
+  String get authMoveConfirm => 'Zana konti';
+
+  @override
+  String get authMoveDetailsRequired =>
+      'Andika amazina yawe yombi na nimero ya telefoni kugira ngo ugaruke kuri iyi konti.';
+
+  @override
+  String get languageConfirmLabel => 'Emeza ururimi';
+
+  @override
+  String get profileUserNotFound => 'Umukoresha ntabonetse';
+
+  @override
+  String get profileUserLoadFailed => 'Ntibyashobotse kubona umukoresha';
+
+  @override
+  String get referralNotAuthenticated => 'Ntabwo wiyandikishije';
+
+  @override
+  String get waLoadError =>
+      'Ntibishobotse kubona amatsinda ya WhatsApp. Reba ko ufite interineti wongere ugerageze.';
+
+  @override
+  String get waAddTitle => 'Ongeramo itsinda rya WhatsApp';
+
+  @override
+  String get waEditTitle => 'Hindura itsinda rya WhatsApp';
+
+  @override
+  String get waGroupName => 'Izina ry’itsinda';
+
+  @override
+  String get waNameRequired => 'Andika izina';
+
+  @override
+  String get waInviteLink => 'Ihuza ryo kwinjira muri WhatsApp';
+
+  @override
+  String get waInviteLinkInvalid => 'Andika ihuza rya WhatsApp rikwiye';
+
+  @override
+  String get waCancel => 'Reka';
+
+  @override
+  String get waSave => 'Bika';
+
+  @override
+  String get waSaveError => 'Ntibishobotse kubika itsinda';
+
+  @override
+  String get waDeleteTitle => 'Siba itsinda?';
+
+  @override
+  String get waDelete => 'Siba';
+
+  @override
+  String get waDeleteError => 'Ntibishobotse gusiba itsinda';
+
+  @override
+  String get waEmpty => 'Nta matsinda ya WhatsApp arahari.';
+
+  @override
+  String get waOpenError => 'Ntibishobotse gufungura itsinda';
+
+  @override
+  String get waEditTooltip => 'Hindura';
 }

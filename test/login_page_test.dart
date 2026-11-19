@@ -120,34 +120,29 @@ void main() {
         ),
       );
       await _pumpFrames(tester);
+      final l10n = AppLocalizations.of(tester.element(find.byType(LoginPage)));
 
       // Header
-      expect(find.text('Rwanda Traffic Rule'), findsOneWidget);
-      expect(
-        find.text('Prepare for Your Provisional Driving Licence'),
-        findsOneWidget,
-      );
+      expect(find.text(l10n.authAppName), findsOneWidget);
+      expect(find.text(l10n.authSubtitle), findsOneWidget);
 
       // Form title & subtitle
-      expect(find.text('Login to Your Account'), findsOneWidget);
-      expect(
-        find.text('Enter your registered phone number to continue.'),
-        findsOneWidget,
-      );
+      expect(find.text(l10n.loginTitle), findsOneWidget);
+      expect(find.text(l10n.loginSubtitle), findsOneWidget);
 
       // Phone input field
-      expect(find.text('Phone Number'), findsOneWidget);
-      expect(find.text('07** *** ***'), findsOneWidget);
+      expect(find.text(l10n.authPhoneNumber), findsWidgets);
+      expect(find.text(l10n.authPhoneHint), findsWidgets);
 
       // Continue button
-      expect(find.text('Continue'), findsOneWidget);
+      expect(find.text(l10n.authContinue), findsOneWidget);
 
       // Sign up link
-      expect(find.text("Don't have an account? "), findsOneWidget);
-      expect(find.text('Sign Up'), findsOneWidget);
+      expect(find.text(l10n.loginNoAccount), findsOneWidget);
+      expect(find.text(l10n.loginSignUp), findsOneWidget);
 
       // Secure tag
-      expect(find.text('Secure • Fast • Pass'), findsOneWidget);
+      expect(find.text(l10n.authSecureTag), findsOneWidget);
 
       // Support numbers
       expect(find.textContaining('+250788659575'), findsOneWidget);
@@ -207,10 +202,8 @@ void main() {
       await _pumpFrames(tester);
 
       // Snackbar with invalid phone error
-      expect(
-        find.text('Enter a valid phone number (e.g. 078... or +250 78...)'),
-        findsOneWidget,
-      );
+      final l10n = AppLocalizations.of(tester.element(find.byType(LoginPage)));
+      expect(find.text(l10n.loginInvalidPhone), findsOneWidget);
     });
 
     // ──────────────────────────────────────────────────────────────────────

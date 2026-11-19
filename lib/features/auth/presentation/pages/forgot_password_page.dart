@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
+import '../../../../shared/widgets/app_page_header.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -16,11 +17,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/login'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(
+          kToolbarHeight + MediaQuery.of(context).padding.top,
+        ),
+        child: AppPageHeader(
+          title: l10n.forgotPasswordTitle,
+          onBack: () => context.go('/login'),
         ),
       ),
       body: SafeArea(

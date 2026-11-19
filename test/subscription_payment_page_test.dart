@@ -110,7 +110,7 @@ void main() {
   testWidgets('missing configuration never shows a code or enables payment', (tester) async {
     await pumpPage(tester, config: const PaymentConfiguration());
     await tapKey(tester, 'payment-method-tigo');
-    expect(find.text('Payment details are not configured yet.'), findsOneWidget);
+    expect(find.text('Payment info not configured.'), findsOneWidget);
     expect(find.byKey(const ValueKey('payment-ussd')), findsNothing);
     expect(find.byKey(const ValueKey('copy-payment-code')), findsNothing);
     expect(tester.widget<FilledButton>(find.byKey(const ValueKey('pay-now'))).onPressed, isNull);
@@ -143,7 +143,7 @@ void main() {
     await tester.pump(const Duration(seconds: 5));
     fail = true;
     await tapKey(tester, 'copy-payment-code');
-    expect(find.text('Could not copy the code. Please try again or copy it manually.'), findsOneWidget);
+    expect(find.text('Code not copied. Try again or copy manually.'), findsOneWidget);
   });
   testWidgets('handler receives displayed values without activating a subscription', (tester) async {
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.platform, (_) async => null);
@@ -194,7 +194,7 @@ void main() {
     await tester.pump(const Duration(seconds: 5));
     allowLaunch = false;
     await tapKey(tester, 'pay-now');
-    expect(find.textContaining('Copy this code and dial it on your phone'), findsWidgets);
+    expect(find.textContaining('Copy this code and use it on your phone to pay'), findsWidgets);
     expect(container.read(subscriptionProvider).hasActiveAccess, isFalse);
     expect(tester.widget<FilledButton>(find.byKey(const ValueKey('pay-now'))).onPressed, isNotNull);
   });

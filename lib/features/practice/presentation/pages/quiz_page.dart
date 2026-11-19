@@ -302,11 +302,13 @@ class _QuizPageState extends State<QuizPage> {
                               size: 18,
                             ),
                             const SizedBox(width: 8),
-                            Text(
-                              l10n.quizTimeUp,
-                              style: AppTextStyles.bodySmall.copyWith(
-                                color: AppColors.warning,
-                                fontWeight: FontWeight.w600,
+                            Expanded(
+                              child: Text(
+                                l10n.quizTimeUp,
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  color: AppColors.warning,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
