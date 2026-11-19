@@ -54,7 +54,7 @@ class _QuizPageState extends State<QuizPage> {
     super.initState();
 
     // Protect exam content from screenshots/screen recording
-    _securityChannel.invokeMethod('secureScreenOn');
+   // _securityChannel.invokeMethod('secureScreenOn');
   }
 
   @override
@@ -114,7 +114,7 @@ class _QuizPageState extends State<QuizPage> {
   void dispose() {
     _timer?.cancel();
     // Re-enable screenshots when leaving the quiz
-    _securityChannel.invokeMethod('secureScreenOff');
+    //_securityChannel.invokeMethod('secureScreenOff');
     super.dispose();
   }
 

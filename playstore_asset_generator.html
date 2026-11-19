@@ -315,10 +315,12 @@
         body.mode-landscape .mockup-container { width: 448px; height: 280px; margin-top: 10px; }
         body.mode-landscape .mockup-frame { border-radius: 12px; border-width: 6px; padding: 4px; }
         body.mode-feature .mockup-container {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%) rotateY(-25deg) rotateX(10deg);
             width: 180px; height: 360px;
-            transform: rotateY(-25deg) rotateX(10deg);
-            margin-right: 40px;
-            margin-top: auto; margin-bottom: auto;
+            margin: 0;
         }
 
         .mockup-frame {
@@ -673,10 +675,10 @@
 
                 ctx.save();
                 ctx.shadowColor = "rgba(0,0,0,0.4)";
-                ctx.shadowBlur = 50;
-                ctx.shadowOffsetX = 20;
-                ctx.shadowOffsetY = 20;
-                drawMockup(ctx, 800, 280, 350, 700, 60, 'angle-right', uploadedImg, zoom, offsetY);
+                ctx.shadowBlur = 40;
+                ctx.shadowOffsetX = 16;
+                ctx.shadowOffsetY = 16;
+                drawMockup(ctx, 830, 250, 210, 420, 36, 'angle-right', uploadedImg, zoom, offsetY);
                 ctx.restore();
             } else if (mode === 'icon') {
                 if (uploadedImg) {
