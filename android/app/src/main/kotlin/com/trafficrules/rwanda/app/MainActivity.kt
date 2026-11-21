@@ -5,6 +5,7 @@ import android.content.Intent
 import android.provider.Settings
 import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
+import androidx.core.view.WindowInsetsControllerCompat
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -23,6 +24,27 @@ class MainActivity : FlutterFragmentActivity() {
         referralBridge?.dispose()
         super.onDestroy()
     }
+
+    /**
+     * Re-enable secure screen capture if the app is still in the foreground.
+     * Safe to call on any thread; the underlying Window is only touched after
+     * enableEdgeToEdge() has configured it (Flutter 3.22+ edge-to-edge).
+     */
+    private fun setSecureScreen(on: Boolean) {
+        val controller = window.insetsController ?: return
+        if (on) {
+            controller.apply {
+                applyImeInsets()
+                isAppearanceLightStatusBars = false
+            }
+            window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        } else {
+            window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE)
+            val controller = window.insetsController
+            controller?.apply { hide(WindowInsetsControllerCompat.SYSTEM_BARS) }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -53,11 +75,11 @@ class MainActivity : FlutterFragmentActivity() {
             .setMethodCallHandler { call, result ->
                 when (call.method) {
                     "secureScreenOn" -> {
-                        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                        setSecureScreen(true)
                         result.success(null)
                     }
                     "secureScreenOff" -> {
-                        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                        setSecureScreen(false)
                         result.success(null)
                     }
                     else -> result.notImplemented()
