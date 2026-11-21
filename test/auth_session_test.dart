@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traffic_rule_in_rwanda/features/auth/data/models/user_model.dart';
@@ -67,6 +68,7 @@ void main() {
 
   setUp(() {
     SharedPreferences.setMockInitialValues({});
+    FlutterSecureStorage.setMockInitialValues({});
     session = AuthSession();
   });
 
@@ -183,14 +185,14 @@ void main() {
     });
 
     test('recovers gracefully from corrupted JSON', () async {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('auth_user_json', '{corrupted');
+      FlutterSecureStorage.setMockInitialValues({'auth_user_json': '{corrupted'});
       expect(await session.getUser(), isNull);
     });
 
     test('handles non-Map JSON gracefully', () async {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('auth_user_json', '"just-a-string"');
+      FlutterSecureStorage.setMockInitialValues(
+        {'auth_user_json': '"just-a-string"'},
+      );
       expect(await session.getUser(), isNull);
     });
   });
@@ -354,16 +356,8 @@ void main() {
   // ═════════════════════════════════════════════════════════════════════════
 
   group('TokenRefreshMutex', () {
-    setUp(() async {
-      // The shared_preferences mock cache (_store) persists across tests.
-      // setMockInitialValues only updates _initialValues, but the cached
-      // FakeSharedPreferencesStore still references the OLD map, so
-      // remove() calls on the cached instance are the reliable way to
-      // clear leaked state between tests.
-      final prefs = await SharedPreferences.getInstance();
-      for (final key in ['auth_token', 'auth_refresh_token', 'auth_user_json']) {
-        await prefs.remove(key);
-      }
+    setUp(() {
+      FlutterSecureStorage.setMockInitialValues({});
     });
 
     test('single caller acquires lock and refreshes', () async {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -54,7 +55,7 @@ class _QuizPageState extends State<QuizPage> {
     super.initState();
 
     // Protect exam content from screenshots/screen recording
-   // _securityChannel.invokeMethod('secureScreenOn');
+    _securityChannel.invokeMethod('secureScreenOn');
   }
 
   @override
@@ -80,7 +81,10 @@ class _QuizPageState extends State<QuizPage> {
               ? AppLocalizations.of(context).examNotFound
               : null;
         });
-        if (exam != null) _startTimer();
+        if (exam != null) {
+          _timer?.cancel();
+          _startTimer();
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -102,7 +106,7 @@ class _QuizPageState extends State<QuizPage> {
         if (_secondsLeft > 0) {
           _secondsLeft--;
         } else {
-          _timer?.cancel();
+          timer.cancel();
           _timedOut = true;
           _doSubmit(autoSubmit: true);
         }
@@ -114,7 +118,7 @@ class _QuizPageState extends State<QuizPage> {
   void dispose() {
     _timer?.cancel();
     // Re-enable screenshots when leaving the quiz
-    //_securityChannel.invokeMethod('secureScreenOff');
+    _securityChannel.invokeMethod('secureScreenOff');
     super.dispose();
   }
 

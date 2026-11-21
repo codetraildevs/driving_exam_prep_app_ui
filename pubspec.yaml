@@ -44,6 +44,7 @@ dependencies:
 
   # Code Generation
   json_annotation: ^4.11.0
+  flutter_secure_storage: ^11.2.0
 
 dev_dependencies:
   share_plus_platform_interface: ^7.1.0

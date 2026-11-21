@@ -1,9 +1,37 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:traffic_rule_in_rwanda/features/auth/data/models/user_model.dart';
 import 'package:traffic_rule_in_rwanda/features/irembo/data/irembo_repository.dart';
 import 'package:traffic_rule_in_rwanda/shared/network/api_helper.dart';
 import 'package:traffic_rule_in_rwanda/shared/session/auth_session.dart';
+
+/// A no-op test double for [FlutterSecureStorage] so that tests can run in
+/// CI without a platform plugin implementation. Only the read/write/delete
+/// surface used by [AuthSession] is implemented; everything else returns
+/// nulls/empty results.
+class FakeSecureStorage {
+  final Map<String, String> _store = {};
+
+  Future<String?> read({required String key}) async => _store[key];
+
+  Future<void> write({required String key, required String value}) async {
+    _store[key] = value;
+  }
+
+  Future<void> delete({required String key}) async {
+    _store.remove(key);
+  }
+
+  Future<void> setMockInitialValues(Map<String, dynamic> values) async {
+    _store.clear();
+    for (final entry in values.entries) {
+      if (entry.value is String) {
+        _store[entry.key] = entry.value as String;
+      }
+    }
+  }
+}
 
 class TestApi implements ApiHelper {
   ApiResponse response = const ApiResponse(
@@ -54,7 +82,10 @@ Future<void> signIn(String id, {String role = 'USER'}) => AuthSession().setUser(
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  setUp(() => SharedPreferences.setMockInitialValues({}));
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+    FlutterSecureStorage.setMockInitialValues({});
+  });
 
   test(
     'saved requests survive restart and timeouts but never cross accounts or roles',

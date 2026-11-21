@@ -12,13 +12,13 @@ import '../../../../shared/network/offline_cache.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
 
 /// Total unique exams available in the app.
-const _kTotalExams = 21;
+const _kTotalExams = 20;
 
 /// Pass percentage (16/20 = 80%).
 const _kPassPercent = 80;
 
 /// Number of unique exams the user must pass to earn the certificate.
-const _kRequiredPassed = 21;
+const _kRequiredPassed = 20;
 
 /// Minimum correct answers out of 20 to pass.
 const _kPassCorrect = 16;
@@ -142,7 +142,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
     }
   }
 
-  // ── Ordered list of all 21 exam IDs ──────────────────────────────────
+  // ── Ordered list of all 20 exam IDs ──────────────────────────────────
   static const _allExamIds = [
     '177',
     '1',
@@ -315,7 +315,7 @@ class _MyCertificatesPageState extends State<MyCertificatesPage> {
     );
   }
 
-  // ── Exam status grid (21 tiles) ───────────────────────────────────
+  // ── Exam status grid (20 tiles) ──────────────────────────────────
   Widget _examGrid(BuildContext context, AppLocalizations l10n) {
     final cs = Theme.of(context).colorScheme;
     final screenW = MediaQuery.of(context).size.width;
