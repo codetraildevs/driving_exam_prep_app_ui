@@ -229,7 +229,7 @@ function getAccessCodeStatus($conn, $params): void
 
     $row = Database::fetchOne(
         $conn,
-        'SELECT code, expiresAt, paymentTier, paymentAmount FROM access_codes WHERE userId = ? AND expiresAt > NOW() ORDER BY createdAt DESC LIMIT 1',
+        'SELECT code, expiresAt, paymentTier, paymentAmount, examLanguage FROM access_codes WHERE userId = ? AND expiresAt > NOW() ORDER BY createdAt DESC LIMIT 1',
         's',
         [&$userId]
     );
@@ -239,12 +239,13 @@ function getAccessCodeStatus($conn, $params): void
             'hasActiveAccess' => true,
             'expiresAt'       => $row['expiresAt'],
             'paymentTier'     => $row['paymentTier'],
+            'examLanguage'    => $row['examLanguage'] ?? 'rw',
             'code'            => $row['code'],
         ], 200);
     } else {
         $expired = Database::fetchOne(
             $conn,
-            'SELECT expiresAt, paymentTier FROM access_codes WHERE userId = ? AND expiresAt <= NOW() ORDER BY expiresAt DESC LIMIT 1',
+            'SELECT expiresAt, paymentTier, examLanguage FROM access_codes WHERE userId = ? AND expiresAt <= NOW() ORDER BY expiresAt DESC LIMIT 1',
             's',
             [&$userId]
         );
@@ -252,6 +253,7 @@ function getAccessCodeStatus($conn, $params): void
             'hasActiveAccess' => false,
             'expiresAt' => $expired['expiresAt'] ?? null,
             'paymentTier' => $expired['paymentTier'] ?? null,
+            'examLanguage' => $expired['examLanguage'] ?? null,
         ], 200);
     }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:traffic_rule_in_rwanda/features/exam/data/repositories/exam_repository.dart';
 import 'package:traffic_rule_in_rwanda/features/auth/data/models/user_model.dart';
@@ -32,6 +33,7 @@ class _CachedAuth extends AuthRepository {
 }
 
 void main() {
+  setUp(() => FlutterSecureStorage.setMockInitialValues({}));
   TestWidgetsFlutterBinding.ensureInitialized();
   setUp(() => SharedPreferences.setMockInitialValues({}));
   final cache = OfflineCache();

@@ -6,7 +6,19 @@ class SecurityUtils
 
     public static function init($secret = null)
     {
-        self::$jwtSecret = $secret ?: Env::get('JWT_SECRET') ?: 'your-secret-key-change-in-production';
+        $resolved = $secret ?: Env::get('JWT_SECRET');
+        if (empty($resolved) || $resolved === 'your-secret-key-change-in-production') {
+            if (Env::get('APP_ENV') === 'production') {
+                throw new \RuntimeException('JWT_SECRET must be configured with a strong, non-default value in production');
+            }
+            $resolved = 'your-secret-key-change-in-production';
+        }
+        if (strlen($resolved) < 32) {
+            if (Env::get('APP_ENV') === 'production') {
+                throw new \RuntimeException('JWT_SECRET must be at least 32 characters in production');
+            }
+        }
+        self::$jwtSecret = $resolved;
     }
 
     /**

@@ -1,27 +1,17 @@
 <?php
 /**
- * Simple IP-based rate limiter.
+ * Database-backed rate limiter.
  *
- * Uses file-based storage to track request counts per IP per route.
- * Limits are defined per route prefix.
- *
- * Rate limit window: 60 seconds
- * Default limits:
- *   - Auth routes:   10 requests per minute
- *   - Payment routes: 5 requests per minute
+ * Tracks request timestamps per route and client IP in MySQL.
+ * Only REMOTE_ADDR is trusted unless the immediate peer is localhost.
  */
 class RateLimiter
 {
-    private static string $storageDir = '';
     private static array $limits = [
         'POST:/api/auth/'     => 10,
         'POST:/api/payments/' => 5,
     ];
 
-    /**
-     * Check if the current request is within the rate limit.
-     * Calls ErrorHandler::error(429) and exits if exceeded.
-     */
     public static function check(string $routeKey): void
     {
         $limit = self::getLimit($routeKey);
@@ -30,17 +20,35 @@ class RateLimiter
         }
 
         $ip = self::getClientIp();
-        $now = time();
-        $window = 60; // 1 minute sliding window
+        $conn = Database::connect();
+        self::ensureTable($conn);
 
-        $storage = self::getStorage($routeKey, $ip);
-        self::cleanExpired($storage, $now - $window);
+        $window = 60;
+        $cutoff = date('Y-m-d H:i:s', time() - $window);
 
-        // Count requests in current window
-        $count = count($storage);
+        // Remove expired entries for this route/IP.
+        Database::query(
+            $conn,
+            'DELETE FROM rate_limits WHERE routeKey = ? AND clientIp = ? AND requestedAt < ?',
+            '',
+            [$routeKey, $ip, $cutoff]
+        );
+
+        $row = Database::fetchOne(
+            $conn,
+            'SELECT COUNT(*) AS requestCount, MIN(requestedAt) AS oldestRequest FROM rate_limits WHERE routeKey = ? AND clientIp = ? AND requestedAt >= ?',
+            '',
+            [$routeKey, $ip, $cutoff]
+        );
+
+        $count = (int) ($row['requestCount'] ?? 0);
         if ($count >= $limit) {
-            $oldest = $storage[0] ?? $now;
-            $retryAfter = $window - ($now - $oldest);
+            $oldest = $row['oldestRequest'] ?? null;
+            $retryAfter = $window;
+            if ($oldest) {
+                $retryAfter = $window - (time() - strtotime($oldest));
+            }
+
             Logger::security('Rate limit exceeded', [
                 'routeKey' => $routeKey,
                 'ip'       => $ip,
@@ -59,9 +67,12 @@ class RateLimiter
             exit();
         }
 
-        // Record this request
-        $storage[] = $now;
-        self::saveStorage($routeKey, $ip, $storage);
+        Database::insert(
+            $conn,
+            'INSERT INTO rate_limits (routeKey, clientIp, requestedAt) VALUES (?, ?, NOW())',
+            '',
+            [$routeKey, $ip]
+        );
     }
 
     private static function getLimit(string $routeKey): int
@@ -76,68 +87,40 @@ class RateLimiter
 
     private static function getClientIp(): string
     {
-        foreach (['HTTP_X_FORWARDED_FOR', 'HTTP_X_REAL_IP', 'REMOTE_ADDR'] as $key) {
-            if (!empty($_SERVER[$key])) {
-                $ip = $_SERVER[$key];
-                // X-Forwarded-For may contain a comma-separated list
-                if (strpos($ip, ',') !== false) {
-                    $ip = trim(explode(',', $ip)[0]);
+        $remoteAddr = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+
+        // Only trust forwarded headers when the immediate peer is local.
+        if (in_array($remoteAddr, ['127.0.0.1', '::1'], true)) {
+            foreach (['HTTP_X_FORWARDED_FOR', 'HTTP_X_REAL_IP'] as $key) {
+                if (!empty($_SERVER[$key])) {
+                    $ip = trim(explode(',', $_SERVER[$key])[0]);
+                    if (filter_var($ip, FILTER_VALIDATE_IP)) {
+                        return $ip;
+                    }
                 }
-                return $ip;
             }
         }
-        return '127.0.0.1';
+
+        return $remoteAddr;
     }
 
-    private static function getStorageDir(): string
+    private static function ensureTable(PDO $conn): void
     {
-        if (empty(self::$storageDir)) {
-            self::$storageDir = __DIR__ . '/../storage/rate_limiter';
-            if (!is_dir(self::$storageDir)) {
-                @mkdir(self::$storageDir, 0755, true);
-            }
-        }
-        return self::$storageDir;
+        $conn->exec('
+            CREATE TABLE IF NOT EXISTS rate_limits (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                routeKey VARCHAR(128) NOT NULL,
+                clientIp VARCHAR(45) NOT NULL,
+                requestedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                KEY idx_rate_limits_lookup (routeKey, clientIp, requestedAt)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+        ');
     }
 
-    private static function getStorageKey(string $routeKey, string $ip): string
-    {
-        return md5($routeKey . '|' . $ip);
-    }
-
-    private static function getStorage(string $routeKey, string $ip): array
-    {
-        $file = self::getStorageDir() . '/' . self::getStorageKey($routeKey, $ip) . '.json';
-        if (!file_exists($file)) {
-            return [];
-        }
-        $data = @file_get_contents($file);
-        if ($data === false) {
-            return [];
-        }
-        $decoded = json_decode($data, true);
-        return is_array($decoded) ? $decoded : [];
-    }
-
-    private static function saveStorage(string $routeKey, string $ip, array $timestamps): void
-    {
-        $file = self::getStorageDir() . '/' . self::getStorageKey($routeKey, $ip) . '.json';
-        @file_put_contents($file, json_encode($timestamps), LOCK_EX);
-    }
-
-    private static function cleanExpired(array &$storage, int $cutoff): void
-    {
-        $storage = array_values(array_filter($storage, fn($ts) => $ts >= $cutoff));
-    }
-
-    /**
-     * Reset rate limit storage — useful for testing.
-     */
     public static function reset(): void
     {
-        $dir = self::getStorageDir();
-        if (is_dir($dir)) {
-            array_map('unlink', glob($dir . '/*.json'));
-        }
+        $conn = Database::connect();
+        self::ensureTable($conn);
+        Database::query($conn, 'DELETE FROM rate_limits', '', []);
     }
-}
+}

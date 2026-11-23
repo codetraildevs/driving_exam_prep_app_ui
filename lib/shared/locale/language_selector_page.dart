@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../locale/locale_notifier.dart';
 import '../network/api_helper.dart';
 import '../session/auth_session.dart';
+import '../../features/auth/presentation/bloc/auth_bloc.dart';
 
 /// Creative, responsive language selector optimized for a Rwanda traffic app.
 /// - Traffic-themed animated header
@@ -62,10 +64,9 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
     final isWide = width >= 600;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent,
+      value: const SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.light,
+        systemNavigationBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,
       ),
       child: Localizations.override(
@@ -295,7 +296,9 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
   Future<void> _onConfirm() async {
     ProviderScope.containerOf(context, listen: false).read(localeProvider.notifier).setLocale(Locale(_selectedCode));
     // Best-effort sync to backend if authenticated
-    syncLanguageToBackend(_selectedCode);
+    final authState = BlocProvider.of<AuthBloc>(context).state;
+    final userId = authState is AuthAuthenticated ? authState.user.id : null;
+    syncLanguageToBackend(_selectedCode, userId: userId);
     if (!mounted) return;
     context.go('/landing');
   }
@@ -348,15 +351,15 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
 }
 
 /// Public helper: best-effort sync of preferred language to the backend.
-Future<void> syncLanguageToBackend(String langCode) async {
+Future<void> syncLanguageToBackend(String langCode, {String? userId}) async {
   try {
     final session = AuthSession();
     final token = await session.getToken();
     if (token == null || token.isEmpty) return;
-    final user = await session.getUser();
-    if (user == null) return;
+    final id = userId ?? (await session.getUser())?.id;
+    if (id == null || id.isEmpty) return;
     await ApiHelper().put(
-      '/api/users/${user.id}',
+      '/api/users/$id',
       body: {'preferredLanguage': langCode},
     );
   } catch (e) {

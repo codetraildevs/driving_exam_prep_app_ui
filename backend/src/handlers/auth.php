@@ -37,10 +37,9 @@ function _createRefreshToken($conn, string $userId): string
 {
     _ensureRefreshTokensTable($conn);
     $token = SecurityUtils::generateRandomToken(64);
-    // Effectively permanent — token stays valid until user explicitly logs out
-    // (which sets revoked=1) or admin revokes it. 10-year horizon avoids any
-    // practical date overflow while eliminating the need for re-authentication.
-    $expiresAt = date('Y-m-d H:i:s', time() + 3650 * 24 * 60 * 60); // ~10 years
+    // Refresh tokens are long-lived but bounded to reduce exposure if stolen.
+    // Rotation on refresh keeps active users signed in.
+    $expiresAt = date('Y-m-d H:i:s', time() + 365 * 24 * 60 * 60); // ~1 year
     Database::insert($conn,
         'INSERT INTO refresh_tokens (userId, token, expiresAt) VALUES (?, ?, ?)',
         'sss',
@@ -169,7 +168,10 @@ function authRegister($conn, $params): void
     }
 
     // Check existing phone
-    $existing = Database::fetchOne($conn, "SELECT id, deviceId, role FROM users WHERE (CASE WHEN REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') REGEXP '^([+]?250|0)?7[2389][0-9]{7}$' THEN CONCAT('0', RIGHT(REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', ''), 9)) ELSE REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') END) = ? LIMIT 1", 's', [&$phone]);
+    $existing = Database::fetchOne($conn, 'SELECT id, deviceId, role FROM users WHERE phoneNumber = ? LIMIT 1', 's', [&$phone]);
+    if (!$existing) {
+        $existing = Database::fetchOne($conn, "SELECT id, deviceId, role FROM users WHERE (CASE WHEN REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') REGEXP '^([+]?250|0)?7[2389][0-9]{7}$' THEN CONCAT('0', RIGHT(REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', ''), 9)) ELSE REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') END) = ? LIMIT 1", 's', [&$phone]);
+    }
     if ($existing) {
         // Another request may have committed since our first receipt lookup.
         _registrationRetryResponse($conn, $registrationKey, $payloadHash);
@@ -236,10 +238,17 @@ function authLogin($conn, $params): void
     $device = isset($input['deviceId']) ? SecurityUtils::sanitizeString($input['deviceId']) : null;
 
     $user = Database::fetchOne($conn,
-        "SELECT id, phoneNumber, fullName, role, deviceId, isActive FROM users WHERE (CASE WHEN REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') REGEXP '^([+]?250|0)?7[2389][0-9]{7}$' THEN CONCAT('0', RIGHT(REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', ''), 9)) ELSE REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') END) = ? LIMIT 1",
+        'SELECT id, phoneNumber, fullName, role, deviceId, isActive FROM users WHERE phoneNumber = ? LIMIT 1',
         's',
         [&$phone]
     );
+    if (!$user) {
+        $user = Database::fetchOne($conn,
+            "SELECT id, phoneNumber, fullName, role, deviceId, isActive FROM users WHERE (CASE WHEN REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') REGEXP '^([+]?250|0)?7[2389][0-9]{7}$' THEN CONCAT('0', RIGHT(REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', ''), 9)) ELSE REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') END) = ? LIMIT 1",
+            's',
+            [&$phone]
+        );
+    }
 
     if (!$user) {
         Logger::warning('Login attempt with non-existent user', ['phone' => substr($phone, -4)]);
@@ -316,10 +325,17 @@ function authRebindDevice($conn, $params): void
     }
 
     $user = Database::fetchOne($conn,
-        "SELECT id, fullName, role, isActive, deviceId FROM users WHERE (CASE WHEN REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') REGEXP '^([+]?250|0)?7[2389][0-9]{7}$' THEN CONCAT('0', RIGHT(REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', ''), 9)) ELSE REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') END) = ? LIMIT 1",
+        'SELECT id, fullName, role, isActive, deviceId FROM users WHERE phoneNumber = ? LIMIT 1',
         's',
         [&$phone]
     );
+    if (!$user) {
+        $user = Database::fetchOne($conn,
+            "SELECT id, fullName, role, isActive, deviceId FROM users WHERE (CASE WHEN REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') REGEXP '^([+]?250|0)?7[2389][0-9]{7}$' THEN CONCAT('0', RIGHT(REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', ''), 9)) ELSE REPLACE(REPLACE(REPLACE(REPLACE(phoneNumber, ' ', ''), '-', ''), '(', ''), ')', '') END) = ? LIMIT 1",
+            's',
+            [&$phone]
+        );
+    }
     if (!$user) {
         _authError('Phone number not registered. Please register first.', 404, 'PHONE_NOT_REGISTERED');
     }
@@ -411,11 +427,12 @@ function authRefresh($conn, $params): void
         ErrorHandler::unauthorized('Refresh token has been revoked. Please log in again.');
     }
 
-    // Time-based expiry removed — refresh token only becomes invalid via
-    // explicit logout (revoked=1) or admin action. This ensures users who
-    // study offline for extended periods never lose their session.
-    // The expiresAt column still holds a far-future date (~10 years) for
-    // database hygiene but is never checked at runtime.
+    // Enforce refresh-token expiry to limit stolen-token exposure.
+    if (!empty($row['expiresAt']) && strtotime($row['expiresAt']) < time()) {
+        _revokeRefreshToken($conn, $authToken);
+        Logger::security('Expired refresh token used', ['userId' => $row['userId']]);
+        ErrorHandler::unauthorized('Refresh token has expired. Please log in again.');
+    }
 
     $userId = $row['userId'];
 

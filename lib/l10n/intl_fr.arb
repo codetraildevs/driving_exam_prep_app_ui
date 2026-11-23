@@ -2001,7 +2001,6 @@
     }
   },
   "paymentRecipient": "{method} enregistré au nom de : {name}",
-  "paymentVerifyRecipient": "Avant de confirmer le paiement, vérifiez que le nom du bénéficiaire affiché sur votre téléphone correspond au nom indiqué ici. Sinon, ne poursuivez pas.",
   "@paymentRecipient": {
     "description": "Expected recipient name for the selected payment method",
     "placeholders": {
@@ -2013,6 +2012,7 @@
       }
     }
   },
+  "paymentVerifyRecipient": "Avant de confirmer le paiement, vérifiez que le nom du bénéficiaire affiché sur votre téléphone correspond au nom indiqué ici. Sinon, ne poursuivez pas.",
   "dashboardGazetteSubtitle": "Code de la route",
   "dashboardIremboSubtitle": "Services en ligne",
   "guideTitle": "Instructions",

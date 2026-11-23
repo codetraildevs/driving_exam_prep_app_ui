@@ -17,6 +17,7 @@ import '../../features/home/presentation/pages/main_layout.dart';
 import '../../features/referrals/presentation/referral_page.dart';
 import '../../shared/locale/language_selector_page.dart';
 import '../../shared/subscription/subscription_notifier.dart';
+import '../../shared/locale/locale_notifier.dart';
 import '../../l10n/generated/app_localizations.dart';
 
 import '../../features/practice/presentation/pages/practice_page.dart';
@@ -121,8 +122,10 @@ class AppRouter {
 
       // Subscription guard: redirect users who already have active access away from /subscription.
       if (isAuthenticated && location.startsWith('/subscription')) {
-        final subscription = ProviderScope.containerOf(context, listen: false).read(subscriptionProvider);
-        if (subscription.hasActiveAccess) {
+        final container = ProviderScope.containerOf(context, listen: false);
+        final subscription = container.read(subscriptionProvider);
+        final currentLang = container.read(localeProvider).effectiveLocale.languageCode;
+        if (subscription.hasAccessFor(currentLang)) {
           return '/home';
         }
       }

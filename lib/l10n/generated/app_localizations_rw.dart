@@ -1382,7 +1382,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get termsAcceptanceBody =>
-      'Mu gufungura konti no gukoresha iyi porogaramu, wemeye gukurikiza aya mabwiriza. Niba udabyemeye, nyamuneka hagarika gukoresha iyi porogaramu.';
+      'Mu gufungura konti no gukoresha iyi porogaramu, wemeye gukurikiza aya mabwiriza. Niba utabyemeye, nyamuneka hagarika gukoresha iyi porogaramu.';
 
   @override
   String get termsUserAccount => 'Konti y\'umukoresha';
@@ -1410,7 +1410,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get termsTerminationBody =>
-      'Dufite uburenganzira bwo guhagarika konti zica aya mabwiriza. Ushobora gusiba konti yawe igihe icyo ari cyo cyose unyeze mu igenamiterere.';
+      'Dufite uburenganzira bwo guhagarika konti zica aya mabwiriza. Ushobora gusiba konti yawe igihe icyo ari cyo cyose unyuze mu igenamiterere.';
 
   @override
   String get aboutDisclaimer => 'Icyitonderwa';
@@ -1661,7 +1661,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get paymentUssdInstruction =>
-      'Koporora iyi kode uyikoreshe kuri telefoni yawe kugira ngo wishyure.';
+      'Koporora iyi mibare uyikoreshe kuri telefoni yawe kugira ngo wishyure.';
 
   @override
   String get paymentPayNow => 'Kanda hano wishyure';
@@ -1676,12 +1676,13 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String paymentRecipient(Object method, Object name) {
-    return '$method ibaruye kuri: $name';
+    return 'Ibaruye kuri:$method';
   }
 
   @override
-  String get paymentVerifyRecipient =>
-      'Genzura ko MoMo pay ibaruye kuri ALEXIS nugira ikibazo uduhamagare kuri 0788659575 cga 0728877442';
+  String paymentVerifyRecipient(Object name) {
+    return 'Genzura ko ibaruye  kuri $name nugira ikibazo uduhamagare kuri 0788659575 cga 0728877442';
+  }
 
   @override
   String get dashboardGazetteSubtitle => 'Amategeko y\'umuhanda';
@@ -1707,7 +1708,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get guideUseBody =>
-      '1. Kugirango ukoresheiyi application ugomba kubanza kwiyandikisha kuri application mugihe ukoze download bwa mbere aho usabwa kwandika amazina yawe, nimero yawe telephone; warangiza ugakanda ahanditse EMEZA\n\n2. Mugihe usanzwe wariyandikishe ntabwo wongera kwiyandisha ahubwo ukanda ahanditse \"INJIRA\" ubundi ugashyiramo nimero ya telephone  ubundi ugakanda \"EMEZA\" ugahita ugera ahitwa dashboard usanga ibikubyemo muri application.\n\n3. Gutangira kwiga ukanda ahanditse \"IMYITOZO\" iyo uhafunguye hagizwe y\'ibizamini 21 buri mwitozo ugizwe n\'ibibazo 20, ariko umwitozo wa mbere ni ubuntu (free) indi isigaye bisaba kwishyura.\n\n4. Iyo uri kwitoza muri iyi application ukanda mu kazu iyo ugikoze gihinduka icyatsi naho iyo ucyishe gihinduka umutuku kuko ari ukwitoza uhita ubona igisubizo cyukuri ako kanya uhita ugerageza kugifata cga kumenya (kukiboroka) warangiza ugakanda abanditse \"igikurikira\" ukajya kukindi kibazo iyo ugeze kucyanyuma ukanda ahanditse \"soza ikizamini\" ugahita ubona n\'amanota ugize ugahita  ajya guhitamo ikindi kizamini wiga';
+      '1. Kugirango ukoreshe iyi application ugomba kubanza kwiyandikisha kuri application mugihe ukoze download bwa mbere aho usabwa kwandika amazina yawe, nimero yawe telephone; warangiza ugakanda ahanditse EMEZA \n\n2. Mugihe usanzwe wariyandikishije ntabwo wongera kwiyandisha ahubwo ukanda ahanditse \"INJIRA\" ubundi ugashyiramo nimero ya telephone  ubundi ugakanda \"EMEZA\" ugahita ugera ahitwa Dashbord usanga ibikubyemo muri application.\n\n3. Gutangira kwiga ukanda ahanditse \"IMYITOZO\" iyo uhafunguye hagizwe y\'ibizamini 21 buri mwitozo ugizwe n\'ibibazo 20, ariko umwitozo wa mbere ni ubuntu (free) indi isigaye bisaba kwishyura.\n\n4. Iyo uri kwitoza muri iyi application ukanda mu kazu iyo ugikoze gihinduka icyatsi naho iyo ucyishe gihinduka umutuku kuko ari ukwitoza uhita ubona igisubizo cyukuri ako kanya uhita ugerageza kugifata cga kumenya (kukiboroka) warangiza ugakanda abanditse \"igikurikira\" ukajya kukindi kibazo iyo ugeze kucyanyuma ukanda ahanditse \"soza ikizamini\" ugahita ubona n\'amanota ugize ugahita  ujya guhitamo ikindi kizamini wiga';
 
   @override
   String get guideExamTitle =>
@@ -1715,7 +1716,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get guideExamBody =>
-      'A. Nugera muri exam ya provisoire kuri machine Bwa mbere bazabanza bakwitegereze (bagupime) ko udafite ubumuga, ubona, wumva, uzi gusoma no kwandika, ufite indangamuntu y\'umwimerere cga indangampunzi (impunzi) na code y\'uwo munsi, ibindi byinshi,... urugero ikinyabupfura, ku utari  umusinzi,...\n\nB. Uzasanga ibi bibazo biri muri iyo application ari nako bimeze muri exam nta kibazo bazakubaza muri exam ya provisoire kitari muri iyi application, Muguhitamo igisubizo uzakanda MUKAVI ugakomeza kukindi kibazo  ukanze ahanditse IGIKURIKIRA ukomeze n\'ibindi bibazo iyo ubirangije uzakanda ahanditse ``SOZA IKIZAMINI`` uzahita umenya amanota ugize Ako kanya ndetse ushatse wanagenzura ibyo wishe ndetse nibyo wakoze.\n\nC. Aho bitaniye no muri exam ya provoire kuri machine nuko hano iyo ucyishe cga ugikoze uhita umenya  igisubizo cy\'ukuri ako kanya  naho kuri exam nyirizina udahita umenya igisubizo.\n\nD. Hejuru hari imibare kuva kuri 1 kugeza 20 igaragaza ibibazo wasimbutse, ibyo umaze gusubiza nibyo usigaje gukora\n\nE. Amanota yo gutsindiraho muri exam ya ni 12/20 angana na 60% naho hano muri application yacu (nge umunyeshuri wiga amategeko yumuhanda, n\'abayikoze ndetse n\'abayikoramo,..) amanota yo gutsinda ni 80% angana 16/20 muri application ahanditse \"iterambere\" hagaragaza uko ibi bibazo ubyiga uko ubitsinda ariko amanota yibikayo iyo uri kwiga ufite interineti nubwo kwiga atari ngombwa interineti mu gihe wafunze connection wakiga ahanditse amanota muri rusange ntabwo yiyongera';
+      'A. Nugera muri exam ya provisoire kuri machine Bwa mbere bazabanza bakwitegereze (bagupime) ko udafite ubumuga, ubona, wumva, uzi gusoma no kwandika, ufite indangamuntu y\'umwimerere cga indangampunzi (impunzi) na code y\'uwo munsi, ibindi byinshi,... urugero ikinyabupfura, ku utari  umusinzi,...\n\nB. Uzasanga ibi bibazo biri muri iyi application ari nako bimeze muri exam nta kibazo bazakubaza muri exam ya provisoire kitari muri iyi application, Muguhitamo igisubizo uzakanda MUKAVI ugakomeza kukindi kibazo  ukanze ahanditse IGIKURIKIRA ukomeze n\'ibindi bibazo iyo ubirangije uzakanda ahanditse ``SOZA IKIZAMINI`` uzahita umenya amanota ugize Ako kanya ndetse ushatse wanagenzura ibyo wishe ndetse nibyo wakoze.\n\nC. Aho bitaniye no muri exam ya provoire kuri machine nuko hano iyo ucyishe cga ugikoze uhita umenya  igisubizo cy\'ukuri ako kanya  naho kuri exam nyirizina udahita umenya igisubizo.\n\nD. Hejuru hari imibare kuva kuri 1 kugeza 20 igaragaza ibibazo wasimbutse, ibyo umaze gusubiza nibyo usigaje gukora \n\nE. Amanota yo gutsindiraho muri exam ya Provisoire ni 12/20 angana na 60% naho hano muri application yacu (nge umunyeshuri wiga amategeko yumuhanda, n\'abayikoze ndetse n\'abayikoramo,..) amanota yo gutsinda ni 80% angana 16/20 muri application ahanditse \"iterambere\" hagaragaza uko ibi bibazo ubyiga uko ubitsinda ariko amanota yibikayo iyo uri kwiga ufite interineti nubwo kwiga atari ngombwa interineti mu gihe wafunze connection wakiga ahanditse amanota muri rusange ntabwo yiyongera';
 
   @override
   String get guidePaymentTitle =>
@@ -1723,7 +1724,7 @@ class AppLocalizationsRw extends AppLocalizations {
 
   @override
   String get guidePaymentBody =>
-      '1. Nk\'uko nabisobanuye bwa mbere umwitozo  ya mbere ni ubuntu indi 20 bisaba kwishyura 1500Rwf kwiga ukwezi kumwe, 3000Rwf kwiga amezi atatu cyangwa 5000 Rwf kwiga amezi atandatu kuri 0788659575/ 0728877442 cg kuri MOMO PAY: 329494 ibaruye kuri Alexis.\n\nKwishyura wakoresha nimero ushaka bitemewe si ngomba ikubaruyeho ariko mu gihe  ukoresheje indi nimero iyo umaze kwishyura uhita uduhamagara\n\nA. Kwishyura ukoresheje MTN ukanda:\na. *182*1*1*0788659575*1500#\nb. *182*8*1*329494*1500#\n\nB. Kwishyura ukoresheje Tigo cga Airtel\na. *500*1*1*0728877442*1500#\nb. *182*8*1*88329494*1500#\nIbaruye kuri ALEXIS\n\n2. Iyo umaze kwishyura uhite ureba niba ufite connection (internet) ugategereza iminota  ibiri ugahita ukanda imbere y\'ahanditse ururimi ku ka↪️ ugahita ufungura imyitozo usanga byafungutse utugufuri twavuyeho twose.\n\n4. IBINDI BISABANURO BIRAMBUYE WADUHAMAGARA:';
+      '1. Nk\'uko nabisobanuye bwa mbere umwitozo  wa mbere ni ubuntu indi 20 bisaba kwishyura 1500Rwf kwiga ukwezi kumwe, 3000Rwf kwiga amezi atatu cyangwa 5000 Rwf kwiga amezi atandatu kuri 0788659575/ 0728877442 cg kuri MOMO PAY: 329494 ibaruye kuri Alexis. \n\nKwishyura wakoresha nimero ushaka biremewe si ngombwa ikubaruyeho ariko mu gihe  ukoresheje indi nimero iyo umaze kwishyura uhita uduhamagara\n\nA. Kwishyura ukoresheje MTN ukanda: \na. *182*1*1*0788659575*1500#\nb. *182*8*1*329494*1500#\n\nB. Kwishyura ukoresheje Tigo cga Airtel\na. *500*1*1*0728877442*1500#\nb. *182*8*1*88329494*1500#\nIbaruye kuri ALEXIS \n\n2. Iyo umaze kwishyura uhita ureba niba ufite connection (internet) ugategereza iminota  ibiri ugahita ukanda imbere y\'ahanditse ururimi ku ka🔄↪️ ugahita ufungura imyitozo usanga byafungutse utugufuri twavuyeho twose.\n\n4. IBINDI BISOBANURO BIRAMBUYE WADUHAMAGARA:';
 
   @override
   String get guideOpenAccess => 'Reba ibiciro wishyure';

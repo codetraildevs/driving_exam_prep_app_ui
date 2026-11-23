@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,6 +46,7 @@ Widget app(Future<ApiResponse> Function() loader, {String language = 'en'}) =>
     );
 
 void main() {
+  setUp(() => FlutterSecureStorage.setMockInitialValues({}));
   setUp(() => SharedPreferences.setMockInitialValues({}));
   testWidgets('saved group directory remains available without internet', (
     tester,
@@ -69,7 +71,11 @@ void main() {
     expect(find.text(l.waCached), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
-  for (final size in [const Size(320, 640), const Size(844, 320), const Size(1200, 800)]) {
+  for (final size in [
+    const Size(320, 640),
+    const Size(844, 320),
+    const Size(1200, 800),
+  ]) {
     testWidgets('group directory fits $size', (tester) async {
       tester.view.physicalSize = size;
       tester.view.devicePixelRatio = 1;

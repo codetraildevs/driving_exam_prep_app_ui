@@ -88,9 +88,15 @@ class _PracticePageState extends ConsumerState<PracticePage> {
 
   void _onExamTap(BuildContext context, Exam exam, int index) {
     final subscription = ref.read(subscriptionProvider);
-    if (exam.isFree || subscription.hasActiveAccess) {
+    final currentLang =
+        ref.read(localeProvider).effectiveLocale.languageCode;
+    if (exam.isFree || subscription.hasAccessFor(currentLang)) {
       context.push('/practice/quiz/${exam.quizId}?examIndex=${index + 1}');
     } else {
+      final l10n = AppLocalizations.of(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.dashboardExamsLocked)),
+      );
       context.push('/subscription');
     }
   }
@@ -179,8 +185,10 @@ class _PracticePageState extends ConsumerState<PracticePage> {
                             itemCount: _exams.length,
                             itemBuilder: (context, index) {
                               final exam = _exams[index];
-                              final isLocked =
-                                  exam.isPaid && !subscription.hasActiveAccess;
+                              final currentLang =
+                              ref.watch(localeProvider).effectiveLocale.languageCode;
+                          final isLocked = exam.isPaid &&
+                              !subscription.hasAccessFor(currentLang);
                               return _ExamCard(
                                 index: index,
                                 exam: exam,

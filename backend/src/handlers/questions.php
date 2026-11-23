@@ -69,33 +69,48 @@ function getExamQuestions($conn, $params): void
 
 function getExamQuestionsForTaking($conn, $params): void
 {
+    global $tokenData;
+
     $examId = SecurityUtils::sanitizeString($params['id']);
     if (!$examId) {
         ErrorHandler::badRequest('Invalid exam ID');
     }
 
-    $exam = Database::fetchOne($conn, 'SELECT id, courseType FROM courses WHERE id = ? LIMIT 1', 's', [&$examId]);
+    $exam = Database::fetchOne($conn, 'SELECT id, courseType, examType FROM courses WHERE id = ? LIMIT 1', 's', [&$examId]);
     if (!$exam) {
         ErrorHandler::notFound('Exam not found');
     }
 
+    // Map the exam's stored language to the short language code used by access grants.
+    $examLanguage = 'rw';
+    $rawExamType = strtolower(SecurityUtils::sanitizeString($exam['examType'] ?? 'kinyarwanda'));
+    if ($rawExamType === 'english') $examLanguage = 'en';
+    elseif ($rawExamType === 'french') $examLanguage = 'fr';
+    elseif ($rawExamType === 'kinyarwanda') $examLanguage = 'rw';
+
     // Access control for paid exams
     if ($exam['courseType'] !== 'free') {
-        if (!isset($_GET['userId'])) {
+        $userId = '';
+        if (isset($tokenData['userId']) && $tokenData['userId'] !== '') {
+            $userId = SecurityUtils::sanitizeString($tokenData['userId']);
+        } elseif (isset($_GET['userId'])) {
+            $userId = SecurityUtils::sanitizeString($_GET['userId']);
+        }
+
+        if ($userId === '') {
             ErrorHandler::forbidden('User ID required to access this exam');
         }
 
-        $userId = SecurityUtils::sanitizeString($_GET['userId']);
         $now = date('Y-m-d H:i:s');
 
         $accessCode = Database::fetchOne($conn,
-            'SELECT id FROM access_codes WHERE userId = ? AND isUsed = 0 AND expiresAt > ? LIMIT 1',
-            'ss',
-            [&$userId, &$now]
+            'SELECT id FROM access_codes WHERE userId = ? AND isUsed = 0 AND expiresAt > ? AND examLanguage = ? LIMIT 1',
+            'sss',
+            [&$userId, &$now, &$examLanguage]
         );
 
         if (!$accessCode) {
-            Logger::warning('Unauthorized exam access attempt', ['examId' => $examId, 'userId' => $userId]);
+            Logger::warning('Unauthorized exam access attempt', ['examId' => $examId, 'userId' => $userId, 'examLanguage' => $examLanguage]);
             ErrorHandler::forbidden('You do not have access to this exam. Please purchase an access code.');
         }
     }

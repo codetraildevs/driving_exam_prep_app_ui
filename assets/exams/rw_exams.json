@@ -184,7 +184,7 @@
           "option3": "C. Wegereye ahaguteza ibyago",
           "option4": "D. Kunyuranaho ntibyemewe",
           "correctAnswer": "A. Birabujijwe kuwurenga",
-          "questionImgUrl": "assets/images/ex12q6.webp"
+          "questionImgUrl": "assets/images/q256.webp"
         }
       ]
     },
@@ -568,7 +568,7 @@
       "quizId": "3",
       "examType": "Paid",
       "title": "Umwitozo wa ",
-      "examImgUrl": "assets/images/exam3.webp",
+      "examImgUrl": "assets/images/exam3.jpg",
       "questions": [
         {
           "question": "1. Iyo nta mategeko awugabanya by’umwihariko, umuvuduko ntarengwa ku modoka zitwara abagenzi mu buryo bwa rusange ni:",

@@ -1688,8 +1688,9 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get paymentVerifyRecipient =>
-      'Avant de confirmer le paiement, vérifiez que le nom du bénéficiaire affiché sur votre téléphone correspond au nom indiqué ici. Sinon, ne poursuivez pas.';
+  String paymentVerifyRecipient(Object name) {
+    return 'Avant de confirmer le paiement, vérifiez que le nom du bénéficiaire affiché sur votre téléphone correspond au nom indiqué ici. Sinon, ne poursuivez pas.';
+  }
 
   @override
   String get dashboardGazetteSubtitle => 'Code de la route';

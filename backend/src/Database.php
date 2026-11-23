@@ -47,9 +47,7 @@ class Database
 
     public static function getConnection()
     {
-        $conn = self::connect();
-        self::_ensureUserConstraints($conn);
-        return $conn;
+        return self::connect();
     }
 
     /**

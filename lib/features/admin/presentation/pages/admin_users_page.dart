@@ -405,6 +405,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     bool customMode = false;
     final daysCtrl = TextEditingController();
     final amtCtrl = TextEditingController();
+    String selectedExamLanguage = ['rw', 'en', 'fr'].contains(lang) ? lang : 'rw';
 
     showModalBottomSheet(
       context: context,
@@ -476,6 +477,19 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                       labelText: l10n.adminPaymentAmount,
                     ),
                   ),
+                  const SizedBox(height: 8),
+                  DropdownButtonFormField<String>(
+                    initialValue: selectedExamLanguage,
+                    decoration: InputDecoration(labelText: l10n.paymentExamLanguage),
+                    items: const [
+                      DropdownMenuItem(value: 'rw', child: Text('Kinyarwanda')),
+                      DropdownMenuItem(value: 'en', child: Text('English')),
+                      DropdownMenuItem(value: 'fr', child: Text('French')),
+                    ],
+                    onChanged: (v) {
+                      if (v != null) setModal(() => selectedExamLanguage = v);
+                    },
+                  ),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () => _submitGrant(
@@ -485,6 +499,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                       customMode,
                       daysCtrl.text,
                       amtCtrl.text,
+                      selectedExamLanguage,
                       l10n,
                     ),
                     child: Text(l10n.adminAccessGranted),
@@ -521,6 +536,7 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
     bool customMode,
     String daysText,
     String amtText,
+    String examLanguage,
     AppLocalizations l10n,
   ) async {
     final amount = int.tryParse(amtText) ?? 0;
@@ -528,7 +544,10 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
       _showSnack(ctx, l10n.adminInvalidAmount, AppColors.error);
       return;
     }
-    final body = <String, dynamic>{'paymentAmount': amount};
+    final body = <String, dynamic>{
+      'paymentAmount': amount,
+      'examLanguage': examLanguage,
+    };
     if (customMode) {
       final d = int.tryParse(daysText) ?? 0;
       if (d <= 0) {
@@ -1207,6 +1226,11 @@ class _UserCard extends StatelessWidget {
                   _hasAccess ? l10n.adminHasAccess : l10n.adminNoAccess,
                   accessColor,
                 ),
+                if (_hasAccess)
+                  _badge(
+                    'Exam: ${(user['grantedExamLanguage'] ?? user['accessExamLanguage'] ?? '-').toString()}',
+                    AppColors.primary,
+                  ),
                 _badge(role, primary),
                 if (calledAt.isNotEmpty)
                   _badge(

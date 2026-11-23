@@ -504,7 +504,7 @@
   "paymentPayNow": "Pay now",
   "paymentIntegrationPending": "Payment info pending. Payment initiation method not connected; no payment approved.",
   "paymentPreparationFailed": "Payment preparation failed. Try again.",
-  "paymentRecipient": "{method} merchant: {name}",
+  "paymentRecipient": "{method} teacher: {name}",
   "paymentVerifyRecipient": "Before confirming payment, check that the recipient name shown on your phone matches what you entered here. If not, do not proceed.",
   "dashboardGazetteSubtitle": "Traffic rules",
   "dashboardIremboSubtitle": "Irembo services",

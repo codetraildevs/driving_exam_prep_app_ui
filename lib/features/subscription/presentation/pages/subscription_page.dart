@@ -246,7 +246,7 @@ class _SubscriptionPageState extends ConsumerState<SubscriptionPage> {
                                 key: const ValueKey('payment-recipient'),
                                 style: AppTextStyles.heading6),
                               const SizedBox(height: 4),
-                              Text(l10n.paymentVerifyRecipient,
+                              Text(l10n.paymentVerifyRecipient(recipient),
                                 key: const ValueKey('payment-recipient-caution'),
                                 style: AppTextStyles.bodySmall),
                             ],

@@ -76,7 +76,7 @@ void main() {
       expect(find.text('*182*8*1*123456*${language == 'rw' ? 1500 : 5000}#'), findsOneWidget);
       final l10n = AppLocalizations.of(tester.element(find.byType(SubscriptionPage)));
       expect(find.text(l10n.paymentRecipient('Alexis', 'mtn momo pay')), findsOneWidget);
-      expect(find.text(l10n.paymentVerifyRecipient), findsOneWidget);
+      expect(find.text(l10n.paymentVerifyRecipient('Alexis')), findsOneWidget);
       for (final method in ['mtn', 'tigo']) {
         await tapKey(tester, 'payment-method-$method');
         expect(find.text(l10n.paymentRecipient('NSHIMIYIMANA Alexis', method == 'mtn' ? 'MTN momo' : 'Tigo Cash')), findsOneWidget);

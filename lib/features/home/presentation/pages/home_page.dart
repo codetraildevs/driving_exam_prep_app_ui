@@ -117,7 +117,10 @@ class _HomePageState extends ConsumerState<HomePage>
     final locale = await showLanguageSelectorDialog(context);
     if (!mounted || locale == null) return;
     await ref.read(localeProvider.notifier).setLocale(locale);
-    unawaited(syncLanguageToBackend(locale.languageCode));
+    if (!mounted) return;
+    final auth = context.read<AuthBloc>().state;
+    final userId = auth is AuthAuthenticated ? auth.user.id : null;
+    unawaited(syncLanguageToBackend(locale.languageCode, userId: userId));
   }
 
   void _message(String text) {
@@ -243,9 +246,7 @@ class _HomePageState extends ConsumerState<HomePage>
     ];
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light.copyWith(
-        statusBarColor: Colors.transparent,
-      ),
+      value: SystemUiOverlayStyle.light,
       child: Scaffold(
         backgroundColor: background,
         body: SafeArea(
@@ -328,7 +329,17 @@ class _HomePageState extends ConsumerState<HomePage>
                             ],
                           ),
                         ),
-                        const SizedBox(width: 8),
+                         const SizedBox(width: 8),
+                        _HeaderControl(
+                          icon: Icons.notifications_none_rounded,
+                          label: l10n.dashboardNotices,
+                          unread: notices?.asData?.value.unreadCount ?? 0,
+                          ink: Colors.white,
+                          surface: Colors.white.withValues(alpha: 0.12),
+                          onTap: () => _instructions(user?.id),
+                        ),
+                        
+                        const SizedBox(width: 6),
                         _HeaderControl(
                           icon: Icons.translate,
                           label: l10n.settingsLanguage.toUpperCase(),
@@ -345,15 +356,7 @@ class _HomePageState extends ConsumerState<HomePage>
                           refreshing: _refreshing,
                           refreshLabel: l10n.dashboardRefresh,
                         ),
-                        const SizedBox(width: 6),
-                        _HeaderControl(
-                          icon: Icons.notifications_none_rounded,
-                          label: l10n.dashboardNotices,
-                          unread: notices?.asData?.value.unreadCount ?? 0,
-                          ink: Colors.white,
-                          surface: Colors.white.withValues(alpha: 0.12),
-                          onTap: () => _instructions(user?.id),
-                        ),
+                       
                       ],
                     ),
                   ),

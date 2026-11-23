@@ -10,8 +10,17 @@ class SubscriptionState {
   final bool _hasActiveAccess;
   bool get hasActiveAccess => _hasActiveAccess &&
       (expiresAt == null || expiresAt!.isAfter(DateTime.now()));
+
+  /// Whether the user has active access for the given exam language code
+  /// (rw/en/fr). Access granted for one language never unlocks another.
+  bool hasAccessFor(String languageCode) {
+    if (!hasActiveAccess) return false;
+    final granted = (grantedExamLanguage ?? '').toLowerCase();
+    return granted == languageCode.toLowerCase();
+  }
   final DateTime? expiresAt;
   final String? paymentTier;
+  final String? grantedExamLanguage;
   final bool isLoading;
   final bool hasLoaded;
   final bool hasError;
@@ -20,6 +29,7 @@ class SubscriptionState {
     bool hasActiveAccess = false,
     this.expiresAt,
     this.paymentTier,
+    this.grantedExamLanguage,
     this.isLoading = false,
     this.hasLoaded = false,
     this.hasError = false,
@@ -29,6 +39,7 @@ class SubscriptionState {
     bool? hasActiveAccess,
     DateTime? expiresAt,
     String? paymentTier,
+    String? grantedExamLanguage,
     bool? isLoading,
     bool? hasLoaded,
     bool? hasError,
@@ -37,6 +48,7 @@ class SubscriptionState {
       hasActiveAccess: hasActiveAccess ?? this.hasActiveAccess,
       expiresAt: expiresAt ?? this.expiresAt,
       paymentTier: paymentTier ?? this.paymentTier,
+      grantedExamLanguage: grantedExamLanguage ?? this.grantedExamLanguage,
       isLoading: isLoading ?? this.isLoading,
       hasLoaded: hasLoaded ?? this.hasLoaded,
       hasError: hasError ?? this.hasError,
@@ -78,6 +90,8 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
         hasActiveAccess: data?['hasActiveAccess'] == true &&
             expiry != null && expiry.isAfter(DateTime.now()),
         expiresAt: expiry, paymentTier: data?['paymentTier'] as String?,
+        grantedExamLanguage: data?['grantedExamLanguage'] as String? ??
+            data?['examLanguage'] as String?,
         hasLoaded: data != null,
       );
     } catch (_) {
@@ -103,13 +117,16 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
         final payload = result.data as Map;
         final expiry = DateTime.tryParse(payload['expiresAt']?.toString() ?? '');
         state = SubscriptionState(hasActiveAccess: payload['hasActiveAccess'] == true,
-          expiresAt: expiry, paymentTier: payload['paymentTier'] as String?, hasLoaded: true);
+          expiresAt: expiry, paymentTier: payload['paymentTier'] as String?,
+          grantedExamLanguage: (payload['examLanguage'] ?? payload['grantedExamLanguage'])?.toString(),
+          hasLoaded: true);
         final prefs = await SharedPreferences.getInstance();
         if (revision != _revision) return;
         await prefs.setString('access_status_$userId', json.encode({
           'hasActiveAccess': state.hasActiveAccess,
           'expiresAt': expiry?.toIso8601String(),
           'paymentTier': state.paymentTier,
+          'grantedExamLanguage': state.grantedExamLanguage,
         }));
       } else {
         state = state.copyWith(hasError: true);

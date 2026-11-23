@@ -28,9 +28,14 @@ Widget app(String language, Widget home) => MaterialApp(
 
 Future<void> waitForPage(WidgetTester tester, String text) async {
   for (var i = 0; i < 200; i++) {
-    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 100)));
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 100)),
+    );
     await tester.pump(const Duration(milliseconds: 100));
-    if (find.text(text).evaluate().isNotEmpty) return;
+    if (find.text(text).evaluate().isNotEmpty) {
+      await tester.pumpAndSettle();
+      return;
+    }
   }
   fail('Reader did not display $text');
 }
@@ -51,24 +56,31 @@ void main() {
       routes: [
         ShellRoute(
           navigatorKey: navigatorKey,
-          builder: (_, __, child) => MainLayout(navigatorKey: navigatorKey, child: child),
-          routes: [GoRoute(path: '/home', builder: (_, __) => const SizedBox())],
+          builder: (_, __, child) =>
+              MainLayout(navigatorKey: navigatorKey, child: child),
+          routes: [
+            GoRoute(path: '/home', builder: (_, __) => const SizedBox()),
+          ],
         ),
       ],
     );
     addTearDown(bloc.close);
     addTearDown(router.dispose);
-    await tester.pumpWidget(BlocProvider.value(
-      value: bloc,
-      child: MaterialApp.router(
-        routerConfig: router,
-        locale: const Locale('en'),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
+    await tester.pumpWidget(
+      BlocProvider.value(
+        value: bloc,
+        child: MaterialApp.router(
+          routerConfig: router,
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
-    navigatorKey.currentState!.push(MaterialPageRoute<void>(builder: (_) => const ResourcesPage()));
+    navigatorKey.currentState!.push(
+      MaterialPageRoute<void>(builder: (_) => const ResourcesPage()),
+    );
     await tester.pumpAndSettle();
 
     // First open + back via arrow
@@ -76,6 +88,8 @@ void main() {
     await waitForPage(tester, 'Page 1 of 18');
     await tester.tap(find.byIcon(Icons.arrow_back));
     await tester.pumpAndSettle();
+    // Drain pdfrx's 100 ms load-completion timer after the viewer is disposed.
+    await tester.pump(const Duration(milliseconds: 100));
     expect(find.byType(ResourcesPage), findsOneWidget);
 
     // Second open + back via system back
@@ -83,6 +97,8 @@ void main() {
     await waitForPage(tester, 'Page 1 of 18');
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
+    // Drain pdfrx's 100 ms load-completion timer after the viewer is disposed.
+    await tester.pump(const Duration(milliseconds: 100));
     expect(find.byType(ResourcesPage), findsOneWidget);
   });
 }

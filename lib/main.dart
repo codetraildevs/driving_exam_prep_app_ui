@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,6 +13,7 @@ import 'features/referrals/data/referral_session.dart';
 import 'l10n/generated/app_localizations.dart';
 import 'shared/locale/fallback_localizations.dart';
 import 'shared/locale/locale_notifier.dart';
+import 'shared/locale/language_selector_page.dart';
 import 'shared/network/sync_service.dart';
 import 'shared/session/app_launch_session.dart';
 import 'shared/session/auth_session.dart';
@@ -19,12 +21,18 @@ import 'shared/session/last_route_session.dart';
 import 'shared/subscription/subscription_notifier.dart';
 import 'shared/theme/theme_notifier.dart';
 import 'shared/widgets/data_consent_dialog.dart';
+import 'shared/widgets/app_status_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() => _runApp();
 
 Future<void> _runApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Startup timing hook: reports how the pre-runApp work splits between the
+  // persisted-preference reads and building the first frame. Only printed in
+  // debug/profile so release builds stay silent.
+  final startupWatch = Stopwatch()..start();
 
   // Prevent google_fonts from downloading fonts at runtime in production.
   // Fonts are bundled via the app's asset pipeline.
@@ -34,9 +42,9 @@ Future<void> _runApp() async {
   // frame) so its network round-trip overlaps with the prefs reads below.
   final authBloc = AuthBloc()..add(const CheckAuthStatusEvent());
 
-  // Resolve all persisted preferences in parallel so the first frame is
-  // painted as quickly as possible. Previously these ran sequentially, which
-  // delayed runApp on every launch.
+  // Resolve all persisted preferences in parallel so the app can be attached
+  // with the saved language, theme and screen already in place. On low-end
+  // devices this round-trip is the largest part of Dart startup.
   final (
     isFirstLaunch,
     initialLocale,
@@ -50,6 +58,7 @@ Future<void> _runApp() async {
     AuthSession().getUser(),
     LastRouteSession().getSavedRoute(),
   ).wait;
+  final prefsElapsed = startupWatch.elapsed;
 
   runApp(
     // Riverpod must wrap the entire app to provide the ProviderScope.
@@ -75,6 +84,19 @@ Future<void> _runApp() async {
       ),
     ),
   );
+  final runAppElapsed = startupWatch.elapsed;
+
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (kReleaseMode) return;
+    final firstFrameElapsed = startupWatch.elapsed;
+    debugPrint(
+      '[startup] prefs=${prefsElapsed.inMilliseconds}ms '
+      'runApp=${(runAppElapsed - prefsElapsed).inMilliseconds}ms '
+      'runAppToFirstFrame='
+      '${(firstFrameElapsed - runAppElapsed).inMilliseconds}ms '
+      'total=${firstFrameElapsed.inMilliseconds}ms',
+    );
+  });
 }
 
 /// Reads the saved locale from SharedPreferences.
@@ -168,6 +190,12 @@ class _TrafficRulesAppState extends ConsumerState<TrafficRulesApp> {
     _authSubscription = widget.authBloc.stream.listen((authState) {
       if (authState is AuthAuthenticated) {
         _refreshSubscriptionInBackground(authState.user.id);
+        // Sync the locally selected language to the backend so the admin
+        // dashboard and DB stay in sync after login.
+        unawaited(syncLanguageToBackend(
+          ref.read(localeProvider).effectiveLocale.languageCode,
+          userId: authState.user.id,
+        ));
         // Sync any pending results queued while offline.
         SyncService().syncPendingResults();
       } else if (authState is AuthUnauthenticated) {
@@ -207,6 +235,9 @@ class _TrafficRulesAppState extends ConsumerState<TrafficRulesApp> {
       value: widget.authBloc,
       child: MaterialApp.router(
         title: 'Rwanda Traffic Rule',
+        builder: (context, child) => SystemBarInsets(
+          child: AppStatusBar(child: child ?? const SizedBox.shrink()),
+        ),
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: themeMode,

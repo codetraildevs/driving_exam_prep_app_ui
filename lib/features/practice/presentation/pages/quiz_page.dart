@@ -9,6 +9,7 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/locale/locale_notifier.dart';
+import '../../../../shared/subscription/subscription_notifier.dart';
 import '../../../../shared/network/offline_cache.dart';
 import '../../../../shared/network/sync_service.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
@@ -82,6 +83,22 @@ class _QuizPageState extends State<QuizPage> {
               : null;
         });
         if (exam != null) {
+          final container = ProviderScope.containerOf(
+            context,
+            listen: false,
+          );
+          final langCode = container.read(localeProvider).effectiveLocale.languageCode;
+          final subscription = container.read(subscriptionProvider);
+          if (!exam.isFree && !subscription.hasAccessFor(langCode)) {
+            if (mounted) {
+              final l10n = AppLocalizations.of(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l10n.dashboardExamsLocked)),
+              );
+              context.go('/subscription');
+            }
+            return;
+          }
           _timer?.cancel();
           _startTimer();
         }

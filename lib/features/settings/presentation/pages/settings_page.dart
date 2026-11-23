@@ -237,7 +237,9 @@ class _SettingsPageState extends State<SettingsPage> {
         context,
         listen: false,
       ).read(localeProvider.notifier).setLocale(locale);
-      syncLanguageToBackend(locale.languageCode);
+      final authState = context.read<AuthBloc>().state;
+      final userId = authState is AuthAuthenticated ? authState.user.id : null;
+      syncLanguageToBackend(locale.languageCode, userId: userId);
     }
   }
 

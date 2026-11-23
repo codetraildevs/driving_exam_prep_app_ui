@@ -77,7 +77,6 @@ class _GradientTabHeader extends StatelessWidget {
     final gradient = AppColors.primaryGradientFor(Theme.of(context).brightness);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,
       ),
@@ -1030,6 +1029,7 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
     bool customMode = false;
     final daysCtrl = TextEditingController();
     final amtCtrl = TextEditingController();
+    String selectedExamLanguage = ['rw', 'en', 'fr'].contains(lang) ? lang : 'rw';
 
     showModalBottomSheet(
       context: context,
@@ -1095,6 +1095,19 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(labelText: l10n.adminPaymentAmount),
               ),
+              const SizedBox(height: 8),
+              DropdownButtonFormField<String>(
+                initialValue: selectedExamLanguage,
+                decoration: InputDecoration(labelText: l10n.paymentExamLanguage),
+                items: const [
+                  DropdownMenuItem(value: 'rw', child: Text('Kinyarwanda')),
+                  DropdownMenuItem(value: 'en', child: Text('English')),
+                  DropdownMenuItem(value: 'fr', child: Text('French')),
+                ],
+                onChanged: (v) {
+                  if (v != null) setModal(() => selectedExamLanguage = v);
+                },
+              ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () => _submitGrant(
@@ -1104,6 +1117,7 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
                   customMode,
                   daysCtrl.text,
                   amtCtrl.text,
+                  selectedExamLanguage,
                   l10n,
                 ),
                 child: Text(l10n.adminAccessGranted),
@@ -1123,6 +1137,7 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
     bool customMode,
     String daysText,
     String amtText,
+    String examLanguage,
     AppLocalizations l10n,
   ) async {
     final amount = int.tryParse(amtText) ?? 0;
@@ -1135,7 +1150,10 @@ class _GrantAccessTabState extends State<_GrantAccessTab> {
       );
       return;
     }
-    final body = <String, dynamic>{'paymentAmount': amount};
+    final body = <String, dynamic>{
+      'paymentAmount': amount,
+      'examLanguage': examLanguage,
+    };
     if (customMode) {
       final d = int.tryParse(daysText) ?? 0;
       if (d <= 0) {

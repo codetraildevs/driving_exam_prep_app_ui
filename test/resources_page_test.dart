@@ -1,3 +1,4 @@
+import 'package:traffic_rule_in_rwanda/features/resources/data/bundled_pdf.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,14 +36,12 @@ Future<void> waitForPage(WidgetTester tester, String text) async {
       () => Future<void>.delayed(const Duration(milliseconds: 100)),
     );
     await tester.pump(const Duration(milliseconds: 100));
-    if (find.text(text).evaluate().isNotEmpty) return;
-    if (i % 20 == 0) {
-      // ignore: avoid_print
-      print('WAIT i=$i found=${find.text(text).evaluate().length} pdfViewer=${find.byType(PdfViewer).evaluate().length} progress=${find.byType(CircularProgressIndicator).evaluate().length}');
+    if (find.text(text).evaluate().isNotEmpty) {
+      // The native loader may finish before the route transition does.
+      await tester.pumpAndSettle();
+      return;
     }
   }
-  // ignore: avoid_print
-  print('FAIL final: pdfViewer=${find.byType(PdfViewer).evaluate().length} progress=${find.byType(CircularProgressIndicator).evaluate().length}');
   fail('Reader did not display $text');
 }
 
@@ -59,10 +58,7 @@ void main() {
       () async {
         final bytes = await rootBundle.load(document.assetPath);
         expect(bytes.lengthInBytes, greaterThan(0));
-        final pdf = await PdfDocument.openData(
-          bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
-          sourceName: document.assetPath,
-        );
+        final pdf = await openBundledPdf(bytes, document.assetPath);
         try {
           expect(
             pdf.pages.length,
@@ -125,6 +121,8 @@ void main() {
     expect(tester.takeException(), isNull);
     await tester.tap(find.byIcon(Icons.arrow_back));
     await tester.pumpAndSettle();
+    // Drain pdfrx's 100 ms load-completion timer after the viewer is disposed.
+    await tester.pump(const Duration(milliseconds: 100));
     expect(find.byType(ResourcesPage), findsOneWidget);
     expect(find.byType(DocumentReaderPage), findsNothing);
   });
@@ -175,7 +173,9 @@ void main() {
           await tester.tap(find.byIcon(Icons.arrow_back));
         }
         await tester.pumpAndSettle();
-        expect(find.byType(ResourcesPage), findsOneWidget);
+        // Drain pdfrx's 100 ms load-completion timer after the viewer is disposed.
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(find.byType(ResourcesPage), findsOneWidget);
         expect(find.byType(DocumentReaderPage), findsNothing);
         expect(find.byType(AlertDialog), findsNothing);
         expect(tester.takeException(), isNull);

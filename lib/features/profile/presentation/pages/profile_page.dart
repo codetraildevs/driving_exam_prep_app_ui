@@ -13,7 +13,7 @@ import '../../../../shared/network/offline_cache.dart';
 import '../../../../shared/responsive/responsive_layout.dart';
 import '../../../../shared/session/auth_session.dart';
 import '../../../../shared/subscription/subscription_notifier.dart';
-import '../../../../shared/widgets/app_menu_button.dart';
+
 
 class ProfilePage extends StatefulWidget {
   /// When [userId] is provided, admin is viewing another user's profile.
@@ -378,128 +378,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     ? AppContentWidths.tablet
                     : double.infinity);
 
-          final topPadding = MediaQuery.of(context).padding.top;
+
           return SingleChildScrollView(
             child: Column(
             children: [
-              // Curved gradient header with avatar
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.fromLTRB(20, topPadding + 12, 20, 24),
-                decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradientFor(
-                    Theme.of(context).brightness,
-                  ),
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(24),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    // Title row
-                    Row(
-                      children: [
-                        // Hamburger opens the desktop drawer; hidden on
-                        // mobile where bottom navigation is used.
-                        const SizedBox(
-                          width: 48,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: AppMenuButton(),
-                          ),
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              l10n.profileTitle,
-                              style: AppTextStyles.heading5.copyWith(
-                                color: AppColors.textInverse,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 48),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    // Avatar
-                    Container(
-                      width: 90,
-                      height: 90,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withValues(alpha: 0.2),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.4),
-                          width: 3,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          user.name.trim().isNotEmpty
-                              ? user.name.trim()[0].toUpperCase()
-                              : '?',
-                          style: const TextStyle(
-                            fontSize: 36,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textInverse,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      user.name,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.heading4.copyWith(
-                        color: AppColors.textInverse,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 3,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        user.role,
-                        style: const TextStyle(
-                          color: AppColors.textInverse,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.location_on,
-                          size: 14,
-                          color: AppColors.textInverse,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          l10n.profileLocation,
-                          style: TextStyle(
-                            color: AppColors.textInverse.withValues(
-                              alpha: 0.85,
-                            ),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              AppPageHeader(title: l10n.profileTitle, showBack: false),
 
               // Content
               Padding(
@@ -526,11 +409,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // _InfoRow(
-                                //   icon: Icons.phone,
-                                //   label: l10n,
-                                //   value: user.phoneNumber,
-                                // ),
+                                Text(user.name, style: AppTextStyles.heading4),
+                                const SizedBox(height: 4),
+                                Text(user.role, style: AppTextStyles.bodySmall),
+                                const SizedBox(height: 4),
+                                Text(l10n.profileLocation, style: AppTextStyles.bodySmall),
+                                const SizedBox(height: 12),
                                 _InfoRow(
                                   icon: Icons.calendar_today,
                                   label: l10n.profileRegistered(

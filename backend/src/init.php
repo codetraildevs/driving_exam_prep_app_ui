@@ -174,7 +174,8 @@ $allowedWebAppOrigins = $origin !== null && preg_match(
     $origin
 );
 
-if ($allowedWebAppOrigins || in_array('*', $allowedOrigins) || in_array($origin, $allowedOrigins)) {
+$allowWildcard = in_array('*', $allowedOrigins) && Env::get('APP_ENV') !== 'production';
+if ($allowedWebAppOrigins || $allowWildcard || in_array($origin, $allowedOrigins)) {
     header('Access-Control-Allow-Origin: ' . ($origin ?: '*'));
     header('Access-Control-Allow-Credentials: true');
 }

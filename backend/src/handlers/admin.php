@@ -99,7 +99,7 @@ function adminListUsers($conn, $params): void
     $pageSql = "SELECT u.id, u.fullName, u.phoneNumber, u.role, u.isActive,
                        u.preferredLanguage, u.lastCalledAt, u.lastCalledBy, u.callNotes, u.createdAt,
                        ac.code as accessCode, ac.expiresAt as accessExpiresAt,
-                       ac.paymentTier, ac.paymentAmount,
+                       ac.paymentTier, ac.paymentAmount, ac.examLanguage as grantedExamLanguage,
                        CASE WHEN ac.expiresAt > NOW() THEN 1 ELSE 0 END as hasActiveAccess
                 FROM users u
                 $joinSql
@@ -206,12 +206,20 @@ function adminGrantAccess($conn, $params): void
         ErrorHandler::badRequest('Invalid user ID');
     }
 
-    $user = Database::fetchOne($conn, 'SELECT id FROM users WHERE id = ? LIMIT 1', 's', [&$userId]);
+    $user = Database::fetchOne($conn, 'SELECT id, preferredLanguage FROM users WHERE id = ? LIMIT 1', 's', [&$userId]);
     if (!$user) {
         ErrorHandler::notFound('User not found');
     }
 
     $input = getInput();
+
+    // Granted examination language (rw/en/fr). Default to the user's preferred
+    // language when the admin does not explicitly choose one.
+    $examLanguage = strtolower(SecurityUtils::sanitizeString($input['examLanguage'] ?? $input['language'] ?? ''));
+    if (!in_array($examLanguage, ['rw', 'en', 'fr'], true)) {
+        $pref = strtolower(SecurityUtils::sanitizeString($user['preferredLanguage'] ?? 'rw'));
+        $examLanguage = in_array($pref, ['rw', 'en', 'fr'], true) ? $pref : 'rw';
+    }
 
     $paymentTier = SecurityUtils::sanitizeString($input['paymentTier'] ?? '');
     $paymentAmount = isset($input['paymentAmount']) ? intval($input['paymentAmount']) : 0;
@@ -242,9 +250,9 @@ function adminGrantAccess($conn, $params): void
 
     $result = Database::insert(
         $conn,
-        'INSERT INTO access_codes (id, userId, code, generatedByManagerId, paymentAmount, durationDays, paymentTier, expiresAt, isUsed, createdAt, updatedAt) VALUES (?,?,?,?,?,?,?,?,0,?,?)',
-        'ssssiissss',
-        [&$id, &$userId, &$code, &$managerId, &$paymentAmount, &$durationDays, &$paymentTier, &$expiresAt, &$now, &$now]
+        'INSERT INTO access_codes (id, userId, code, generatedByManagerId, paymentAmount, durationDays, paymentTier, examLanguage, expiresAt, isUsed, createdAt, updatedAt) VALUES (?,?,?,?,?,?,?,?,?,0,?,?)',
+        'ssssiisssss',
+        [&$id, &$userId, &$code, &$managerId, &$paymentAmount, &$durationDays, &$paymentTier, &$examLanguage, &$expiresAt, &$now, &$now]
     );
 
     if (!$result) {
@@ -258,6 +266,7 @@ function adminGrantAccess($conn, $params): void
         'code'          => $code,
         'userId'        => $userId,
         'paymentTier'   => $paymentTier,
+        'examLanguage'  => $examLanguage,
         'paymentAmount' => $paymentAmount,
         'durationDays'  => $durationDays,
         'expiresAt'     => $expiresAt,

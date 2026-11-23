@@ -3091,14 +3091,14 @@ abstract class AppLocalizations {
   /// No description provided for @paymentRecipient.
   ///
   /// In en, this message translates to:
-  /// **'{method} merchant: {name}'**
+  /// **'{method} teacher: {name}'**
   String paymentRecipient(Object method, Object name);
 
   /// No description provided for @paymentVerifyRecipient.
   ///
   /// In en, this message translates to:
   /// **'Before confirming payment, check that the recipient name shown on your phone matches what you entered here. If not, do not proceed.'**
-  String get paymentVerifyRecipient;
+  String paymentVerifyRecipient(Object name);
 
   /// No description provided for @dashboardGazetteSubtitle.
   ///

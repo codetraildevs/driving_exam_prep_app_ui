@@ -1650,12 +1650,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String paymentRecipient(Object method, Object name) {
-    return '$method merchant: $name';
+    return '$method teacher: $name';
   }
 
   @override
-  String get paymentVerifyRecipient =>
-      'Before confirming payment, check that the recipient name shown on your phone matches what you entered here. If not, do not proceed.';
+  String paymentVerifyRecipient(Object name) {
+    return 'Before confirming payment, check that the recipient name shown on your phone matches what you entered here. If not, do not proceed.';
+  }
 
   @override
   String get dashboardGazetteSubtitle => 'Traffic rules';
