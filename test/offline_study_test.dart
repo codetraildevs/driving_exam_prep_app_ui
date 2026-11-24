@@ -58,9 +58,8 @@ void main() {
         'assets/images/ex12q6.webp', 'assets/images/q264.webp',
         'assets/images/q265.webp', 'assets/images/q267.webp',
         'assets/images/q289.webp', 'assets/images/q290.webp',
-        'assets/images/q319.webp', 'assets/images/q253.webp',
-        'assets/images/q254.webp', 'assets/images/q255.webp',
-        'assets/images/q256.webp', 'assets/images/q18.webp',
+        'assets/images/q319.webp',
+        'assets/images/q18.webp',
         'assets/images/q88.webp', 'URL_232', 'URL_233', 'URL_296',
       };
       expect(images.difference(bundled), knownMissing,

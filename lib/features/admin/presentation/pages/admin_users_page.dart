@@ -853,15 +853,12 @@ class _AdminUsersPageState extends State<AdminUsersPage> {
                                 ),
                               ),
                             if (isNarrow) ...[
-                              const Spacer(),
-                              Expanded(
-                                child: Text(
-                                  '${l10n.adminTotalUsers}: $_totalUsers',
-                                  style: AppTextStyles.labelSmall.copyWith(
-                                    color: AppColors.textSecondary,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
+                              Text(
+                                '${l10n.adminTotalUsers}: $_totalUsers',
+                                style: AppTextStyles.labelSmall.copyWith(
+                                  color: AppColors.textSecondary,
                                 ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ],

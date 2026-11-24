@@ -1,4 +1,7 @@
 <?php
+class Env {
+    public static function get($key, $default = null) { return $default; }
+}
 require_once __DIR__ . '/../src/SecurityUtils.php';
 $cases = [
     '0739914099' => '0739914099',

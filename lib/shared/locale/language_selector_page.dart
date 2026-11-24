@@ -295,8 +295,15 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
 
   Future<void> _onConfirm() async {
     ProviderScope.containerOf(context, listen: false).read(localeProvider.notifier).setLocale(Locale(_selectedCode));
-    // Best-effort sync to backend if authenticated
-    final authState = BlocProvider.of<AuthBloc>(context).state;
+    // Best-effort sync to backend if authenticated. AuthBloc may not be
+    // present in all host contexts (e.g. tests), so look it up optionally.
+    AuthBloc? authBloc;
+    try {
+      authBloc = BlocProvider.of<AuthBloc>(context);
+    } catch (_) {
+      authBloc = null;
+    }
+    final authState = authBloc?.state;
     final userId = authState is AuthAuthenticated ? authState.user.id : null;
     syncLanguageToBackend(_selectedCode, userId: userId);
     if (!mounted) return;
