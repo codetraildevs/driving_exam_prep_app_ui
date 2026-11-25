@@ -12,11 +12,6 @@ class ApiEndpoints {
   // Exam results
   static String examResultsForUser(String userId) => '/api/exam-results/$userId';
 
-  // Exams / questions (backend-managed content)
-  static const String exams = '/api/exams';
-  static String exam(String id) => '/api/exams/$id';
-  static String examQuestions(String examId) => '/api/exams/$examId/take-exam';
-
   // Traffic signs (optional; backend may not implement yet)
   static const String signs = '/api/signs';
   static String signById(String id) => '/api/signs/$id';
