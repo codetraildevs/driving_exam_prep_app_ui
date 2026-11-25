@@ -19,12 +19,14 @@ class LocaleNotifier extends Notifier<LocaleState> {
     Locale('en'),
     Locale('fr'),
     Locale('rw'),
+    Locale('sw'),
   ];
 
   static const Map<String, String> localeNames = {
     'en': 'English',
     'fr': 'Français',
     'rw': 'Kinyarwanda',
+    'sw': 'Kiswahili',
   };
 
   /// Stashed initial locale — set by the override factory before Riverpod

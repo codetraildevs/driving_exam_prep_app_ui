@@ -34,6 +34,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
     'en': 'Traffic alerts & signs',
     'fr': 'Alertes trafic & panneaux',
     'rw': 'Amategeko y\'umuhanda n\'ibyapa',
+    'sw': 'Sheria za barabarani na ishara',
   };
 
   @override
@@ -86,8 +87,8 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                     child: Container(
                       width: double.infinity,
                       padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top + 24,
-                        bottom: 32,
+                        top: MediaQuery.of(context).padding.top + 16,
+                        bottom: 16,
                       ),
                       decoration: BoxDecoration(
                         gradient: AppColors.primaryGradientFor(
@@ -161,13 +162,13 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
                           ],
                         ),
           
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 8),
           
                         // Language options: list or grid based on width
                         isWide ? _buildGridOptions() : _buildListOptions(),
           
                         // CTA area
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 8),
                         Row(
                           children: [
                             Expanded(
@@ -250,7 +251,7 @@ class _LanguageSelectorPageState extends State<LanguageSelectorPage>
         final name = LocaleNotifier.localeNames[code] ?? code.toUpperCase();
         final tagline = _nativeTaglines[code] ?? '';
         return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.only(bottom: 8),
           child: _CreativeLanguageCard(
             name: name,
             tagline: tagline,
@@ -415,7 +416,7 @@ class _CreativeLanguageCard extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 220),
           transform: Matrix4.diagonal3Values(scale, scale, 1.0),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: bgColor,
             border: Border.all(color: borderColor, width: isSelected ? 2 : 1),
@@ -498,6 +499,8 @@ class _CreativeLanguageCard extends StatelessWidget {
         return '🇫🇷';
       case 'rw':
         return '🇷🇼';
+      case 'sw':
+        return '🇹🇿';
       default:
         return '🇬🇧';
     }
