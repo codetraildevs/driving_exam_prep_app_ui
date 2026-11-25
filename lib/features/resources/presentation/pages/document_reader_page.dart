@@ -1,11 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pdfrx/pdfrx.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../shared/widgets/app_page_header.dart';
 import '../../domain/study_document.dart';
 import '../../data/bundled_pdf.dart';
+import '../../data/pdf_download_service.dart';
 
 class DocumentReaderPage extends StatefulWidget {
   final StudyDocument document;
@@ -16,7 +18,8 @@ class DocumentReaderPage extends StatefulWidget {
 
 class _DocumentReaderPageState extends State<DocumentReaderPage> {
   final _controller = PdfViewerController();
-  late Future<ByteData> _data;
+  late final PdfDownloadService _service = PdfDownloadService();
+  late Future<Uint8List> _data;
   int _page = 1;
   int _total = 0;
   int _attempt = 0;
@@ -24,7 +27,7 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
   @override
   void initState() {
     super.initState();
-    _data = rootBundle.load(widget.document.assetPath);
+    _data = _service.loadPdf(widget.document);
   }
 
   void _retry() {
@@ -32,7 +35,7 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
       _attempt++;
       _total = 0;
       _page = 1;
-      _data = rootBundle.load(widget.document.assetPath);
+      _data = _service.loadPdf(widget.document);
     });
   }
 
@@ -64,7 +67,7 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
         children: [
           AppPageHeader(title: widget.document.title(l10n)),
           Expanded(
-            child: FutureBuilder<ByteData>(
+            child: FutureBuilder<Uint8List>(
               future: _data,
               builder: (context, snapshot) {
                 if (snapshot.hasError) return _error(l10n);
@@ -74,7 +77,7 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
                 final data = snapshot.requireData;
                 return PdfViewer(
                   PdfDocumentRefByLoader(
-                    (_) => openBundledPdf(data, widget.document.assetPath),
+                    (_) => openPdfBytes(data, widget.document.assetPath),
                     key: PdfDocumentRefKey(
                       '${widget.document.assetPath}:$_attempt',
                     ),

@@ -7,6 +7,8 @@ enum StudyDocument {
   final String assetPath;
   const StudyDocument(this.assetPath);
 
+  String get fileName => assetPath.split('/').last;
+
   String title(AppLocalizations l10n) => switch (this) {
     gazette => l10n.resourcesGazette,
     roadSigns => l10n.resourcesRoadSigns,
