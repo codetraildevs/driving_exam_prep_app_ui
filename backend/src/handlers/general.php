@@ -21,3 +21,23 @@ function healthCheck($conn, $params): void
         ErrorHandler::serverError('Database connection error');
     }
 }
+
+function resourceFile($conn, $params): void
+{
+    $allowed = ['Ibyapa.pdf', 'Igazeti.pdf'];
+    $name = basename((string) ($params['name'] ?? ''));
+    if (!in_array($name, $allowed, true)) {
+        http_response_code(404);
+        exit;
+    }
+    $path = API_ROOT . '/../storage/resources/' . $name;
+    if (!is_file($path)) {
+        http_response_code(404);
+        exit;
+    }
+    header('Content-Type: application/pdf');
+    header('Content-Length: ' . filesize($path));
+    header('Cache-Control: public, max-age=604800');
+    readfile($path);
+    exit;
+}

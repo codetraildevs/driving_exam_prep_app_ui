@@ -1,8 +1,8 @@
 ## Flutter-specific ProGuard rules
 
-# Keep Flutter engine and plugin classes
--keep class io.flutter.** { *; }
--keep class io.flutter.plugins.** { *; }
+# Keep only Flutter entry points referenced by the embedding; let R8 shrink the rest.
+-keep class io.flutter.embedding.android.FlutterActivity { *; }
+-keep class io.flutter.embedding.engine.FlutterEngine { *; }
 
 # Keep annotations
 -keepattributes *Annotation*
@@ -11,8 +11,7 @@
 # Keep androidx.activity.EdgeToEdge so Play Console's static check detects edge-to-edge
 -keep class androidx.activity.EdgeToEdge { *; }
 
-# Keep Gson / JSON serialization if used by plugins
--keep class com.google.gson.** { *; }
+# Gson (only if used by plugins)
 -keepclassmembers class * {
     @com.google.gson.annotations.SerializedName <fields>;
 }

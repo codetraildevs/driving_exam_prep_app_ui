@@ -14,9 +14,7 @@
          This Theme is only used starting with V2 of Flutter's Android embedding. -->
     <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
-        <!-- Edge-to-edge bars. Applied by the window, so the app never calls the
-             deprecated Window.setStatusBarColor/setNavigationBarColor APIs. -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!-- Edge-to-edge is enabled via EnableEdgeToEdge metadata; do not set
+             deprecated Window.setStatusBarColor/setNavigationBarColor here. -->
     </style>
 </resources>

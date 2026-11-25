@@ -83,7 +83,6 @@ class _DocumentReaderPageState extends State<DocumentReaderPage> {
                   controller: _controller,
                   params: PdfViewerParams(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    // No external URL handler: documents remain inside the app.
                     linkHandlerParams: null,
                     loadingBannerBuilder: (_, __, ___) =>
                         const Center(child: CircularProgressIndicator()),

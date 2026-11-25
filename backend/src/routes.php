@@ -12,6 +12,7 @@ return [
     ['GET', '/', 'rootHandler'],
     ['GET', '/health', 'healthCheck'],
     ['GET', '/api/health', 'healthCheck'],
+    ['GET', '/api/resources/:name', 'resourceFile'],
 
     // Auth
     ['POST', '/api/auth/register', 'authRegister'],

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,16 +46,13 @@ class _QuizPageState extends State<QuizPage> {
   static const int _totalSeconds = 1200;
   int _secondsLeft = _totalSeconds;
   Timer? _timer;
-  static const _securityChannel = MethodChannel(
-    'com.trafficrules.rwanda.app/security',
-  );
 
   @override
   void initState() {
     super.initState();
 
     // Protect exam content from screenshots/screen recording
-   // _securityChannel.invokeMethod('secureScreenOn');
+    // _securityChannel.invokeMethod('secureScreenOn');
   }
 
   @override
@@ -135,7 +131,7 @@ class _QuizPageState extends State<QuizPage> {
   void dispose() {
     _timer?.cancel();
     // Re-enable screenshots when leaving the quiz
-    //_securityChannel.invokeMethod('secureScreenOff');
+    // _securityChannel.invokeMethod('secureScreenOff');
     super.dispose();
   }
 
