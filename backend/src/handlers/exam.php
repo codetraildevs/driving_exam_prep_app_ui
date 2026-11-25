@@ -6,20 +6,41 @@
 function getExams($conn, $params): void
 {
     $examType = isset($_GET['examType']) ? SecurityUtils::sanitizeString($_GET['examType']) : null;
+    $language = isset($_GET['language']) ? SecurityUtils::sanitizeString($_GET['language']) : null;
+    $courseType = isset($_GET['courseType']) ? SecurityUtils::sanitizeString($_GET['courseType']) : null;
+
+    $where = 'WHERE isActive = 1';
+    $types = '';
+    $values = [];
+
+    if ($language) {
+        $langMap = [
+            'rw' => 'kinyarwanda', 'en' => 'english', 'fr' => 'french',
+            'sw' => 'swahili', 'ar' => 'arabic',
+        ];
+        $dbLang = $langMap[strtolower($language)] ?? strtolower($language);
+        $where .= ' AND examType = ?';
+        $values[] = $dbLang;
+        $types .= 's';
+    }
 
     if ($examType) {
-        $exams = Database::fetchAll($conn,
-            'SELECT c.id, c.title, c.description, c.category, c.difficulty, c.courseType as examType, c.courseImageUrl as examImgUrl, c.isActive, (SELECT COUNT(*) FROM course_contents cc WHERE cc.courseId = c.id) as questionCount FROM courses c WHERE isActive = 1 AND courseType = ? ORDER BY c.createdAt DESC',
-            's',
-            [&$examType]
-        );
-    } else {
-        $exams = Database::fetchAll($conn,
-            'SELECT c.id, c.title, c.description, c.category, c.difficulty, c.courseType as examType, c.courseImageUrl as examImgUrl, c.isActive, (SELECT COUNT(*) FROM course_contents cc WHERE cc.courseId = c.id) as questionCount FROM courses c WHERE isActive = 1 ORDER BY c.createdAt DESC',
-            '',
-            []
-        );
+        // Backwards-compatible alias: examType previously filtered courseType (free/paid).
+        if (in_array(strtolower($examType), ['free', 'paid'], true)) {
+            $where .= ' AND courseType = ?';
+            $values[] = strtolower($examType);
+            $types .= 's';
+        }
     }
+
+    if ($courseType) {
+        $where .= ' AND courseType = ?';
+        $values[] = strtolower($courseType);
+        $types .= 's';
+    }
+
+    $sql = 'SELECT c.id, c.title, c.description, c.category, c.difficulty, c.courseType as examType, c.courseImageUrl as examImgUrl, c.isActive, c.examType as language, (SELECT COUNT(*) FROM course_contents cc WHERE cc.courseId = c.id) as questionCount FROM courses c ' . $where . ' ORDER BY c.createdAt DESC';
+    $exams = Database::fetchAll($conn, $sql, $types, $values);
 
     if ($exams === null) {
         ErrorHandler::serverError('Failed to fetch exams');
@@ -180,7 +201,7 @@ function createExam($conn, $params): void
 
     $courseType = SecurityUtils::sanitizeString($input['courseType'] ?? 'free');
     $examType = strtolower(SecurityUtils::sanitizeString($input['examType'] ?? 'english'));
-    $validExamTypes = ['kinyarwanda', 'english', 'french'];
+    $validExamTypes = ['kinyarwanda', 'english', 'french', 'swahili', 'arabic'];
     if (!in_array($examType, $validExamTypes)) {
         $examType = 'english';
     }
@@ -237,7 +258,7 @@ function updateExam($conn, $params): void
                 ErrorHandler::badRequest('Title must be between 3 and 255 characters');
             }
             if ($field === 'examType') {
-                $valid = ['kinyarwanda', 'english', 'french'];
+                $valid = ['kinyarwanda', 'english', 'french', 'swahili', 'arabic'];
                 $val = in_array(strtolower($val), $valid) ? strtolower($val) : 'english';
             }
 

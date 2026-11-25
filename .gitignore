@@ -32,6 +32,7 @@ nul
 *.zip
 *.sql
 !backend/migrations/20261028_referrals.sql
+!backend/migrations/2026_11_25_add_exam_languages.sql
 *.csv
 BUILD_SUMMARY.txt
 FILE_MANIFEST.txt
