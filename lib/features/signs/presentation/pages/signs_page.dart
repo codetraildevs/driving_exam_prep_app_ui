@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_text_styles.dart';
@@ -31,13 +32,39 @@ class _SignsPageState extends State<SignsPage> {
   String _selectedCategory = '';
   List<String> _categories = [];
   late Future<List<TrafficSignModel>> _signsFuture;
+  final Set<String> _bookmarkedIds = <String>{};
+  bool _showBookmarkedOnly = false;
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+    _loadBookmarks();
     _loadCategories();
     _loadSigns();
+  }
+
+  Future<void> _loadBookmarks() async {
+    final prefs = await SharedPreferences.getInstance();
+    final ids = prefs.getStringList('bookmarked_signs') ?? <String>[];
+    if (!mounted) return;
+    setState(() {
+      _bookmarkedIds
+        ..clear()
+        ..addAll(ids);
+    });
+  }
+
+  Future<void> _toggleBookmark(String id) async {
+    setState(() {
+      if (_bookmarkedIds.contains(id)) {
+        _bookmarkedIds.remove(id);
+      } else {
+        _bookmarkedIds.add(id);
+      }
+    });
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('bookmarked_signs', _bookmarkedIds.toList());
   }
 
   void _loadCategories() async {
@@ -119,22 +146,37 @@ class _SignsPageState extends State<SignsPage> {
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: TextField(
-        controller: _searchController,
-        onChanged: (_) => _loadSigns(),
-        decoration: InputDecoration(
-          hintText: AppLocalizations.of(context).signsSearchHint,
-          prefixIcon: const Icon(Icons.search),
-          suffixIcon: _searchController.text.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    _searchController.clear();
-                    _loadSigns();
-                  },
-                )
-              : null,
-        ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _searchController,
+              onChanged: (_) => _loadSigns(),
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context).signsSearchHint,
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: _searchController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _searchController.clear();
+                          _loadSigns();
+                        },
+                      )
+                    : null,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          IconButton(
+            tooltip: 'Bookmarked signs',
+            icon: Icon(
+              _showBookmarkedOnly ? Icons.bookmarks : Icons.bookmarks_outlined,
+              color: _showBookmarkedOnly ? AppColors.primary : AppColors.textSecondary,
+            ),
+            onPressed: () => setState(() => _showBookmarkedOnly = !_showBookmarkedOnly),
+          ),
+        ],
       ),
     );
   }
@@ -225,7 +267,10 @@ class _SignsPageState extends State<SignsPage> {
           );
         }
 
-        final signs = snapshot.data!;
+        final allSigns = snapshot.data!;
+        final signs = _showBookmarkedOnly
+            ? allSigns.where((s) => _bookmarkedIds.contains(s.id)).toList()
+            : allSigns;
 
         return LayoutBuilder(
           builder: (context, constraints) {
@@ -315,11 +360,31 @@ class _SignsPageState extends State<SignsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            sign.title,
-                            style: AppTextStyles.labelLarge,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  sign.title,
+                                  style: AppTextStyles.labelLarge,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              IconButton(
+                                iconSize: 18,
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                icon: Icon(
+                                  _bookmarkedIds.contains(sign.id)
+                                      ? Icons.bookmark
+                                      : Icons.bookmark_border,
+                                  color: _bookmarkedIds.contains(sign.id)
+                                      ? AppColors.primary
+                                      : AppColors.textSecondary,
+                                ),
+                                onPressed: () => _toggleBookmark(sign.id),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 8),
                           if (isLearned)
