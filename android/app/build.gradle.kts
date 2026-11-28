@@ -6,6 +6,16 @@ plugins {
     // Removed explicit declaration per Flutter's KGP migration guide:
     // https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers
     id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.gms.google-services") apply false
+    id("com.google.firebase.crashlytics") apply false
+}
+
+// Crashlytics only works once the Firebase config file is in place. Applying
+// the plugins unconditionally would break builds (including CI) that do not
+// ship android/app/google-services.json.
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
+    apply(plugin = "com.google.firebase.crashlytics")
 }
 
 val keystoreProperties = Properties()

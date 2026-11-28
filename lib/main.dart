@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +16,7 @@ import 'shared/locale/fallback_localizations.dart';
 import 'shared/locale/locale_notifier.dart';
 import 'shared/locale/language_selector_page.dart';
 import 'shared/network/sync_service.dart';
+import 'shared/observability/crash_reporting.dart';
 import 'shared/session/app_launch_session.dart';
 import 'shared/session/auth_session.dart';
 import 'shared/session/last_route_session.dart';
@@ -24,11 +26,28 @@ import 'shared/widgets/data_consent_dialog.dart';
 import 'shared/widgets/app_status_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Future<void> main() => _runApp();
-
-Future<void> _runApp() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Install the global error handlers and Crashlytics before anything else,
+  // so failures during startup are reported too.
+  await CrashReporting.instance.initialize();
+
+  try {
+    await _runApp();
+  } catch (error, stack) {
+    // Last resort: booting must never leave the user with a blank window.
+    await CrashReporting.instance.record(
+      error,
+      stack,
+      reason: 'startup',
+      fatal: true,
+    );
+    runApp(const _StartupFailureApp());
+  }
+}
+
+Future<void> _runApp() async {
   // Startup timing hook: reports how the pre-runApp work splits between the
   // persisted-preference reads and building the first frame. Only printed in
   // debug/profile so release builds stay silent.
@@ -51,14 +70,19 @@ Future<void> _runApp() async {
     initialThemeMode,
     cachedUser,
     lastRoute,
+    consentAccepted,
   ) = await (
-    AppLaunchSession().consumeFirstLaunch(),
-    _loadSavedLocale(),
-    _loadSavedTheme(),
-    AuthSession().getUser(),
-    LastRouteSession().getSavedRoute(),
+    _startupValue('first launch', AppLaunchSession().consumeFirstLaunch(), false),
+    _startupValue('locale', _loadSavedLocale(), null),
+    _startupValue('theme', _loadSavedTheme(), ThemeMode.light),
+    _startupValue('cached user', AuthSession().getUser(), null),
+    _startupValue('last route', LastRouteSession().getSavedRoute(), null),
+    _startupValue('consent', DataConsentDialog.hasAccepted(), false),
   ).wait;
   final prefsElapsed = startupWatch.elapsed;
+
+  // Crash reports are only collected while the user's data consent stands.
+  unawaited(CrashReporting.instance.setCollectionEnabled(consentAccepted));
 
   runApp(
     // Riverpod must wrap the entire app to provide the ProviderScope.
@@ -97,6 +121,61 @@ Future<void> _runApp() async {
       'total=${firstFrameElapsed.inMilliseconds}ms',
     );
   });
+}
+
+/// Awaits a startup read and falls back to [fallback] when it fails, so one
+/// broken preference or platform channel cannot abort the launch.
+Future<T> _startupValue<T>(String label, Future<T> future, T fallback) async {
+  try {
+    return await future;
+  } catch (error, stack) {
+    await CrashReporting.instance.record(
+      error,
+      stack,
+      reason: 'startup: $label',
+    );
+    return fallback;
+  }
+}
+
+/// Minimal screen shown when even startup fails, instead of a blank window.
+class _StartupFailureApp extends StatelessWidget {
+  const _StartupFailureApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.error_outline, size: 48),
+                const SizedBox(height: 16),
+                const Text(
+                  'The app could not start correctly.',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Please close and open the app again.',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                FilledButton(
+                  onPressed: () => SystemNavigator.pop(),
+                  child: const Text('Close app'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 /// Reads the saved locale from SharedPreferences.
@@ -189,6 +268,8 @@ class _TrafficRulesAppState extends ConsumerState<TrafficRulesApp> {
     // cached data is used immediately, and network data updates the UI silently.
     _authSubscription = widget.authBloc.stream.listen((authState) {
       if (authState is AuthAuthenticated) {
+        // Tie crash reports to the signed-in account for easier triage.
+        unawaited(CrashReporting.instance.setUserIdentifier(authState.user.id));
         _refreshSubscriptionInBackground(authState.user.id);
         // Sync the locally selected language to the backend so the admin
         // dashboard and DB stay in sync after login.
@@ -199,6 +280,7 @@ class _TrafficRulesAppState extends ConsumerState<TrafficRulesApp> {
         // Sync any pending results queued while offline.
         SyncService().syncPendingResults();
       } else if (authState is AuthUnauthenticated) {
+        unawaited(CrashReporting.instance.setUserIdentifier(null));
         ref.read(subscriptionProvider.notifier).clearStatus();
         LastRouteSession().clear();
       }

@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../config/theme/app_colors.dart';
 import '../../config/theme/app_text_styles.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../observability/crash_reporting.dart';
 import '../responsive/responsive_layout.dart';
 
 /// Shows a data-consent dialog on first launch.
@@ -34,6 +35,8 @@ class DataConsentDialog {
         onAccept: () async {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setBool(_consentKey, true);
+          // Consent covers diagnostics too: reports resume once accepted.
+          await CrashReporting.instance.setCollectionEnabled(true);
           _showing = false;
           if (dialogContext.mounted) Navigator.of(dialogContext).pop();
         },

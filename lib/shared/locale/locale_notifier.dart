@@ -19,7 +19,9 @@ class LocaleNotifier extends Notifier<LocaleState> {
     Locale('en'),
     Locale('fr'),
     Locale('rw'),
-    Locale('sw'),
+    // Kiswahili is temporarily disabled: it is hidden from the first-launch
+    // picker and the language dialog in settings. The translations in l10n/
+    // are kept, so re-enabling it only means adding Locale('sw') back here.
   ];
 
   static const Map<String, String> localeNames = {
